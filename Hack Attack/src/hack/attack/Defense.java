@@ -11,13 +11,23 @@ import java.awt.Point;
  *
  * @author juleskreutzer
  */
-public class Defense {
+public class Defense extends Module {
     
     private double cost;
     private Point xPos;
     private Point yPos;
     private DefenseType type;
     private DefenseEffect effect;
+    
+    public Defense(double cost, Point xPos, Point yPos, ModuleName name, DefenseType type, DefenseEffect effect, int level)
+    {
+        super(cost, xPos, yPos, name, level);
+        this.cost = cost;
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.type = type;
+        this.effect = effect;
+    }
     
     /**
      * 
@@ -101,10 +111,14 @@ public class Defense {
         return result;
     }
     
+    /**
+     * 
+     * @return info about the object in a string
+     */
     @Override
     public String toString()
     {
-        return "This tower with position (" + this.xPos + "," + this.yPos + ") is of type " + getType() + " and has the " + getEffect() + " effect";
+        return "This tower with position (" + this.xPos + "," + this.yPos + ") has the name " + super.getName() + "is of type " + getType() + " and has the " + getEffect() + " effect";
     }
     
 }
