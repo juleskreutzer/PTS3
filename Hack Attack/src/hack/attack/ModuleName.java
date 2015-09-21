@@ -6,9 +6,9 @@
 package hack.attack;
 
 /**
- * 
+ *
  * @author juleskreutzer
  */
-public enum Defense_Type {
-    range, cheap, balanced, strong;
+public enum ModuleName {
+    BITCOIN_MINER, SOFTWARE_INJECTOR, CPU_UPGRADE, SNIPER_ANTIVIRUS, BOTTLECAP_ANTIVIRUS, SCALE_ANTIVIRUS, MUSCLE_ANTIVIRUS;
 }
