@@ -9,6 +9,6 @@ package hack.attack;
  * 
  * @author juleskreutzer
  */
-public enum Defense_Type {
+public enum DefenseType {
     range, cheap, balanced, strong;
 }
