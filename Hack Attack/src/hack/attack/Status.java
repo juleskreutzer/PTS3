@@ -10,11 +10,10 @@ package hack.attack;
  *
  * @author Bart van Keersop
  */
-import java.time;
-public class Status {
-    
-    private String name;
-    private DateTime tiem;
-    
-    
+import java.util.Date;
+public class Status 
+{  
+    private String name; //the name of the status (buff/debuff) inflicted.
+    private Date endTime; //the time when the status ends.
+    private double multiplier; //the multiplier used for the status.
 }
