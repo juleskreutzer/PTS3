@@ -16,8 +16,9 @@ public class Module {
     private Point xPos;
     private Point yPos;
     private ModuleName name;
+    private int level;
     
-    public Module(double cost, Point xPos, Point yPos, ModuleName name)
+    public Module(double cost, Point xPos, Point yPos, ModuleName name, int level)
     {
         this.cost = cost;
         this.xPos = xPos;
