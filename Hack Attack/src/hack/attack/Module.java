@@ -12,18 +12,18 @@ import java.awt.Point;
  * @author juleskreutzer
  */
 public class Module {
+    private Point position;
     private double cost;
-    private Point xPos;
-    private Point yPos;
-    private ModuleName name;
     private int level;
+    private String displayName;
+    private boolean allowBuild = false;
+    private ModuleName moduleName;
     
-    public Module(double cost, Point xPos, Point yPos, ModuleName name, int level)
+    public Module(double cost, Point position, ModuleName name, int level)
     {
         this.cost = cost;
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.name = name;
+        this.position = position;
+        this.moduleName = name;
     }
     
     /**
@@ -37,57 +37,41 @@ public class Module {
     
     /**
      * 
-     * @return the x-Position of the object
+     * @return the position of the module
      */
-    public Point getXPos()
-    {
-        return this.xPos;
-    }
-    
-    /**
-     * 
-     * @return the Y-Position of the object
-     */
-    public Point getYPos()
-    {
-        return this.yPos;
-    }
     
     /**
      * 
      * @return the name of the object as a String
      */
-    protected String getName()
-    {
-        String result;
-        
-        switch(name)
+    protected void getName()
+    {        
+        switch(moduleName)
         {
             case BITCOIN_MINER:
-                result = "Bitcoin Miner";
+                this.displayName = "Bitcoin Miner";
                 break;
             case SOFTWARE_INJECTOR:
-                result = "Software Injector";
+                this.displayName = "Software Injector";
                 break;
             case CPU_UPGRADE:
-                result = "CPU Upgrade";
+                this.displayName = "CPU Upgrade";
                 break;
             case SNIPER_ANTIVIRUS:
-                result = "Sniper Antivirus";
+                this.displayName = "Sniper Antivirus";
                 break;
             case BOTTLECAP_ANTIVIRUS:
-                result = "Bottlecap Antivirus";
+                this.displayName = "Bottlecap Antivirus";
                 break;
             case SCALE_ANTIVIRUS:
-                result = "Scale Antivirus";
+                this.displayName = "Scale Antivirus";
                 break;
             case MUSCLE_ANTIVIRUS:
-                result = "Muscel Antivirus";
+                this.displayName = "Muscel Antivirus";
                 break;
             default:
-                result = "Enum not implemented correct in Module class";
+                this.displayName = "";
         }
-        return result;
     }
     
     @Override
