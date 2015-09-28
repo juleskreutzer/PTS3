@@ -12,48 +12,25 @@ import java.awt.Point;
  * @author juleskreutzer
  */
 public class Defense extends Module {
-    
-    private double cost;
-    private Point xPos;
-    private Point yPos;
+    private double damage;
+    private int range;
     private DefenseType type;
     private DefenseEffect effect;
     
-    public Defense(double cost, Point xPos, Point yPos, ModuleName name, DefenseType type, DefenseEffect effect, int level)
+    public Defense(double cost, Point position, ModuleName name, DefenseType type, DefenseEffect effect, int level, double damage, int range)
     {
-        super(cost, xPos, yPos, name, level);
-        this.cost = cost;
-        this.xPos = xPos;
-        this.yPos = yPos;
+        super(cost, position, name, level);
+        
         this.type = type;
         this.effect = effect;
+        this.damage = damage;
+        this.range = range;
     }
     
-    /**
-     * 
-     * @return The cost of the object
-     */
-    public double getCost() {
-        return this.cost;
-    }
     
-    /**
-     * 
-     * @return xPosition of the object
-     */
-    public Point getXPos()
-    {
-        return this.xPos;
-    }
     
-    /**
-     * 
-     * @return yPosition of the object
-     */
-    public Point getYPos()
-    {
-        return this.yPos;
-    }
+    
+    
     
     /**
      * 
@@ -109,16 +86,6 @@ public class Defense extends Module {
                 result = "";
         }
         return result;
-    }
-    
-    /**
-     * 
-     * @return info about the object in a string
-     */
-    @Override
-    public String toString()
-    {
-        return "This tower with position (" + this.xPos + "," + this.yPos + ") has the name " + super.getName() + "is of type " + getType() + " and has the " + getEffect() + " effect";
     }
     
 }
