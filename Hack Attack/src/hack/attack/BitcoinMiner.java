@@ -13,6 +13,18 @@ import java.awt.Point;
  * @author juleskreutzer
  */
 public class BitcoinMiner extends Module {
+
+    BitcoinMiner() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    BitcoinMiner() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    BitcoinMiner() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public interface OnMineComplete{
         void onMine(double mineValue);

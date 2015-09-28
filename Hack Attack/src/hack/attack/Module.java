@@ -73,6 +73,15 @@ abstract public class Module {
     {
         this.allowBuild = allowBuild;
     }
+    
+    /**
+     * Get the modulName enum for this module
+     * @return the moduleName enum for the module
+     */
+    public ModuleName getModuleName()
+    {
+        return this.moduleName;
+    }
     /**
      * 
      * @return the name of the object as a String
