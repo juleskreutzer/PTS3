@@ -6,6 +6,7 @@
 
 package hack.attack;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,21 +19,31 @@ public class Player {
     private double health; //amount of player's health
     private String name; //the player's name
     private double bitcoins; //amount of player's currency in bitcoins
-    private Point[] baseLocation;
-    private List<Module> modules;
+    private Point baseLocation;
+    private ArrayList<Module> modules;
     
     //Methods
     
-    /* NOT IMPLENTED YET
-    public List<Spell> buildSoftwareInjector(){
-    
+    public Player(double h, String n, double b, Point l){
+        health = h;
+        name = n;
+        bitcoins = b;
+        baseLocation = l;
+        modules = new ArrayList<Module>();
     }
     
-    public List<Spell> upgradeSoftwareInjector(){
-    
-    }
+    /**
+    * Build a softwareinjector and return the spells that became available
+    * @return List of Spells that became available
     */
+    public List<Spell> buildSoftwareInjector()
+    {
+        return null;
+    }
     
+     public List<Spell> upgradeSoftwareInjector(){
+        return null;
+    }
     
     public void buildBitcoinMiner(){
     
@@ -71,14 +82,7 @@ public class Player {
     bitcoins = Bitcoins;
     }
     
-    /**
-    * Build a softwareinjector and return the spells that became available
-    * @return List of Spells that became available
-    */
-    public List<Spell> buildSoftwareInjector()
-    {
-        return null;
-    }
+    
     
     /**
      *

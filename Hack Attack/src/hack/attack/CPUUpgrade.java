@@ -10,15 +10,19 @@ import java.awt.Point;
 
 /**
  *
- * @author juleskreutzer
+ * @author juleskreutzer, Jasper Rouwhorst
  */
 public class CPUUpgrade extends Module {
     private double minionBonusMultiplier;
     
-    public CPUUpgrade(Point position, double cost, int level, ModuleName name, double minionBonusMultiplier)
+    public CPUUpgrade(Point position, int width, int height, double cost, int level, ModuleName name, double minionBonusMultiplier)
     {
-        super(cost,position, name, level);
+        super(cost,position, width, height, name, level);
         this.minionBonusMultiplier = minionBonusMultiplier;
+    }
+    
+    public boolean upgrade(){
+        return false;
     }
     
     

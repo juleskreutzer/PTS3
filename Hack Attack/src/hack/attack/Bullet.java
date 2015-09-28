@@ -9,9 +9,9 @@ import java.awt.Rectangle;
 
 /**
  *
- * @author juleskreutzer
+ * @author juleskreutzer, Jasper Rouwhorst
  */
-public class Bullet {
+public class Bullet implements hack.attack.interfaces.IMoveable {
     
     private double speed;
     private double damage;
@@ -23,26 +23,36 @@ public class Bullet {
     }
     
     public double getSpeed(){
-        return 0;
+        return speed;
     }
     
     public void setSpeed(double speed){
-        
+        this.speed = speed;
     }
     
     public double getDamage(){
-        return 0;
+        return damage;
     }
     
     public void setDamage(double damage){
-        
+        this.damage = damage;
     }
     
     public Rectangle getBounds(){
-        return null;
+        return bounds;
     }
     
     public void setBounds(Rectangle bounds){
+        this.bounds = bounds;
+    }
 
+    @Override
+    public void move() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getCollision() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

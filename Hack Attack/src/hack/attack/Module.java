@@ -13,15 +13,19 @@ import java.awt.Point;
  * @author juleskreutzer
  */
 abstract public class Module {
-    private Point[] position = new Point[4];
+    private Point position;
+    private int width;
+    private int height;
     private double cost;
     private int level;
     private String displayName;
     private boolean allowBuild = false;
     private ModuleName moduleName;
     
-    public Module(double cost, Point[] position, ModuleName name, int level)
+    public Module(double cost, Point position, int width, int height, ModuleName name, int level)
     {
+        this.width = width;
+        this.height = height;
         this.cost = cost;
         this.position = position;
         this.moduleName = name;
@@ -51,9 +55,17 @@ abstract public class Module {
      * Get the position for a module
      * @return an array with the x,y coordinate of the module
      */
-    public Point[] getPosition()
+    public Point getPosition()
     {
         return this.position;
+    }
+    
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
     }
     
     /**

@@ -12,7 +12,7 @@ import java.awt.image.ImageProducer;
 
 /**
  *
- * @author juleskreutzer
+ * @author juleskreutzer, Jasper Rouwhorst
  */
 public class BulletImage extends Image {
     
