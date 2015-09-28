@@ -12,6 +12,10 @@ package hack.attack;
  */
 public class Minion {
     
+    public interface MinionHeartbeat{
+        void onMinionDeath(Minion minion);
+    }
+    
     //Fields
     private double hp; //remaining hitpoints of the minion.
     private double atp; //attackpower of the minion.

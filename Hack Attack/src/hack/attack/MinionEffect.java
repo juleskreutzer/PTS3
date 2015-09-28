@@ -9,6 +9,10 @@ package hack.attack;
  *
  * @author juleskreutzer
  */
-public enum DefenseEffect {
-    slow, poison, slash, decryptor
+public class MinionEffect {
+    
+    public interface OnEffectExpired{
+        void onExpired();
+    }
+    
 }

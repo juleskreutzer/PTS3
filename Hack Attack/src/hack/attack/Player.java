@@ -5,17 +5,10 @@
  */
 package hack.attack;
 
-import hack.attack.enums.ModuleName;
-import java.awt.Point;
-
 /**
  *
  * @author juleskreutzer
  */
-public class SoftwareInjector extends Module {
+public class Player {
     
-    public SoftwareInjector(double cost, Point position, int level, ModuleName name)
-    {
-        super(cost, position, name, level);
-    }
 }

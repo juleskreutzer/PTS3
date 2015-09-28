@@ -5,6 +5,7 @@
  */
 package hack.attack;
 
+import hack.attack.enums.ModuleName;
 import java.awt.Point;
 
 /**

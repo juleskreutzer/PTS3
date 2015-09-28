@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack;
+package hack.attack.enums;
 
 /**
- * 
+ *
  * @author juleskreutzer
  */
-public enum DefenseType {
-    range, cheap, balanced, strong;
+public enum ModuleName {
+    BITCOIN_MINER, SOFTWARE_INJECTOR, CPU_UPGRADE, SNIPER_ANTIVIRUS, BOTTLECAP_ANTIVIRUS, SCALE_ANTIVIRUS, MUSCLE_ANTIVIRUS;
 }

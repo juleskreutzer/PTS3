@@ -5,6 +5,7 @@
  */
 package hack.attack;
 
+import hack.attack.enums.ModuleName;
 import java.awt.Point;
 
 /**
@@ -12,14 +13,14 @@ import java.awt.Point;
  * @author juleskreutzer
  */
 abstract public class Module {
-    private Point position;
+    private Point[] position = new Point[4];
     private double cost;
     private int level;
     private String displayName;
     private boolean allowBuild = false;
     private ModuleName moduleName;
     
-    public Module(double cost, Point position, ModuleName name, int level)
+    public Module(double cost, Point[] position, ModuleName name, int level)
     {
         this.cost = cost;
         this.position = position;
@@ -36,6 +37,17 @@ abstract public class Module {
     {
         return this.cost;
     }
+    
+    /**
+     * 
+     * @return the display name of the object
+     */
+    public String getDisplayName()
+    {
+        return this.displayName;
+    }
+    
+    
     
     
     
