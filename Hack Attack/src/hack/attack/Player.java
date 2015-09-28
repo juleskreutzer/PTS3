@@ -5,6 +5,7 @@
  */
 
 package hack.attack;
+import hack.attack.enums.Effect;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,43 +54,66 @@ public class Player {
     
     }
     
-    public void buildCpuUpgrade(){
+    public void buildCPUUpgrade(){
     
+    }
+    
+    public void upgradeCPUUpgrade(){
+        
     }
     
     public double getHealth(){
-    return health;
+        return health;
     }
     
-    public void setHealth(double Health){
-    health = Health;
+    public void setHealth(double health){
+        health = health;
     }
     
-    
-    public String getName(){
-    return name;
-    }
-    
-    public void setName(String Name){
-    name = Name;
-    }
-    
-    public double getBitcoins(){
-    return bitcoins;
-    }
-    
-    public void setBitcoins(double Bitcoins){
-    bitcoins = Bitcoins;
-    }
-    
-    
-    
-    /**
-     *
-     * 
-    */
     void receiveDamage(double damage) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public void setName(String name){
+        name = name;
+    }
+    
+    public double getBitcoins(){
+        return bitcoins;
+    }
+    
+    public void setBitcoins(double bitcoins){
+        bitcoins = bitcoins;
+    }
+    
+    public void addBitcoins(double amount){
+        bitcoins += amount;
+    }
+    
+    public void removeBitcoins(double amount){
+        bitcoins -= amount;
+    }
+    
+    public void buildDefense(Defense defence){
+        
+    }
+    
+    public void upgradeDefense(Defense defense, Effect effect){
+        
+    }
+    
+    public Point getBaseLocation(){
+        return baseLocation;
+    }
+    
+    
+    
+    
+    
+    
     
 }

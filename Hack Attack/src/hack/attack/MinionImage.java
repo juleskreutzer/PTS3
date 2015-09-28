@@ -5,6 +5,7 @@
  */
 package hack.attack;
 
+import hack.attack.enums.MinionType;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
@@ -16,6 +17,16 @@ import java.awt.image.ImageProducer;
  */
 public class MinionImage extends Image {
 
+    private Minion minion;
+    
+    public MinionImage(Minion m){
+        minion = m;
+    }
+    
+    public Minion getMinion(){
+        return minion;
+    }
+    
     @Override
     public int getWidth(ImageObserver observer) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

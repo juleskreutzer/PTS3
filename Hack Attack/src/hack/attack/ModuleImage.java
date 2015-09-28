@@ -16,6 +16,12 @@ import java.awt.image.ImageProducer;
  */
 public class ModuleImage extends Image {
 
+    private Module module;
+    
+    public ModuleImage(Module m){
+        module = m;
+    }
+    
     @Override
     public int getWidth(ImageObserver observer) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -5,23 +5,31 @@
  */
 package hack.attack;
 
+import hack.attack.enums.MinionType;
+
 /**
  *
  * @author jaspe_000
  */
 public class MinionTemplate {
+    private MinionType type;
     private double health;
     private double speed;
     private double damage;
     private boolean encrypted;
     private double reward;
     
-    public MinionTemplate(double h, double s, double d, boolean e, double r){
+    public MinionTemplate(MinionType t, double h, double s, double d, boolean e, double r){
+        type = t;
         health = h;
         speed = s;
         damage = d;
         encrypted = e;
         reward = r;
+    }
+    
+    public MinionType getMinionType(){
+        return type;
     }
     
     public double getHealth(){

@@ -11,4 +11,26 @@ package hack.attack;
  */
 public class Spell {
     
+    private String name;
+    private int cooldown;
+    private int requiredLevel;
+    
+    public Spell(String n, int c, int rl){
+        name = n;
+        cooldown = c;
+        requiredLevel = rl;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public int getCooldown(){
+        return cooldown;
+    }
+    
+    public int getRequiredLevel(){
+        return requiredLevel;
+    }
+    
 }

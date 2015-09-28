@@ -8,12 +8,12 @@ import java.awt.Point;
 import java.util.List;
 /**
  *
- * @author Igor
+ * @author Igor, Jasper Rouwhorst
  */
 public class Map {
-    private List<Point[]> path;
-    private List<Point[]> defenseBuildLocations;
-    private List<Point[]> baseBuildLocations;
+    public static List<Point[]> path;
+    public static List<Point> defenseBuildLocations;
+    public static List<Point> baseBuildLocations;
     
     
 }
