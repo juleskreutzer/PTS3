@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack;
+package hack.attack.enums;
 
 /**
  *
  * @author Igor
  */
-public class MinionStatus {
-    private int duration;
-    private MinionStatusType type;
+public enum Effect {
+    slowed,
+    poisoned,
+    splash,
+    decrypted
+    
 }

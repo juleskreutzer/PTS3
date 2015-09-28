@@ -11,6 +11,7 @@ import java.util.List;
  * @author Igor
  */
 public class Map {
-    private List<Point> path;
-    private List<Point> buildLocation;
+    private List<Point[]> path;
+    private List<Point[]> defenseBuildLocations;
+    private List<Point[]> baseBuildLocations;
 }

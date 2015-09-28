@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack;
+package hack.attack.enums;
 
 /**
- *
+ * 
  * @author juleskreutzer
  */
-public enum DefenseEffect {
-    slow, poison, slash, decryptor
+public enum DefenseType {
+    range, cheap, balanced, strong;
 }

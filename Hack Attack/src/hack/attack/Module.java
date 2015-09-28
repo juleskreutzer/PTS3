@@ -5,25 +5,28 @@
  */
 package hack.attack;
 
+import hack.attack.enums.ModuleName;
 import java.awt.Point;
 
 /**
  *
  * @author juleskreutzer
  */
-public class Module {
+abstract public class Module {
+    private Point[] position = new Point[4];
     private double cost;
-    private Point xPos;
-    private Point yPos;
-    private ModuleName name;
     private int level;
+    private String displayName;
+    private boolean allowBuild = false;
+    private ModuleName moduleName;
     
-    public Module(double cost, Point xPos, Point yPos, ModuleName name, int level)
+    public Module(double cost, Point[] position, ModuleName name, int level)
     {
         this.cost = cost;
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.name = name;
+        this.position = position;
+        this.moduleName = name;
+        
+        getName();
     }
     
     /**
@@ -37,62 +40,48 @@ public class Module {
     
     /**
      * 
-     * @return the x-Position of the object
+     * @return the display name of the object
      */
-    public Point getXPos()
+    public String getDisplayName()
     {
-        return this.xPos;
+        return this.displayName;
     }
     
-    /**
-     * 
-     * @return the Y-Position of the object
-     */
-    public Point getYPos()
-    {
-        return this.yPos;
-    }
+    
+    
+    
     
     /**
      * 
      * @return the name of the object as a String
      */
-    protected String getName()
-    {
-        String result;
-        
-        switch(name)
+    protected void getName()
+    {        
+        switch(moduleName)
         {
             case BITCOIN_MINER:
-                result = "Bitcoin Miner";
+                this.displayName = "Bitcoin Miner";
                 break;
             case SOFTWARE_INJECTOR:
-                result = "Software Injector";
+                this.displayName = "Software Injector";
                 break;
             case CPU_UPGRADE:
-                result = "CPU Upgrade";
+                this.displayName = "CPU Upgrade";
                 break;
             case SNIPER_ANTIVIRUS:
-                result = "Sniper Antivirus";
+                this.displayName = "Sniper Antivirus";
                 break;
             case BOTTLECAP_ANTIVIRUS:
-                result = "Bottlecap Antivirus";
+                this.displayName = "Bottlecap Antivirus";
                 break;
             case SCALE_ANTIVIRUS:
-                result = "Scale Antivirus";
+                this.displayName = "Scale Antivirus";
                 break;
             case MUSCLE_ANTIVIRUS:
-                result = "Muscel Antivirus";
+                this.displayName = "Muscel Antivirus";
                 break;
             default:
-                result = "Enum not implemented correct in Module class";
+                throw new IllegalArgumentException();
         }
-        return result;
-    }
-    
-    @Override
-    public String toString()
-    {
-        return "This module with position (" + this.xPos + "," + this.yPos + ") has the name " + getName();
     }
 }
