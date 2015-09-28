@@ -19,10 +19,14 @@ public class BitcoinMiner extends Module {
     }
     private double valuePerSecond;
     
-    public BitcoinMiner(double cost, Point position, int level, ModuleName name, double valuePerSecond)
+    public BitcoinMiner(double cost, Point[] position, int level, ModuleName name, double valuePerSecond)
     {
         super(cost, position, name, level);
         this.valuePerSecond = valuePerSecond;
+    }
+    
+    public boolean upgrade(){
+        return false;
     }
     
 }
