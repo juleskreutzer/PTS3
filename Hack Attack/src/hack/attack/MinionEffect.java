@@ -5,6 +5,9 @@
  */
 package hack.attack;
 
+import hack.attack.enums.Effect;
+import java.util.Date;
+
 /**
  *
  * @author juleskreutzer
@@ -13,6 +16,14 @@ public class MinionEffect {
     
     public interface OnEffectExpired{
         void onExpired();
+    }
+    
+    private Date endTime;
+    private Effect type;
+    
+    public MinionEffect(OnEffectExpired callback)
+    {
+        
     }
     
 }
