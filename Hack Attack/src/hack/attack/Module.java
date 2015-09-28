@@ -11,7 +11,7 @@ import java.awt.Point;
  *
  * @author juleskreutzer
  */
-public class Module {
+abstract public class Module {
     private Point position;
     private double cost;
     private int level;
@@ -24,6 +24,8 @@ public class Module {
         this.cost = cost;
         this.position = position;
         this.moduleName = name;
+        
+        getName();
     }
     
     /**
@@ -35,10 +37,7 @@ public class Module {
         return this.cost;
     }
     
-    /**
-     * 
-     * @return the position of the module
-     */
+    
     
     /**
      * 
@@ -70,13 +69,7 @@ public class Module {
                 this.displayName = "Muscel Antivirus";
                 break;
             default:
-                this.displayName = "";
+                throw new IllegalArgumentException();
         }
-    }
-    
-    @Override
-    public String toString()
-    {
-        return "This module with position (" + this.xPos + "," + this.yPos + ") has the name " + getName();
     }
 }

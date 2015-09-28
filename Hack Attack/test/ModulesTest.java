@@ -15,9 +15,9 @@ import static org.junit.Assert.*;
  *
  * @author juleskreutzer
  */
-public class DefenseTest {
+public class ModulesTest {
     
-    public DefenseTest() {
+    public ModulesTest() {
     }
     
     @BeforeClass
@@ -41,4 +41,7 @@ public class DefenseTest {
     //
     // @Test
     // public void hello() {}
+    
+    @Test
+    public void 
 }
