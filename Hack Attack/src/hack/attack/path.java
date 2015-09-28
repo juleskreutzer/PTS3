@@ -9,10 +9,6 @@ package hack.attack;
  *
  * @author juleskreutzer
  */
-public class Player {
-
-    void receiveDamage(double damage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+class path {
     
 }
