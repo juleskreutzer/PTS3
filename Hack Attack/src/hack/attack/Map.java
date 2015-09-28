@@ -14,4 +14,6 @@ public class Map {
     private List<Point[]> path;
     private List<Point[]> defenseBuildLocations;
     private List<Point[]> baseBuildLocations;
+    
+    
 }
