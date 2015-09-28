@@ -46,11 +46,33 @@ abstract public class Module {
     {
         return this.displayName;
     }
+     
+    /**
+     * Get the position for a module
+     * @return an array with the x,y coordinate of the module
+     */
+    public Point[] getPosition()
+    {
+        return this.position;
+    }
     
+    /**
+     * Returns wether the module may be build
+     * @return true if module may be build, false if not
+     */
+    public boolean getAllowBuild()
+    {
+        return this.allowBuild;
+    }
     
-    
-    
-    
+    /**
+     * Change if the module may be build
+     * @param allowBuild true if module may be build, false if not
+     */
+    public void setAllowBuild(boolean allowBuild)
+    {
+        this.allowBuild = allowBuild;
+    }
     /**
      * 
      * @return the name of the object as a String
