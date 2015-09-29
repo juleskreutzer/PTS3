@@ -5,6 +5,7 @@
  */
 package hack.attack;
 
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -78,7 +79,7 @@ public class PlayerTest {
      */
     @Test
     public void testSetGetHealth() {
-        System.out.println("setHealth");
+        System.out.println("setHealth & getHealth");
         double Health = 99.88;
         Player instance = new Player();
         instance.setHealth(Health);
@@ -92,7 +93,7 @@ public class PlayerTest {
      */
     @Test
     public void testSetGetName() {
-        System.out.println("setName");
+        System.out.println("setName & getName");
         String Name = "SetGetNameTest";
         Player instance = new Player();
         instance.setName(Name);
@@ -105,25 +106,53 @@ public class PlayerTest {
      * Test of getBitcoins method, of class Player.
      */
     @Test
-    public void testGetBitcoins() {
-        System.out.println("getBitcoins");
+    public void testSetGetBitcoins() {
+        System.out.println("setBitcoins & getBitcoins");
         Player instance = new Player();
+        double Bitcoins = 0.0;
+        instance.setBitcoins(Bitcoins);
         double expResult = 0.0;
         double result = instance.getBitcoins();
         assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of buildSoftwareInjector method, of class Player.
+     */
+    @Test
+    public void testBuildSoftwareInjector() {
+        System.out.println("buildSoftwareInjector");
+        Player instance = new Player();
+        List<Spell> expResult = null;
+        List<Spell> result = instance.buildSoftwareInjector();
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setBitcoins method, of class Player.
+     * Test of upgradeSoftwareInjector method, of class Player.
      */
     @Test
-    public void testSetBitcoins() {
-        System.out.println("setBitcoins");
-        double Bitcoins = 0.0;
+    public void testUpgradeSoftwareInjector() {
+        System.out.println("upgradeSoftwareInjector");
         Player instance = new Player();
-        instance.setBitcoins(Bitcoins);
+        List<Spell> expResult = null;
+        List<Spell> result = instance.upgradeSoftwareInjector();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+    
+    /**
+     * Test of receiveDamage method, of class Player.
+     */
+    @Test
+    public void testReceiveDamage() {
+        System.out.println("receiveDamage");
+        double damage = 0.0;
+        Player instance = new Player();
+        instance.receiveDamage(damage);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

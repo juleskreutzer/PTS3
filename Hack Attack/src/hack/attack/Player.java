@@ -23,69 +23,134 @@ public class Player {
     
     //Methods
     
-    /* NOT IMPLENTED YET
-    public List<Spell> buildSoftwareInjector(){
-    
-    }
-    
-    public List<Spell> upgradeSoftwareInjector(){
-    
-    }
-    */
-    
-    
-    public void buildBitcoinMiner(){
-    
-    }
-    
-    public void upgradeBitcoinMiner(){
-    
-    }
-    
-    public void buildCpuUpgrade(){
-    
-    }
-    
-    public double getHealth(){
-    return health;
-    }
-    
-    public void setHealth(double Health){
-    health = Health;
-    }
-    
-    
-    public String getName(){
-    return name;
-    }
-    
-    public void setName(String Name){
-    name = Name;
-    }
-    
-    public double getBitcoins(){
-    return bitcoins;
-    }
-    
-    public void setBitcoins(double Bitcoins){
-    bitcoins = Bitcoins;
+    /**
+    * Initialize a SoftwareInjector object, add the object to the modules field and return a list of spells that became available
+    * @return List of Spells that became available
+    */  
+    public void buildSoftwareInjector(){
+        /***Need to implent the parameters***
+        SoftwareInjector softwareinjector = new SoftwareInjector();
+        modules.add(softwareinjector);
+        return softwareinjector.getSpells();
+        */
+        
     }
     
     /**
-    * Build a softwareinjector and return the spells that became available
-    * @return List of Spells that became available
-    */
-    public List<Spell> buildSoftwareInjector()
-    {
+     * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
+     * @return
+     */
+    public boolean upgradeSoftwareInjector(){
+        for (Module module : modules)
+            if(module instanceof SoftwareInjector)
+            {
+               
+               /*NOT FULLY IMPLENTED
+                return softwareinjector.upgrade();
+               */
+            }
+        return false;
+    }
+    
+    public List<Spell> getSpells(){
         return null;
     }
     
     /**
-     *
-     * 
+     * Initialize a BitcoinMiner object and add the object to the modules field
+     */
+    public void buildBitcoinMiner(){
+        /***Need to implent the parameters***
+        modules.add(new BitcoinMiner());
+        */
+    }
+    
+    /**
+     * Retrieve a BitcoinMiner object from the modules field and call the Upgrade method from inside the class
+     * @return boolean if the upgrade was successfully executed 
+     */
+    public boolean upgradeBitcoinMiner(){
+        for (Module module : modules)
+            if(module instanceof BitcoinMiner)
+            {
+                BitcoinMiner bitcoinminer = (BitcoinMiner)module;
+                return bitcoinminer.upgrade();
+            }
+        return false;
+    }
+    
+    /**
+     * Initialize a CpuUpgrade object and add the object to the modules field
+     */
+    public void buildCpuUpgrade(){
+        /***Need to implent the parameters***
+        modules.add(new CpuUpgrade());
+        */
+    }
+    
+    /**
+     * Retrieve the player's private health field
+     * @return double from the private health field
+     */
+    public double getHealth(){
+        return health;
+    }
+    
+    /**
+     * Set the player's private health field from the Health parameter
+     * @param Health
+     */
+    public void setHealth(double Health){
+        health = Health;
+    }
+    
+    /**
+     * Retrieve the player's private name field
+     * @return double from the private name field
+     */
+    public String getName(){
+        return name;
+    }
+    
+    /**
+     * Set the player's private name field from the Name parameter
+     * @param Name
+     */
+    public void setName(String Name){
+        name = Name;
+    }
+    
+    /**
+     * Retrieve the player's private bitcoins field
+     * @return double from the private bitcoins field
+     */
+    public double getBitcoins(){
+        return bitcoins;
+    }
+    
+    /**
+     * Set the player's private bitcoin field from the Bitcoin parameter
+     * @param Bitcoins
+     */
+    public void setBitcoins(double Bitcoins){
+        bitcoins = Bitcoins;
+    }
+    
+    
+    /**
+     * Subtract the damage parameter from the health field
+     * @param damage
     */
-    void receiveDamage(double damage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void receiveDamage(double damage) {
+        health = health - damage;
+    }
+    
+    /**
+     * Retrieve the player's private modules field
+     * @return List of Module from the private modules field
+     */
+    public List<Module> getModules(){
+        return modules;
     }
     
 }
