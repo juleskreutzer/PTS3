@@ -16,14 +16,19 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
+import hack.attack.exceptions.*;
 
 /**
  *
  * @author juleskreutzer
  */
 public class ModulesTest {
-    private BitcoinMiner bm;
-    private BitcoinMiner bm_corrupt;
+    Double cost = 1000.0;
+    Point position = new Point(100,50);
+    int level = 1;
+    int value = 100;
+    int width = 100;
+    int height = 100;
     
     public ModulesTest() {
     }
@@ -38,16 +43,6 @@ public class ModulesTest {
     
     @Before
     public void setUp() {
-        Double cost = 1000.0;
-        Point position = new Point(100,50);
-        int level = 1;
-        int width = 100;
-        int height = 100;
-        
-        
-        
-        bm = new hack.attack.BitcoinMiner(cost, position, width, height, level, ModuleName.BITCOIN_MINER, 100);
-        bm_corrupt = new hack.attack.BitcoinMiner(cost, position, width, height, level, ModuleName.CPU_UPGRADE, 250);
     }
     
     @After
@@ -65,35 +60,64 @@ public class ModulesTest {
     
     @Test
     public void TestBitcoinMinerConstructor()
-    {
-        Double cost = 1000.0;
-        Point position = new Point(100,50);
-        int level = 1;
+    {   
         ModuleName name = ModuleName.BITCOIN_MINER;
-        int value = 100;
-        int width = 100;
-        int height = 100;
-        
         BitcoinMiner tempBM = new BitcoinMiner(cost, position, width, height, level, name, value);
         assertEquals(cost, tempBM.getCost(), 0.001);
         assertEquals(position, tempBM.getPosition());
         assertEquals(width, tempBM.getWidth());
         assertEquals(height, tempBM.getHeight());
+        assertSame("Bitcoin Miner", tempBM.getDisplayName());
     }
     
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void TestBitcoinMinerConstructorCorrupt()
     {
-        Double cost = 1000.0;
-        Point position = new Point(100,50);
-        int level = 1;
         ModuleName name = ModuleName.CPU_UPGRADE;
-        int value = 100;
-        int width = 100;
-        int height = 100;
-        
         BitcoinMiner tempBM = new BitcoinMiner(cost, position, width, height, level, name, value);
-        exception.expect(IllegalArgumentException.class);
+        exception.expect(InvalidModuleEnumException.class);
+    }
+    
+    @Test
+    public void TestCPUUpgradeConstructor()
+    {
+        ModuleName name = ModuleName.CPU_UPGRADE;
+        double bonus = 10.0;
+        CPUUpgrade tempCU = new CPUUpgrade(position, width, height, cost, level, name, bonus);
         
+        assertEquals(cost, tempCU.getCost(), 0.001);
+        assertEquals(position, tempCU.getPosition());
+        assertEquals(width, tempCU.getWidth());
+        assertEquals(height, tempCU.getHeight());
+        assertSame("CPU Upgrade", tempCU.getDisplayName());
+    }
+    
+    @Test
+    public void TestCPUUpgradeConstructorCorrupt()
+    {
+        ModuleName name = ModuleName.BOTTLECAP_ANTIVIRUS;
+        double bonus = 10.0;
+        CPUUpgrade tempCU = new CPUUpgrade(position, width, height, cost, level, name, bonus);
+        exception.expect(InvalidModuleEnumException.class);
+    }
+    
+    @Test
+    public void TestSoftwareInjectorConstructor()
+    {
+        ModuleName name = ModuleName.SOFTWARE_INJECTOR;
+        SoftwareInjector tempSI = new SoftwareInjector(cost, position, width, height, level, name);
+        assertEquals(cost, tempSI.getCost(), 0.001);
+        assertEquals(position, tempSI.getPosition());
+        assertEquals(width, tempSI.getWidth());
+        assertEquals(height, tempSI.getHeight());
+        assertSame("Software Injector", tempSI.getDisplayName());
+    }
+    
+    @Test 
+    public void TestSoftwareInjectorConstructorCorrupt()
+    {
+        ModuleName name = ModuleName.CPU_UPGRADE;
+        SoftwareInjector tempSI = new SoftwareInjector(cost, position, width, height, level, name);
+        exception.expect(InvalidModuleEnumException.class);
     }
 }

@@ -14,6 +14,7 @@ package hack.attack.exceptions;
  * @author juleskreutzer
  */
 public class InvalidModuleEnumException extends Exception {
+    
     public InvalidModuleEnumException()
     {
         super();
