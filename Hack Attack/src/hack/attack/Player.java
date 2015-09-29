@@ -21,14 +21,22 @@ public class Player {
     private String name; //the player's name
     private double bitcoins; //amount of player's currency in bitcoins
     private Point baseLocation;
-    private ArrayList<Module> modules;
+    private List<Module> modules;
+    
+    public Player(){}
+    
+    public Player(double h, String n, double b, Point l) {
+        health = h;
+        name = n;
+        bitcoins = b;
+        baseLocation = l;
+        modules = new ArrayList<Module>();
+    }
     
     //Methods
     
-<<<<<<< HEAD
     /**
     * Initialize a SoftwareInjector object, add the object to the modules field and return a list of spells that became available
-    * @return List of Spells that became available
     */  
     public void buildSoftwareInjector(){
         /***Need to implent the parameters***
@@ -55,27 +63,10 @@ public class Player {
         return false;
     }
     
-    public List<Spell> getSpells(){
-=======
-    public Player(double h, String n, double b, Point l){
-        health = h;
-        name = n;
-        bitcoins = b;
-        baseLocation = l;
-        modules = new ArrayList<Module>();
-    }
-    
-    /**
-    * Build a softwareinjector and return the spells that became available
-    * @return List of Spells that became available
-    */
-    public List<Spell> buildSoftwareInjector()
-    {
-        return null;
-    }
-    
-     public List<Spell> upgradeSoftwareInjector(){
->>>>>>> origin/master
+    public List<Spell> getSpells(){        
+        for (Module module : modules)
+            if(module instanceof SoftwareInjector)
+                return ((SoftwareInjector)module).getSpells();
         return null;
     }
     
@@ -102,35 +93,27 @@ public class Player {
         return false;
     }
     
-<<<<<<< HEAD
     /**
      * Initialize a CpuUpgrade object and add the object to the modules field
      */
-    public void buildCpuUpgrade(){
+    public void buildCPUUpgrade(){
         /***Need to implent the parameters***
         modules.add(new CpuUpgrade());
         */
+    }
+    
+    public boolean upgradeCPUUpgrade(){
+        return false;
     }
     
     /**
      * Retrieve the player's private health field
      * @return double from the private health field
      */
-=======
-    public void buildCPUUpgrade(){
-    
-    }
-    
-    public void upgradeCPUUpgrade(){
-        
-    }
-    
->>>>>>> origin/master
     public double getHealth(){
         return health;
     }
     
-<<<<<<< HEAD
     /**
      * Set the player's private health field from the Health parameter
      * @param Health
@@ -143,31 +126,16 @@ public class Player {
      * Retrieve the player's private name field
      * @return double from the private name field
      */
-=======
-    public void setHealth(double health){
-        health = health;
-    }
-    
-    void receiveDamage(double damage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
->>>>>>> origin/master
     public String getName(){
         return name;
     }
     
-<<<<<<< HEAD
     /**
      * Set the player's private name field from the Name parameter
      * @param Name
      */
     public void setName(String Name){
         name = Name;
-=======
-    public void setName(String name){
-        name = name;
->>>>>>> origin/master
     }
     
     /**
@@ -177,8 +145,7 @@ public class Player {
     public double getBitcoins(){
         return bitcoins;
     }
-    
-<<<<<<< HEAD
+
     /**
      * Set the player's private bitcoin field from the Bitcoin parameter
      * @param Bitcoins
@@ -202,9 +169,6 @@ public class Player {
      */
     public List<Module> getModules(){
         return modules;
-=======
-    public void setBitcoins(double bitcoins){
-        bitcoins = bitcoins;
     }
     
     public void addBitcoins(double amount){
@@ -217,7 +181,6 @@ public class Player {
     
     public void buildDefense(Defense defence){
         
->>>>>>> origin/master
     }
     
     public void upgradeDefense(Defense defense, Effect effect){

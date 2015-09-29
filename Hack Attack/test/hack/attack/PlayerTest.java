@@ -45,9 +45,13 @@ public class PlayerTest {
     public void testBuildBitcoinMiner() {
         System.out.println("buildBitcoinMiner");
         Player instance = new Player();
+        double expResult = 1;
+        double result = 0;
         instance.buildBitcoinMiner();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        for (Module module : instance.getModules())
+            if(module instanceof BitcoinMiner)
+                result++;
+        assertEquals(expResult, result, 0.0);
     }
 
     /**
@@ -57,21 +61,23 @@ public class PlayerTest {
     public void testUpgradeBitcoinMiner() {
         System.out.println("upgradeBitcoinMiner");
         Player instance = new Player();
-        instance.upgradeBitcoinMiner();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(instance.upgradeBitcoinMiner());
     }
 
     /**
      * Test of buildCpuUpgrade method, of class Player.
      */
     @Test
-    public void testBuildCpuUpgrade() {
-        System.out.println("buildCpuUpgrade");
+    public void testBuildCPUUpgrade() {
+        System.out.println("buildCPUUpgrade");
         Player instance = new Player();
-        instance.buildCpuUpgrade();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        double expResult = 1;
+        double result = 0;
+        instance.buildCPUUpgrade();
+        for (Module module : instance.getModules())
+            if(module instanceof CPUUpgrade)
+                result++;
+        assertEquals(expResult, result, 0.0);
     }
 
     /**
@@ -109,9 +115,9 @@ public class PlayerTest {
     public void testSetGetBitcoins() {
         System.out.println("setBitcoins & getBitcoins");
         Player instance = new Player();
-        double Bitcoins = 0.0;
+        double Bitcoins = 20.0;
         instance.setBitcoins(Bitcoins);
-        double expResult = 0.0;
+        double expResult = 20.0;
         double result = instance.getBitcoins();
         assertEquals(expResult, result, 0.0);
     }
@@ -123,11 +129,14 @@ public class PlayerTest {
     public void testBuildSoftwareInjector() {
         System.out.println("buildSoftwareInjector");
         Player instance = new Player();
-        List<Spell> expResult = null;
-        List<Spell> result = instance.buildSoftwareInjector();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        double expResult = 1;
+        double result = 0;
+        instance.buildSoftwareInjector();
+        for (Module module : instance.getModules())
+            if(module instanceof SoftwareInjector)
+                result++;
+        assertEquals(expResult, result, 0.0);
+
     }
 
     /**
@@ -137,11 +146,7 @@ public class PlayerTest {
     public void testUpgradeSoftwareInjector() {
         System.out.println("upgradeSoftwareInjector");
         Player instance = new Player();
-        List<Spell> expResult = null;
-        List<Spell> result = instance.upgradeSoftwareInjector();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(instance.upgradeSoftwareInjector());
     }
     
     /**
@@ -150,11 +155,13 @@ public class PlayerTest {
     @Test
     public void testReceiveDamage() {
         System.out.println("receiveDamage");
-        double damage = 0.0;
+        double damage = 10.0;
         Player instance = new Player();
+        instance.setHealth(20.0);
         instance.receiveDamage(damage);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        double result = instance.getHealth();
+        double expResult = 10.0;
+        assertEquals(expResult, result, 0.0);
     }
     
 }

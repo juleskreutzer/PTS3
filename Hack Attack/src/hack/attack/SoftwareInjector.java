@@ -7,12 +7,8 @@ package hack.attack;
 
 import hack.attack.enums.ModuleName;
 import java.awt.Point;
-<<<<<<< HEAD
 import java.util.List;
-
-=======
 import java.util.ArrayList;
->>>>>>> origin/master
 
 /**
  *
@@ -20,15 +16,10 @@ import java.util.ArrayList;
  */
 public class SoftwareInjector extends Module {
     
-<<<<<<< HEAD
     private List<Spell> spells;
-    
-    public SoftwareInjector(double cost, Point position, int level, ModuleName name)
-=======
     private ArrayList<Spell> spellList;
     
     public SoftwareInjector(double cost, Point position, int width, int height, int level, ModuleName name)
->>>>>>> origin/master
     {
         super(cost, position, width, height, name, level);
         
