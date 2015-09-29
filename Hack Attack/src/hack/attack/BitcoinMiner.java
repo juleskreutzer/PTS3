@@ -10,30 +10,19 @@ import java.awt.Point;
 
 /**
  *
- * @author juleskreutzer
+ * @author juleskreutzer, Jasper Rouwhorst
  */
 public class BitcoinMiner extends Module {
 
-    BitcoinMiner() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    BitcoinMiner() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    BitcoinMiner() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     public interface OnMineComplete{
         void onMine(double mineValue);
     }
+    
     private double valuePerSecond;
     
-    public BitcoinMiner(double cost, Point[] position, int level, ModuleName name, double valuePerSecond)
+    public BitcoinMiner(double cost, Point position, int width, int height, int level, ModuleName name, double valuePerSecond)
     {
-        super(cost, position, name, level);
+        super(cost, position, width, height, name, level);
         this.valuePerSecond = valuePerSecond;
     }
     

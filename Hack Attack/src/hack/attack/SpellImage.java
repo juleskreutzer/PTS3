@@ -16,6 +16,16 @@ import java.awt.image.ImageProducer;
  */
 public class SpellImage extends Image {
 
+    private Spell spell;
+    
+    public SpellImage(Spell s){
+        spell = s;
+    }
+    
+    public Spell getSpell(){
+        return spell;
+    }
+    
     @Override
     public int getWidth(ImageObserver observer) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

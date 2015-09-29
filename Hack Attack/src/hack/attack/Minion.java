@@ -21,6 +21,7 @@ public class Minion {
     
     //Fields
     private MinionType minionType;
+    private Player enemyPlayer;
     private double health;
     private double speed;
     private Point[] position;
@@ -34,15 +35,22 @@ public class Minion {
      * The constructor will get the data to create the minion instance from de DATA-class
      * according to the minionType
      * @param type is the MinionType of the minion than needs to be created
+     * @param callback this callback triggers the {@link MinionHeartBeat.onMinionDeath(Minion minion)} when a minion dies
      */
-    public Minion(MinionType type)
+    public Minion(MinionType type, MinionHeartbeat callback)
     {
         throw new UnsupportedOperationException("The minion class doesn't get it\'s data from the data-class yet.");
     }
     
-    public Minion(MinionHeartbeat listener)
+    public Minion(MinionTemplate minion, MinionHeartbeat callback)
     {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        health = minion.getHealth();
+        speed = minion.getSpeed();
+        minionType = minion.getMinionType();
+        damage = minion.getDamage();
+        encrypted = minion.getEncrypted();
+        reward = minion.getReward();
+        throw new UnsupportedOperationException("The minion class doesn't get it\'s data from the data-class yet.");
     }
     
     /**
@@ -90,6 +98,10 @@ public class Minion {
         this.speed = speed;
     }
     
+    public double getDamage(){
+        return damage;
+    }
+    
     /**
      * Ask if the minion is encrypted or not
      * @return True if encrypted, false if not encrypted
@@ -132,6 +144,10 @@ public class Minion {
     private void getNextTarget()
     {
         
+    }
+    
+    public MinionType getMinionType(){
+        return minionType;
     }
     
 }

@@ -12,9 +12,19 @@ import java.awt.image.ImageProducer;
 
 /**
  *
- * @author juleskreutzer
+ * @author juleskreutzer, Jasper Rouwhorst
  */
 public class BulletImage extends Image {
+    
+    private Bullet bullet;
+    
+    public BulletImage(Bullet bullet){
+        this.bullet = bullet;
+    }
+    
+    public Bullet getBullet(){
+        return bullet;
+    }
 
     @Override
     public int getWidth(ImageObserver observer) {
