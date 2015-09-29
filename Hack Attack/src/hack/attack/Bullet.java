@@ -6,7 +6,7 @@
 package hack.attack;
 
 import java.awt.Rectangle;
-
+import hack.attack.exceptions.*;
 /**
  *
  * @author juleskreutzer, Jasper Rouwhorst

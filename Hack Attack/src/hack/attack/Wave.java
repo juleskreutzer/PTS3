@@ -6,6 +6,7 @@
 package hack.attack;
 
 import java.util.ArrayList;
+import hack.attack.exceptions.*;
 
 /**
  *

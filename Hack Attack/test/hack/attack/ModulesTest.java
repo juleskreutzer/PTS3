@@ -39,13 +39,15 @@ public class ModulesTest {
     @Before
     public void setUp() {
         Double cost = 1000.0;
-        Point position[] = {new Point(100,50), new Point(50,100)};
+        Point position = new Point(100,50);
         int level = 1;
+        int width = 100;
+        int height = 100;
         
         
         
-        bm = new hack.attack.BitcoinMiner(cost, position, level, ModuleName.BITCOIN_MINER, 100);
-        bm_corrupt = new hack.attack.BitcoinMiner(cost, position, level, ModuleName.CPU_UPGRADE, 250);
+        bm = new hack.attack.BitcoinMiner(cost, position, width, height, level, ModuleName.BITCOIN_MINER, 100);
+        bm_corrupt = new hack.attack.BitcoinMiner(cost, position, width, height, level, ModuleName.CPU_UPGRADE, 250);
     }
     
     @After
@@ -65,24 +67,32 @@ public class ModulesTest {
     public void TestBitcoinMinerConstructor()
     {
         Double cost = 1000.0;
-        Point[] position = {new Point(100,50), new Point(50,100)};
+        Point position = new Point(100,50);
         int level = 1;
         ModuleName name = ModuleName.BITCOIN_MINER;
         int value = 100;
+        int width = 100;
+        int height = 100;
         
-        BitcoinMiner tempBM = new BitcoinMiner(cost, position, level, name, value);
-        assertEquals(bm, tempBM);
+        BitcoinMiner tempBM = new BitcoinMiner(cost, position, width, height, level, name, value);
+        assertEquals(cost, tempBM.getCost(), 0.001);
+        assertEquals(position, tempBM.getPosition());
+        assertEquals(width, tempBM.getWidth());
+        assertEquals(height, tempBM.getHeight());
     }
     
     @Test(expected=IllegalArgumentException.class)
     public void TestBitcoinMinerConstructorCorrupt()
     {
         Double cost = 1000.0;
-        Point[] position = {new Point(100,50), new Point(50,100)};
+        Point position = new Point(100,50);
         int level = 1;
         ModuleName name = ModuleName.CPU_UPGRADE;
         int value = 100;
-        BitcoinMiner tempBM = new BitcoinMiner(cost, position, level, name, value);
+        int width = 100;
+        int height = 100;
+        
+        BitcoinMiner tempBM = new BitcoinMiner(cost, position, width, height, level, name, value);
         exception.expect(IllegalArgumentException.class);
         
     }

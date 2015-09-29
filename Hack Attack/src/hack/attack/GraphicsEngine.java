@@ -2,6 +2,7 @@ package hack.attack;
 
 import java.awt.Image;
 import java.util.List;
+import hack.attack.exceptions.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

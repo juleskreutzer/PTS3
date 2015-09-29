@@ -6,6 +6,7 @@
 package hack.attack;
 import java.awt.Point;
 import java.util.List;
+import hack.attack.exceptions.*;
 /**
  *
  * @author Igor, Jasper Rouwhorst
