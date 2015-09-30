@@ -8,7 +8,7 @@ package hack.attack;
 import java.awt.Rectangle;
 import hack.attack.exceptions.*;
 /**
- *
+ * This is the bullet that's fired by a defense module. It implemented IMovable so the bullet can check it's own collision with an entity.
  * @author juleskreutzer, Jasper Rouwhorst
  */
 public class Bullet implements hack.attack.interfaces.IMoveable {
@@ -17,6 +17,11 @@ public class Bullet implements hack.attack.interfaces.IMoveable {
     private double damage;
     private Rectangle bounds;
     
+    /**
+     * 
+     * @param speed The speed the bullet moves with.
+     * @param damage The damage the bullet inflicts.
+     */
     public Bullet(int speed, double damage){
         this.speed = speed;
         this.damage = damage;

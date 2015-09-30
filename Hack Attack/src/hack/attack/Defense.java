@@ -12,8 +12,9 @@ import java.awt.Point;
 import hack.attack.exceptions.*;
 
 /**
- *
- * @author juleskreutzer
+ * This is a module used for the defense of your base. 
+ * It fires {@link Bullet } at enemy minions.
+ * @author juleskreutzer, Jasper Rouwhorst
  */
 public class Defense extends Module {
     private double damage;
@@ -21,6 +22,19 @@ public class Defense extends Module {
     private DefenseType type;
     private Effect effect;
     
+    /**
+     * 
+     * @param cost The costs to build this module(cannot be < 1).
+     * @param position The position this module is build(upleft corner).
+     * @param width The width of this module.
+     * @param height The height of this module.
+     * @param name The {@link ModuleName} of this module.
+     * @param type The {@link DefenceType} of this module. 
+     * @param effect The {@link Effect} this module adds to its target.
+     * @param level The initial level of this module(cannot be < 1).
+     * @param damage The damage this module inflicts to its target.
+     * @param range The range this module can find targets in(cannot be < 1).
+     */
     public Defense(double cost, Point position, int width, int height, ModuleName name, DefenseType type, Effect effect, int level, double damage, int range)
     {
         super(cost, position, width, height, name, level);
@@ -115,22 +129,28 @@ public class Defense extends Module {
         range = r;
     }
     
+    /**
+     * Upgrades this module
+     * @return Whether the module was successfully upgraded.
+     */
     public boolean upgrade(){
         return false;
     }
     
+    /**
+     * Look for enemy minions within the range of this module, then randomly select a target.
+     * @return The enemy minion that's targeted.
+     */
     public Minion findTarget(){
         return null;
     }
     
+    /**
+     * Fire a {@link Bullet} at the module's target.
+     * @param minion The enemy minion target.
+     */
     public void fire(Minion minion){
         
     }
-    
-    
-    
-    
-    
-    
     
 }

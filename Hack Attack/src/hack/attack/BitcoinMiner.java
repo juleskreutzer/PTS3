@@ -9,23 +9,42 @@ import hack.attack.enums.ModuleName;
 import java.awt.Point;
 import hack.attack.exceptions.*;
 /**
- *
+ * BitcoinMiner is a module that generates bitcoins for the player.
  * @author juleskreutzer, Jasper Rouwhorst
  */
+
 public class BitcoinMiner extends Module {
 
+    /**
+     * This interface is used to let the listener know this module has mined some bitcoins.
+     * @param mineValue The amount that's mined.
+     */
     public interface OnMineComplete{
         void onMine(double mineValue);
     }
     
     private double valuePerSecond;
     
+    /**
+     * 
+     * @param cost The costs to build this module.
+     * @param position The position this module should be builded(upleft corner).
+     * @param width The width of this module.
+     * @param height The height of this module.
+     * @param level The initial level of this module.
+     * @param name The {@link ModuleName} of this module.
+     * @param valuePerSecond The amount this module generates per second.
+     */
     public BitcoinMiner(double cost, Point position, int width, int height, int level, ModuleName name, double valuePerSecond)
     {
         super(cost, position, width, height, name, level);
         this.valuePerSecond = valuePerSecond;
     }
     
+    /**
+     * Upgrades this module
+     * @return Whether the module was successfully upgraded.
+     */
     public boolean upgrade(){
         return false;
     }
