@@ -26,9 +26,9 @@ public class CPUUpgrade extends Module {
      * @param name The {@link ModuleName} of this module.
      * @param minionBonusMultiplier The multiplier this module gives to the minions.
      */
-    public CPUUpgrade(Point position, int width, int height, double cost, int level, ModuleName name)
+    public CPUUpgrade(Point position, int width, int height, double cost, int level)
     {
-        super(cost,position, width, height, name, level);
+        super(cost,position, width, height, ModuleName.CPU_UPGRADE, level);
         minionBonusMultiplier = level * 10;
     }
    

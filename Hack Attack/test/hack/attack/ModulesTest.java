@@ -68,7 +68,7 @@ public class ModulesTest {
     public void TestBitcoinMinerConstructor()
     {   
         ModuleName name = ModuleName.BITCOIN_MINER;
-        BitcoinMiner tempBM = new BitcoinMiner(cost, position, width, height, level, name, value);
+        BitcoinMiner tempBM = new BitcoinMiner(cost, position, width, height, level);
         assertEquals(cost, tempBM.getCost(), 0.001);
         assertEquals(position, tempBM.getPosition());
         assertEquals(width, tempBM.getWidth());
@@ -80,7 +80,7 @@ public class ModulesTest {
     public void TestBitcoinMinerConstructorCorrupt()
     {
         ModuleName name = ModuleName.CPU_UPGRADE;
-        BitcoinMiner tempBM = new BitcoinMiner(cost, position, width, height, level, name, value);
+        BitcoinMiner tempBM = new BitcoinMiner(cost, position, width, height, level);
         exception.expect(InvalidModuleEnumException.class);
     }
     
@@ -89,7 +89,7 @@ public class ModulesTest {
     {
         ModuleName name = ModuleName.CPU_UPGRADE;
         double bonus = 10.0;
-        CPUUpgrade tempCU = new CPUUpgrade(position, width, height, cost, level, name, bonus);
+        CPUUpgrade tempCU = new CPUUpgrade(position, width, height, cost, level);
         
         assertEquals(cost, tempCU.getCost(), 0.001);
         assertEquals(position, tempCU.getPosition());
@@ -103,7 +103,7 @@ public class ModulesTest {
     {
         ModuleName name = ModuleName.BOTTLECAP_ANTIVIRUS;
         double bonus = 10.0;
-        CPUUpgrade tempCU = new CPUUpgrade(position, width, height, cost, level, name, bonus);
+        CPUUpgrade tempCU = new CPUUpgrade(position, width, height, cost, level);
         exception.expect(InvalidModuleEnumException.class);
     }
     

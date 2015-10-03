@@ -14,6 +14,7 @@ import hack.attack.exceptions.*;
  */
 public class Wave {
     private int waveNr;
+    private boolean waveActive;
     private double waveMultiplier;
     
     ArrayList<Minion> minionList;
@@ -22,6 +23,7 @@ public class Wave {
             int bamount, int kbamount, int mbamount, int gbamount, int tbamount){
         
         waveNr = wavenr;
+        waveActive = false;
         waveMultiplier = multiplier;
         minionList = new ArrayList<Minion>();
         
@@ -70,6 +72,8 @@ public class Wave {
                 }
             }));
         }
+        
+        
         
     }
     

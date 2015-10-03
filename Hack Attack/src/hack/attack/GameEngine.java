@@ -38,6 +38,7 @@ public class GameEngine implements MouseListener {
     
     private GraphicsEngine graphicsEngine;
     private ArrayList<Wave> waveList;
+    private Wave currentWave;
     private Player playerA;
     private Player playerB;
     
@@ -61,6 +62,10 @@ public class GameEngine implements MouseListener {
         waveList = new ArrayList<Wave>();
         playerA = new Player(100, "Jasper", 100, new Point(0,50));
         playerB = new Player(100, "Jules", 100, new Point(100,50));
+    }
+    
+    private void startGame(){
+        
     }
     
     private void tick(){

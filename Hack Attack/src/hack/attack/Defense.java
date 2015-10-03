@@ -134,8 +134,9 @@ public class Defense extends Module {
      * @return Whether the module was successfully upgraded.
      */
     public boolean upgrade(){
-        
-        return false;
+        level++;
+        damage = level * 10;
+        return true;
     }
     
     /**
