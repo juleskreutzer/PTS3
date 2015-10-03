@@ -134,6 +134,7 @@ public class Defense extends Module {
      * @return Whether the module was successfully upgraded.
      */
     public boolean upgrade(){
+        
         return false;
     }
     

@@ -14,14 +14,14 @@ import hack.attack.exceptions.*;
  * @author juleskreutzer
  */
 abstract public class Module {
-    private Point position;
-    private int width;
-    private int height;
-    private double cost;
-    private int level;
-    private String displayName;
-    private boolean allowBuild = false;
-    private ModuleName moduleName;
+    protected Point position;
+    protected int width;
+    protected int height;
+    protected double cost;
+    protected int level;
+    protected String displayName;
+    protected boolean allowBuild = false;
+    protected ModuleName moduleName;
     
     public Module(double cost, Point position, int width, int height, ModuleName name, int level)
     {
@@ -32,15 +32,6 @@ abstract public class Module {
         this.moduleName = name;
         
         getName();
-    }
-    
-    /**
-     * 
-     * @return the cost of the object
-     */
-    public double getCost()
-    {
-        return this.cost;
     }
     
     /**
@@ -70,7 +61,24 @@ abstract public class Module {
     }
     
     /**
-     * Returns wether the module may be build
+     * 
+     * @return the cost of the object
+     */
+    public double getCost()
+    {
+        return this.cost;
+    }
+    
+    public int getLevel(){
+        return level;
+    }
+    
+    public void setLevel(int l){
+        level = l;
+    }
+    
+    /**
+     * Returns whether the module may be build
      * @return true if module may be build, false if not
      */
     public boolean getAllowBuild()
@@ -88,7 +96,7 @@ abstract public class Module {
     }
     
     /**
-     * Get the modulName enum for this module
+     * Get the moduleName enum for this module
      * @return the moduleName enum for the module
      */
     public ModuleName getModuleName()
@@ -122,7 +130,7 @@ abstract public class Module {
                 this.displayName = "Scale Antivirus";
                 break;
             case MUSCLE_ANTIVIRUS:
-                this.displayName = "Muscel Antivirus";
+                this.displayName = "Muscle Antivirus";
                 break;
             default:
                 throw new IllegalArgumentException();

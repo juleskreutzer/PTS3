@@ -35,10 +35,10 @@ public class BitcoinMiner extends Module {
      * @param name The {@link ModuleName} of this module.
      * @param valuePerSecond The amount this module generates per second.
      */
-    public BitcoinMiner(double cost, Point position, int width, int height, int level, ModuleName name, double valuePerSecond)
+    public BitcoinMiner(double cost, Point position, int width, int height, int level)
     {
-        super(cost, position, width, height, name, level);
-        this.valuePerSecond = valuePerSecond;
+        super(cost, position, width, height, ModuleName.BITCOIN_MINER, level);
+        valuePerSecond = level * 10;
     }
     
     /**
@@ -46,7 +46,9 @@ public class BitcoinMiner extends Module {
      * @return Whether the module was successfully upgraded.
      */
     public boolean upgrade(){
-        return false;
+        level++;
+        valuePerSecond = level * 10;
+        return true;
     }
     
 }

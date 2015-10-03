@@ -10,6 +10,6 @@ package hack.attack.interfaces;
  * @author juleskreutzer
  */
 public interface IMoveable {
-    void move();
+    void move(int deltaTime);
     Object getCollision();
 }

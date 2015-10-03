@@ -23,12 +23,12 @@ import hack.attack.exceptions.*;
  * @author juleskreutzer
  */
 public class ModulesTest {
-    Double cost = 1000.0;
-    Point position = new Point(100,50);
-    int level = 1;
-    int value = 100;
-    int width = 100;
-    int height = 100;
+    Double cost;
+    Point position;
+    int level;
+    int value;
+    int width;
+    int height;
     
     public ModulesTest() {
     }
@@ -43,6 +43,12 @@ public class ModulesTest {
     
     @Before
     public void setUp() {
+        cost = 1000.0;
+        position = new Point(100,50);
+        level = 1;
+        value = 100;
+        width = 100;
+        height = 100;
     }
     
     @After
