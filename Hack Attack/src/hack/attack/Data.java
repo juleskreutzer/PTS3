@@ -21,12 +21,14 @@ import org.json.*;
  */
 public class Data {
     
-    public final static MinionTemplate DEFAULT_BYTE = new MinionTemplate(MinionType.b,1,1,1,false,1);
-    public final static MinionTemplate DEFAULT_KILOBYTE = new MinionTemplate(MinionType.kb,2,2,2,false,2);
-    public final static MinionTemplate DEFAULT_MEGABYTE = new MinionTemplate(MinionType.mb,3,3,3,true,3);
-    public final static MinionTemplate DEFAULT_GIGABYTE = new MinionTemplate(MinionType.gb,4,4,4,false,4);
-    public final static MinionTemplate DEFAULT_TERABYTE = new MinionTemplate(MinionType.tb,5,5,5,true,5);
-<<<<<<< HEAD
+    public static MinionTemplate DEFAULT_BYTE = new MinionTemplate(MinionType.b,1,1,1,false,1);
+    public static MinionTemplate DEFAULT_KILOBYTE = new MinionTemplate(MinionType.kb,2,2,2,false,2);
+    public static MinionTemplate DEFAULT_MEGABYTE = new MinionTemplate(MinionType.mb,3,3,3,true,3);
+    public static MinionTemplate DEFAULT_GIGABYTE = new MinionTemplate(MinionType.gb,4,4,4,false,4);
+    public static MinionTemplate DEFAULT_TERABYTE = new MinionTemplate(MinionType.tb,5,5,5,true,5);
+    public static MinionTemplate DEFAULT_PETABYTE = new MinionTemplate(MinionType.pb,5,5,5,true,5);
+
+
     
     private static String urlMinion = "http://api.nujules.nl/minion";
     
@@ -37,40 +39,53 @@ public class Data {
         for(int i = 0; i < minions.length(); i++)
         {
             JSONObject obj = minions.getJSONObject(i);
-            double damage = Double.parseDouble(obj.getString("attack"));
-            double health = Double.parseDouble(obj.getString("hp"));
-            double speed = Double.parseDouble(obj.getString("speed"));
+            //System.out.print(obj.names());
+            
+            double damage = obj.getDouble("damage");
+            double health = obj.getDouble("hitpoints");
+            double speed = obj.getDouble("speed");
             int e = obj.getInt("encrypted");
             boolean encrypted = false;
             if(e == 1)
             {
                 encrypted = true;
             }
-            double reward = Double.parseDouble(obj.getString("reward"));
+            double reward = obj.getDouble("reward");
             MinionType type;
-            
+
             switch(obj.getString("name"))
             {
                 case "Byte":
                     type = MinionType.b;
+                    DEFAULT_BYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 case "KiloByte":
                     type = MinionType.kb;
+                    DEFAULT_KILOBYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 case "MegaByte":
                     type = MinionType.mb;
+                    DEFAULT_MEGABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 case "GigaByte":
                     type = MinionType.gb;
+                    DEFAULT_GIGABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 case "TeraByte":
                     type = MinionType.tb;
+                    DEFAULT_TERABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
+                    break;
+                case "PetaByte":
+                    type = MinionType.pb;
+                    DEFAULT_PETABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 default:
                     throw new InvalidMinionTypeException();
             }
-        
         }
+        
+        System.out.print(DEFAULT_BYTE.getDamage());
+        
             
         
         
@@ -82,7 +97,7 @@ public class Data {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"); // Do as if you're using Chrome 41 on Windows 7.
         con.setRequestMethod("GET");
-        con.setRequestProperty("x-auth-token", "test"); // API checks access based on x-auth-token header
+        con.setRequestProperty("X_AUTH_TOKEN", "test"); // API checks access based on x-auth-token header
         
         int responseCode = con.getResponseCode();
         if(responseCode == HttpURLConnection.HTTP_OK)
@@ -105,7 +120,4 @@ public class Data {
         return null;
     }
     
-=======
-    public final static MinionTemplate DEFAULT_PETABYTE = new MinionTemplate(MinionType.pb,5,5,5,true,5);
->>>>>>> origin/master
 }

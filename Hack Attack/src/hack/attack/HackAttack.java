@@ -16,7 +16,7 @@ public class HackAttack {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InvalidMinionTypeException {
         // TODO code application logic here
         Data d = new Data();
     }
