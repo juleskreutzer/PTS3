@@ -7,11 +7,12 @@ package hack.attack;
 
 import java.awt.Rectangle;
 import java.awt.Point;
+import hack.attack.interfaces.IMoveable;
 /**
  * This is the bullet that's fired by a defense module. It implemented IMovable so the bullet can check it's own collision with an entity.
  * @author juleskreutzer, Jasper Rouwhorst
  */
-public class Bullet implements hack.attack.interfaces.IMoveable {
+public class Bullet implements IMoveable {
     
     private Point targetPosition;
     private double speed;
@@ -58,7 +59,7 @@ public class Bullet implements hack.attack.interfaces.IMoveable {
     }
 
     @Override
-    public void move(int deltaTime) {
+    public void move(double deltaTime) {
         int x1 = 10, y1 = 60;
         int x2 = 230, y2 = 400;
         /* Not implemented correctly yet

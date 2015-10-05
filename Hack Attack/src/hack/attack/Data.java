@@ -26,6 +26,7 @@ public class Data {
     public final static MinionTemplate DEFAULT_MEGABYTE = new MinionTemplate(MinionType.mb,3,3,3,true,3);
     public final static MinionTemplate DEFAULT_GIGABYTE = new MinionTemplate(MinionType.gb,4,4,4,false,4);
     public final static MinionTemplate DEFAULT_TERABYTE = new MinionTemplate(MinionType.tb,5,5,5,true,5);
+<<<<<<< HEAD
     
     private static String urlMinion = "http://api.nujules.nl/minion";
     
@@ -104,4 +105,7 @@ public class Data {
         return null;
     }
     
+=======
+    public final static MinionTemplate DEFAULT_PETABYTE = new MinionTemplate(MinionType.pb,5,5,5,true,5);
+>>>>>>> origin/master
 }
