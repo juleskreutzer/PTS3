@@ -74,7 +74,7 @@ public class PlayerTest {
         double expResult = 1;
         double result = 0;
         instance.buildCPUUpgrade();
-        for (Module module : instance.getModules())
+        for(Module module : instance.getModules())
             if(module instanceof CPUUpgrade)
                 result++;
         assertEquals(expResult, result, 0.0);

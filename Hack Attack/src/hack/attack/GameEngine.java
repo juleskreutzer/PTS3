@@ -26,9 +26,9 @@ public class GameEngine implements MouseListener {
     public interface OnExecuteTick{
         /**
          * Executed when a tick occured
-         * @param elapsedtime The elapsed time of the running game in milliseconds
+         * @param delta The elapsed time since the last tick
          */
-        void onTick(int elapsedtime);
+        void onTick(double delta);
     }
     
     /**
@@ -38,8 +38,8 @@ public class GameEngine implements MouseListener {
         void tickComplete();
     }
     
-    public final static int FPS = 30;
-    
+    private static boolean running = false;
+
     private static GameEngine instance;
     
     private GraphicsEngine graphicsEngine;
@@ -56,6 +56,7 @@ public class GameEngine implements MouseListener {
     private GameEngine(){
         instance = this;
         initialize();
+        startGame();
     }
     
     public static GameEngine getInstance(){
@@ -71,18 +72,34 @@ public class GameEngine implements MouseListener {
     }
     
     /**
-     * Starts the game. From this point, the initial wave will be created and the game will run from this point on.
-     */
+     * Starts the game. From this point, the initial wave will be created and the game will run from this point on 
+    */
     private void startGame(){
+        running = true;
         Wave wave = new Wave(1,1,playerB,10,0,0,0,0);
+        currentWave = wave;
         waveList.add(wave);
         
-        wave.startWave();
+        while(running){
+            if(!wave.waveActive()){
+                wave.startWave();
+            }
+
+            tick(GameTime.getDeltaTime());
+            
+            
+            try{
+                Thread.sleep(((long)(GameTime.getLastLoopTime()-System.nanoTime() + GameTime.OPTIMAL_TIME)/1000000));
+            }catch(InterruptedException e){
+                System.out.println(e.toString());
+            }
+        }
     }
     
-    private void tick(){
-        
-        notifyListeners();
+    private void tick(double delta){
+        System.out.println("Elapsed Time: "+GameTime.getElapsedTime());
+        System.out.println("Delta : "+delta);
+        notifyListeners(delta);
     }
     
     public void setOnTickListener(OnExecuteTick callback){
@@ -96,9 +113,9 @@ public class GameEngine implements MouseListener {
     /**
      * Notifies every listening object that a tick occured.
      */
-    private void notifyListeners(){
+    private void notifyListeners(double delta){
         for(OnExecuteTick l : listeners){
-            l.onTick(elapsedTime);
+            l.onTick(delta);
         }
     }
     

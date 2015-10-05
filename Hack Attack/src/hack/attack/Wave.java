@@ -29,6 +29,7 @@ public class Wave {
         minionList = new ArrayList<Minion>();
         
         for(int i=0; i<bamount; i++){
+            System.out.println("Minion byte created");
             minionList.add(new Minion(Data.DEFAULT_BYTE, new Minion.MinionHeartbeat() {
 
                 @Override
@@ -38,6 +39,7 @@ public class Wave {
             }));
         }
         for(int i=0; i<kbamount; i++){
+            System.out.println("Minion kilobyte created");
             minionList.add(new Minion(Data.DEFAULT_KILOBYTE, new Minion.MinionHeartbeat() {
 
                 @Override
@@ -47,6 +49,7 @@ public class Wave {
             }));
         }
         for(int i=0; i<mbamount; i++){
+            System.out.println("Minion megabyte created");
             minionList.add(new Minion(Data.DEFAULT_MEGABYTE, new Minion.MinionHeartbeat() {
 
                 @Override
@@ -56,6 +59,7 @@ public class Wave {
             }));
         }
         for(int i=0; i<gbamount; i++){
+            System.out.println("Minion gigabyte created");
             minionList.add(new Minion(Data.DEFAULT_GIGABYTE, new Minion.MinionHeartbeat() {
 
                 @Override
@@ -65,7 +69,18 @@ public class Wave {
             }));
         }
         for(int i=0; i<tbamount; i++){
+            System.out.println("Minion terabyte created");
             minionList.add(new Minion(Data.DEFAULT_TERABYTE, new Minion.MinionHeartbeat() {
+
+                @Override
+                public void onMinionDeath(Minion minion) {
+                    removeMinion(minion);
+                }
+            }));
+        }
+        for(int i=0; i<pbamount; i++){
+            System.out.println("Minion petabyte created");
+            minionList.add(new Minion(Data.DEFAULT_PETABYTE, new Minion.MinionHeartbeat() {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
@@ -84,8 +99,8 @@ public class Wave {
         GameEngine.getInstance().setOnTickListener(new GameEngine.OnExecuteTick(){
             
             @Override
-            public void onTick(int elapsedtime){
-                if(elapsedtime % GameEngine.FPS == 0){
+            public void onTick(double delta){
+                if(GameTime.getElapsedTime() % GameTime.TARGET_FPS == 0){
                     Minion m = minions().next();
                     try{
                         GraphicsEngine.getInstance().spawn(m);
@@ -105,6 +120,10 @@ public class Wave {
     private boolean removeMinion(Minion minion){
         minionList.remove(minion);
         return true;
+    }
+    
+    public boolean waveActive(){
+        return waveActive;
     }
     
     

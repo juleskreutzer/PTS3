@@ -14,5 +14,6 @@ public enum MinionType {
     kb,
     mb,
     gb,
-    tb
+    tb,
+    pb
 }
