@@ -9,23 +9,25 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
-import hack.attack.exceptions.*;
 
 /**
  *
- * @author juleskreutzer, Jasper Rouwhorst
+ * @author jaspe_000
  */
-public class BulletImage extends ObjectImage {
+public class ObjectImage extends Image {
     
-    private Bullet bullet;
+    private Object referencedObject;
     
-    public BulletImage(Bullet bullet){
-        super(bullet);
-        this.bullet = bullet;
+    public ObjectImage(Object reference){
+        referencedObject = reference;
     }
     
-    public Bullet getBullet(){
-        return bullet;
+    /**
+     * 
+     * @return The referenced object.
+     */
+    public Object getReference(){
+        return referencedObject;
     }
 
     @Override

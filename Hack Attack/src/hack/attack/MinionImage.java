@@ -16,41 +16,17 @@ import hack.attack.exceptions.*;
  *
  * @author juleskreutzer
  */
-public class MinionImage extends Image {
+public class MinionImage extends ObjectImage {
 
     private Minion minion;
     
     public MinionImage(Minion m){
+        super(m);
         minion = m;
     }
     
     public Minion getMinion(){
         return minion;
-    }
-    
-    @Override
-    public int getWidth(ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getHeight(ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ImageProducer getSource() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Graphics getGraphics() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object getProperty(String name, ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

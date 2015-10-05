@@ -24,7 +24,11 @@ public class GameEngine implements MouseListener {
      * This interface is used to notify every listening object when a tick has occured.
      */
     public interface OnExecuteTick{
-        void onTick();
+        /**
+         * Executed when a tick occured
+         * @param elapsedtime The elapsed time of the running game in milliseconds
+         */
+        void onTick(int elapsedtime);
     }
     
     /**
@@ -33,6 +37,8 @@ public class GameEngine implements MouseListener {
     public interface OnCompleteTick{
         void tickComplete();
     }
+    
+    public final static int FPS = 30;
     
     private static GameEngine instance;
     
@@ -64,8 +70,14 @@ public class GameEngine implements MouseListener {
         playerB = new Player(100, "Jules", 100, new Point(100,50));
     }
     
+    /**
+     * Starts the game. From this point, the initial wave will be created and the game will run from this point on.
+     */
     private void startGame(){
+        Wave wave = new Wave(1,1,playerB,10,0,0,0,0);
+        waveList.add(wave);
         
+        wave.startWave();
     }
     
     private void tick(){
@@ -86,7 +98,7 @@ public class GameEngine implements MouseListener {
      */
     private void notifyListeners(){
         for(OnExecuteTick l : listeners){
-            l.onTick();
+            l.onTick(elapsedTime);
         }
     }
     

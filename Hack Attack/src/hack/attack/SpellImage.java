@@ -14,11 +14,12 @@ import hack.attack.exceptions.*;
  *
  * @author juleskreutzer
  */
-public class SpellImage extends Image {
+public class SpellImage extends ObjectImage {
 
     private Spell spell;
     
     public SpellImage(Spell s){
+        super(s);
         spell = s;
     }
     
@@ -26,29 +27,5 @@ public class SpellImage extends Image {
         return spell;
     }
     
-    @Override
-    public int getWidth(ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getHeight(ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ImageProducer getSource() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Graphics getGraphics() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object getProperty(String name, ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+  
 }

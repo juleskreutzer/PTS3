@@ -5,8 +5,9 @@
  */
 package hack.attack;
 
+import hack.attack.exceptions.DuplicateSpawnException;
 import java.util.ArrayList;
-import hack.attack.exceptions.*;
+import java.util.Iterator;
 
 /**
  *
@@ -17,7 +18,7 @@ public class Wave {
     private boolean waveActive;
     private double waveMultiplier;
     
-    ArrayList<Minion> minionList;
+    private ArrayList<Minion> minionList;
     
     public Wave(int wavenr, double multiplier, Player enemyplayer, 
             int bamount, int kbamount, int mbamount, int gbamount, int tbamount){
@@ -32,7 +33,7 @@ public class Wave {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    removeMinion(minion);
                 }
             }));
         }
@@ -41,7 +42,7 @@ public class Wave {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    removeMinion(minion);
                 }
             }));
         }
@@ -50,7 +51,7 @@ public class Wave {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    removeMinion(minion);
                 }
             }));
         }
@@ -59,7 +60,7 @@ public class Wave {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    removeMinion(minion);
                 }
             }));
         }
@@ -68,13 +69,42 @@ public class Wave {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    removeMinion(minion);
                 }
             }));
         }
         
-        
-        
+    }
+    
+    /**
+     * Start the actual wave and spawn the containing minions
+     */
+    public void startWave(){
+        waveActive = true;
+        GameEngine.getInstance().setOnTickListener(new GameEngine.OnExecuteTick(){
+            
+            @Override
+            public void onTick(int elapsedtime){
+                if(elapsedtime % GameEngine.FPS == 0){
+                    Minion m = minions().next();
+                    try{
+                        GraphicsEngine.getInstance().spawn(m);
+                    }catch(DuplicateSpawnException e){
+                        System.out.println(e.toString());
+                    }
+                }
+            }
+            
+        });
+    }
+    
+    public Iterator<Minion> minions(){
+        return minionList.iterator();
+    }
+    
+    private boolean removeMinion(Minion minion){
+        minionList.remove(minion);
+        return true;
     }
     
     

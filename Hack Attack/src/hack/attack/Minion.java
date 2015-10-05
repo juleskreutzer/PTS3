@@ -26,6 +26,7 @@ public class Minion {
     private double health;
     private double speed;
     private Point[] position;
+    // The position this minion is moving to
     private Point[] targetPosition;
     private double damage;
     private boolean encrypted;

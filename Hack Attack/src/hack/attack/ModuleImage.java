@@ -5,47 +5,17 @@
  */
 package hack.attack;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import hack.attack.exceptions.*;
-
 /**
  *
  * @author juleskreutzer
  */
-public class ModuleImage extends Image {
+public class ModuleImage extends ObjectImage {
 
     private Module module;
     
     public ModuleImage(Module m){
+        super(m);
         module = m;
-    }
-    
-    @Override
-    public int getWidth(ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getHeight(ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ImageProducer getSource() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Graphics getGraphics() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object getProperty(String name, ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

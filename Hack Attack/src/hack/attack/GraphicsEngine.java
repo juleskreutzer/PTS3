@@ -19,7 +19,7 @@ public class GraphicsEngine {
     private static GraphicsEngine instance;
     
     private double updateTime;
-    private List<Image> drawables;
+    private List<ObjectImage> drawables;
     
     private GraphicsEngine(){
         instance = this;
@@ -29,8 +29,27 @@ public class GraphicsEngine {
         return instance == null ? new GraphicsEngine() : instance;
     }
     
-    public void spawn(Object object){
+    /**
+     * From the moment an object is spawned, it will be updated every tick.
+     * This is the entry point for an object to be updated every tick.
+     * @param object 
+     */
+    public void spawn(Object object) throws DuplicateSpawnException{
+        for(ObjectImage image : drawables){
+            if(image.getReference() == object){
+                throw new DuplicateSpawnException("This object already exists!");
+            }
+        }
         
+        if(object instanceof Bullet){
+            drawables.add(new BulletImage((Bullet)object));
+        }else if(object instanceof Minion){
+            drawables.add(new MinionImage((Minion)object));
+        }else if(object instanceof Module){
+            drawables.add(new ModuleImage((Module)object));
+        }else if(object instanceof Spell){
+            drawables.add(new SpellImage((Spell)object));
+        }
     }
     
     public double update(){
@@ -38,13 +57,12 @@ public class GraphicsEngine {
     }
     
     private void draw(){
-        
+        /**
+         * TODO implement this method using JavaFX.
+         */
     }
     
     public void drawSpellRange(Spell spell){
         
     }
-    
-    
-    
 }
