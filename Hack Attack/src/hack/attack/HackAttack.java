@@ -5,6 +5,7 @@
  */
 package hack.attack;
 import hack.attack.exceptions.*;
+import java.io.IOException;
 
 /**
  *
@@ -15,8 +16,9 @@ public class HackAttack {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // TODO code application logic here
+        Data d = new Data();
     }
     
 }
