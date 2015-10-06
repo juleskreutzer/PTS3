@@ -80,6 +80,10 @@ public class GameEngine implements MouseListener {
         waveList.add(wave);
         
         wave.startWave();
+        while(GameTime.getDeltaTime() < GameTime.OPTIMAL_TIME){
+            tick();
+        }
+        
     }
     
     private void tick(){

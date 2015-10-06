@@ -53,7 +53,6 @@ public class Minion {
         damage = minion.getDamage();
         encrypted = minion.getEncrypted();
         reward = minion.getReward();
-        throw new UnsupportedOperationException("The minion class doesn't get it\'s data from the data-class yet.");
     }
     
     /**

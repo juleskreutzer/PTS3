@@ -17,7 +17,10 @@ public class Map {
         add(new Point(50,50));  
         add(new Point(100,100));
     }};
-    public static List<Point> baseBuildLocations;
+    public static List<Point> baseBuildLocations = new ArrayList<Point>(){{
+        add(new Point(50,50));  
+        add(new Point(100,100));
+    }};;
     
     
 }

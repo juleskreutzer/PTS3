@@ -5,7 +5,9 @@
  */
 package hackattackfx;
 
+import hackattackfx.enums.MinionType;
 import hackattackfx.exceptions.DuplicateSpawnException;
+import hackattackfx.templates.MinionTemplate;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,7 +32,7 @@ public class Wave {
         minionList = new ArrayList<Minion>();
         
         for(int i=0; i<bamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_BYTE, new Minion.MinionHeartbeat() {
+            Minion minion = new Minion(new MinionTemplate(MinionType.b, 100,100,100,false,100), new Minion.MinionHeartbeat() {
 
                 @Override
                 public void onMinionDeath(Minion minion) {

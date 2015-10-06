@@ -33,7 +33,7 @@ public class HackAttackFX extends Application {
         stage.setScene(scene);
         
         stage.show();
-        Data data = new Data();
+        //Data data = new Data();
         gEngine = GameEngine.getInstance();
     }
 
