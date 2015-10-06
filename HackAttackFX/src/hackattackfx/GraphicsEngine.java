@@ -49,7 +49,7 @@ public class GraphicsEngine implements Initializable {
         iv.setX(100);
         iv.setY(100);
         iv.setImage(image);
-        System.out.println("Window childer: "+window.getChildren().toString());
+        System.out.println("Window childen: "+window.getChildren().toString());
         window.getChildren().add(iv);
     }    
     

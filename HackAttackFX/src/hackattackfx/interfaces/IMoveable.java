@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.interfaces;
+package hackattackfx.interfaces;
 
 /**
  *
  * @author juleskreutzer
  */
 public interface IMoveable {
-    void move(int deltaTime);
+    void move(double deltaTime);
     Object getCollision();
 }
