@@ -5,7 +5,9 @@
  */
 package hackattackfx;
 
+import hackattackfx.exceptions.InvalidMinionTypeException;
 import java.io.File;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,8 +43,9 @@ public class HackAttackFX extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InvalidMinionTypeException {
         launch(args);
+        Data data = new Data();
     }
     
 }
