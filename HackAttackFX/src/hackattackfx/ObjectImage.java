@@ -5,16 +5,13 @@
  */
 package hackattackfx;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
+import javafx.scene.image.ImageView;
 
 /**
  *
- * @author jaspe_000
+ * @author Jasper Rouwhorst
  */
-public class ObjectImage extends Image {
+public abstract class ObjectImage extends ImageView {
     
     private Object referencedObject;
     
@@ -29,30 +26,4 @@ public class ObjectImage extends Image {
     public Object getReference(){
         return referencedObject;
     }
-
-    @Override
-    public int getWidth(ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getHeight(ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ImageProducer getSource() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Graphics getGraphics() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object getProperty(String name, ImageObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }

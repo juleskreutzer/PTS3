@@ -7,10 +7,12 @@ package hackattackfx;
 
 import hackattackfx.enums.MinionType;
 import java.awt.Graphics;
-import java.awt.Image;
+import javafx.scene.image.Image;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import hackattackfx.exceptions.*;
+import java.io.File;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -23,6 +25,12 @@ public class MinionImage extends ObjectImage {
     public MinionImage(Minion m){
         super(m);
         minion = m;
+        
+        File minion = new File("src/hackattackfx/resources/Byte.png");
+        Image image = new javafx.scene.image.Image(minion.toURI().toString());
+        this.setImage(image);
+        
+        
     }
     
     public Minion getMinion(){

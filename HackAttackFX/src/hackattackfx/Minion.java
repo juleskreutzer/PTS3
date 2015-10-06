@@ -26,9 +26,9 @@ public class Minion {
     private Player enemyPlayer;
     private double health;
     private double speed;
-    private Point[] position;
+    private Point position;
     // The position this minion is moving to
-    private Point[] targetPosition;
+    private Point targetPosition;
     private double damage;
     private boolean encrypted;
     private double reward;
@@ -78,9 +78,13 @@ public class Minion {
      * Get the x,y coordinate of a minion
      * @return returns an array with the x and y coordinate of the minion
      */
-    public Point[] getPosition()
+    public Point getPosition()
     {
         return this.position;
+    }
+    
+    public void setPosition(Point position){
+        this.position = position;
     }
     
     /**

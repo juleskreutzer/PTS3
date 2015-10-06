@@ -22,36 +22,22 @@ import hackattackfx.exceptions.*;
  *
  * @author Jasper Rouwhorst
  */
-public class GraphicsEngine extends FXMLDocumentController{
+public class GraphicsEngine{
     
-    @FXML
-    private AnchorPane window;
-    
+    private FXMLDocumentController parent;
     private static GraphicsEngine instance;
     
     private double updateTime;
-    private List<ObjectImage> drawables;
     
     private GraphicsEngine(){
         instance = this;
+        parent = FXMLDocumentController.getInstance();
+        
     }
     
     public static GraphicsEngine getInstance(){
         return instance == null ? new GraphicsEngine() : instance;
     }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("User dir: "+System.getProperty("user.dir"));
-        File minion = new File("resources/Byte.png");
-        Image image = new Image(minion.toURI().toString());
-        ImageView iv = new ImageView();
-        iv.setX(100);
-        iv.setY(100);
-        iv.setImage(image);
-        System.out.println("Window childen: "+window.getChildren().toString());
-        window.getChildren().add(iv);
-    }    
     
     /**
      * From the moment an object is spawned, it will be updated every tick.
@@ -59,20 +45,22 @@ public class GraphicsEngine extends FXMLDocumentController{
      * @param object 
      */
     public void spawn(Object object) throws DuplicateSpawnException{
-        for(ObjectImage image : drawables){
+        // Checks if the object doesn't exists already
+        List<ObjectImage> list = (List<ObjectImage>)parent.getAllNodes();
+        for(ObjectImage image : list){
             if(image.getReference() == object){
-                throw new DuplicateSpawnException("This object already exists!");
+                throw new DuplicateSpawnException("This object already spawned!");
             }
         }
         
         if(object instanceof Bullet){
-            drawables.add(new BulletImage((Bullet)object));
+            parent.addNode(new BulletImage((Bullet)object));
         }else if(object instanceof Minion){
-            drawables.add(new MinionImage((Minion)object));
+            parent.addNode(new MinionImage((Minion)object));
         }else if(object instanceof Module){
-            drawables.add(new ModuleImage((Module)object));
+            parent.addNode(new ModuleImage((Module)object));
         }else if(object instanceof Spell){
-            drawables.add(new SpellImage((Spell)object));
+            parent.addNode(new SpellImage((Spell)object));
         }
     }
     

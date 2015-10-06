@@ -68,13 +68,15 @@ public class GameEngine implements MouseListener {
         waveList = new ArrayList<Wave>();
         playerA = new Player(100, "Jasper", 100, new Point(0,50));
         playerB = new Player(100, "Jules", 100, new Point(100,50));
+        
+        startGame();
     }
     
     /**
      * Starts the game. From this point, the initial wave will be created and the game will run from this point on.
      */
     private void startGame(){
-        Wave wave = new Wave(1,1,playerB,10,0,0,0,0);
+        Wave wave = new Wave(1,1,playerB,10,0,0,0,0,0);
         waveList.add(wave);
         
         wave.startWave();

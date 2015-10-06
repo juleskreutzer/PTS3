@@ -6,14 +6,17 @@
 package hackattackfx;
 import java.awt.Point;
 import java.util.List;
-import hackattackfx.exceptions.*;
+import java.util.ArrayList;
 /**
  *
  * @author Igor, Jasper Rouwhorst
  */
 public class Map {
     public static List<Point[]> path;
-    public static List<Point> defenseBuildLocations;
+    public static List<Point> defenseBuildLocations = new ArrayList<Point>(){{
+        add(new Point(50,50));  
+        add(new Point(100,100));
+    }};
     public static List<Point> baseBuildLocations;
     
     

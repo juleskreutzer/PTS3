@@ -7,16 +7,14 @@ package hackattackfx;
 
 import hackattackfx.exceptions.InvalidMinionTypeException;
 import hackattackfx.exceptions.InvalidSpellNameException;
-import java.io.File;
 import java.io.IOException;
+import static java.lang.Thread.sleep;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -25,19 +23,18 @@ import javafx.stage.Stage;
  */
 public class HackAttackFX extends Application {
     
-    
+    GameEngine gEngine;
     
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
         
         stage.show();
-        
-        
+        Data data = new Data();
+        gEngine = GameEngine.getInstance();
     }
 
     /**
@@ -45,7 +42,7 @@ public class HackAttackFX extends Application {
      */
     public static void main(String[] args) throws IOException, InvalidMinionTypeException, InvalidSpellNameException {
         launch(args);
-        Data data = new Data();
+        
     }
     
 }

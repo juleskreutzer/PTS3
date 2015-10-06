@@ -6,6 +6,7 @@
 package hackattackfx;
 
 import hackattackfx.exceptions.DuplicateSpawnException;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -21,7 +22,7 @@ public class Wave {
     private ArrayList<Minion> minionList;
     
     public Wave(int wavenr, double multiplier, Player enemyplayer, 
-            int bamount, int kbamount, int mbamount, int gbamount, int tbamount){
+            int bamount, int kbamount, int mbamount, int gbamount, int tbamount, int pbamount){
         
         waveNr = wavenr;
         waveActive = false;
@@ -29,50 +30,72 @@ public class Wave {
         minionList = new ArrayList<Minion>();
         
         for(int i=0; i<bamount; i++){
-            minionList.add(new Minion(Data.DEFAULT_BYTE, new Minion.MinionHeartbeat() {
+            Minion minion = new Minion(Data.DEFAULT_BYTE, new Minion.MinionHeartbeat() {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
                     removeMinion(minion);
                 }
-            }));
+            });
+            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x+=20, Map.baseBuildLocations.get(0).y));
+            minionList.add(minion);
         }
         for(int i=0; i<kbamount; i++){
-            minionList.add(new Minion(Data.DEFAULT_KILOBYTE, new Minion.MinionHeartbeat() {
+            Minion minion = new Minion(Data.DEFAULT_KILOBYTE, new Minion.MinionHeartbeat() {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
                     removeMinion(minion);
                 }
-            }));
+            });
+            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minionList.add(minion);
         }
         for(int i=0; i<mbamount; i++){
-            minionList.add(new Minion(Data.DEFAULT_MEGABYTE, new Minion.MinionHeartbeat() {
+           Minion minion = new Minion(Data.DEFAULT_MEGABYTE, new Minion.MinionHeartbeat() {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
                     removeMinion(minion);
                 }
-            }));
+            });
+            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minionList.add(minion);
         }
         for(int i=0; i<gbamount; i++){
-            minionList.add(new Minion(Data.DEFAULT_GIGABYTE, new Minion.MinionHeartbeat() {
+            Minion minion = new Minion(Data.DEFAULT_GIGABYTE, new Minion.MinionHeartbeat() {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
                     removeMinion(minion);
                 }
-            }));
+            });
+            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minionList.add(minion);
         }
         for(int i=0; i<tbamount; i++){
-            minionList.add(new Minion(Data.DEFAULT_TERABYTE, new Minion.MinionHeartbeat() {
+            Minion minion = new Minion(Data.DEFAULT_TERABYTE, new Minion.MinionHeartbeat() {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
                     removeMinion(minion);
                 }
-            }));
+            });
+            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minionList.add(minion);
         }
+        for(int i=0; i<pbamount; i++){
+            Minion minion = new Minion(Data.DEFAULT_PETABYTE, new Minion.MinionHeartbeat() {
+
+                @Override
+                public void onMinionDeath(Minion minion) {
+                    removeMinion(minion);
+                }
+            });
+            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minionList.add(minion);
+        }
+        
         
     }
     
