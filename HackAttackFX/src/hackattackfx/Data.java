@@ -328,7 +328,20 @@ public class Data {
                 case "Sniper Antivirus":
                     switch(tier)
                     {
-                        
+                        case 1:
+                            type = ModuleName.SNIPER_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_SNIPER_1 = new DefenseTemplate(cost, tier, type);
+                            break;
+                        case 2:
+                            type = ModuleName.SNIPER_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_SNIPER_2 = new DefenseTemplate(cost, tier, type);
+                            break;
+                        case 3:
+                            type = ModuleName.SNIPER_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_SNIPER_3 = new DefenseTemplate(cost, tier, type);
+                            break;
+                        default:
+                            throw new IOException("Tier not recognized (Sniper Antivirus)");
                     }
                 default:
                     throw new IOException("Module name not recognized.");
