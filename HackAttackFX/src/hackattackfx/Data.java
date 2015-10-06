@@ -27,6 +27,12 @@ public class Data {
     public static MinionTemplate DEFAULT_GIGABYTE;
     public static MinionTemplate DEFAULT_TERABYTE;
     public static MinionTemplate DEFAULT_PETABYTE;
+    public static SpellTemplate DEFAULT_SPELL_CORRUPT;
+    public static SpellTemplate DEFAULT_SPELL_ENCRYPT;
+    public static SpellTemplate DEFAULT_SPELL_DISRUPT;
+    public static SpellTemplate DEFAULT_SPELL_LOCKDOWN;
+    public static SpellTemplate DEFAULT_SPELL_FIREWALL;
+    public static SpellTemplate DEFAULT_SPELL_VIRUSSCAN;
     
     private static String urlMinion = "http://api.nujules.nl/minion";
     private static String urlSpell = "http://api.nujules.nl/spell";
@@ -129,6 +135,21 @@ public class Data {
     {
         for(int i = 0; i < spells.length(); i++)
         {
+            JSONObject obj = spells.getJSONObject(i);
+            
+            int cooldown = obj.getInt("cooldown");
+            String name = obj.getString("name");
+            double range = obj.getDouble("range");
+            int requiredLevel = obj.getInt("requiredLevel");
+            String type = obj.getString("type");
+            
+            switch(name)
+            {
+                case "Corrupt":
+                    DEFAULT_SPELL_CORRUPT = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    break;
+                case "Encrypt":
+            }
             
         }
         
