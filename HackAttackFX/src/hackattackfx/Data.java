@@ -43,7 +43,7 @@ public class Data {
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_2;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_3;
-    public static DefenseTemplate DEFUALT_MODULE_DEFENSE_MUSCLE_1;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_1;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_2;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_3;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_1;
@@ -165,7 +165,7 @@ public class Data {
             
             int cooldown = obj.getInt("cooldown");
             String name = obj.getString("name");
-            double range = obj.getDouble("range");
+            int range = obj.getInt("range");
             int requiredLevel = obj.getInt("requiredLevel");
             String type = obj.getString("type");
             
@@ -282,8 +282,22 @@ public class Data {
                             type = ModuleName.BOTTLECAP_ANTIVIRUS;
                             DEFAULT_MODULE_DEFENSE_BOTTLECAP_2 = new DefenseTemplate(cost, tier, type);
                             break;
+                        case 3:
+                            type = ModuleName.BOTTLECAP_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3 = new DefenseTemplate(cost, tier, type);
+                            break;
+                        default:
+                            throw new IOException("Tier not recognized (Bottlecap Antivirus)");
                     }
                     break;
+                case "Muscle Antivirus":
+                    switch(tier)
+                    {
+                        case 1:
+                            type = ModuleName.MUSCLE_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_1 = new DefenseTemplate(cost, tier, type);
+                            break;
+                    }
                 default:
                     throw new IOException("Module name not recognized.");
             }
