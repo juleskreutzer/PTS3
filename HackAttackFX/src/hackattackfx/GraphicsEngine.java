@@ -22,7 +22,7 @@ import hackattackfx.exceptions.*;
  *
  * @author Jasper Rouwhorst
  */
-public class GraphicsEngine implements Initializable {
+public class GraphicsEngine extends FXMLDocumentController{
     
     @FXML
     private AnchorPane window;
@@ -43,7 +43,7 @@ public class GraphicsEngine implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("User dir: "+System.getProperty("user.dir"));
-        File minion = new File("Byte.png");
+        File minion = new File("resources/Byte.png");
         Image image = new Image(minion.toURI().toString());
         ImageView iv = new ImageView();
         iv.setX(100);

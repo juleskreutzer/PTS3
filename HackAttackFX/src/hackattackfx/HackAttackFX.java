@@ -35,7 +35,6 @@ public class HackAttackFX extends Application {
         
         stage.setScene(scene);
         
-        
         stage.show();
         
         
