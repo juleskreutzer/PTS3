@@ -1,5 +1,6 @@
 package hackattackfx;
 
+import hackattackfx.templates.MinionTemplate;
 import hackattackfx.enums.MinionType;
 import java.awt.Point;
 import hackattackfx.exceptions.*;

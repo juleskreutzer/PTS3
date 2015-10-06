@@ -5,7 +5,9 @@
  */
 package hackattackfx;
 
-import hackattackfx.enums.MinionType;
+import hackattackfx.templates.SpellTemplate;
+import hackattackfx.templates.*;
+import hackattackfx.enums.*;
 import hackattackfx.exceptions.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,6 +52,7 @@ public class Data {
         
         createMinions(minions);
         createSpells(spells);
+        createModules(modules);
     }
     
     private JSONArray sendGet(String url) throws IOException
@@ -172,11 +175,74 @@ public class Data {
         
     }
     
-    private void createModules(JSONArray modules)
+    private void createModules(JSONArray modules) throws IOException
     {
         for(int i = 0; i < modules.length(); i++)
         {
+            JSONObject obj = modules.getJSONObject(i);
             
+            String moduleClass= obj.getString("class");
+            String description = obj.getString("description");
+            int frequency = obj.getInt("frequency");
+            double cost = obj.getDouble("cost");
+            int range = obj.getInt("range");
+            int tier = obj.getInt("tier");
+            String name = obj.getString("name");
+            ModuleName type;
+            
+            switch(name)
+            {
+                case "Bitcoin Miner":
+                    switch(tier)
+                    {
+                        case 1:
+                            type = ModuleName.BITCOIN_MINER;
+                            break;
+                        case 2:
+                            type = ModuleName.BITCOIN_MINER;
+                            break;
+                        case 3:
+                            type = ModuleName.BITCOIN_MINER;
+                            break;
+                        default:
+                            throw new IOException("Tier not recognized (Bitcoin Miner)");
+                    }
+                    break;
+                case "CPU Upgrade":
+                    switch(tier)
+                    {
+                        case 1:
+                            type = ModuleName.CPU_UPGRADE;
+                            break;
+                        case 2:
+                            type = ModuleName.CPU_UPGRADE;
+                            break;
+                        case 3:
+                            type = ModuleName.CPU_UPGRADE;
+                            break;
+                        default:
+                            throw new IOException("Tier not recognized (CPU Upgrade)");
+                    }
+                    break;
+                case "Software Injector":
+                    switch(tier)
+                    {
+                        case 1:
+                            type = ModuleName.SOFTWARE_INJECTOR;
+                            break;
+                        case 2:
+                            type = ModuleName.SOFTWARE_INJECTOR;
+                            break;
+                        case 3:
+                            type = ModuleName.SOFTWARE_INJECTOR;
+                            break;
+                        default:
+                            throw new IOException("Tier not recognized (Software Injector)");
+                    }
+                    break;
+                default:
+                    throw new IOException("Module name not recognized.");
+            }
         }
         
     }

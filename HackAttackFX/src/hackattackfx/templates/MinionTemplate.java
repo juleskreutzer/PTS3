@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hackattackfx;
+package hackattackfx.templates;
 
 import hackattackfx.enums.MinionType;
 import hackattackfx.exceptions.*;
