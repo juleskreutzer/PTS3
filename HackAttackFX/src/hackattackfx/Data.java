@@ -165,7 +165,7 @@ public class Data {
             
             int cooldown = obj.getInt("cooldown");
             String name = obj.getString("name");
-            int range = obj.getInt("range");
+            long range = obj.getLong("range");
             int requiredLevel = obj.getInt("requiredLevel");
             String type = obj.getString("type");
             
@@ -297,6 +297,13 @@ public class Data {
                             type = ModuleName.MUSCLE_ANTIVIRUS;
                             DEFAULT_MODULE_DEFENSE_MUSCLE_1 = new DefenseTemplate(cost, tier, type);
                             break;
+                        case 2:
+                            type = ModuleName.MUSCLE_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_2 = new DefenseTemplate(cost, tier, type);
+                            break;
+                        case 3:
+                            type = ModuleName.MUSCLE_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_3 = new DefenseTemplate(cost, tier, type);
                     }
                 default:
                     throw new IOException("Module name not recognized.");
