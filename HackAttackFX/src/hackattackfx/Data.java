@@ -206,7 +206,7 @@ public class Data {
             String moduleClass= obj.getString("class");
             String description = obj.getString("description");
             int frequency = obj.getInt("frequency");
-            double cost = obj.getDouble("cost");
+            double cost = obj.getDouble("price");
             int range = obj.getInt("range");
             int tier = obj.getInt("tier");
             String name = obj.getString("name");
@@ -304,6 +304,31 @@ public class Data {
                         case 3:
                             type = ModuleName.MUSCLE_ANTIVIRUS;
                             DEFAULT_MODULE_DEFENSE_MUSCLE_3 = new DefenseTemplate(cost, tier, type);
+                        default:
+                            throw new IOException("Tier not recognized (Muscle Antivirus)");
+                    }
+                case "Scale Antivirus":
+                    switch(tier)
+                    {
+                        case 1:
+                            type = ModuleName.SCALE_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_SCALE_1 = new DefenseTemplate(cost, tier, type);
+                            break;
+                        case 2:
+                            type = ModuleName.MUSCLE_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_SCALE_2 = new DefenseTemplate(cost, tier, type);
+                            break;
+                        case 3:
+                            type = ModuleName.MUSCLE_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_SCALE_3 = new DefenseTemplate(cost, tier, type);
+                            break;
+                        default:
+                            throw new IOException("Tier not recognized (Scale Antivirus)");                            
+                    }
+                case "Sniper Antivirus":
+                    switch(tier)
+                    {
+                        
                     }
                 default:
                     throw new IOException("Module name not recognized.");
