@@ -6,6 +6,7 @@
 package hackattackfx;
 
 import hackattackfx.exceptions.InvalidMinionTypeException;
+import hackattackfx.exceptions.InvalidSpellNameException;
 import java.io.File;
 import java.io.IOException;
 import javafx.application.Application;
@@ -43,7 +44,7 @@ public class HackAttackFX extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException, InvalidMinionTypeException {
+    public static void main(String[] args) throws IOException, InvalidMinionTypeException, InvalidSpellNameException {
         launch(args);
         Data data = new Data();
     }

@@ -38,7 +38,7 @@ public class Data {
     private static String urlSpell = "http://api.nujules.nl/spell";
     private static String urlModule = "http://api.nujules.nl/module";
     
-    public Data() throws IOException, InvalidMinionTypeException
+    public Data() throws IOException, InvalidMinionTypeException, InvalidSpellNameException
     {
         /**
          * First we create the JSONArray object by requesting the data from the HackAttack API.
@@ -49,6 +49,7 @@ public class Data {
         JSONArray modules = sendGet(urlModule);
         
         createMinions(minions);
+        createSpells(spells);
     }
     
     private JSONArray sendGet(String url) throws IOException
@@ -131,7 +132,7 @@ public class Data {
         }
     }
     
-    private void createSpells(JSONArray spells)
+    private void createSpells(JSONArray spells) throws InvalidSpellNameException
     {
         for(int i = 0; i < spells.length(); i++)
         {
@@ -149,6 +150,22 @@ public class Data {
                     DEFAULT_SPELL_CORRUPT = new SpellTemplate(name, range, type, cooldown, requiredLevel);
                     break;
                 case "Encrypt":
+                    DEFAULT_SPELL_ENCRYPT = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    break;
+                case "Disrupt":
+                    DEFAULT_SPELL_DISRUPT = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    break;
+                case "Lock-down":
+                    DEFAULT_SPELL_LOCKDOWN = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    break;
+                case "Firewall":
+                    DEFAULT_SPELL_FIREWALL = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    break;
+                case "Virus-scan":
+                    DEFAULT_SPELL_VIRUSSCAN = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    break;
+                default:
+                    throw new InvalidSpellNameException();
             }
             
         }
