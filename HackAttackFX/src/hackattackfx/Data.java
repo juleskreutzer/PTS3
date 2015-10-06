@@ -5,7 +5,6 @@
  */
 package hackattackfx;
 
-import hackattackfx.templates.SpellTemplate;
 import hackattackfx.templates.*;
 import hackattackfx.enums.*;
 import hackattackfx.exceptions.*;
@@ -35,6 +34,29 @@ public class Data {
     public static SpellTemplate DEFAULT_SPELL_LOCKDOWN;
     public static SpellTemplate DEFAULT_SPELL_FIREWALL;
     public static SpellTemplate DEFAULT_SPELL_VIRUSSCAN;
+    public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_1;
+    public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_2;
+    public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_3;
+    public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_1;
+    public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_2;
+    public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_3;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_2;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_3;
+    public static DefenseTemplate DEFUALT_MODULE_DEFENSE_MUSCLE_1;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_2;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_3;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_1;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_2;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_3;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_1;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_2;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_3;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_2;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_3;
+    public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_1;
+    public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_2;
+    public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_3;
     
     private static String urlMinion = "http://api.nujules.nl/minion";
     private static String urlSpell = "http://api.nujules.nl/spell";
@@ -197,12 +219,15 @@ public class Data {
                     {
                         case 1:
                             type = ModuleName.BITCOIN_MINER;
+                            DEFAULT_MODULE_BITCOINMINER_1 = new BitCoinMinerTemplate(cost, tier, type);
                             break;
                         case 2:
                             type = ModuleName.BITCOIN_MINER;
+                            DEFAULT_MODULE_BITCOINMINER_2 = new BitCoinMinerTemplate(cost, tier, type);
                             break;
                         case 3:
                             type = ModuleName.BITCOIN_MINER;
+                            DEFAULT_MODULE_BITCOINMINER_3 = new BitCoinMinerTemplate(cost, tier, type);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Bitcoin Miner)");
@@ -213,12 +238,15 @@ public class Data {
                     {
                         case 1:
                             type = ModuleName.CPU_UPGRADE;
+                            DEFAULT_MODULE_CPUUPGRADE_1 = new CPUUpgradeTemplate(cost, tier, type);
                             break;
                         case 2:
                             type = ModuleName.CPU_UPGRADE;
+                            DEFAULT_MODULE_CPUUPGRADE_2 = new CPUUpgradeTemplate(cost, tier, type);
                             break;
                         case 3:
                             type = ModuleName.CPU_UPGRADE;
+                            DEFAULT_MODULE_CPUUPGRADE_3 = new CPUUpgradeTemplate(cost, tier, type);
                             break;
                         default:
                             throw new IOException("Tier not recognized (CPU Upgrade)");
@@ -229,15 +257,31 @@ public class Data {
                     {
                         case 1:
                             type = ModuleName.SOFTWARE_INJECTOR;
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_1 = new SoftwareInjectorTemplate(cost, tier, type);
                             break;
                         case 2:
                             type = ModuleName.SOFTWARE_INJECTOR;
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_2 = new SoftwareInjectorTemplate(cost, tier, type);
                             break;
                         case 3:
                             type = ModuleName.SOFTWARE_INJECTOR;
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_3 = new SoftwareInjectorTemplate(cost, tier, type);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Software Injector)");
+                    }
+                    break;
+                case "Bottlecap Antivirus":
+                    switch(tier)
+                    {
+                        case 1:
+                            type = ModuleName.BOTTLECAP_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1 = new DefenseTemplate(cost, tier, type);
+                            break;
+                        case 2:
+                            type = ModuleName.BOTTLECAP_ANTIVIRUS;
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2 = new DefenseTemplate(cost, tier, type);
+                            break;
                     }
                     break;
                 default:
