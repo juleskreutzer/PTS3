@@ -7,6 +7,7 @@ package hackattackfx;
 
 import hackattackfx.exceptions.InvalidMinionTypeException;
 import hackattackfx.exceptions.InvalidSpellNameException;
+import java.awt.Button;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.util.logging.Level;
@@ -25,16 +26,18 @@ public class HackAttackFX extends Application {
     
     GameEngine gEngine;
     
+    
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        
+        Parent root = FXMLLoader.load(getClass().getResource("Loading.fxml"));
+        
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
-        
         stage.show();
         //Data data = new Data();
-        gEngine = GameEngine.getInstance();
+        //gEngine = GameEngine.getInstance();
     }
 
     /**

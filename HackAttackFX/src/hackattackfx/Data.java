@@ -22,6 +22,9 @@ import org.json.*;
  */
 public class Data {
     
+    public interface UpdateProgress {
+        void update(double value);
+    }
     public static MinionTemplate DEFAULT_BYTE;
     public static MinionTemplate DEFAULT_KILOBYTE;
     public static MinionTemplate DEFAULT_MEGABYTE;
@@ -62,7 +65,7 @@ public class Data {
     private static String urlSpell = "http://api.nujules.nl/spell";
     private static String urlModule = "http://api.nujules.nl/module";
     
-    public Data() throws IOException, InvalidMinionTypeException, InvalidSpellNameException
+    public Data(UpdateProgress callback) throws IOException, InvalidMinionTypeException, InvalidSpellNameException
     {
         /**
          * First we create the JSONArray object by requesting the data from the HackAttack API.
@@ -73,8 +76,11 @@ public class Data {
         JSONArray modules = sendGet(urlModule);
         
         createMinions(minions);
+        callback.update(0.33);
         createSpells(spells);
+        callback.update(0.66);
         createModules(modules);
+        callback.update(0.99);
     }
     
     private JSONArray sendGet(String url) throws IOException
@@ -102,6 +108,10 @@ public class Data {
  
             // print result
             return new JSONArray(response);
+        }
+        else if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED)
+        {
+            throw new IOException("Unauthorized (401)");
         }
         return null;
     }
