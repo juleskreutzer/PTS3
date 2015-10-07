@@ -1,9 +1,10 @@
 package hackattackfx;
 
+import hackattackfx.GameEngine.OnExecuteTick;
 import hackattackfx.templates.MinionTemplate;
 import hackattackfx.enums.MinionType;
+import hackattackfx.interfaces.IMoveable;
 import java.awt.Point;
-import hackattackfx.exceptions.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,8 +16,8 @@ import hackattackfx.exceptions.*;
  *
  * @author Jules Kreutzer
  */
-public class Minion {
-    
+public class Minion implements IMoveable {
+
     public interface MinionHeartbeat{
         void onMinionDeath(Minion minion);
     }
@@ -32,6 +33,8 @@ public class Minion {
     private double damage;
     private boolean encrypted;
     private double reward;
+    
+    private MinionHeartbeat callback;
     
     // Constructor
     /**
@@ -53,6 +56,26 @@ public class Minion {
         damage = minion.getDamage();
         encrypted = minion.getEncrypted();
         reward = minion.getReward();
+        this.callback = callback;
+        
+        GameEngine.getInstance().setOnTickListener(new OnExecuteTick(){
+
+            @Override
+            public void onTick(int elapsedtime) {
+                move(elapsedtime);
+            }
+            
+        });
+    }
+    
+    @Override
+    public void move(double elapsedtime) {
+        
+    }
+
+    @Override
+    public Object getCollision() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     /**

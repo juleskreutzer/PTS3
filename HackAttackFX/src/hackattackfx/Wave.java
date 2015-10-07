@@ -5,12 +5,12 @@
  */
 package hackattackfx;
 
-import hackattackfx.GameEngine.OnExecuteTick;
 import hackattackfx.exceptions.DuplicateSpawnException;
 import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,6 +32,8 @@ public class Wave {
         waveActive = false;
         waveMultiplier = multiplier;
         minionList = new ArrayList<Minion>();
+        Map map = Map.getInstance();
+        Point base = map.getBaseBuildLocations().get(0);
         
         for(int i=0; i<bamount; i++){
             Minion minion = new Minion(Data.DEFAULT_BYTE, new Minion.MinionHeartbeat() {
@@ -41,7 +43,7 @@ public class Wave {
                     removeMinion(minion);
                 }
             });
-            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<kbamount; i++){
@@ -52,7 +54,7 @@ public class Wave {
                     removeMinion(minion);
                 }
             });
-            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<mbamount; i++){
@@ -63,7 +65,7 @@ public class Wave {
                     removeMinion(minion);
                 }
             });
-            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<gbamount; i++){
@@ -74,7 +76,7 @@ public class Wave {
                     removeMinion(minion);
                 }
             });
-            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<tbamount; i++){
@@ -85,7 +87,7 @@ public class Wave {
                     removeMinion(minion);
                 }
             });
-            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<pbamount; i++){
@@ -96,7 +98,7 @@ public class Wave {
                     removeMinion(minion);
                 }
             });
-            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
+            minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         

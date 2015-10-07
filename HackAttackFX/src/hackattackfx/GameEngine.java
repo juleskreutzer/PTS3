@@ -66,7 +66,7 @@ public class GameEngine implements MouseListener {
     
     private void initialize(){
         graphicsEngine = GraphicsEngine.getInstance();
-        map = new Map();
+        map = Map.getInstance();
         listeners = new ArrayList<OnExecuteTick>();
         unsubscribed = new ArrayList<OnExecuteTick>();
         waveList = new ArrayList<Wave>();
