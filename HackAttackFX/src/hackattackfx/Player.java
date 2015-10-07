@@ -40,11 +40,9 @@ public class Player {
     * Initialize a SoftwareInjector object, add the object to the modules field and return a list of spells that became available
     */  
     public void buildSoftwareInjector(){
-        /***Need to implent the parameters***
-        SoftwareInjector softwareinjector = new SoftwareInjector();
-        modules.add(softwareinjector);
-        return softwareinjector.getSpells();
-        */
+        SoftwareInjector softwareInjector = new SoftwareInjector(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1, null, 1, 1);
+        modules.add(softwareInjector);
+        throw new UnsupportedOperationException("How do we get the position and heigth/width for this module?");
         
     }
     

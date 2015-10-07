@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList;
 import hackattackfx.exceptions.*;
+import hackattackfx.templates.SoftwareInjectorTemplate;
 
 /**
  *
@@ -25,8 +26,17 @@ public class SoftwareInjector extends Module {
         super(cost, position, width, height, name, level);
         
     }
+    public SoftwareInjector(SoftwareInjectorTemplate softwareInjector, Point position, int width, int height)
+    {
+        super(softwareInjector.getCost(), position, width, height, softwareInjector.getModuleName(), softwareInjector.getLevel());
+        
+    }
     
     public boolean upgrade(){
+        if(super.getLevel() < 3)
+        {
+            throw new UnsupportedOperationException("Software Upgrade method not yet implemented");
+        }
         return false;
     }
     
