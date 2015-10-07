@@ -30,7 +30,7 @@ public class HackAttackFX extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         
-        Parent root = FXMLLoader.load(getClass().getResource("Loading.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLLoader.fxml"));
         
         Scene scene = new Scene(root);
         
