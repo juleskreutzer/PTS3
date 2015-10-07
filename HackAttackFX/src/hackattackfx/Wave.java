@@ -5,12 +5,14 @@
  */
 package hackattackfx;
 
-import hackattackfx.enums.MinionType;
+import hackattackfx.GameEngine.OnExecuteTick;
 import hackattackfx.exceptions.DuplicateSpawnException;
-import hackattackfx.templates.MinionTemplate;
+import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,7 +34,7 @@ public class Wave {
         minionList = new ArrayList<Minion>();
         
         for(int i=0; i<bamount; i++){
-            Minion minion = new Minion(new MinionTemplate(MinionType.b, 100,100,100,false,100), new Minion.MinionHeartbeat() {
+            Minion minion = new Minion(Data.DEFAULT_BYTE, new Minion.MinionHeartbeat() {
 
                 @Override
                 public void onMinionDeath(Minion minion) {
@@ -106,16 +108,27 @@ public class Wave {
      */
     public void startWave(){
         waveActive = true;
+        Iterator<Minion> minionit = minions();
         GameEngine.getInstance().setOnTickListener(new GameEngine.OnExecuteTick(){
             
             @Override
             public void onTick(int elapsedtime){
                 if(elapsedtime % GameEngine.FPS == 0){
-                    Minion m = minions().next();
-                    try{
-                        GraphicsEngine.getInstance().spawn(m);
-                    }catch(DuplicateSpawnException e){
-                        System.out.println(e.toString());
+                    Minion m = null;
+                    if(minionit.hasNext()){
+                        m = minionit.next();
+                        try{
+                            GraphicsEngine.getInstance().spawn(m);
+                        }catch(DuplicateSpawnException e){
+                            System.out.println(e.toString());
+                    }
+                    }else{
+                        // If no more minions are found, remove this wave from the gameengine tick event
+                        try {
+                            GameEngine.getInstance().unsubscribeListener(this);
+                        } catch (UnsubscribeNonListenerException ex) {
+                            Logger.getLogger(Wave.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }

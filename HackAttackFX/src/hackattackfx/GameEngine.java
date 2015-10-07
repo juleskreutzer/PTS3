@@ -52,6 +52,7 @@ public class GameEngine implements MouseListener {
     private Spell selectedSpell;
     
     private ArrayList<OnExecuteTick> listeners;
+    private ArrayList<OnExecuteTick> unsubscribed;
     
     private GameEngine(){
         instance = this;
@@ -65,6 +66,7 @@ public class GameEngine implements MouseListener {
     private void initialize(){
         graphicsEngine = GraphicsEngine.getInstance();
         listeners = new ArrayList<OnExecuteTick>();
+        unsubscribed = new ArrayList<OnExecuteTick>();
         waveList = new ArrayList<Wave>();
         playerA = new Player(100, "Jasper", 100, new Point(0,50));
         playerB = new Player(100, "Jules", 100, new Point(100,50));
@@ -80,14 +82,21 @@ public class GameEngine implements MouseListener {
         waveList.add(wave);
         
         wave.startWave();
-        while(GameTime.getDeltaTime() < GameTime.OPTIMAL_TIME){
-            tick();
-        }
+        Thread t = new Thread(new Runnable(){
+
+            @Override
+            public void run() {
+                while(GameTime.getDeltaTime() < GameTime.OPTIMAL_TIME){
+                    tick();
+                }
+            }
+        });
+        t.start();
         
     }
     
     private void tick(){
-        
+        processUnsubscribers();
         notifyListeners();
     }
     
@@ -97,6 +106,22 @@ public class GameEngine implements MouseListener {
     
     public void setOnTickCompleteListener(OnCompleteTick callback){
         
+    }
+    /**
+     * Removes the unsubscribers from the listeners list.
+     * This method should not be called during a tick!
+     */
+    private void processUnsubscribers(){
+        listeners.removeAll(unsubscribed);
+        unsubscribed.clear();
+    }
+    
+    public boolean unsubscribeListener(OnExecuteTick callback) throws UnsubscribeNonListenerException{
+        if(!listeners.contains(callback)){
+            throw new UnsubscribeNonListenerException("You try to unsubscribe a listener that is not subscribed as a listener");
+        }
+        unsubscribed.add(callback);
+        return true;
     }
     
     /**

@@ -5,9 +5,11 @@
  */
 package hackattackfx;
 
+import static java.awt.SystemColor.window;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,7 +43,14 @@ public class FXMLDocumentController implements Initializable {
     }    
     
     public void addNode(Node node){
-        window.getChildren().add(node);
+        Platform.runLater(new Runnable(){
+
+            @Override
+            public void run() {
+                window.getChildren().add(node);
+            }
+            
+        });
     }
     
     public static FXMLDocumentController getInstance(){
