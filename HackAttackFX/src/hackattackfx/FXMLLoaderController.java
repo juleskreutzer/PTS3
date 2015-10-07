@@ -78,11 +78,11 @@ public class FXMLLoaderController implements Initializable {
            errorlabel.setText("Oops.. we can't connect to our service. is your internet connection OK? \n" + to.toString());
            
        } catch (IOException ex) {
-           Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+           errorlabel.setText("Oops.. Something went wrong.\n" + ex.toString());
        } catch (InvalidMinionTypeException ex) {
-           Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+           errorlabel.setText("The miniontype is not recognized.");
        } catch (InvalidSpellNameException ex) {
-           Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+           errorlabel.setText("The spellname is not recognized.");
        }
     }
     

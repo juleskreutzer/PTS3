@@ -55,8 +55,6 @@ public class Data {
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_1;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_2;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_3;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_2;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_3;
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_1;
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_2;
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_3;
