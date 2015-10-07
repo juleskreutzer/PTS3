@@ -41,7 +41,7 @@ public class Wave {
                     removeMinion(minion);
                 }
             });
-            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x+=20, Map.baseBuildLocations.get(0).y));
+            minion.setPosition(new Point(Map.baseBuildLocations.get(0).x, Map.baseBuildLocations.get(0).y));
             minionList.add(minion);
         }
         for(int i=0; i<kbamount; i++){

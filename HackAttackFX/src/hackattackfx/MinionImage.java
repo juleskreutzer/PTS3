@@ -16,7 +16,7 @@ import javafx.scene.image.ImageView;
 
 /**
  *
- * @author juleskreutzer
+ * @author juleskreutzer, Jasper Rouwhorst
  */
 public class MinionImage extends ObjectImage {
 
@@ -26,8 +26,10 @@ public class MinionImage extends ObjectImage {
         super(m);
         minion = m;
         
-        File minion = new File("src/hackattackfx/resources/Byte.png");
-        Image image = new javafx.scene.image.Image(minion.toURI().toString());
+        File file = new File("src/hackattackfx/resources/Byte.png");
+        Image image = new javafx.scene.image.Image(file.toURI().toString());
+        setX(minion.getPosition().x);
+        setY(minion.getPosition().y);
         this.setImage(image);
         
         

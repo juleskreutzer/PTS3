@@ -43,6 +43,7 @@ public class GameEngine implements MouseListener {
     private static GameEngine instance;
     
     private GraphicsEngine graphicsEngine;
+    private Map map;
     private ArrayList<Wave> waveList;
     private Wave currentWave;
     private Player playerA;
@@ -65,13 +66,22 @@ public class GameEngine implements MouseListener {
     
     private void initialize(){
         graphicsEngine = GraphicsEngine.getInstance();
+        map = new Map();
         listeners = new ArrayList<OnExecuteTick>();
         unsubscribed = new ArrayList<OnExecuteTick>();
         waveList = new ArrayList<Wave>();
         playerA = new Player(100, "Jasper", 100, new Point(0,50));
         playerB = new Player(100, "Jules", 100, new Point(100,50));
         
+        preStart();
         startGame();
+    }
+    
+    /**
+     * Mostly used to draw the initial components like the bases and roads
+     */
+    private void preStart(){
+        graphicsEngine.drawRoad(map.getRoad());
     }
     
     /**

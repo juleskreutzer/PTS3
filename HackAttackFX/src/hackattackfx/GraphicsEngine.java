@@ -5,18 +5,10 @@
  */
 package hackattackfx;
 
-import java.io.File;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import hackattackfx.exceptions.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 /**
  *
@@ -32,6 +24,12 @@ public class GraphicsEngine{
     private GraphicsEngine(){
         instance = this;
         parent = FXMLDocumentController.getInstance();
+        
+        initialize();
+        
+    }
+    
+    private void initialize(){
         
     }
     
@@ -72,6 +70,14 @@ public class GraphicsEngine{
         /**
          * TODO implement this method using JavaFX.
          */
+    }
+    
+    public void drawRoad(Road road){
+        for(Path p : road.disect()){
+            Line line = new Line(p.getStart().x, p.getStart().y, p.getEnd().x, p.getEnd().y);
+            line.setStroke(Color.BLACK);
+            parent.addNode(line);
+        }
     }
     
     public void drawSpellRange(Spell spell){
