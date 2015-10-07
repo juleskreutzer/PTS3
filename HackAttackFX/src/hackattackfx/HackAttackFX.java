@@ -31,14 +31,21 @@ public class HackAttackFX extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLLoader.fxml"));
-        
-        Scene scene = new Scene(root);
-        
+        FXMLLoader loader = new FXMLLoader();
+        Parent loaderroot = (Parent)loader.load(getClass().getResource("FXMLLoader.fxml").openStream());
+        FXMLLoaderController controller = loader.<FXMLLoaderController>getController();
+        Scene scene = new Scene(loaderroot);
+
         stage.setScene(scene);
         stage.show();
-        //Data data = new Data();
-        //gEngine = GameEngine.getInstance();
+        
+        controller.initializeData();
+        
+        Parent mainroot = (Parent)loader.load(getClass().getResource("FXMLDocument.fxml").openStream());
+        
+        scene = new Scene(mainroot);
+        stage.setScene(scene);
+        stage.show();
     }
 
     /**

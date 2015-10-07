@@ -18,16 +18,23 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+<<<<<<< HEAD
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+=======
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+>>>>>>> origin/master
 
 /**
  * FXML Controller class
  *
- * @author jaspe_000
+ * @author Jasper Rouwhorst
  */
 public class FXMLLoaderController implements Initializable {
 
@@ -51,13 +58,19 @@ public class FXMLLoaderController implements Initializable {
                 progressBar = (ProgressBar)node;
             }
         }
-        
-       try {
+    }
+    
+    public void initializeData(){
+        try {
            Data data = new Data(new Data.UpdateProgress() {
                
                @Override
                public void update(double value) {
                    progressBar.setProgress(value);
+                   if(value >= 0.99){
+                       Stage stage  = (Stage)pane.getScene().getWindow();
+                       stage.close();
+                   }
                }
            });
        } catch (UnknownHostException to)
