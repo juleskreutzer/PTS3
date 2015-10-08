@@ -49,6 +49,7 @@ public class HackAttackFX extends Application {
         gamestage.show();
         
         gEngine = GameEngine.getInstance();
+        gEngine.start();
     }
 
     /**

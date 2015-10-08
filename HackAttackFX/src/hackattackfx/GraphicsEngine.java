@@ -7,6 +7,9 @@ package hackattackfx;
 
 import java.util.List;
 import hackattackfx.exceptions.*;
+import java.util.ArrayList;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -30,7 +33,13 @@ public class GraphicsEngine{
     }
     
     private void initialize(){
-        
+        GameEngine.getInstance().setOnTickCompleteListener(new GameEngine.OnCompleteTick() {
+
+            @Override
+            public void tickComplete() {
+                update();
+            }
+        });
     }
     
     public static GraphicsEngine getInstance(){
@@ -41,13 +50,18 @@ public class GraphicsEngine{
      * From the moment an object is spawned, it will be updated every tick.
      * This is the entry point for an object to be updated every tick.
      * @param object 
+     * @throws hackattackfx.exceptions.DuplicateSpawnException 
+     * @throws hackattackfx.exceptions.InvalidObjectException 
      */
-    public void spawn(Object object) throws DuplicateSpawnException{
+    public void spawn(Object object) throws DuplicateSpawnException, InvalidObjectException{
         // Checks if the object doesn't exists already
-        List<ObjectImage> list = (List<ObjectImage>)parent.getAllNodes();
-        for(ObjectImage image : list){
-            if(image.getReference() == object){
-                throw new DuplicateSpawnException("This object already spawned!");
+        List<Node> list = parent.getAllNodes();
+        for(Node node : list){
+            if(node instanceof ObjectImage){
+                ObjectImage image = (ObjectImage)node;
+                if(image.getReference() == object){
+                    throw new DuplicateSpawnException("This object already spawned!");
+                }
             }
         }
         
@@ -59,17 +73,40 @@ public class GraphicsEngine{
             parent.addNode(new ModuleImage((Module)object));
         }else if(object instanceof Spell){
             parent.addNode(new SpellImage((Spell)object));
+        }else{
+            throw new InvalidObjectException("The object you tried to spawn doesn't have a corresponding ObjectImage implementation");
         }
     }
     
     public double update(){
+        draw();
         return 0;
     }
     
     private void draw(){
-        /**
-         * TODO implement this method using JavaFX.
-         */
+        Platform.runLater(new Runnable(){
+
+            @Override
+            public void run() {
+                List<Node> nodes = parent.getAllNodes();
+
+                for(Node n : nodes){
+                    if(n instanceof BulletImage){
+
+                    }else if(n instanceof MinionImage){
+                        MinionImage mi = (MinionImage)n;
+                        Minion m = ((MinionImage)n).getMinion();
+                        mi.setTranslateX(m.getPosition().x);
+                        mi.setTranslateY(m.getPosition().y);
+
+                    }else if(n instanceof ModuleImage){
+
+                    }else if(n instanceof SpellImage){
+
+                    }
+                }
+            }
+        });
     }
     
     public void drawRoad(Road road){

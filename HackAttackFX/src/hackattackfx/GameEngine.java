@@ -5,6 +5,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import hackattackfx.exceptions.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import static jdk.nashorn.internal.objects.NativeRegExp.test;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,7 +21,7 @@ import hackattackfx.exceptions.*;
  * 
  * @author juleskreutzer, Jasper Rouwhorst
  */
-public class GameEngine implements MouseListener {
+public class GameEngine extends Thread implements MouseListener {
 
     /**
      * This interface is used to notify every listening object when a tick has occured.
@@ -50,8 +53,10 @@ public class GameEngine implements MouseListener {
     private Player playerB;
     
     private int elapsedTime;
+    private boolean gameRunning;
     private Spell selectedSpell;
     
+    private ArrayList<OnCompleteTick> tickCompleteListeners;
     private ArrayList<OnExecuteTick> listeners;
     private ArrayList<OnExecuteTick> unsubscribed;
     
@@ -67,12 +72,13 @@ public class GameEngine implements MouseListener {
     private void initialize(){
         graphicsEngine = GraphicsEngine.getInstance();
         map = Map.getInstance();
+        tickCompleteListeners = new ArrayList<OnCompleteTick>();
         listeners = new ArrayList<OnExecuteTick>();
         unsubscribed = new ArrayList<OnExecuteTick>();
         waveList = new ArrayList<Wave>();
         playerA = new Player(100, "Jasper", 100, new Point(0,50));
         playerB = new Player(100, "Jules", 100, new Point(100,50));
-        
+        gameRunning = false;
         preStart();
         startGame();
     }
@@ -88,26 +94,38 @@ public class GameEngine implements MouseListener {
      * Starts the game. From this point, the initial wave will be created and the game will run from this point on.
      */
     private void startGame(){
-        Wave wave = new Wave(1,1,playerB,10,0,0,0,0,0);
+        gameRunning = true;
+        Wave wave = new Wave(1,1,playerB,1,0,0,0,0,0);
         waveList.add(wave);
         
         wave.startWave();
-        Thread t = new Thread(new Runnable(){
+        
+    }
+    
+    @Override
+    public void run() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
 
             @Override
             public void run() {
-                while(GameTime.getDeltaTime() < GameTime.OPTIMAL_TIME){
-                    tick();
-                }
+                tick();
             }
-        });
-        t.start();
+        }, 0, 16);
+                
         
+//        while(gameRunning){
+//            while(GameTime.getDeltaTime() < GameTime.OPTIMAL_TIME){
+//                
+//            }
+//        }
     }
     
     private void tick(){
         processUnsubscribers();
         notifyListeners();
+        
+        
     }
     
     public void setOnTickListener(OnExecuteTick callback){
@@ -115,7 +133,7 @@ public class GameEngine implements MouseListener {
     }
     
     public void setOnTickCompleteListener(OnCompleteTick callback){
-        
+        tickCompleteListeners.add(callback);
     }
     /**
      * Removes the unsubscribers from the listeners list.
@@ -140,6 +158,9 @@ public class GameEngine implements MouseListener {
     private void notifyListeners(){
         for(OnExecuteTick l : listeners){
             l.onTick(elapsedTime);
+        }
+        for(OnCompleteTick l : tickCompleteListeners){
+            l.tickComplete();
         }
     }
     

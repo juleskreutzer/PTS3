@@ -6,11 +6,11 @@
 package hackattackfx;
 
 import hackattackfx.exceptions.DuplicateSpawnException;
+import hackattackfx.exceptions.InvalidObjectException;
 import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -123,7 +123,9 @@ public class Wave {
                             GraphicsEngine.getInstance().spawn(m);
                         }catch(DuplicateSpawnException e){
                             System.out.println(e.toString());
-                    }
+                        }catch(InvalidObjectException e){
+                            System.out.println(e.toString());
+                        }
                     }else{
                         // If no more minions are found, remove this wave from the gameengine tick event
                         try {

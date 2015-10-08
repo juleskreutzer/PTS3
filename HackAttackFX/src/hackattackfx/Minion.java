@@ -5,6 +5,7 @@ import hackattackfx.templates.MinionTemplate;
 import hackattackfx.enums.MinionType;
 import hackattackfx.interfaces.IMoveable;
 import java.awt.Point;
+import java.util.List;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,7 +15,7 @@ import java.awt.Point;
 
 /**
  *
- * @author Jules Kreutzer
+ * @author Jules Kreutzer, Jasper Rouwhorst
  */
 public class Minion implements IMoveable {
 
@@ -70,6 +71,46 @@ public class Minion implements IMoveable {
     
     @Override
     public void move(double elapsedtime) {
+        if(targetPosition == null){
+            targetPosition = Map.getInstance().getRoad().getBegin();
+        }
+        
+        if(position.x < targetPosition.x){
+            position.x += (speed);
+            // Correct the position if the minions new position is over the targetposition
+            if(position.x >= targetPosition.x){
+                position.x = targetPosition.x;
+            }
+        }else if(position.x > targetPosition.x){
+            position.x -= (speed);
+            // Correct the position if the minions new position is over the targetposition
+            if(position.x <= targetPosition.x){
+                position.x = targetPosition.x;
+            }
+        }else if(position.y < targetPosition.y){
+            position.y += (speed);
+            // Correct the position if the minions new position is over the targetposition
+            if(position.y >= targetPosition.y){
+                position.y = targetPosition.y;
+            }
+        }else if(position.y > targetPosition.y){
+            position.y -= (speed);
+            // Correct the position if the minions new position is over the targetposition
+            if(position.y <= targetPosition.y){
+                position.y = targetPosition.y;
+            }
+        }else{
+            List<Path> paths = Map.getInstance().getRoad().disect();
+            for(Path p : paths){
+                if(targetPosition.x == p.getStart().x && targetPosition.y == p.getStart().y){
+                    targetPosition = p.getEnd();
+                    break;
+                }else if(targetPosition.x == p.getEnd().x && targetPosition.y == p.getEnd().y){
+                    targetPosition = paths.get(paths.indexOf(p)+1).getEnd();
+                    break;
+                }
+            }
+        }
         
     }
 
