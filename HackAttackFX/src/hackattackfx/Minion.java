@@ -3,9 +3,12 @@ package hackattackfx;
 import hackattackfx.GameEngine.OnExecuteTick;
 import hackattackfx.templates.MinionTemplate;
 import hackattackfx.enums.MinionType;
+import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import hackattackfx.interfaces.IMoveable;
 import java.awt.Point;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -35,6 +38,7 @@ public class Minion implements IMoveable {
     private boolean encrypted;
     private double reward;
     
+    private OnExecuteTick tickListener;
     private MinionHeartbeat callback;
     
     // Constructor
@@ -44,12 +48,12 @@ public class Minion implements IMoveable {
      * @param type is the MinionType of the minion than needs to be created
      * @param callback this callback triggers the {@link MinionHeartBeat.onMinionDeath(Minion minion)} when a minion dies
      */
-    public Minion(MinionType type, MinionHeartbeat callback)
+    public Minion(MinionType type)
     {
         throw new UnsupportedOperationException("The minion class doesn't get it\'s data from the data-class yet.");
     }
     
-    public Minion(MinionTemplate minion, MinionHeartbeat callback)
+    public Minion(MinionTemplate minion)
     {
         health = minion.getHealth();
         speed = minion.getSpeed();
@@ -57,16 +61,29 @@ public class Minion implements IMoveable {
         damage = minion.getDamage();
         encrypted = minion.getEncrypted();
         reward = minion.getReward();
-        this.callback = callback;
         
-        GameEngine.getInstance().setOnTickListener(new OnExecuteTick(){
+    }
+    
+    // The minion will response to ticks from now on
+    public void activate(MinionHeartbeat callback){
+        this.callback = callback;
+        tickListener = new OnExecuteTick(){
 
             @Override
-            public void onTick(int elapsedtime) {
+            public void onTick(long elapsedtime) {
                 move(elapsedtime);
             }
             
-        });
+        };
+        GameEngine.getInstance().setOnTickListener(tickListener);
+    }
+    
+    public void deactivate(){
+        try {
+            GameEngine.getInstance().unsubscribeListener(tickListener);
+        } catch (UnsubscribeNonListenerException ex) {
+            Logger.getLogger(Minion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
@@ -106,7 +123,9 @@ public class Minion implements IMoveable {
                     targetPosition = p.getEnd();
                     break;
                 }else if(targetPosition.x == p.getEnd().x && targetPosition.y == p.getEnd().y){
-                    targetPosition = paths.get(paths.indexOf(p)+1).getEnd();
+                    if(paths.indexOf(p) != paths.size() -1){
+                        targetPosition = paths.get(paths.indexOf(p)+1).getEnd();
+                    }
                     break;
                 }
             }

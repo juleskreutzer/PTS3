@@ -31,7 +31,7 @@ public class GameEngine extends Thread implements MouseListener {
          * Executed when a tick occured
          * @param elapsedtime The elapsed time of the running game in milliseconds
          */
-        void onTick(int elapsedtime);
+        void onTick(long elapsedtime);
     }
     
     /**
@@ -40,8 +40,6 @@ public class GameEngine extends Thread implements MouseListener {
     public interface OnCompleteTick{
         void tickComplete();
     }
-    
-    public final static int FPS = 30;
     
     private static GameEngine instance;
     
@@ -52,7 +50,6 @@ public class GameEngine extends Thread implements MouseListener {
     private Player playerA;
     private Player playerB;
     
-    private int elapsedTime;
     private boolean gameRunning;
     private Spell selectedSpell;
     
@@ -95,7 +92,7 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void startGame(){
         gameRunning = true;
-        Wave wave = new Wave(1,1,playerB,1,0,0,0,0,0);
+        Wave wave = new Wave(1,1,playerB,10,0,0,0,0,0);
         waveList.add(wave);
         
         wave.startWave();
@@ -111,7 +108,7 @@ public class GameEngine extends Thread implements MouseListener {
             public void run() {
                 tick();
             }
-        }, 0, 50);
+        }, 0, 15);
                 
         
 //        while(gameRunning){
@@ -157,7 +154,7 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void notifyListeners(){
         for(OnExecuteTick l : listeners){
-            l.onTick(elapsedTime);
+            l.onTick(GameTime.getElapsedTime());
         }
         for(OnCompleteTick l : tickCompleteListeners){
             l.tickComplete();

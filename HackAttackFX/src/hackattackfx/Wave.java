@@ -5,12 +5,15 @@
  */
 package hackattackfx;
 
+import hackattackfx.GameEngine.OnExecuteTick;
 import hackattackfx.exceptions.DuplicateSpawnException;
 import hackattackfx.exceptions.InvalidObjectException;
 import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,68 +39,32 @@ public class Wave {
         Point base = map.getBaseBuildLocations().get(0);
         
         for(int i=0; i<bamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_BYTE, new Minion.MinionHeartbeat() {
-
-                @Override
-                public void onMinionDeath(Minion minion) {
-                    removeMinion(minion);
-                }
-            });
+            Minion minion = new Minion(Data.DEFAULT_BYTE);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<kbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_KILOBYTE, new Minion.MinionHeartbeat() {
-
-                @Override
-                public void onMinionDeath(Minion minion) {
-                    removeMinion(minion);
-                }
-            });
+            Minion minion = new Minion(Data.DEFAULT_KILOBYTE);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<mbamount; i++){
-           Minion minion = new Minion(Data.DEFAULT_MEGABYTE, new Minion.MinionHeartbeat() {
-
-                @Override
-                public void onMinionDeath(Minion minion) {
-                    removeMinion(minion);
-                }
-            });
+           Minion minion = new Minion(Data.DEFAULT_MEGABYTE);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<gbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_GIGABYTE, new Minion.MinionHeartbeat() {
-
-                @Override
-                public void onMinionDeath(Minion minion) {
-                    removeMinion(minion);
-                }
-            });
+            Minion minion = new Minion(Data.DEFAULT_GIGABYTE);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<tbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_TERABYTE, new Minion.MinionHeartbeat() {
-
-                @Override
-                public void onMinionDeath(Minion minion) {
-                    removeMinion(minion);
-                }
-            });
+            Minion minion = new Minion(Data.DEFAULT_TERABYTE);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         for(int i=0; i<pbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_PETABYTE, new Minion.MinionHeartbeat() {
-
-                @Override
-                public void onMinionDeath(Minion minion) {
-                    removeMinion(minion);
-                }
-            });
+            Minion minion = new Minion(Data.DEFAULT_PETABYTE);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
@@ -111,11 +78,40 @@ public class Wave {
     public void startWave(){
         waveActive = true;
         Iterator<Minion> minionit = minions();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                Minion m = null;
+                if(minionit.hasNext()){
+                    m = minionit.next();
+                    try{
+                        GraphicsEngine.getInstance().spawn(m);
+                        m.activate(new Minion.MinionHeartbeat() {
+
+                            @Override
+                            public void onMinionDeath(Minion minion) {
+                                removeMinion(minion);
+                            }
+                            
+                        });
+                    }catch(DuplicateSpawnException e){
+                        System.out.println(e.toString());
+                    }catch(InvalidObjectException e){
+                        System.out.println(e.toString());
+                    }
+                }
+            }
+        }, 0, 1000);
+        /*
         GameEngine.getInstance().setOnTickListener(new GameEngine.OnExecuteTick(){
             
             @Override
-            public void onTick(int elapsedtime){
-                if(elapsedtime % GameEngine.FPS == 0){
+            public void onTick(long elapsedtime){
+                
+                
+                if(elapsedtime % 3000 <= 3000){
                     Minion m = null;
                     if(minionit.hasNext()){
                         m = minionit.next();
@@ -129,7 +125,7 @@ public class Wave {
                     }else{
                         // If no more minions are found, remove this wave from the gameengine tick event
                         try {
-                            GameEngine.getInstance().unsubscribeListener(this);
+                            GameEngine.getInstance().unsubscribeListener(listener);
                         } catch (UnsubscribeNonListenerException ex) {
                             Logger.getLogger(Wave.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -137,7 +133,7 @@ public class Wave {
                 }
             }
             
-        });
+        });*/
     }
     
     public Iterator<Minion> minions(){

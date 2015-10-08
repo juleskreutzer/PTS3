@@ -11,26 +11,26 @@ package hackattackfx;
  */
 public class GameTime {
     
-    private final static double firstLoopTime = System.nanoTime();
-    private static double lastLoopTime = System.nanoTime();
+    private final static long firstLoopTime = System.nanoTime();
+    private static long lastLoopTime = System.nanoTime();
     // Elapsed time of the whole game in milliseconds
-    private static double elapsedTime;
+    private static long elapsedTime;
     public final static int TARGET_FPS = 60;
-    public final static double OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+    public final static long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
     
     private GameTime(){
         
     }
     
-    public static double getDeltaTime(){
-        double now = System.nanoTime();
-        double updateLength = now - lastLoopTime;
-        lastLoopTime = now;
-        double delta = updateLength / OPTIMAL_TIME;
+    public static long getDeltaTime(){
+        long now = System.nanoTime();
+        long updateLength = now - lastLoopTime;
+        //lastLoopTime = now;
+        long delta = updateLength / OPTIMAL_TIME;
         return delta;
     }
     
-    public static double getLastLoopTime(){
+    public static long getLastLoopTime(){
         return lastLoopTime;
     }
     
@@ -38,8 +38,9 @@ public class GameTime {
      * 
      * @return The elapsed time of the whole game in milliseconds 
      */
-    public static double getElapsedTime(){
-        return (lastLoopTime - firstLoopTime) / 1000000;
+    public static long getElapsedTime(){
+        boolean bigger = System.nanoTime() > firstLoopTime;
+        return (System.nanoTime() - firstLoopTime) / 1000000;
     }
     
 }
