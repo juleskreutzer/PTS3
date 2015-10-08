@@ -96,8 +96,8 @@ public class GraphicsEngine{
                     }else if(n instanceof MinionImage){
                         MinionImage mi = (MinionImage)n;
                         Minion m = ((MinionImage)n).getMinion();
-                        mi.setTranslateX(m.getPosition().x);
-                        mi.setTranslateY(m.getPosition().y);
+                        mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
+                        mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
 
                     }else if(n instanceof ModuleImage){
 

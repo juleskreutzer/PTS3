@@ -111,7 +111,7 @@ public class GameEngine extends Thread implements MouseListener {
             public void run() {
                 tick();
             }
-        }, 0, 16);
+        }, 0, 50);
                 
         
 //        while(gameRunning){
