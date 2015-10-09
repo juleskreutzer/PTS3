@@ -27,18 +27,6 @@ public class Path {
     private Point end;
     private Direction direction;
 
-    public Path(Point s, Point e){
-        start = s;
-        end = e;
-        try {
-            initialize();
-        } catch (FloatingPathException ex) {
-            Logger.getLogger(Path.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidPathException ex) {
-            Logger.getLogger(Path.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     public Path(Point s, int lenght, Direction direction){
         start = s;
         switch(direction){
@@ -78,6 +66,14 @@ public class Path {
 
     public Point getEnd(){
         return end;
+    }
+    
+    public int getLength(){
+        return start.x == end.x ? Math.abs(start.y - end.y) : Math.abs(start.x - end.x);
+    }
+    
+    public Direction getDirection(){
+        return direction;
     }
     
 }

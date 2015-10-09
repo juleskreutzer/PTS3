@@ -111,9 +111,11 @@ public class GraphicsEngine{
     
     public void drawRoad(Road road){
         for(Path p : road.disect()){
-            Line line = new Line(p.getStart().x, p.getStart().y, p.getEnd().x, p.getEnd().y);
-            line.setStroke(Color.BLACK);
-            parent.addNode(line);
+            
+            PathImage image = new PathImage(p);
+//            Line line = new Line(p.getStart().x, p.getStart().y, p.getEnd().x, p.getEnd().y);
+//            line.setStroke(Color.BLACK);
+            parent.addNode(image);
         }
     }
     

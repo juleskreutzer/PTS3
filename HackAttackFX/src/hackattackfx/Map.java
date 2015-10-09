@@ -35,20 +35,15 @@ public class Map {
         try {
             road.addPath(new Path(new Point(base.x, base.y),1000, Path.Direction.Right));
             road.addPath(new Path(road.getEnd(),500, Path.Direction.Down));
-            road.addPath(new Path(road.getEnd(),950, Path.Direction.Left));
-            road.addPath(new Path(road.getEnd(),450, Path.Direction.Up));
-            road.addPath(new Path(road.getEnd(),900, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),400, Path.Direction.Down));
-            road.addPath(new Path(road.getEnd(),850, Path.Direction.Left));
-            road.addPath(new Path(road.getEnd(),350, Path.Direction.Up));
+            road.addPath(new Path(road.getEnd(),900, Path.Direction.Left));
+            road.addPath(new Path(road.getEnd(),400, Path.Direction.Up));
             road.addPath(new Path(road.getEnd(),800, Path.Direction.Right));
             road.addPath(new Path(road.getEnd(),300, Path.Direction.Down));
-            road.addPath(new Path(road.getEnd(),750, Path.Direction.Left));
-            road.addPath(new Path(road.getEnd(),250, Path.Direction.Up));
-            road.addPath(new Path(road.getEnd(),700, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),200, Path.Direction.Down));
-            road.addPath(new Path(road.getEnd(),650, Path.Direction.Left));
-            road.addPath(new Path(road.getEnd(),150, Path.Direction.Up));
+            road.addPath(new Path(road.getEnd(),700, Path.Direction.Left));
+            road.addPath(new Path(road.getEnd(),200, Path.Direction.Up));
+            road.addPath(new Path(road.getEnd(),600, Path.Direction.Right));
+            road.addPath(new Path(road.getEnd(),100, Path.Direction.Down));
+            road.addPath(new Path(road.getEnd(),500, Path.Direction.Left));
         } catch (FloatingPathException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
         }

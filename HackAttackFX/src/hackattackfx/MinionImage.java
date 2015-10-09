@@ -26,13 +26,32 @@ public class MinionImage extends ObjectImage {
         super(m);
         minion = m;
         
-        File file = new File("src/hackattackfx/resources/Byte.png");
+        File file = null;
+        switch(minion.getMinionType()){
+            case b:
+                file = new File("src/hackattackfx/resources/Byte.png");
+                break;
+            case kb:
+                file = new File("src/hackattackfx/resources/KiloByte.png");
+                break;
+            case mb:
+                file = new File("src/hackattackfx/resources/MegaByte.png");
+                break;
+            case gb:
+                file = new File("src/hackattackfx/resources/GigaByte.png");
+                break;
+            case tb: 
+                file = new File("src/hackattackfx/resources/TeraByte.png");
+                break;
+            case pb:
+                file = new File("src/hackattackfx/resources/PetaByte.png");
+                break;
+        }
+        
         Image image = new javafx.scene.image.Image(file.toURI().toString());
         setX(minion.getPosition().x);
         setY(minion.getPosition().y);
         this.setImage(image);
-        
-        
     }
     
     public Minion getMinion(){
