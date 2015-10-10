@@ -7,11 +7,12 @@ package hackattackfx;
 
 import java.util.List;
 import hackattackfx.exceptions.*;
-import java.util.ArrayList;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -38,6 +39,17 @@ public class GraphicsEngine{
             @Override
             public void tickComplete() {
                 update();
+            }
+        });
+        
+        ImageView builddefense = (ImageView)parent.getNode("buildDefence");
+        Image image = builddefense.getImage();
+        builddefense.setOnMouseClicked(new EventHandler<MouseEvent>(){
+ 
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("Image clicked");
+                // TODO Defensebuild image should follow the cursor on movement
             }
         });
     }

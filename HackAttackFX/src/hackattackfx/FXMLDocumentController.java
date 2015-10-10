@@ -5,17 +5,17 @@
  */
 package hackattackfx;
 
-import static java.awt.SystemColor.window;
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -26,6 +26,8 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private AnchorPane window;
+    @FXML
+    private ImageView buildDefense;
     
     private GraphicsEngine gEngine;
     private static FXMLDocumentController instance;
@@ -40,6 +42,8 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gEngine = GraphicsEngine.getInstance();
+        
+        
     }    
     
     public void addNode(Node node){
