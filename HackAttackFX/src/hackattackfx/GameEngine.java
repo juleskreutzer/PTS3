@@ -52,6 +52,7 @@ public class GameEngine extends Thread implements MouseListener {
     
     private boolean gameRunning;
     private Spell selectedSpell;
+    private Module selectedModule;
     
     private ArrayList<OnCompleteTick> tickCompleteListeners;
     private ArrayList<OnExecuteTick> listeners;
@@ -134,7 +135,7 @@ public class GameEngine extends Thread implements MouseListener {
     }
     /**
      * Removes the unsubscribers from the listeners list.
-     * This method should not be called during a tick!
+     * This method should not be called during a tick therefor only after a tick!
      */
     private void processUnsubscribers(){
         listeners.removeAll(unsubscribed);
@@ -159,6 +160,10 @@ public class GameEngine extends Thread implements MouseListener {
         for(OnCompleteTick l : tickCompleteListeners){
             l.tickComplete();
         }
+    }
+    
+    public void drawDefenseSpawnTarget(Defense d){
+        
     }
     
     /**

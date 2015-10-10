@@ -7,6 +7,7 @@ package hackattackfx;
 
 import java.util.List;
 import hackattackfx.exceptions.*;
+import java.io.File;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -42,7 +43,8 @@ public class GraphicsEngine{
             }
         });
         
-        ImageView builddefense = (ImageView)parent.getNode("buildDefence");
+        Node node = parent.getNode("buildDefense");
+        ImageView builddefense = (ImageView)parent.getNode("buildDefense");
         Image image = builddefense.getImage();
         builddefense.setOnMouseClicked(new EventHandler<MouseEvent>(){
  
@@ -90,6 +92,10 @@ public class GraphicsEngine{
         }
     }
     
+    public void drawSpawnTarget(Defense d){
+        
+    }
+    
     public double update(){
         draw();
         return 0;
@@ -123,10 +129,7 @@ public class GraphicsEngine{
     
     public void drawRoad(Road road){
         for(Path p : road.disect()){
-            
             PathImage image = new PathImage(p);
-//            Line line = new Line(p.getStart().x, p.getStart().y, p.getEnd().x, p.getEnd().y);
-//            line.setStroke(Color.BLACK);
             parent.addNode(image);
         }
     }
