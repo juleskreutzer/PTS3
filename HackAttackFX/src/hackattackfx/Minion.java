@@ -90,6 +90,7 @@ public class Minion implements IMoveable {
         }
     }
     
+    //TODO Doesn't Use elapsedTime yet.
     @Override
     public void move(double elapsedtime) {
         if(targetPosition == null){
@@ -102,26 +103,30 @@ public class Minion implements IMoveable {
             if(position.x >= targetPosition.x){
                 position.x = targetPosition.x;
             }
-        }else if(position.x > targetPosition.x){
+        }
+        else if(position.x > targetPosition.x){
             position.x -= (speed);
             // Correct the position if the minions new position is over the targetposition
             if(position.x <= targetPosition.x){
                 position.x = targetPosition.x;
             }
-        }else if(position.y < targetPosition.y){
+        }
+        else if(position.y < targetPosition.y){
             position.y += (speed);
             // Correct the position if the minions new position is over the targetposition
             if(position.y >= targetPosition.y){
                 position.y = targetPosition.y;
             }
-        }else if(position.y > targetPosition.y){
+        }
+        else if(position.y > targetPosition.y){
             position.y -= (speed);
             // Correct the position if the minions new position is over the targetposition
             if(position.y <= targetPosition.y){
                 position.y = targetPosition.y;
             }
-        }else{
-            List<Path> paths = Map.getInstance().getRoad().disect();
+        }
+        else{
+            List<Path> paths = Map.getInstance().getRoad().getPaths();
             for(Path p : paths){
                 if(targetPosition.x == p.getStart().x && targetPosition.y == p.getStart().y){
                     targetPosition = p.getEnd();

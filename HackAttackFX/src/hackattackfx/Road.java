@@ -16,26 +16,47 @@ import java.util.List;
  */
 public class Road {
     
-    private List<Path> paths;
+    private List<Path> paths; //The collection of paths the road is made out of.
     
+    /**
+     * Creates a new Road.
+     */
     public Road(){
         paths = new ArrayList<>();
     }
     
+    /**
+     * Get the begin point of the road.
+     * @return, returns the starting point of the first path in paths List.
+     */
     public Point getBegin(){
         return paths.get(0).getStart();
     }
     
+    /**
+     * Get the end point of the road.
+     * @return, returns the ending point of the last path in paths List.
+     */
     public Point getEnd(){
         Path end = paths.get(paths.size() - 1);
         return end.getEnd();
     }
     
-    public List<Path> disect(){
+    /**
+     * Returns the paths the Road is made of.
+     * @return, the paths List.
+     */
+    public List<Path> getPaths(){
         return paths;
     }
     
+    /**
+     * 
+     * @param p
+     * @throws FloatingPathException, throw this exception when 
+     */
     public void addPath(Path p) throws FloatingPathException{
+        //TODO add comments.
         if(paths.size() > 0){
                 Point roadstart = getBegin();
                 Point roadend = getEnd();

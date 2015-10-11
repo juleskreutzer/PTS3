@@ -128,7 +128,7 @@ public class GraphicsEngine{
     }
     
     public void drawRoad(Road road){
-        for(Path p : road.disect()){
+        for(Path p : road.getPaths()){
             PathImage image = new PathImage(p);
             parent.addNode(image);
         }
