@@ -18,11 +18,11 @@ public class CPUUpgrade extends Module {
     
     /**
      * 
-     * @param position The position this module is build(upleft corner).
+     * @param position The position this module should be builded(upleft corner), must fall within the X and Y values of the singleton class Map.
      * @param width The width of this module.
      * @param height The height of this module.
-     * @param cost The costs to build this module(cannot be < 1).
-     * @param level The initial level of this module(cannot be < 1).
+     * @param cost The costs to build this module(must be > 0).
+     * @param level The initial level of this module(must be > 0).
      * @param name The {@link ModuleName} of this module.
      * @param minionBonusMultiplier The multiplier this module gives to the minions.
      */

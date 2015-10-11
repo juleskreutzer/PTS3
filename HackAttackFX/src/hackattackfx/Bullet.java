@@ -14,20 +14,25 @@ import hackattackfx.interfaces.IMoveable;
  */
 public class Bullet implements IMoveable {
     
-    private Point targetPosition;
-    private double speed;
-    private double damage;
-    private Rectangle bounds;
-    private Point position;
+    private Point targetPosition; //The position of the target the bullet is moving towards.
+    private double speed; //The speed of the bullet.
+    private double damage; //The damage the bullet deals to a Minion.
+    private Rectangle bounds; //The bounds of the bullet.
+    private Point position; //The current position of the bullet.
     
     /**
      * 
-     * @param target The enemy {@link Minion} target.
+     * @param target The enemy {@link Minion} target, cannot be null!
      * @param position The initial position the bullet is spawned.
-     * @param speed The speed the bullet moves with.
-     * @param damage The damage the bullet inflicts.
+     * @param speed The speed the bullet moves with, must be above 0.
+     * @param damage The damage the bullet inflicts, must be above 0.
      */
     public Bullet(Point target, Point position, int speed, double damage){
+        //TODO
+        //Check if target != null
+        //Check if speed > 0
+        //Check if damage > 0
+        
         this.targetPosition = target;
         this.speed = speed;
         this.damage = damage;
@@ -58,6 +63,7 @@ public class Bullet implements IMoveable {
         this.bounds = bounds;
     }
 
+    //TODO Think of mechanism where bullet hit minion dependant on minion's moving path.
     @Override
     public void move(double deltaTime) {
         int x1 = 10, y1 = 60;
@@ -70,6 +76,7 @@ public class Bullet implements IMoveable {
     
     }
 
+    
     @Override
     public Object getCollision() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
