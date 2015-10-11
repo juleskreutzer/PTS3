@@ -43,16 +43,30 @@ public class Bullet implements IMoveable {
         return speed;
     }
     
+    /**
+     * Sets the speed of the bullet.
+     * @param speed , must be above 0.
+     */
     public void setSpeed(double speed){
-        this.speed = speed;
+        if (speed > 0)
+        {
+            this.speed = speed;
+        }
     }
     
     public double getDamage(){
         return damage;
     }
     
+    /**
+     * Sets the damage of the bullet.
+     * @param damage, must be above 0.
+     */
     public void setDamage(double damage){
-        this.damage = damage;
+        if (damage > 0)
+        {
+            this.damage = damage;
+        }
     }
     
     public Rectangle getBounds(){
@@ -76,7 +90,6 @@ public class Bullet implements IMoveable {
     
     }
 
-    
     @Override
     public Object getCollision() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

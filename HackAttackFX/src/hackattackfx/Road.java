@@ -16,40 +16,40 @@ import java.util.List;
  */
 public class Road {
     
-    private List<Path> road;
+    private List<Path> paths;
     
     public Road(){
-        road = new ArrayList<Path>();
+        paths = new ArrayList<>();
     }
     
     public Point getBegin(){
-        return road.get(0).getStart();
+        return paths.get(0).getStart();
     }
     
     public Point getEnd(){
-        Path end = road.get(road.size() - 1);
+        Path end = paths.get(paths.size() - 1);
         return end.getEnd();
     }
     
     public List<Path> disect(){
-        return road;
+        return paths;
     }
     
     public void addPath(Path p) throws FloatingPathException{
-        if(road.size() > 0){
+        if(paths.size() > 0){
                 Point roadstart = getBegin();
                 Point roadend = getEnd();
                 Point pstart = p.getStart();
                 Point pend = p.getEnd();
                     if(pstart.x == roadend.x && pstart.y == roadend.y){
-                        road.add(p);
+                        paths.add(p);
                     }else if(pend.x == roadstart.x && pend.y == roadstart.y){
-                        road.add(0, p);
+                        paths.add(0, p);
                     }else{
                         throw new FloatingPathException("This path doesn't connect the roads start or end position!");
                     }
             }else{
-                road.add(p);
+                paths.add(p);
             }
     }
     

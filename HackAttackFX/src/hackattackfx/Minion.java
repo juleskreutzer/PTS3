@@ -27,16 +27,16 @@ public class Minion implements IMoveable {
     }
     
     //Fields
-    private MinionType minionType;
-    private Player enemyPlayer;
-    private double health;
-    private double speed;
-    private Point position;
-    // The position this minion is moving to
-    private Point targetPosition;
-    private double damage;
-    private boolean encrypted;
-    private double reward;
+    private MinionType minionType; //The MinionYype of the minion
+    private Player enemyPlayer; //The player the minions are supposed to attack.
+    private double health; //The ammunt of health the minion currently has.
+    private double speed; //The rate at which the minion moves towards the targetPosition.
+    private Point position; //The current position of the minion.
+    private double damage; //The damage the minion will deal upon reching enemyPlayer.
+    
+    private Point targetPosition; // The position this minion is currently moving to. Can change.
+    private boolean encrypted; //Is true when the minion is encrypted.
+    private double reward; //The ammount of bitcoins the minion is worth, the opposing player gains this upon the minions destruction.
     
     private OnExecuteTick tickListener;
     private MinionHeartbeat callback;
@@ -53,6 +53,10 @@ public class Minion implements IMoveable {
         throw new UnsupportedOperationException("The minion class doesn't get it\'s data from the data-class yet.");
     }
     
+    /**
+     * The minion, loaded from MinionTemplate.
+     * @param minion 
+     */
     public Minion(MinionTemplate minion)
     {
         health = minion.getHealth();

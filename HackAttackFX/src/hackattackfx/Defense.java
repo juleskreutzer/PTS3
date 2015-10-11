@@ -24,19 +24,26 @@ public class Defense extends Module {
     
     /**
      * 
-     * @param cost The costs to build this module(cannot be < 1).
-     * @param position The position this module is build(upleft corner).
+     * @param cost The costs to build this module(must be > 0).
+     * @param position The position this module should be builded(upleft corner), must fall within the X and Y values of the singleton class Map.
      * @param width The width of this module.
      * @param height The height of this module.
      * @param name The {@link ModuleName} of this module.
-     * @param type The {@link DefenceType} of this module. 
-     * @param effect The {@link Effect} this module adds to its target.
-     * @param level The initial level of this module(cannot be < 1).
-     * @param damage The damage this module inflicts to its target.
-     * @param range The range this module can find targets in(cannot be < 1).
+     * @param type The {@link DefenceType} of this module, cannot be null.
+     * @param effect The {@link Effect} this module adds to its target, can be null.
+     * @param level The initial level of this module(must be > 0).
+     * @param damage The damage this module inflicts to its target. (must be > 0).
+     * @param range The range this module can find targets in(must be > 0).
      */
     public Defense(double cost, Point position, int width, int height, ModuleName name, DefenseType type, Effect effect, int level, double damage, int range)
     {
+        //TO DO
+        //Check if cost > 0.
+        //Check if position is within map bounds.
+        //Check if level > 0.
+        //Check if damage > 0.
+        //Check if range > 0.
+        
         super(cost, position, width, height, name, level);
         
         this.type = type;
@@ -109,6 +116,10 @@ public class Defense extends Module {
         return effect;
     }
     
+    /**
+     * Sets the Defense modules effect.
+     * @param e
+     */
     public void setEffect(Effect e){
         effect = e;
     }
@@ -117,16 +128,30 @@ public class Defense extends Module {
         return damage;
     }
     
+    /**
+     * Sets the towers damage.
+     * @param d, must be above 0.
+     */
     public void setDamage(double d){
-        damage = d;
+        if (d > 0)
+        {
+            damage = d;
+        }
     }
     
     public int getRange(){
         return range;
     }
     
+    /**
+     * Sets the towers range.
+     * @param r, must be above 0.
+     */
     public void setRange(int r){
-        range = r;
+        if (range > 0)
+        {
+            range = r;
+        }
     }
     
     /**
