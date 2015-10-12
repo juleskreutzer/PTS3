@@ -4,19 +4,20 @@
  * and open the template in the editor.
  */
 package hackattackfx.templates;
+import hackattackfx.enums.*;
 
 /**
  *
  * @author juleskreutzer
  */
 public class SpellTemplate {
-    private String name;
+    private SpellName name;
     private double range;
     private String type;
     private int cooldown;
     private int requiredLevel;
     
-    public SpellTemplate(String name, double range, String type, int cooldown, int requiredLevel)
+    public SpellTemplate(SpellName name, double range, String type, int cooldown, int requiredLevel)
     {
         this.name = name;
         this.range = range;
@@ -25,7 +26,7 @@ public class SpellTemplate {
         this.requiredLevel = requiredLevel;
     }
     
-    public String getName()
+    public SpellName getName()
     {
         return this.name;
     }

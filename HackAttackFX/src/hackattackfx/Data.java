@@ -176,26 +176,33 @@ public class Data {
             int range = obj.getInt("defense_range");
             int requiredLevel = obj.getInt("requiredLevel");
             String type = obj.getString("type");
+            SpellName spellName;
             
             switch(name)
             {
                 case "Corrupt":
-                    DEFAULT_SPELL_CORRUPT = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    spellName = SpellName.CORRUPT;
+                    DEFAULT_SPELL_CORRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Encrypt":
-                    DEFAULT_SPELL_ENCRYPT = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    spellName = SpellName.ENCRYPT;
+                    DEFAULT_SPELL_ENCRYPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Disrupt":
-                    DEFAULT_SPELL_DISRUPT = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    spellName = SpellName.DISRUPT;
+                    DEFAULT_SPELL_DISRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Lock-down":
-                    DEFAULT_SPELL_LOCKDOWN = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    spellName = SpellName.LOCKDOWN;
+                    DEFAULT_SPELL_LOCKDOWN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Firewall":
-                    DEFAULT_SPELL_FIREWALL = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    spellName = SpellName.FIREWALL;
+                    DEFAULT_SPELL_FIREWALL = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Virus-scan":
-                    DEFAULT_SPELL_VIRUSSCAN = new SpellTemplate(name, range, type, cooldown, requiredLevel);
+                    spellName = SpellName.VIRUSSCAN;
+                    DEFAULT_SPELL_VIRUSSCAN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 default:
                     throw new InvalidSpellNameException();
