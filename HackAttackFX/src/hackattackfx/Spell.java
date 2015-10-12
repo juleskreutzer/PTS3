@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package hackattackfx;
+import hackattackfx.enums.SpellName;
 import hackattackfx.exceptions.*;
 
 /**
@@ -12,17 +13,17 @@ import hackattackfx.exceptions.*;
  */
 public class Spell {
     
-    private String name;
+    private SpellName name;
     private int cooldown;
     private int requiredLevel;
     
-    public Spell(String n, int c, int rl){
+    public Spell(SpellName n, int c, int rl){
         name = n;
         cooldown = c;
         requiredLevel = rl;
     }
     
-    public String getName(){
+    public SpellName getName(){
         return name;
     }
     
@@ -33,5 +34,4 @@ public class Spell {
     public int getRequiredLevel(){
         return requiredLevel;
     }
-    
 }
