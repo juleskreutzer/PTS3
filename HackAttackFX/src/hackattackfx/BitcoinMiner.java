@@ -8,6 +8,7 @@ package hackattackfx;
 import hackattackfx.enums.ModuleName;
 import java.awt.Point;
 import hack.attack.exceptions.*;
+import hackattackfx.templates.*;
 /**
  * BitcoinMiner is a module that generates bitcoins for the player.
  * @author juleskreutzer, Jasper Rouwhorst
@@ -45,6 +46,25 @@ public class BitcoinMiner extends Module {
         
         super(cost, position, width, height, ModuleName.BITCOIN_MINER, level);
         valuePerSecond = level * 10;
+        
+    }
+    
+    /**
+     * Constructor for the BitcoinMiner based on the BitCoinMinerTemplate
+     * @param template Instance of BitCoinMinerTemplate created in data class
+     * @param position position of the module on the map
+     * @param width width of the module
+     * @param height height of the module
+     * @throws InvalidModuleEnumException 
+     */
+    public BitcoinMiner(BitCoinMinerTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    {
+        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel());
+        if(template.getModuleName() != ModuleName.BITCOIN_MINER)
+        {
+            // ModuleName is incorrect
+            throw new InvalidModuleEnumException();
+        }
     }
     
     /**

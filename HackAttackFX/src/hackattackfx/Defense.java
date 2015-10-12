@@ -10,6 +10,8 @@ import hackattackfx.enums.Effect;
 import hackattackfx.enums.ModuleName;
 import java.awt.Point;
 import hackattackfx.exceptions.*;
+import hackattackfx.templates.*;
+import java.util.Arrays;
 
 /**
  * This is a module used for the defense of your base. 
@@ -50,6 +52,25 @@ public class Defense extends Module {
         this.effect = effect;
         this.damage = damage;
         this.range = range;
+    }
+    
+    /**
+     * Constructor for the Defense module based on the DefenseTemplate
+     * @param template instance of DefenseTemplate created in the data class
+     * @param position position of the module on the map
+     * @param width width of the module
+     * @param height height of the module
+     * 
+     * Because we have to check if the given ModuleName is correct, we create an array of ModuleName with all the possible values and check if the given ModuleName is correct
+     */
+    public Defense(DefenseTemplate template, Point position, int width, int height)
+    {
+        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel());
+        ModuleName ModuleNameList[] = new ModuleName[] {ModuleName.BOTTLECAP_ANTIVIRUS, ModuleName.MUSCLE_ANTIVIRUS, ModuleName.SCALE_ANTIVIRUS, ModuleName.SNIPER_ANTIVIRUS};
+        if(!Arrays.asList(ModuleNameList).contains(template.getModuleName()))
+        {
+            throw new InvalidModuleEnumException();
+        }
     }
     
     /**

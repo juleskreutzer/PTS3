@@ -36,7 +36,7 @@ public class Wave {
         waveMultiplier = multiplier;
         minionList = new ArrayList<Minion>();
         Map map = Map.getInstance();
-        Point base = map.getBaseBuildLocations().get(0);
+        Point base = map.getBaseLocationA();
         
         for(int i=0; i<bamount; i++){
             Minion minion = new Minion(Data.DEFAULT_BYTE);

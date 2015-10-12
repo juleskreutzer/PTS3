@@ -11,29 +11,30 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
- *
+ * This is an implementation that works for a single player game.
+ * In the future different methods will be added to ensure multiplayer will be possible.
  * @author Igor, Jasper Rouwhorst
  */
 public class Map {
     private static Map instance;
     
-    private static Road road;
-    private static List<Point> defenseBuildLocations;
-    private static List<Point> baseBuildLocations;
+    private static Road road; //The road that belongs to the map.
+    private static Point baseLocationA; //The base location of player A.
+    private static Point baseLocationB; //The base location of player B.
     
+    /**
+     * Constructor of Map, creates a new instance of Map.
+     */
     private Map(){
         
-        
         road = new Road();
-        defenseBuildLocations = new ArrayList<Point>();
-        baseBuildLocations = new ArrayList<Point>();
         
-        baseBuildLocations.add(new Point(50,50)); 
-        baseBuildLocations.add(new Point(500,500)); 
+        baseLocationA = new Point(200,200);
+        baseLocationB = new Point(500,500); 
         
-        Point base = baseBuildLocations.get(0);
+        //Create the map's road out of Paths.
         try {
-            road.addPath(new Path(new Point(base.x, base.y),1000, Path.Direction.Right));
+            road.addPath(new Path(new Point(baseLocationA.x, baseLocationB.y),1000, Path.Direction.Right));
             road.addPath(new Path(road.getEnd(),500, Path.Direction.Down));
             road.addPath(new Path(road.getEnd(),900, Path.Direction.Left));
             road.addPath(new Path(road.getEnd(),400, Path.Direction.Up));
@@ -53,17 +54,15 @@ public class Map {
         return instance == null ? new Map() : instance;
     }
     
-    public List<Point> getDefenseBuildLocations(){
-        return defenseBuildLocations;
-    }
-    
-    public List<Point> getBaseBuildLocations(){
-        return baseBuildLocations;
-    }
-    
     public Road getRoad(){
         return road;
     }
     
+    public Point getBaseLocationA(){
+        return baseLocationA;
+    }
     
+    public Point getBaseLocationB(){
+        return baseLocationB;
+    }
 }
