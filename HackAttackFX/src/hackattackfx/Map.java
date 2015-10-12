@@ -25,7 +25,8 @@ public class Map {
     /**
      * Constructor of Map, creates a new instance of Map.
      */
-    public Map(){
+    private Map(){
+        
         road = new Road();
         
         baseLocationA = new Point(200,200);
