@@ -7,7 +7,8 @@ package hackattackfx;
 
 import hackattackfx.enums.ModuleName;
 import java.awt.Point;
-import hack.attack.exceptions.*;
+import hackattackfx.exceptions.*;
+import hackattackfx.templates.*;
 /**
  * The CPUUpgrade is a module that's used to increase the minions hp and damage.
  * The higher this module is upgraded, the higher the multiplier.
@@ -30,6 +31,16 @@ public class CPUUpgrade extends Module {
     {
         super(cost,position, width, height, ModuleName.CPU_UPGRADE, level);
         minionBonusMultiplier = level * 10;
+    }
+    
+    public CPUUpgrade(CPUUpgradeTemplate template, Point position, int width, int height)
+    {
+        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel());
+        if(template.getModuleName() != ModuleName.CPU_UPGRADE)
+        {
+            throw new InvalidModuleEnumException();
+        }
+        
     }
    
     /**
