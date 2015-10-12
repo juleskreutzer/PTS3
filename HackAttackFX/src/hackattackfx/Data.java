@@ -63,7 +63,7 @@ public class Data {
     private static String urlSpell = "http://api.nujules.nl/spell";
     private static String urlModule = "http://api.nujules.nl/module";
     
-    public Data(UpdateProgress callback) throws IOException, InvalidMinionTypeException, InvalidSpellNameException
+    public Data(UpdateProgress callback) throws IOException, InvalidMinionTypeException, InvalidSpellNameException, InvalidDefenseTypeException, InvalidEffectException
     {
         /**
          * First we create the JSONArray object by requesting the data from the HackAttack API.
@@ -205,7 +205,7 @@ public class Data {
         
     }
     
-    private void createModules(JSONArray modules) throws IOException
+    private void createModules(JSONArray modules) throws IOException, InvalidDefenseTypeException, InvalidEffectException
     {
         for(int i = 0; i < modules.length(); i++)
         {
@@ -218,7 +218,12 @@ public class Data {
             int range = obj.getInt("range");
             int tier = obj.getInt("tier");
             String name = obj.getString("name");
-            ModuleName name;
+            ModuleName moduleName;
+            double damage = obj.getDouble("damage");
+            String type = obj.getString("type");
+            String effectString = obj.getString("effect");
+            DefenseType defenseType;
+            Effect effect;
             
             switch(name)
             {
@@ -226,16 +231,16 @@ public class Data {
                     switch(tier)
                     {
                         case 1:
-                            type = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_1 = new BitCoinMinerTemplate(cost, tier, type);
+                            moduleName = ModuleName.BITCOIN_MINER;
+                            DEFAULT_MODULE_BITCOINMINER_1 = new BitCoinMinerTemplate(cost, tier, moduleName);
                             break;
                         case 2:
-                            type = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_2 = new BitCoinMinerTemplate(cost, tier, type);
+                            moduleName = ModuleName.BITCOIN_MINER;
+                            DEFAULT_MODULE_BITCOINMINER_2 = new BitCoinMinerTemplate(cost, tier, moduleName);
                             break;
                         case 3:
-                            type = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_3 = new BitCoinMinerTemplate(cost, tier, type);
+                            moduleName = ModuleName.BITCOIN_MINER;
+                            DEFAULT_MODULE_BITCOINMINER_3 = new BitCoinMinerTemplate(cost, tier, moduleName);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Bitcoin Miner)");
@@ -245,16 +250,16 @@ public class Data {
                     switch(tier)
                     {
                         case 1:
-                            type = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_1 = new CPUUpgradeTemplate(cost, tier, type);
+                            moduleName = ModuleName.CPU_UPGRADE;
+                            DEFAULT_MODULE_CPUUPGRADE_1 = new CPUUpgradeTemplate(cost, tier, moduleName);
                             break;
                         case 2:
-                            type = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_2 = new CPUUpgradeTemplate(cost, tier, type);
+                            moduleName = ModuleName.CPU_UPGRADE;
+                            DEFAULT_MODULE_CPUUPGRADE_2 = new CPUUpgradeTemplate(cost, tier, moduleName);
                             break;
                         case 3:
-                            type = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_3 = new CPUUpgradeTemplate(cost, tier, type);
+                            moduleName = ModuleName.CPU_UPGRADE;
+                            DEFAULT_MODULE_CPUUPGRADE_3 = new CPUUpgradeTemplate(cost, tier, moduleName);
                             break;
                         default:
                             throw new IOException("Tier not recognized (CPU Upgrade)");
@@ -264,16 +269,16 @@ public class Data {
                     switch(tier)
                     {
                         case 1:
-                            type = ModuleName.SOFTWARE_INJECTOR;
-                            DEFAULT_MODULE_SOFTWAREINJECTOR_1 = new SoftwareInjectorTemplate(cost, tier, type);
+                            moduleName = ModuleName.SOFTWARE_INJECTOR;
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_1 = new SoftwareInjectorTemplate(cost, tier, moduleName);
                             break;
                         case 2:
-                            type = ModuleName.SOFTWARE_INJECTOR;
-                            DEFAULT_MODULE_SOFTWAREINJECTOR_2 = new SoftwareInjectorTemplate(cost, tier, type);
+                            moduleName = ModuleName.SOFTWARE_INJECTOR;
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_2 = new SoftwareInjectorTemplate(cost, tier, moduleName);
                             break;
                         case 3:
-                            type = ModuleName.SOFTWARE_INJECTOR;
-                            DEFAULT_MODULE_SOFTWAREINJECTOR_3 = new SoftwareInjectorTemplate(cost, tier, type);
+                            moduleName = ModuleName.SOFTWARE_INJECTOR;
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_3 = new SoftwareInjectorTemplate(cost, tier, moduleName);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Software Injector)");
@@ -283,16 +288,124 @@ public class Data {
                     switch(tier)
                     {
                         case 1:
-                            type = ModuleName.BOTTLECAP_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         case 2:
-                            type = ModuleName.BOTTLECAP_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         case 3:
-                            type = ModuleName.BOTTLECAP_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Bottlecap Antivirus)");
@@ -302,16 +415,124 @@ public class Data {
                     switch(tier)
                     {
                         case 1:
-                            type = ModuleName.MUSCLE_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_1 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         case 2:
-                            type = ModuleName.MUSCLE_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_2 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         case 3:
-                            type = ModuleName.MUSCLE_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_3 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Muscle Antivirus)");
@@ -321,16 +542,124 @@ public class Data {
                     switch(tier)
                     {
                         case 1:
-                            type = ModuleName.SCALE_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_SCALE_1 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.SCALE_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_SCALE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         case 2:
-                            type = ModuleName.MUSCLE_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_SCALE_2 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_SCALE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         case 3:
-                            type = ModuleName.MUSCLE_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_SCALE_3 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_SCALE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Scale Antivirus)");                            
@@ -340,16 +669,124 @@ public class Data {
                     switch(tier)
                     {
                         case 1:
-                            type = ModuleName.SNIPER_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_SNIPER_1 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.SNIPER_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_SNIPER_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         case 2:
-                            type = ModuleName.SNIPER_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_SNIPER_2 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.SNIPER_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_SNIPER_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         case 3:
-                            type = ModuleName.SNIPER_ANTIVIRUS;
-                            DEFAULT_MODULE_DEFENSE_SNIPER_3 = new DefenseTemplate(cost, tier, type);
+                            moduleName = ModuleName.SNIPER_ANTIVIRUS;
+                            switch(type)
+                            {
+                                case "CHEAP": 
+                                    defenseType = DefenseType.CHEAP;
+                                    break;
+                                case "RANGE":
+                                    defenseType = DefenseType.RANGE;
+                                    break;
+                                case "BALANCED":
+                                    defenseType = DefenseType.BALANCED;
+                                    break;
+                                case "STRONG":
+                                    defenseType = DefenseType.STRONG;
+                                    break;
+                                default:
+                                    throw new InvalidDefenseTypeException();
+                                                                   
+                            }
+                            
+                            switch(effectString)
+                            {
+                                case "SLOWED":
+                                    effect = Effect.SLOWED;
+                                    break;
+                                case "POISENED":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "SPASH":
+                                    effect = Effect.POISENED;
+                                    break;
+                                case "DECRYPTED":
+                                    effect = Effect.DECRYPTED;
+                                    break;
+                                default:
+                                    throw new InvalidEffectException();
+                            }
+                            DEFAULT_MODULE_DEFENSE_SNIPER_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Sniper Antivirus)");

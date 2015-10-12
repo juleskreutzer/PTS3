@@ -5,7 +5,7 @@
  */
 package hackattackfx.templates;
 
-import hackattackfx.enums.ModuleName;
+import hackattackfx.enums.*;
 
 /**
  *
@@ -13,8 +13,8 @@ import hackattackfx.enums.ModuleName;
  */
 public class DefenseTemplate extends ModuleTemplate {
 
-    public DefenseTemplate(double cost, int level, ModuleName name) {
-        super(cost, level, name);
+    public DefenseTemplate(double cost, int level, ModuleName moduleName, double damage, int range, DefenseType type, Effect effect ) {
+        super(cost, level, moduleName);
     }
     
 }
