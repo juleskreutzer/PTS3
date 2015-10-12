@@ -63,7 +63,7 @@ public class Defense extends Module {
      * 
      * Because we have to check if the given ModuleName is correct, we create an array of ModuleName with all the possible values and check if the given ModuleName is correct
      */
-    public Defense(DefenseTemplate template, Point position, int width, int height) throws Exception
+    public Defense(DefenseTemplate template, Point position, int width, int height) 
     {
         super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel());
         ModuleName ModuleNameList[] = new ModuleName[] {ModuleName.BOTTLECAP_ANTIVIRUS, ModuleName.MUSCLE_ANTIVIRUS, ModuleName.SCALE_ANTIVIRUS, ModuleName.SNIPER_ANTIVIRUS};
@@ -71,8 +71,11 @@ public class Defense extends Module {
         {
             throw new InvalidModuleEnumException();
         }
+        this.type = template.getDefenseType();
+        this.effect = template.getEffect();
+        this.damage = template.getDamage();
+        this.range = template.getRange();
         
-        throw new Exception("Defense constructor not completed yet");
     }
     
     /**

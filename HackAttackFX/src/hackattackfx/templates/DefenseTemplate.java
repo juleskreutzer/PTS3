@@ -12,9 +12,36 @@ import hackattackfx.enums.*;
  * @author juleskreutzer
  */
 public class DefenseTemplate extends ModuleTemplate {
-
+    private double damage;
+    private int range;
+    private DefenseType defenseType;
+    private Effect effect;
+    
     public DefenseTemplate(double cost, int level, ModuleName moduleName, double damage, int range, DefenseType type, Effect effect ) {
         super(cost, level, moduleName);
+        this.damage = damage;
+        this.range = range;
+        this.defenseType = defenseType;
+        this.effect = effect;
     }
     
+    public double getDamage()
+    {
+        return this.damage;
+    }
+    
+    public int getRange()
+    {
+        return this.range;
+    }
+    
+    public DefenseType getDefenseType()
+    {
+        return this.defenseType;
+    }
+    
+    public Effect getEffect()
+    {
+        return this.effect;
+    }
 }
