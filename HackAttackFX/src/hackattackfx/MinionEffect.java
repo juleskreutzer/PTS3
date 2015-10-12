@@ -15,12 +15,16 @@ import hackattackfx.exceptions.*;
  */
 public class MinionEffect {
     
+    /**
+     * 
+     */
     public interface OnEffectExpired{
         void onExpired();
     }
     
-    private Date endTime;
-    private Effect type;
+    private Date endTime; //The time at which the minions effect will expire.
+    private Effect type; //The effects type, this will determine the consequences that it inflicts upon a minion.
+    
     
     public MinionEffect(OnEffectExpired callback)
     {
