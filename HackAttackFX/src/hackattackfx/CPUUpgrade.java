@@ -33,6 +33,13 @@ public class CPUUpgrade extends Module {
         minionBonusMultiplier = level * 10;
     }
     
+    /**
+     * Constructor for CPUUpgrade based on the CPUUpgradeTemplate
+     * @param template Instance of the CPUUpgradeTemplate that has been constructed in the data class
+     * @param position position of the module on the map
+     * @param width width of the module
+     * @param height height of the module
+     */
     public CPUUpgrade(CPUUpgradeTemplate template, Point position, int width, int height)
     {
         super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel());

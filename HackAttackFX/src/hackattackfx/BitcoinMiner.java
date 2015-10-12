@@ -55,7 +55,6 @@ public class BitcoinMiner extends Module {
      * @param position position of the module on the map
      * @param width width of the module
      * @param height height of the module
-     * @param level level of the module
      * @throws InvalidModuleEnumException 
      */
     public BitcoinMiner(BitCoinMinerTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
