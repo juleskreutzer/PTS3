@@ -55,18 +55,18 @@ public class Minion implements IMoveable {
     }
     
     /**
-     * The minion, loaded from MinionTemplate.
-     * @param minion 
+     * The minion, loaded from MinionTemplate with some modified stats.
+     * @param minion, the template of minion that is loaded from the database.
+     * @param multiplier, the multiplier that is used to increase certain values.
      */
     public Minion(MinionTemplate minion, double multiplier)
     {
-        health = minion.getHealth();
-        speed = minion.getSpeed();
-        minionType = minion.getMinionType();
-        damage = minion.getDamage();
+        health = (minion.getHealth() * multiplier);
+        speed = (minion.getSpeed() * multiplier);
+        damage = (minion.getDamage() * multiplier);
+        reward = (minion.getReward() * multiplier);
         encrypted = minion.getEncrypted();
-        reward = minion.getReward();
-        
+        minionType = minion.getMinionType();
     }
     
     // The minion will response to ticks from now on
