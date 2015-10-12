@@ -10,9 +10,9 @@ package hackattackfx.enums;
  * @author Igor
  */
 public enum Effect {
-    slowed,
-    poisoned,
-    splash,
-    decrypted
+    SLOWED,
+    POISENED,
+    SPLASH,
+    DECRYPTED
     
 }

@@ -10,5 +10,5 @@ package hackattackfx.enums;
  * @author juleskreutzer
  */
 public enum DefenseType {
-    range, cheap, balanced, strong;
+    RANGE, CHEAP, BALANCED, STRONG;
 }
