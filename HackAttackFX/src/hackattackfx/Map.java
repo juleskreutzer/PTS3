@@ -58,4 +58,11 @@ public class Map {
         return road;
     }
     
+    public Point getBaseLocationA(){
+        return baseLocationA;
+    }
+    
+    public Point getBaseLocationB(){
+        return baseLocationB;
+    }
 }
