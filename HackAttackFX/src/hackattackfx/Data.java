@@ -232,6 +232,13 @@ public class Data {
             DefenseType defenseType;
             Effect effect;
             
+            if(cost < 0)
+                throw new IllegalArgumentException("Cost must be higher than 0");
+            if(range < 0)
+                throw new IllegalArgumentException("Range must be higher than 0");
+            if(damage < 0)
+                throw new IllegalArgumentException("Damage must be higher than 0");
+            
             switch(name)
             {
                 case "Bitcoin Miner":
