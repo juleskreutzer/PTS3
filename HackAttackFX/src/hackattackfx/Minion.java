@@ -58,7 +58,7 @@ public class Minion implements IMoveable {
      * The minion, loaded from MinionTemplate.
      * @param minion 
      */
-    public Minion(MinionTemplate minion)
+    public Minion(MinionTemplate minion, double multiplier)
     {
         health = minion.getHealth();
         speed = minion.getSpeed();
