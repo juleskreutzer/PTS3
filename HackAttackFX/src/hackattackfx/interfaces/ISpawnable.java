@@ -3,21 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hackattackfx;
+package hackattackfx.interfaces;
 
-import hackattackfx.interfaces.ISpawnable;
 import javafx.scene.image.ImageView;
 
 /**
  *
  * @author Jasper Rouwhorst
  */
-public class SpawnTargetImage extends ImageView{
-    
-    private ISpawnable spawnable;
-    
-    public SpawnTargetImage(ISpawnable s){
-        spawnable = s;
-    }
-    
+public interface ISpawnable {
+    ImageView getSpawnableImage();
 }

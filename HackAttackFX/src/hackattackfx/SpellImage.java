@@ -5,16 +5,13 @@
  */
 package hackattackfx;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import hack.attack.exceptions.*;
+import hackattackfx.interfaces.ISpawnable;
+import javafx.scene.image.ImageView;
 /**
  *
  * @author juleskreutzer
  */
-public class SpellImage extends ObjectImage {
+public class SpellImage extends ObjectImage implements ISpawnable{
 
     private Spell spell;
     
@@ -25,6 +22,11 @@ public class SpellImage extends ObjectImage {
     
     public Spell getSpell(){
         return spell;
+    }
+
+    @Override
+    public ImageView getSpawnableImage() {
+        return this;
     }
     
   
