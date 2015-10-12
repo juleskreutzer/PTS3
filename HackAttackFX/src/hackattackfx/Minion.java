@@ -28,7 +28,7 @@ public class Minion implements IMoveable {
     }
     
     //Fields
-    private MinionType minionType; //The MinionYype of the minion
+    private MinionType minionType; //The MinionType of the minion
     private Player enemyPlayer; //The player the minions are supposed to attack.
     private double health; //The ammunt of health the minion currently has.
     private double speed; //The rate at which the minion moves towards the targetPosition.
