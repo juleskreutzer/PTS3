@@ -218,7 +218,7 @@ public class Data {
             int range = obj.getInt("range");
             int tier = obj.getInt("tier");
             String name = obj.getString("name");
-            ModuleName type;
+            ModuleName name;
             
             switch(name)
             {
