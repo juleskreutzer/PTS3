@@ -28,7 +28,7 @@ public class Map {
         defenseBuildLocations = new ArrayList<Point>();
         baseBuildLocations = new ArrayList<Point>();
         
-        baseBuildLocations.add(new Point(200,200)); 
+        baseBuildLocations.add(new Point(50,50)); 
         baseBuildLocations.add(new Point(500,500)); 
         
         Point base = baseBuildLocations.get(0);

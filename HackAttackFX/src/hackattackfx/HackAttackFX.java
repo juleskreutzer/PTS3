@@ -51,6 +51,11 @@ public class HackAttackFX extends Application {
         gEngine = GameEngine.getInstance();
         gEngine.start();
     }
+    
+    @Override
+    public void stop(){
+        // Executes when the javafx application is stopped
+    }
 
     /**
      * @param args the command line arguments

@@ -43,10 +43,9 @@ public class GraphicsEngine{
             }
         });
         
-        Node node = parent.getNode("buildDefense");
-        ImageView builddefense = (ImageView)parent.getNode("buildDefense");
-        Image image = builddefense.getImage();
-        builddefense.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        ImageView sniperav = (ImageView)parent.getNode("buildSniperAV");
+        Image image = sniperav.getImage();
+        sniperav.setOnMouseClicked(new EventHandler<MouseEvent>(){
  
             @Override
             public void handle(MouseEvent event) {

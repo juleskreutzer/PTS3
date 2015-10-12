@@ -26,8 +26,6 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private AnchorPane window;
-    @FXML
-    private ImageView buildDefense;
     
     private GraphicsEngine gEngine;
     private static FXMLDocumentController instance;
