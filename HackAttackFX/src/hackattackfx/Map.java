@@ -21,7 +21,7 @@ public class Map {
     private static List<Point> defenseBuildLocations;
     private static List<Point> baseBuildLocations;
     
-    public Map(){
+    private Map(){
         
         
         road = new Road();
