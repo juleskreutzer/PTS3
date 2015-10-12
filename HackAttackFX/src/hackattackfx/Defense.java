@@ -35,7 +35,7 @@ public class Defense extends Module {
      * @param effect The {@link Effect} this module adds to its target, can be null.
      * @param level The initial level of this module(must be > 0).
      * @param damage The damage this module inflicts to its target. (must be > 0).
-     * @param range The range this module can find targets in(must be > 0).
+     * @param range The RANGE this module can find targets in(must be > 0).
      */
     public Defense(double cost, Point position, int width, int height, ModuleName name, DefenseType type, Effect effect, int level, double damage, int range)
     {
@@ -44,7 +44,7 @@ public class Defense extends Module {
         //Check if position is within map bounds.
         //Check if level > 0.
         //Check if damage > 0.
-        //Check if range > 0.
+        //Check if RANGE > 0.
         
         super(cost, position, width, height, name, level);
         
@@ -71,6 +71,8 @@ public class Defense extends Module {
         {
             throw new InvalidModuleEnumException();
         }
+        
+        throw new Exception("Defense constructor not completed yet");
     }
     
     /**
@@ -83,16 +85,16 @@ public class Defense extends Module {
         
         switch(type)
         {
-            case range:
+            case RANGE:
                 result = "range";
                 break;
-            case cheap:
+            case CHEAP:
                 result = "cheap";
                 break;
-            case balanced:
+            case BALANCED:
                 result = "balanced";
                 break;
-            case strong:
+            case STRONG:
                 result = "strong";
                 break;
             default:
@@ -111,16 +113,16 @@ public class Defense extends Module {
         
         switch(effect)
         {
-            case slowed:
+            case SLOWED:
                 result = "slow";
                 break;
-            case poisoned:
+            case POISENED:
                 result = "poison";
                 break;
-            case splash:
+            case SPLASH:
                 result = "slash";
                 break;
-            case decrypted:
+            case DECRYPTED:
                 result = "decryptor";
                 break;
             default:
@@ -165,7 +167,7 @@ public class Defense extends Module {
     }
     
     /**
-     * Sets the towers range.
+     * Sets the towers RANGE.
      * @param r, must be above 0.
      */
     public void setRange(int r){
@@ -186,7 +188,7 @@ public class Defense extends Module {
     }
     
     /**
-     * Look for enemy minions within the range of this module, then randomly select a target.
+     * Look for enemy minions within the RANGE of this module, then randomly select a target.
      * @return The enemy minion that's targeted.
      */
     public Minion findTarget(){
