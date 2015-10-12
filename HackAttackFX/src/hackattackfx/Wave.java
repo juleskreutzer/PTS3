@@ -73,29 +73,34 @@ public class Wave {
     }
     
     /**
-     * Start the actual wave and spawn the containing minions
+     * Start the actual wave and spawn the containing minions.
      */
     public void startWave(){
+        //Set to true so the wave becomes active.
         waveActive = true;
+        
+        //Create an Iterator instance of the minion List.
         Iterator<Minion> minionit = minions();
+        
+        //Initialise a timer that executes the method below at an interval of every 1000 mS.
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             @Override
             public void run() {
-                Minion m = null;
+                Minion m = null; //Initialise the minion m.
                 if(minionit.hasNext()){
-                    m = minionit.next();
+                    m = minionit.next(); //If the minion Iterator contains another minion, minion m will become that minion.  
                     try{
-                        GraphicsEngine.getInstance().spawn(m);
-                        m.activate(new Minion.MinionHeartbeat() {
+                        GraphicsEngine.getInstance().spawn(m); //Get an instance of the graphics engine, and spawn the minion with it.
+                        m.activate(new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
 
-                            @Override
+                            @Override //Override this method, remove the passed minion from the current wave with removeMinion.
                             public void onMinionDeath(Minion minion) {
                                 removeMinion(minion);
                             }
                             
-                        });
+                        }); //Exception Handling.
                     }catch(DuplicateSpawnException e){
                         System.out.println(e.toString());
                     }catch(InvalidObjectException e){
@@ -103,7 +108,9 @@ public class Wave {
                     }
                 }
             }
-        }, 0, 1000);
+        }, 0, 1000); //Set timer to 1000 mS.
+        
+        
         /*
         GameEngine.getInstance().setOnTickListener(new GameEngine.OnExecuteTick(){
             
