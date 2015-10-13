@@ -21,7 +21,7 @@ public class DefenseTemplate extends ModuleTemplate {
         super(cost, level, moduleName);
         this.damage = damage;
         this.range = range;
-        this.defenseType = defenseType;
+        this.defenseType = type;
         this.effect = effect;
     }
     

@@ -5,6 +5,7 @@
  */
 package hackattackfx;
 
+import hack.attack.exceptions.InvalidModuleEnumException;
 import hackattackfx.enums.ModuleName;
 import java.awt.Point;
 import java.util.List;
@@ -22,32 +23,13 @@ public class SoftwareInjector extends Module {
     private ArrayList<Spell> spellList;
     
     /**
-     * Constructor for the SoftwareInjector module
-     * @param cost Cost for the module
-     * @param position Position on the map where the module is located
-     * @param width width for the module
-     * @param height height for the module
-     * @param level Module level
-     * @param name ModuleName for de module
-     */
-    public SoftwareInjector(double cost, Point position, int width, int height, int level, ModuleName name)
-    {
-        super(cost, position, width, height, name, level);
-        if(name != ModuleName.SOFTWARE_INJECTOR)
-        {
-            throw new InvalidModuleEnumException();
-        }
-        
-    }
-    
-    /**
      * Constructor for the SoftwareInjector based on the SoftwareInjectorTemplate
      * @param softwareInjector SoftwareInjectorTemplate that has been created by the data class
      * @param position Position on the map for the module
      * @param width Width for the module
      * @param height Height for the module
      */
-    public SoftwareInjector(SoftwareInjectorTemplate softwareInjector, Point position, int width, int height)
+    public SoftwareInjector(SoftwareInjectorTemplate softwareInjector, Point position, int width, int height) throws InvalidModuleEnumException
     {
         super(softwareInjector.getCost(), position, width, height, softwareInjector.getModuleName(), softwareInjector.getLevel());
         if( softwareInjector.getModuleName() != ModuleName.SOFTWARE_INJECTOR)

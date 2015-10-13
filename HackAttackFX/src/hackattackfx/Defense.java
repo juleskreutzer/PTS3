@@ -5,6 +5,7 @@
  */
 package hackattackfx;
 
+import hack.attack.exceptions.InvalidModuleEnumException;
 import hackattackfx.enums.DefenseType;
 import hackattackfx.enums.Effect;
 import hackattackfx.enums.ModuleName;
@@ -25,45 +26,16 @@ public class Defense extends Module {
     private Effect effect;
     
     /**
-     * 
-     * @param cost The costs to build this module(must be > 0).
-     * @param position The position this module should be builded(upleft corner), must fall within the X and Y values of the singleton class Map.
-     * @param width The width of this module.
-     * @param height The height of this module.
-     * @param name The {@link ModuleName} of this module.
-     * @param type The {@link DefenceType} of this module, cannot be null.
-     * @param effect The {@link Effect} this module adds to its target, can be null.
-     * @param level The initial level of this module(must be > 0).
-     * @param damage The damage this module inflicts to its target. (must be > 0).
-     * @param range The RANGE this module can find targets in(must be > 0).
-     */
-    public Defense(double cost, Point position, int width, int height, ModuleName name, DefenseType type, Effect effect, int level, double damage, int range)
-    {
-        //TO DO
-        //Check if cost > 0.
-        //Check if position is within map bounds.
-        //Check if level > 0.
-        //Check if damage > 0.
-        //Check if RANGE > 0.
-        
-        super(cost, position, width, height, name, level);
-        
-        this.type = type;
-        this.effect = effect;
-        this.damage = damage;
-        this.range = range;
-    }
-    
-    /**
      * Constructor for the Defense module based on the DefenseTemplate
      * @param template instance of DefenseTemplate created in the data class
      * @param position position of the module on the map
      * @param width width of the module
      * @param height height of the module
+     * @throws InvalidModuleEnumException when the
      * 
      * Because we have to check if the given ModuleName is correct, we create an array of ModuleName with all the possible values and check if the given ModuleName is correct
      */
-    public Defense(DefenseTemplate template, Point position, int width, int height) 
+    public Defense(DefenseTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
     {
         super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel());
         ModuleName ModuleNameList[] = new ModuleName[] {ModuleName.BOTTLECAP_ANTIVIRUS, ModuleName.MUSCLE_ANTIVIRUS, ModuleName.SCALE_ANTIVIRUS, ModuleName.SNIPER_ANTIVIRUS};

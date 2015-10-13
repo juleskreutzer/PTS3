@@ -5,11 +5,14 @@
  */
 
 package hackattackfx;
+import hack.attack.exceptions.InvalidModuleEnumException;
 import hackattackfx.enums.Effect;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import hackattackfx.exceptions.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -40,7 +43,12 @@ public class Player {
     * Initialize a SoftwareInjector object, add the object to the modules field and return a list of spells that became available
     */  
     public void buildSoftwareInjector(){
-        SoftwareInjector softwareInjector = new SoftwareInjector(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1, null, 1, 1);
+        SoftwareInjector softwareInjector = null;
+        try {
+            softwareInjector = new SoftwareInjector(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1, null, 1, 1);
+        } catch (InvalidModuleEnumException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
         modules.add(softwareInjector);
         throw new UnsupportedOperationException("How do we get the position and heigth/width for this module?");
         

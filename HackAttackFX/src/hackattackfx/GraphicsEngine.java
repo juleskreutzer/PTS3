@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -51,6 +52,22 @@ public class GraphicsEngine{
             public void handle(MouseEvent event) {
                 System.out.println("Image clicked");
                 // TODO Defensebuild image should follow the cursor on movement
+                ImageView spawniv = new ImageView();
+                File file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+                Image targetimage = new Image(file.toURI().toString());
+                spawniv.setImage(targetimage);
+                AnchorPane pane = (AnchorPane)parent.getNode("window");
+                pane.setOnMouseMoved(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        spawniv.setX(event.getSceneX());
+                        spawniv.setY(event.getSceneY());
+                    }
+                    
+                });
+                parent.addNode(spawniv);
+                
             }
         });
     }
@@ -78,9 +95,7 @@ public class GraphicsEngine{
             }
         }
         
-        if(object instanceof Bullet){
-            parent.addNode(new BulletImage((Bullet)object));
-        }else if(object instanceof Minion){
+        if(object instanceof Minion){
             parent.addNode(new MinionImage((Minion)object));
         }else if(object instanceof Module){
             parent.addNode(new ModuleImage((Module)object));
@@ -108,9 +123,7 @@ public class GraphicsEngine{
                 List<Node> nodes = parent.getAllNodes();
 
                 for(Node n : nodes){
-                    if(n instanceof BulletImage){
-
-                    }else if(n instanceof MinionImage){
+                    if(n instanceof MinionImage){
                         MinionImage mi = (MinionImage)n;
                         Minion m = ((MinionImage)n).getMinion();
                         mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));

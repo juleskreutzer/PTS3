@@ -5,6 +5,8 @@
  */
 package hackattackfx;
 
+import hackattackfx.exceptions.InvalidDefenseTypeException;
+import hackattackfx.exceptions.InvalidEffectException;
 import hackattackfx.exceptions.InvalidMinionTypeException;
 import hackattackfx.exceptions.InvalidSpellNameException;
 import java.io.IOException;
@@ -59,17 +61,23 @@ public class FXMLLoaderController implements Initializable {
     
     public void initializeData(){
         try {
-           Data data = new Data(new Data.UpdateProgress() {
-               
-               @Override
-               public void update(double value) {
-                   progressBar.setProgress(value);
-                   if(value >= 0.99){
-                       Stage stage  = (Stage)pane.getScene().getWindow();
-                       stage.close();
-                   }
-               }
-           });
+            try {
+                Data data = new Data(new Data.UpdateProgress() {
+                    
+                    @Override
+                    public void update(double value) {
+                        progressBar.setProgress(value);
+                        if(value >= 0.99){
+                            Stage stage  = (Stage)pane.getScene().getWindow();
+                            stage.close();
+                        }
+                    }
+                });
+            } catch (InvalidDefenseTypeException ex) {
+                Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvalidEffectException ex) {
+                Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+            }
        } catch (UnknownHostException to)
        {
 //           Alert alert = new Alert(Alert.AlertType.ERROR, "Oops.. we can't connect to our service. Is your internet connection OK?\n" + to.toString());
