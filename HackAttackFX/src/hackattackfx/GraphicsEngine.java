@@ -14,7 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -35,6 +34,10 @@ public class GraphicsEngine{
         
     }
     
+    public static GraphicsEngine getInstance(){
+        return instance == null ? new GraphicsEngine() : instance;
+    }
+    
     private void initialize(){
         GameEngine.getInstance().setOnTickCompleteListener(new GameEngine.OnCompleteTick() {
 
@@ -42,38 +45,17 @@ public class GraphicsEngine{
             public void tickComplete() {
                 update();
             }
-        });
-        
-        ImageView sniperav = (ImageView)parent.getNode("buildSniperAV");
-        Image image = sniperav.getImage();
-        sniperav.setOnMouseClicked(new EventHandler<MouseEvent>(){
- 
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("Image clicked");
-                // TODO Defensebuild image should follow the cursor on movement
-                ImageView spawniv = new ImageView();
-                File file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
-                Image targetimage = new Image(file.toURI().toString());
-                spawniv.setImage(targetimage);
-                AnchorPane pane = (AnchorPane)parent.getNode("window");
-                pane.setOnMouseMoved(new EventHandler<MouseEvent>(){
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        spawniv.setX(event.getSceneX());
-                        spawniv.setY(event.getSceneY());
-                    }
-                    
-                });
-                parent.addNode(spawniv);
-                
-            }
+            
         });
     }
     
-    public static GraphicsEngine getInstance(){
-        return instance == null ? new GraphicsEngine() : instance;
+    /**
+     * Returns a node selected by the given id
+     * @param id
+     * @return 
+     */
+    public Node getNode(String id){
+        return parent.getNode(id);
     }
     
     /**
@@ -104,10 +86,6 @@ public class GraphicsEngine{
         }else{
             throw new InvalidObjectException("The object you tried to spawn doesn't have a corresponding ObjectImage implementation");
         }
-    }
-    
-    public void drawSpawnTarget(Defense d){
-        
     }
     
     public double update(){
@@ -144,6 +122,14 @@ public class GraphicsEngine{
             PathImage image = new PathImage(p);
             parent.addNode(image);
         }
+    }
+    
+    /**
+     * Draws an holographic version of the module you want to build.
+     * @param m The module the holographic version should be showed of
+     */
+    public void drawModuleSpawnTarget(Module m){
+        
     }
     
     public void drawSpellRange(Spell spell){

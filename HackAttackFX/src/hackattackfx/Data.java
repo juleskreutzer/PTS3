@@ -631,6 +631,7 @@ public class Data {
                                     break;
                                 case "":
                                     effect = null;
+                                    break;
                                 default:
                                     throw new InvalidEffectException();
                             }

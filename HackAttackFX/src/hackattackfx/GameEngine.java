@@ -5,8 +5,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import hackattackfx.exceptions.*;
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import static jdk.nashorn.internal.objects.NativeRegExp.test;
 
 /*
@@ -86,6 +90,30 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void preStart(){
         graphicsEngine.drawRoad(map.getRoad());
+        
+        // Initialize all GUI buttons
+        /*ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV");
+        sniperav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                SpawnTargetImage spawniv = new SpawnTargetImage(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1,));
+                File file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+                Image targetimage = new Image(file.toURI().toString());
+                spawniv.setImage(targetimage);
+                parent.getWindow().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        spawniv.setX(event.getSceneX() - (spawniv.getImage().getWidth()/2));
+                        spawniv.setY(event.getSceneY() - (spawniv.getImage().getHeight()/2));
+                    }
+                    
+                });
+                parent.addNode(spawniv);
+                
+            }
+        });*/
     }
     
     /**
@@ -93,7 +121,7 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void startGame(){
         gameRunning = true;
-        Wave wave = new Wave(1,1,playerB,10,0,0,0,0,0);
+        Wave wave = new Wave(1,1,playerB,100,0,0,0,0,0);
         waveList.add(wave);
         
         wave.startWave();

@@ -52,6 +52,10 @@ abstract public class Module {
         return this.position;
     }
     
+    public void setPosition(Point position){
+        this.position = position;
+    }
+    
     public int getWidth(){
         return width;
     }

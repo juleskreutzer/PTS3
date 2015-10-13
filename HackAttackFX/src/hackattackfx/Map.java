@@ -29,12 +29,12 @@ public class Map {
         
         road = new Road();
         
-        baseLocationA = new Point(200,200);
+        baseLocationA = new Point(50,50);
         baseLocationB = new Point(500,500); 
         
         //Create the map's road out of Paths.
         try {
-            road.addPath(new Path(new Point(baseLocationA.x, baseLocationB.y),1000, Path.Direction.Right));
+            road.addPath(new Path(new Point(baseLocationA.x, baseLocationA.y),1000, Path.Direction.Right));
             road.addPath(new Path(road.getEnd(),500, Path.Direction.Down));
             road.addPath(new Path(road.getEnd(),900, Path.Direction.Left));
             road.addPath(new Path(road.getEnd(),400, Path.Direction.Up));
