@@ -14,6 +14,7 @@ import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import java.awt.Point;
 import hackattackfx.templates.*;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,6 +28,8 @@ public class Defense extends Module {
     private int range;
     private DefenseType type;
     private Effect effect;
+    
+    private Minion target;
     
     // The tickListener is declared when this module is activated
     private OnExecuteTick tickListener;
@@ -58,11 +61,20 @@ public class Defense extends Module {
     
     // Activates the module to listen to the {@link GameEngine} ticks
     public void activate(){
+        target = null;
         tickListener = new OnExecuteTick() {
 
             @Override
             public void onTick(long elapsedtime) {
-                
+                if(!hasTarget()){
+                    target = findTarget();
+                }else{
+                    if(targetInRange(target)){
+                        fire(target);
+                    }else{
+                        target = null;
+                    }
+                }
             }
         };
         GameEngine.getInstance().setOnTickListener(tickListener);
@@ -190,10 +202,36 @@ public class Defense extends Module {
     
     /**
      * Look for enemy minions within the RANGE of this module, then randomly select a target.
-     * @return The enemy minion that's targeted.
+     * @return The enemy minion that's targeted. If no minion is found, return null
      */
     public Minion findTarget(){
+        GameEngine engine = GameEngine.getInstance();
+        Iterator<Minion> minions = engine.getActiveWave().minions();
+        while(minions.hasNext()){
+            Minion m = minions.next();
+            if(targetInRange(m)){
+                return m;
+            }
+        }
         return null;
+    }
+    
+    /**
+     * Checks if the given minion is within the range of the module
+     * @param m The minion to check on
+     * @return True if the given minion is in range.
+     */
+    public boolean targetInRange(Minion m){
+        int range = (int)Math.sqrt((position.x-m.getPosition().x)*(position.x-m.getPosition().x) + (position.y-m.getPosition().y)*(position.y-m.getPosition().y));
+        return range >= (int)Math.sqrt((position.x-m.getPosition().x)*(position.x-m.getPosition().x) + (position.y-m.getPosition().y)*(position.y-m.getPosition().y));
+    }
+    
+    /**
+     * Checks if this module has an active target
+     * @return True is this module is targeting a minion
+     */
+    public boolean hasTarget(){
+        return target != null;
     }
     
     /**
@@ -201,7 +239,7 @@ public class Defense extends Module {
      * @param minion The enemy minion target.
      */
     public void fire(Minion minion){
-        
+        System.out.println(this.toString() + " is attacking " + minion.toString());
     }
     
 }
