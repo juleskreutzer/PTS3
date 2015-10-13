@@ -5,7 +5,7 @@
  */
 package hackattackfx;
 
-import hackattackfx.interfaces.ISpawnable;
+import hackattackfx.templates.ModuleTemplate;
 import javafx.scene.image.ImageView;
 
 /**
@@ -14,10 +14,10 @@ import javafx.scene.image.ImageView;
  */
 public class SpawnTargetImage extends ImageView{
     
-    private ISpawnable spawnable;
+    private ModuleTemplate spawnable;
     
-    public SpawnTargetImage(ISpawnable s){
-        spawnable = s;
+    public SpawnTargetImage(ModuleTemplate m){
+        spawnable = m;
     }
     
 }

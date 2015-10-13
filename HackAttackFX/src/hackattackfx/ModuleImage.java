@@ -5,14 +5,11 @@
  */
 package hackattackfx;
 
-import hackattackfx.interfaces.ISpawnable;
-import javafx.scene.image.ImageView;
-
 /**
  *
  * @author juleskreutzer
  */
-public class ModuleImage extends ObjectImage implements ISpawnable {
+public class ModuleImage extends ObjectImage {
 
     private Module module;
     
@@ -20,9 +17,5 @@ public class ModuleImage extends ObjectImage implements ISpawnable {
         super(m);
         module = m;
     }
-
-    @Override
-    public ImageView getSpawnableImage() {
-        return this;
-    }
+    
 }

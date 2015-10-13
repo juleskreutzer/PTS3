@@ -92,7 +92,7 @@ public class GameEngine extends Thread implements MouseListener {
         graphicsEngine.drawRoad(map.getRoad());
         
         // Initialize all GUI buttons
-        /*ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV");
+        ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV");
         sniperav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
  
             @Override
@@ -113,7 +113,7 @@ public class GameEngine extends Thread implements MouseListener {
                 parent.addNode(spawniv);
                 
             }
-        });*/
+        });
     }
     
     /**
