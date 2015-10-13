@@ -317,6 +317,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -335,6 +338,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -357,6 +363,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -375,6 +384,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -397,6 +409,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -415,6 +430,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -444,6 +462,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -462,6 +483,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -484,6 +508,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -502,6 +529,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -524,6 +554,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -542,6 +575,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -571,6 +607,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -590,6 +629,8 @@ public class Data {
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
                                     break;
+                                case "":
+                                    effect = null;
                                 default:
                                     throw new InvalidEffectException();
                             }
@@ -611,6 +652,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -629,6 +673,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -651,6 +698,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -669,6 +719,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -698,6 +751,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -716,6 +772,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -738,6 +797,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -756,6 +818,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
@@ -778,6 +843,9 @@ public class Data {
                                 case "STRONG":
                                     defenseType = DefenseType.STRONG;
                                     break;
+                                case "":
+                                    defenseType = null;
+                                    break;
                                 default:
                                     throw new InvalidDefenseTypeException();
                                                                    
@@ -796,6 +864,9 @@ public class Data {
                                     break;
                                 case "DECRYPTED":
                                     effect = Effect.DECRYPTED;
+                                    break;
+                                case "":
+                                    effect = null;
                                     break;
                                 default:
                                     throw new InvalidEffectException();
