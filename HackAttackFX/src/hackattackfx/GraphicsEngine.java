@@ -5,6 +5,7 @@
  */
 package hackattackfx;
 
+import hackattackfx.enums.ModuleName;
 import java.util.List;
 import hackattackfx.exceptions.*;
 import java.io.File;
@@ -12,8 +13,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -23,7 +23,8 @@ public class GraphicsEngine{
     
     private FXMLDocumentController parent;
     private static GraphicsEngine instance;
-    
+    // The active spawntarget image. This value is null if no spawning is in progres.
+    private SpawnTargetImage spawnTarget;
     private double updateTime;
     
     private GraphicsEngine(){
@@ -47,6 +48,14 @@ public class GraphicsEngine{
             }
             
         });
+    }
+    
+    /**
+     * The Scene is the main window the whole application runs in
+     * @return The main AnchorPane
+     */
+    public AnchorPane getScene(){
+        return parent.getScene();
     }
     
     /**
@@ -128,8 +137,47 @@ public class GraphicsEngine{
      * Draws an holographic version of the module you want to build.
      * @param m The module the holographic version should be showed of
      */
-    public void drawModuleSpawnTarget(Module m){
+    public SpawnTargetImage drawModuleSpawnTarget(ModuleName module){
         
+        switch(module){
+            case BITCOIN_MINER:
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_BITCOINMINER_1);
+                break;
+            case SOFTWARE_INJECTOR:
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1);
+                break;
+            case CPU_UPGRADE:
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_CPUUPGRADE_1);
+                break;
+            case SNIPER_ANTIVIRUS:
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1);
+                break;
+            case BOTTLECAP_ANTIVIRUS:
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1);
+                break;
+            case SCALE_ANTIVIRUS:
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SCALE_1);
+                break;
+            case MUSCLE_ANTIVIRUS:
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1);
+                break;
+        }
+        
+        File file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+        Image targetimage = new Image(file.toURI().toString());
+        spawnTarget.setImage(targetimage);
+        parent.addNode(spawnTarget);
+        parent.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                spawnTarget.setX(event.getSceneX() - (spawnTarget.getImage().getWidth()/2));
+                spawnTarget.setY(event.getSceneY() - (spawnTarget.getImage().getHeight()/2));
+            }
+
+        });
+        
+        return spawnTarget;
     }
     
     public void drawSpellRange(Spell spell){

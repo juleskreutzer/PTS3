@@ -6,13 +6,16 @@
 package hackattackfx;
 
 import hack.attack.exceptions.InvalidModuleEnumException;
+import hackattackfx.GameEngine.OnExecuteTick;
 import hackattackfx.enums.DefenseType;
 import hackattackfx.enums.Effect;
 import hackattackfx.enums.ModuleName;
+import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import java.awt.Point;
-import hackattackfx.exceptions.*;
 import hackattackfx.templates.*;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This is a module used for the defense of your base. 
@@ -24,6 +27,9 @@ public class Defense extends Module {
     private int range;
     private DefenseType type;
     private Effect effect;
+    
+    // The tickListener is declared when this module is activated
+    private OnExecuteTick tickListener;
     
     /**
      * Constructor for the Defense module based on the DefenseTemplate
@@ -48,6 +54,26 @@ public class Defense extends Module {
         this.damage = template.getDamage();
         this.range = template.getRange();
         
+    }
+    
+    // Activates the module to listen to the {@link GameEngine} ticks
+    public void activate(){
+        tickListener = new OnExecuteTick() {
+
+            @Override
+            public void onTick(long elapsedtime) {
+                
+            }
+        };
+        GameEngine.getInstance().setOnTickListener(tickListener);
+    }
+    
+    public void deactivate(){
+        try {
+            GameEngine.getInstance().unsubscribeListener(tickListener);
+        } catch (UnsubscribeNonListenerException ex) {
+            Logger.getLogger(Defense.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**

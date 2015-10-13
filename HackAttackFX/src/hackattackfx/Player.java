@@ -10,7 +10,6 @@ import hackattackfx.enums.Effect;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import hackattackfx.exceptions.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,8 +40,9 @@ public class Player {
     
     /**
     * Initialize a SoftwareInjector object, add the object to the modules field and return a list of spells that became available
+    * @return The newly created {@link SoftwareInjector}
     */  
-    public void buildSoftwareInjector(){
+    public SoftwareInjector buildSoftwareInjector(){
         SoftwareInjector softwareInjector = null;
         try {
             softwareInjector = new SoftwareInjector(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1, null, 1, 1);
@@ -50,8 +50,7 @@ public class Player {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
         modules.add(softwareInjector);
-        throw new UnsupportedOperationException("How do we get the position and heigth/width for this module?");
-        
+        return softwareInjector;
     }
     
     /**
@@ -79,11 +78,13 @@ public class Player {
     
     /**
      * Initialize a BitcoinMiner object and add the object to the modules field
+     * @return The newly created {@link BitcoinMiner}
      */
-    public void buildBitcoinMiner(){
+    public BitcoinMiner buildBitcoinMiner(){
         /***Need to implent the parameters***
         modules.add(new BitcoinMiner());
         */
+        return null;
     }
     
     /**
@@ -111,6 +112,11 @@ public class Player {
     
     public boolean upgradeCPUUpgrade(){
         return false;
+    }
+    
+    public Defense buildDefense(Defense defense){
+        modules.add(defense);
+        return defense;
     }
     
     /**
@@ -184,10 +190,6 @@ public class Player {
     
     public void removeBitcoins(double amount){
         bitcoins -= amount;
-    }
-    
-    public void buildDefense(Defense defence){
-        
     }
     
     public void upgradeDefense(Defense defense, Effect effect){

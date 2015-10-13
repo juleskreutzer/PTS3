@@ -77,7 +77,7 @@ public class FXMLDocumentController implements Initializable {
         return null;
     }
     
-    public AnchorPane getWindow(){
+    public AnchorPane getScene(){
         return window;
     }
     

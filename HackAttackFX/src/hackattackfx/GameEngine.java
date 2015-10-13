@@ -1,17 +1,18 @@
 package hackattackfx;
 
+import hack.attack.exceptions.InvalidModuleEnumException;
+import hackattackfx.enums.ModuleName;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javafx.scene.input.*;
 import java.util.ArrayList;
 import hackattackfx.exceptions.*;
-import java.io.File;
+import java.awt.event.MouseListener;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import static jdk.nashorn.internal.objects.NativeRegExp.test;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -97,22 +98,32 @@ public class GameEngine extends Thread implements MouseListener {
  
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
-                SpawnTargetImage spawniv = new SpawnTargetImage(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1,));
-                File file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
-                Image targetimage = new Image(file.toURI().toString());
-                spawniv.setImage(targetimage);
-                parent.getWindow().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+                SpawnTargetImage st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SNIPER_ANTIVIRUS);
+                // Set a listener for a second click to occur
+                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
                     @Override
-                    public void handle(javafx.scene.input.MouseEvent event) {
-                        spawniv.setX(event.getSceneX() - (spawniv.getImage().getWidth()/2));
-                        spawniv.setY(event.getSceneY() - (spawniv.getImage().getHeight()/2));
+                    public void handle(MouseEvent event) {
+                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                        try {
+                            Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
+                            
+                            try {
+                                graphicsEngine.spawn(defense);
+                            } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            defense.activate();
+                            
+                        } catch (InvalidModuleEnumException ex) {
+                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                    
-                });
-                parent.addNode(spawniv);
                 
+                });
             }
+            
         });
     }
     
@@ -121,7 +132,7 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void startGame(){
         gameRunning = true;
-        Wave wave = new Wave(1,1,playerB,100,0,0,0,0,0);
+        Wave wave = new Wave(1,1,playerB,10,0,0,0,0,0);
         waveList.add(wave);
         
         wave.startWave();
@@ -190,10 +201,6 @@ public class GameEngine extends Thread implements MouseListener {
         }
     }
     
-    public void drawDefenseSpawnTarget(Defense d){
-        
-    }
-    
     /**
      * Adds the effect of the spell to every targeted minion in the range of this spell.
      * @param spell The spell to perform.
@@ -203,27 +210,27 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(java.awt.event.MouseEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(java.awt.event.MouseEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(java.awt.event.MouseEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(java.awt.event.MouseEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(java.awt.event.MouseEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
