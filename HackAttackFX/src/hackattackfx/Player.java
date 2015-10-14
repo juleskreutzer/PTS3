@@ -60,17 +60,8 @@ public class Player {
      * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
      * @return
      */
-    public boolean upgradeSoftwareInjector(){
-        for (Module module : modules)
-            if(module instanceof SoftwareInjector)
-            {
-               
-               /*NOT FULLY IMPLENTED
-                return softwareinjector.upgrade();
-               */
-                throw new UnsupportedOperationException("upgradeSoftwareInjector method not implemented yet.");
-            }
-        return false;
+    public boolean upgradeSoftwareInjector(SoftwareInjector injector){
+        if(injector.upgrade()) { return true; } else { return false; }
     }
     
     public List<Spell> getSpells(){        
@@ -109,14 +100,8 @@ public class Player {
      * Retrieve a BitcoinMiner object from the modules field and call the Upgrade method from inside the class
      * @return boolean if the upgrade was successfully executed 
      */
-    public boolean upgradeBitcoinMiner(){
-        for (Module module : modules)
-            if(module instanceof BitcoinMiner)
-            {
-                BitcoinMiner bitcoinminer = (BitcoinMiner)module;
-                return bitcoinminer.upgrade();
-            }
-        return false;
+    public boolean upgradeBitcoinMiner(BitcoinMiner miner){
+        if(miner.upgrade()) { return true; } else { return false; }
     }
     
     /**
@@ -127,8 +112,8 @@ public class Player {
         return cpu;
     }
     
-    public boolean upgradeCPUUpgrade(){
-        throw new UnsupportedOperationException("upgradeCPUUpgrade method not implemented yet.");
+    public boolean upgradeCPUUpgrade(CPUUpgrade cpu){
+        if(cpu.upgrade()) { return true; } else { return false; }
     }
     
     public Defense buildDefense(Defense defense){
@@ -209,8 +194,16 @@ public class Player {
         bitcoins -= amount;
     }
     
-    public void upgradeDefense(Defense defense, Effect effect){
-        throw new UnsupportedOperationException("upgradeDefense method not implemented yet.");
+    public boolean upgradeDefense(Defense defense, Effect effect){
+        if(defense.upgrade())
+        {
+            defense.setEffect(effect);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     
     public Point getBaseLocation(){
