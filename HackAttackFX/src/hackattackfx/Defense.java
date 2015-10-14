@@ -25,10 +25,17 @@ import java.util.logging.Logger;
 public class Defense extends Module {
     private double damage;
     private int range;
+    // The amount of attacks per second
+    private int frequency;
     private DefenseType type;
     private Effect effect;
     
+    private boolean reloading;
+    
     private Minion target;
+    
+    // The last time this module performed an attack
+    private long lastAttack;
     
     // The tickListener is declared when this module is activated
     private OnExecuteTick tickListener;
@@ -55,6 +62,8 @@ public class Defense extends Module {
         this.effect = template.getEffect();
         this.damage = template.getDamage();
         this.range = template.getRange();
+        this.frequency = template.getFrequency();
+        reloading = false;
         
     }
     
@@ -65,13 +74,16 @@ public class Defense extends Module {
 
             @Override
             public void onTick(long elapsedtime) {
-                if(!hasTarget()){
-                    target = findTarget();
-                }else{
-                    if(targetInRange(target)){
-                        fire(target);
+                if(elapsedtime >= (lastAttack + (1000/frequency)) && !reloading){
+                    lastAttack = elapsedtime;
+                    if(!hasTarget()){
+                        target = findTarget();
                     }else{
-                        target = null;
+                        if(targetInRange(target)){
+                            fire(target);
+                        }else{
+                            target = null;
+                        }
                     }
                 }
             }
@@ -239,6 +251,7 @@ public class Defense extends Module {
      */
     public void fire(Minion minion){
         System.out.println(this.toString() + " is attacking " + minion.toString());
+        minion.receiveDamage(damage);
     }
     
 }

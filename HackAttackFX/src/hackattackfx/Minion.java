@@ -249,4 +249,8 @@ public class Minion implements IMoveable {
         return minionType;
     }
     
+    public void receiveDamage(double damage){
+        health -= damage;
+    }
+    
 }
