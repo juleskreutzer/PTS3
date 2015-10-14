@@ -1,6 +1,6 @@
 package hackattackfx;
 
-import hack.attack.exceptions.InvalidModuleEnumException;
+import hackattackfx.exceptions.InvalidModuleEnumException;
 import hackattackfx.enums.ModuleName;
 import java.awt.Point;
 import javafx.scene.input.*;
