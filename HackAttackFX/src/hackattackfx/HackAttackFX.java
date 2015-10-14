@@ -40,6 +40,7 @@ public class HackAttackFX extends Application {
         stage.show();
         
         controller.initializeData();
+        stage.setTitle("Loading Hack Attack");
         
         FXMLLoader gameloader = new FXMLLoader();
         Parent mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
@@ -47,6 +48,7 @@ public class HackAttackFX extends Application {
         scene = new Scene(mainroot);
         gamestage.setScene(scene);
         gamestage.show();
+        gamestage.setTitle("Hack Attack");
         
         gEngine = GameEngine.getInstance();
         gEngine.start();
