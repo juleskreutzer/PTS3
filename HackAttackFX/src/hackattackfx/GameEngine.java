@@ -1,5 +1,6 @@
 package hackattackfx;
 
+import hackattackfx.GameEngine.OnExecuteTick;
 import hackattackfx.exceptions.InvalidModuleEnumException;
 import hackattackfx.enums.ModuleName;
 import java.awt.Point;
@@ -7,6 +8,8 @@ import javafx.scene.input.*;
 import java.util.ArrayList;
 import hackattackfx.exceptions.*;
 import java.awt.event.MouseListener;
+import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -171,7 +174,9 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     public void setOnTickListener(OnExecuteTick callback){
-        listeners.add(callback);
+        synchronized(listeners){
+            listeners.add(callback);
+        }
     }
     
     public void setOnTickCompleteListener(OnCompleteTick callback){
@@ -198,11 +203,13 @@ public class GameEngine extends Thread implements MouseListener {
      * Notifies every listening object that a tick occured.
      */
     private void notifyListeners(){
-        for(OnExecuteTick l : listeners){
-            l.onTick(GameTime.getElapsedTime());
-        }
-        for(OnCompleteTick l : tickCompleteListeners){
-            l.tickComplete();
+        synchronized(listeners){
+            for(OnExecuteTick l : listeners){
+                l.onTick(GameTime.getElapsedTime());
+            }
+            for(OnCompleteTick l : tickCompleteListeners){
+                l.tickComplete();
+            }
         }
     }
     

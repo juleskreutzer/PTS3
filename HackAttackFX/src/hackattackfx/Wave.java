@@ -28,6 +28,9 @@ public class Wave {
     
     private ArrayList<Minion> minionList;
     
+    // Initial -3000 is the compensation with the spawning interval so the minions will be spawned the first frame of the game
+    private long lastSpawn = -3000;
+    
     
     //TODO Add a WaveTemplate
     /**
@@ -104,65 +107,35 @@ public class Wave {
         //Create an Iterator instance of the minion List.
         Iterator<Minion> minionit = minions();
         
-        //Initialise a timer that executes the method below at an interval of every 1000 mS.
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                Minion m = null; //Initialise the minion m.
-                if(minionit.hasNext()){
-                    m = minionit.next(); //If the minion Iterator contains another minion, minion m will become that minion.  
-                    try{
-                        GraphicsEngine.getInstance().spawn(m); //Get an instance of the graphics engine, and spawn the minion with it.
-                        m.activate(new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
-
-                            @Override //Override this method, remove the passed minion from the current wave with removeMinion.
-                            public void onMinionDeath(Minion minion) {
-                                removeMinion(minion);
-                            }
-                            
-                        }); //Exception Handling.
-                    }catch(DuplicateSpawnException e){
-                        System.out.println(e.toString());
-                    }catch(InvalidObjectException e){
-                        System.out.println(e.toString());
-                    }
-                }
-            }
-        }, 0, 1000); //Set timer to 1000 mS.
-        
-        
-        /*
         GameEngine.getInstance().setOnTickListener(new GameEngine.OnExecuteTick(){
             
             @Override
             public void onTick(long elapsedtime){
-                
-                
-                if(elapsedtime % 3000 <= 3000){
-                    Minion m = null;
+                if(elapsedtime >= (lastSpawn + 3000)){
+                     Minion m = null; //Initialise the minion m.
                     if(minionit.hasNext()){
-                        m = minionit.next();
+                        m = minionit.next(); //If the minion Iterator contains another minion, minion m will become that minion.  
                         try{
-                            GraphicsEngine.getInstance().spawn(m);
+                            GraphicsEngine.getInstance().spawn(m); //Get an instance of the graphics engine, and spawn the minion with it.
+                            m.activate(new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
+
+                                @Override //Override this method, remove the passed minion from the current wave with removeMinion.
+                                public void onMinionDeath(Minion minion) {
+                                    removeMinion(minion);
+                                }
+
+                            });
+                             //Exception Handling.
                         }catch(DuplicateSpawnException e){
                             System.out.println(e.toString());
                         }catch(InvalidObjectException e){
                             System.out.println(e.toString());
                         }
-                    }else{
-                        // If no more minions are found, remove this wave from the gameengine tick event
-                        try {
-                            GameEngine.getInstance().unsubscribeListener(listener);
-                        } catch (UnsubscribeNonListenerException ex) {
-                            Logger.getLogger(Wave.class.getName()).log(Level.SEVERE, null, ex);
-                        }
                     }
                 }
             }
             
-        });*/
+        });
     }
     
     /**
