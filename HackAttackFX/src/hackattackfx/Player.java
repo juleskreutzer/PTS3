@@ -30,6 +30,13 @@ public class Player {
     
     public Player(){}
     
+    /**
+     * Constructor for the player
+     * @param h health value for the player
+     * @param n name for the player
+     * @param b bitcoins value for the player
+     * @param l baselocation for the player
+     */
     public Player(double h, String n, double b, Point l) {
         health = h;
         name = n;
