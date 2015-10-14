@@ -7,12 +7,15 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="hackattackfx.FXMLDocumentController">
+<AnchorPane fx:id="window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hackattackfx.FXMLDocumentController">
   <children>
     <ImageView fx:id="buildSniperAV" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="604.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
       <image>
         <Image url="hackattackfx/resources/buildSniperAV.png" />
       </image>
     </ImageView>
+      <Label fx:id="lblPlayerName" layoutX="1119.0" layoutY="44.0" prefHeight="17.0" prefWidth="136.0" text="Player Name" />
+      <Label fx:id="lblPlayerHealth" layoutX="1119.0" layoutY="61.0" prefHeight="17.0" prefWidth="136.0" text="Player Health" />
+      <Label fx:id="lblPlayerBitcoins" layoutX="1119.0" layoutY="78.0" prefHeight="17.0" prefWidth="136.0" text="Player Bitcoins" />
   </children>
 </AnchorPane>
