@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -33,10 +34,16 @@ public class GraphicsEngine{
     private Ellipse moduleRange;
     private double updateTime;
     
+    private Label lblPlayerName;
+    private Label lblPlayerHealth;
+    private Label lblPlayerBitcoins;
+    
     private GraphicsEngine(){
         instance = this;
         parent = FXMLDocumentController.getInstance();
-        
+        lblPlayerName = (Label)parent.getNode("lblPlayerName");
+        lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth");
+        lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins");
         initialize();
         
     }
@@ -231,6 +238,20 @@ public class GraphicsEngine{
     }
     
     public void drawSpellRange(Spell spell){
+        
+    }
+    
+    public void drawLabels(String name, double health, double bitcoins){
+        Platform.runLater(new Runnable(){
+
+            @Override
+            public void run() {
+                lblPlayerName.setText(String.format("Playername = %s", name));
+                lblPlayerHealth.setText(String.format("Health: %s", health));
+                lblPlayerBitcoins.setText(String.format("Bitcoins: %s", bitcoins));
+            }
+        
+        });
         
     }
     

@@ -27,10 +27,6 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private AnchorPane window;
-    private Label lblPlayerName;
-    private Label lblPlayerHealth;
-    private Label lblPlayerBitcoins;
-    
     private GraphicsEngine gEngine;
     private static FXMLDocumentController instance;
     

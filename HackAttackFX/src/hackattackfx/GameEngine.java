@@ -163,6 +163,7 @@ public class GameEngine extends Thread implements MouseListener {
     private void tick(){
         processUnsubscribers();
         notifyListeners();
+        fillLabels();
     }
     
     public Wave getActiveWave(){
@@ -211,6 +212,13 @@ public class GameEngine extends Thread implements MouseListener {
      */
     public void executeSpell(Spell spell){
         
+    }
+    
+    private void fillLabels(){
+        String name = playerA.getName();
+        double health = playerA.getHealth();
+        double coins = playerA.getBitcoins();
+        graphicsEngine.drawLabels(name, health, coins);
     }
     
     @Override
