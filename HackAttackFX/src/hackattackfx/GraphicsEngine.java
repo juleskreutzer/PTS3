@@ -9,11 +9,15 @@ import hackattackfx.enums.ModuleName;
 import java.util.List;
 import hackattackfx.exceptions.*;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Ellipse;
 
 /**
  *
@@ -25,6 +29,8 @@ public class GraphicsEngine{
     private static GraphicsEngine instance;
     // The active spawntarget image. This value is null if no spawning is in progres.
     private SpawnTargetImage spawnTarget;
+    // The active modulerange ellipse. This value is null if no module is hovered.
+    private Ellipse moduleRange;
     private double updateTime;
     
     private GraphicsEngine(){
@@ -97,6 +103,17 @@ public class GraphicsEngine{
         }
     }
     
+    /**
+     * Check if the give {@link Node} exists then remove it from the UI.
+     * @param n The node to despawn
+     */
+    public void deSpawn(Node n) throws InvalidObjectException{
+        if(!parent.getAllNodes().contains(n)){
+            throw new InvalidObjectException("The despawned object does not exist");
+        }
+        parent.removeNode(n);
+    }
+    
     public double update(){
         draw();
         return 0;
@@ -117,7 +134,24 @@ public class GraphicsEngine{
                         mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
 
                     }else if(n instanceof ModuleImage){
-
+                        ModuleImage mi = (ModuleImage)n;
+                        
+                        if(mi.showRange()){
+                            if(moduleRange == null){
+                                drawModuleRange((Module)mi.getReference());
+                            }
+                        }else{
+                            if(moduleRange != null){
+                                try {
+                                    deSpawn(moduleRange);
+                                    moduleRange = null;
+                                } catch (InvalidObjectException ex) {
+                                    Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                        
+                        
                     }else if(n instanceof SpellImage){
 
                     }
@@ -178,6 +212,22 @@ public class GraphicsEngine{
         });
         
         return spawnTarget;
+    }
+    
+    public Ellipse drawModuleRange(Module module){
+        Ellipse rangecircle = null;
+        if(module instanceof Defense){
+            Defense defense = (Defense)module;
+            rangecircle = new Ellipse(defense.getRange(), defense.getRange());
+        }
+        rangecircle.setCenterX(module.getPosition().x);
+        rangecircle.setCenterY(module.getPosition().y);
+        rangecircle.setStroke(Color.BLACK);
+        rangecircle.setFill(null);
+        rangecircle.setStrokeWidth(3);
+        parent.addNode(rangecircle);
+        moduleRange = rangecircle;
+        return rangecircle;
     }
     
     public void drawSpellRange(Spell spell){

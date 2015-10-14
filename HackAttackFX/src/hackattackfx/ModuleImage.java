@@ -8,6 +8,9 @@ package hackattackfx;
 import java.io.File;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 
 /**
  *
@@ -16,6 +19,7 @@ import javafx.scene.image.Image;
 public class ModuleImage extends ObjectImage {
 
     private Module module;
+    private boolean showRange;
     
     public ModuleImage(Module m){
         super(m);
@@ -51,6 +55,37 @@ public class ModuleImage extends ObjectImage {
         setY(module.getPosition().y - image.getHeight()/2);
         this.setImage(image);
         
+        if(module instanceof Defense){
+            Defense defense = (Defense)module;
+            this.setOnMouseEntered(new EventHandler<MouseEvent>(){
+
+                @Override
+                public void handle(MouseEvent event) {
+                    
+                    showRange = true;
+                    
+                }
+            
+            });
+            this.setOnMouseExited(new EventHandler<MouseEvent>(){
+
+                @Override
+                public void handle(MouseEvent event) {
+                    
+                    showRange = false;
+                    
+                }
+                
+            });
+        }
+    }
+    
+    /**
+     * Checks if this module should show its range
+     * @return
+     */
+    public boolean showRange(){
+            return showRange;
     }
     
 }

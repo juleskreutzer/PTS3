@@ -110,6 +110,7 @@ public class GameEngine extends Thread implements MouseListener {
                             
                             try {
                                 graphicsEngine.spawn(defense);
+                                graphicsEngine.deSpawn(st);
                             } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                             }

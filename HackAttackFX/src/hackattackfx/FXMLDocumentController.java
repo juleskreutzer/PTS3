@@ -55,6 +55,17 @@ public class FXMLDocumentController implements Initializable {
         });
     }
     
+    public void removeNode(Node node){
+        Platform.runLater(new Runnable(){
+
+            @Override
+            public void run() {
+                window.getChildren().remove(node);
+            }
+            
+        });
+    }
+    
     public static FXMLDocumentController getInstance(){
         return instance == null ? new FXMLDocumentController() : instance;
     }
