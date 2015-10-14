@@ -44,15 +44,9 @@ public class Player {
     * Initialize a SoftwareInjector object, add the object to the modules field and return a list of spells that became available
     * @return The newly created {@link SoftwareInjector}
     */  
-    public SoftwareInjector buildSoftwareInjector(){
-        SoftwareInjector softwareInjector = null;
-        try {
-            softwareInjector = new SoftwareInjector(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1, null, 1, 1);
-        } catch (InvalidModuleEnumException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        modules.add(softwareInjector);
-        return softwareInjector;
+    public SoftwareInjector buildSoftwareInjector(SoftwareInjector injector){
+        modules.add(injector);
+        return injector;
     }
     
     /**
@@ -67,6 +61,7 @@ public class Player {
                /*NOT FULLY IMPLENTED
                 return softwareinjector.upgrade();
                */
+                throw new UnsupportedOperationException("upgradeSoftwareInjector method not implemented yet.");
             }
         return false;
     }
@@ -120,14 +115,13 @@ public class Player {
     /**
      * Initialize a CpuUpgrade object and add the object to the modules field
      */
-    public void buildCPUUpgrade(){
-        /***Need to implent the parameters***
-        modules.add(new CpuUpgrade());
-        */
+    public CPUUpgrade buildCPUUpgrade(CPUUpgrade cpu){
+        modules.add(cpu);
+        return cpu;
     }
     
     public boolean upgradeCPUUpgrade(){
-        return false;
+        throw new UnsupportedOperationException("upgradeCPUUpgrade method not implemented yet.");
     }
     
     public Defense buildDefense(Defense defense){
@@ -209,17 +203,10 @@ public class Player {
     }
     
     public void upgradeDefense(Defense defense, Effect effect){
-        
+        throw new UnsupportedOperationException("upgradeDefense method not implemented yet.");
     }
     
     public Point getBaseLocation(){
         return baseLocation;
     }
-    
-    
-    
-    
-    
-    
-    
 }
