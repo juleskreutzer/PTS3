@@ -16,13 +16,16 @@ public class DefenseTemplate extends ModuleTemplate {
     private int range;
     private DefenseType defenseType;
     private Effect effect;
+    private int frequency;
     
-    public DefenseTemplate(double cost, int level, ModuleName moduleName, double damage, int range, DefenseType type, Effect effect ) {
+    
+    public DefenseTemplate(double cost, int level, ModuleName moduleName, double damage, int range, DefenseType type, Effect effect, int frequency ) {
         super(cost, level, moduleName);
         this.damage = damage;
         this.range = range;
         this.defenseType = type;
         this.effect = effect;
+        this.frequency = frequency;
     }
     
     public double getDamage()
@@ -43,5 +46,10 @@ public class DefenseTemplate extends ModuleTemplate {
     public Effect getEffect()
     {
         return this.effect;
+    }
+    
+    public int getFrequency()
+    {
+        return this.frequency;
     }
 }

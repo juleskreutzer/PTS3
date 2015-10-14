@@ -345,7 +345,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;
@@ -391,7 +391,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;
@@ -437,7 +437,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Bottlecap Antivirus)");
@@ -490,7 +490,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -536,7 +536,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -582,7 +582,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Muscle Antivirus)");
@@ -635,7 +635,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SCALE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_SCALE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -681,7 +681,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SCALE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_SCALE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -727,7 +727,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SCALE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_SCALE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Scale Antivirus)");                            
@@ -780,7 +780,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SNIPER_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_SNIPER_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.SNIPER_ANTIVIRUS;
@@ -826,7 +826,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SNIPER_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_SNIPER_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.SNIPER_ANTIVIRUS;
@@ -872,7 +872,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SNIPER_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect);
+                            DEFAULT_MODULE_DEFENSE_SNIPER_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Sniper Antivirus)");
