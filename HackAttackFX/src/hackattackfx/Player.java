@@ -5,10 +5,10 @@
  */
 
 package hackattackfx;
-import hack.attack.exceptions.*;
+
+import hackattackfx.exceptions.*;
 import hackattackfx.BitcoinMiner.OnMineComplete;
 import hackattackfx.enums.Effect;
-import hackattackfx.exceptions.DuplicateListenerException;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;

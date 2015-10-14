@@ -5,7 +5,6 @@
  */
 package hackattackfx;
 
-import hack.attack.exceptions.InvalidModuleEnumException;
 import hackattackfx.enums.ModuleName;
 import java.awt.Point;
 import java.util.List;
