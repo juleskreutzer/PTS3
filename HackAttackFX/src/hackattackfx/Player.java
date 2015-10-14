@@ -5,8 +5,10 @@
  */
 
 package hackattackfx;
-import hack.attack.exceptions.InvalidModuleEnumException;
+import hack.attack.exceptions.*;
+import hackattackfx.BitcoinMiner.OnMineComplete;
 import hackattackfx.enums.Effect;
+import hackattackfx.exceptions.DuplicateListenerException;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,11 +82,25 @@ public class Player {
      * Initialize a BitcoinMiner object and add the object to the modules field
      * @return The newly created {@link BitcoinMiner}
      */
-    public BitcoinMiner buildBitcoinMiner(){
-        /***Need to implent the parameters***
-        modules.add(new BitcoinMiner());
-        */
-        return null;
+    public BitcoinMiner buildBitcoinMiner(BitcoinMiner miner){
+        modules.add(miner);
+        try{
+            miner.setOnMineListener(new OnMineComplete() {
+
+                @Override
+                public void onMine(double mineValue) {
+
+                    addBitcoins(mineValue);
+
+                }
+            });
+        }
+        catch(DuplicateListenerException ex)
+        {
+            System.out.print(ex.toString());
+        }
+        
+        return miner;
     }
     
     /**

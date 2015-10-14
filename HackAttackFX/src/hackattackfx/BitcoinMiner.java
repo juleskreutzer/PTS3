@@ -5,10 +5,13 @@
  */
 package hackattackfx;
 
+import hackattackfx.GameEngine.OnExecuteTick;
 import hackattackfx.enums.ModuleName;
 import java.awt.Point;
-import hack.attack.exceptions.*;
+import hackattackfx.exceptions.*;
 import hackattackfx.templates.*;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * BitcoinMiner is a module that generates bitcoins for the player.
  * @author juleskreutzer, Jasper Rouwhorst
@@ -25,6 +28,9 @@ public class BitcoinMiner extends Module {
     }
     
     private double valuePerSecond;
+    private List<OnMineComplete> listeners;
+    private OnExecuteTick tick;
+    private long lastMine;
     
     /**
      * Constructor for the BitcoinMiner based on the BitCoinMinerTemplate
@@ -42,6 +48,9 @@ public class BitcoinMiner extends Module {
             // ModuleName is incorrect
             throw new InvalidModuleEnumException();
         }
+        
+        listeners = new ArrayList<OnMineComplete>();
+        lastMine = 0;
     }
     
     /**
@@ -52,6 +61,41 @@ public class BitcoinMiner extends Module {
         level++;
         valuePerSecond = level * 10;
         return true;
+    }
+    
+    /**
+     * Activate the bitcoin miner so the player gets their bitcoins
+     */
+    public void activate()
+    {
+        
+        tick = new OnExecuteTick() {
+
+            @Override
+            public void onTick(long elapsedtime) {
+                if(elapsedtime >= (lastMine + 3000))
+                {
+                    lastMine = elapsedtime;
+                    for(OnMineComplete listen : listeners)
+                    {
+                        listen.onMine(valuePerSecond);
+                    }
+                }
+                
+            }
+        };
+    }
+    
+    public void setOnMineListener(OnMineComplete callback) throws DuplicateListenerException
+    {
+        if(!listeners.contains(callback))
+        {
+        listeners.add(callback);
+        }
+        else
+        {
+            throw new DuplicateListenerException();
+        }
     }
     
 }
