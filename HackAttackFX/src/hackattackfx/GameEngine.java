@@ -8,7 +8,7 @@ import javafx.scene.input.*;
 import java.util.ArrayList;
 import hackattackfx.exceptions.*;
 import java.awt.event.MouseListener;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,7 +46,7 @@ public class GameEngine extends Thread implements MouseListener {
      * This interface is used to notify every listening object when a tick has been ended.
      */
     public interface OnCompleteTick{
-        void tickComplete();
+        void tickComplete(long elapsedtime);
     }
     
     private static GameEngine instance;
@@ -62,9 +62,10 @@ public class GameEngine extends Thread implements MouseListener {
     private Spell selectedSpell;
     private Module selectedModule;
     
-    private ArrayList<OnCompleteTick> tickCompleteListeners;
-    private ArrayList<OnExecuteTick> listeners;
-    private ArrayList<OnExecuteTick> unsubscribed;
+    private List<OnCompleteTick> tickCompleteListeners;
+    private List<OnCompleteTick> unsubscribedCompleteListeners;
+    private List<OnExecuteTick> listeners;
+    private List<OnExecuteTick> unsubscribedListeners;
     
     private GameEngine(){
         instance = this;
@@ -78,10 +79,11 @@ public class GameEngine extends Thread implements MouseListener {
     private void initialize(){
         graphicsEngine = GraphicsEngine.getInstance();
         map = Map.getInstance();
-        tickCompleteListeners = new ArrayList<OnCompleteTick>();
-        listeners = new ArrayList<OnExecuteTick>();
-        unsubscribed = new ArrayList<OnExecuteTick>();
-        waveList = new ArrayList<Wave>();
+        tickCompleteListeners = new ArrayList<>();
+        unsubscribedCompleteListeners = new ArrayList<>();
+        listeners = new ArrayList<>();
+        unsubscribedListeners = new ArrayList<>();
+        waveList = new ArrayList<>();
         playerA = new Player(100, "Jasper", 100, new Point(0,50));
         playerB = new Player(100, "Jules", 100, new Point(100,50));
         gameRunning = false;
@@ -136,7 +138,7 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void startGame(){
         gameRunning = true;
-        Wave wave = new Wave(1,1,playerB,10,0,0,0,0,0);
+        Wave wave = new Wave(1,1,playerB,1,0,0,0,0,0);
         waveList.add(wave);
         currentWave = wave;
         
@@ -174,9 +176,7 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     public void setOnTickListener(OnExecuteTick callback){
-        synchronized(listeners){
-            listeners.add(callback);
-        }
+        listeners.add(callback);
     }
     
     public void setOnTickCompleteListener(OnCompleteTick callback){
@@ -187,15 +187,29 @@ public class GameEngine extends Thread implements MouseListener {
      * This method should not be called during a tick therefor only after a tick!
      */
     private void processUnsubscribers(){
-        listeners.removeAll(unsubscribed);
-        unsubscribed.clear();
+        if(unsubscribedListeners.size() > 0 ){
+            listeners.removeAll(unsubscribedListeners);
+            listeners.clear();
+        }
+        if(unsubscribedCompleteListeners.size() > 0){
+            tickCompleteListeners.removeAll(unsubscribedCompleteListeners);
+            tickCompleteListeners.clear();
+        }
     }
     
     public boolean unsubscribeListener(OnExecuteTick callback) throws UnsubscribeNonListenerException{
         if(!listeners.contains(callback)){
             throw new UnsubscribeNonListenerException("You try to unsubscribe a listener that is not subscribed as a listener");
         }
-        unsubscribed.add(callback);
+        unsubscribedListeners.add(callback);
+        return true;
+    }
+    
+    public boolean unsubscribeListener(OnCompleteTick callback) throws UnsubscribeNonListenerException{
+        if(!tickCompleteListeners.contains(callback)){
+            throw new UnsubscribeNonListenerException("You try to unsubscribe a listener that is not subscribed as a listener");
+        }
+        unsubscribedCompleteListeners.add(callback);
         return true;
     }
     
@@ -203,13 +217,15 @@ public class GameEngine extends Thread implements MouseListener {
      * Notifies every listening object that a tick occured.
      */
     private void notifyListeners(){
-        synchronized(listeners){
-            for(OnExecuteTick l : listeners){
-                l.onTick(GameTime.getElapsedTime());
-            }
-            for(OnCompleteTick l : tickCompleteListeners){
-                l.tickComplete();
-            }
+        Iterator<OnExecuteTick> listit = listeners.iterator();
+        while(listit.hasNext()){
+            OnExecuteTick l = listit.next();
+            l.onTick(GameTime.getElapsedTime());
+        }
+        Iterator<OnCompleteTick> compit = tickCompleteListeners.iterator();
+        while(compit.hasNext()){
+            OnCompleteTick cl = compit.next();
+            cl.tickComplete(GameTime.getElapsedTime());
         }
     }
     

@@ -40,7 +40,7 @@ public class Minion implements IMoveable {
     private double reward; //The ammount of bitcoins the minion is worth, the opposing player gains this upon the minions destruction.
     
     private OnExecuteTick tickListener;
-    private MinionHeartbeat callback;
+    private MinionHeartbeat heartbeat;
     
     // Constructor
     /**
@@ -71,7 +71,7 @@ public class Minion implements IMoveable {
     
     // The minion will response to ticks from now on
     public void activate(MinionHeartbeat callback){
-        this.callback = callback;
+        this.heartbeat = callback;
         tickListener = new OnExecuteTick(){
 
             @Override
@@ -251,6 +251,10 @@ public class Minion implements IMoveable {
     
     public void receiveDamage(double damage){
         health -= damage;
+        System.out.println(String.format("Dealing damage: %f, remaining health: %f", damage, health));
+        if(health <= 0){
+            heartbeat.onMinionDeath(this);
+        }
     }
     
 }

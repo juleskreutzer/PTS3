@@ -27,6 +27,8 @@ public class Wave {
     private double waveMultiplier; //The multiplier of the wave.
     
     private ArrayList<Minion> minionList;
+    private static int spawnedMinions;
+    private ArrayList<Minion> killedMinions;
     
     // Initial -3000 is the compensation with the spawning interval so the minions will be spawned the first frame of the game
     private long lastSpawn = -3000;
@@ -53,6 +55,7 @@ public class Wave {
         waveActive = false;
         waveMultiplier = multiplier;
         minionList = new ArrayList<>();
+        killedMinions = new ArrayList<>();
         Map map = Map.getInstance();
         Point base = map.getBaseLocationA();
         
@@ -104,17 +107,13 @@ public class Wave {
         //Set to true so the wave becomes active.
         waveActive = true;
         
-        //Create an Iterator instance of the minion List.
-        Iterator<Minion> minionit = minions();
-        
-        GameEngine.getInstance().setOnTickListener(new GameEngine.OnExecuteTick(){
+        GameEngine.getInstance().setOnTickCompleteListener(new GameEngine.OnCompleteTick(){
             
             @Override
-            public void onTick(long elapsedtime){
-                if(elapsedtime >= (lastSpawn + 3000)){
-                     Minion m = null; //Initialise the minion m.
-                    if(minionit.hasNext()){
-                        m = minionit.next(); //If the minion Iterator contains another minion, minion m will become that minion.  
+            public void tickComplete(long elapsedtime){
+                if(elapsedtime >= (lastSpawn + 1000)){
+                    if(minionList.size() == spawnedMinions+1){
+                        Minion m = minionList.get(spawnedMinions++);
                         try{
                             GraphicsEngine.getInstance().spawn(m); //Get an instance of the graphics engine, and spawn the minion with it.
                             m.activate(new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
@@ -125,6 +124,7 @@ public class Wave {
                                 }
 
                             });
+                            lastSpawn = elapsedtime;
                              //Exception Handling.
                         }catch(DuplicateSpawnException e){
                             System.out.println(e.toString());
@@ -154,7 +154,8 @@ public class Wave {
      */
     private boolean removeMinion(Minion minion){
         if (minionList.contains(minion)){
-        minionList.remove(minion);
+            minionList.remove(minion);
+            killedMinions.add(minion);
         return true;
         } 
         else{

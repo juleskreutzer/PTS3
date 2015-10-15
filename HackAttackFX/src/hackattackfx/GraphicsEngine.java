@@ -56,7 +56,7 @@ public class GraphicsEngine{
         GameEngine.getInstance().setOnTickCompleteListener(new GameEngine.OnCompleteTick() {
 
             @Override
-            public void tickComplete() {
+            public void tickComplete(long elapsedtime) {
                 update();
             }
             
