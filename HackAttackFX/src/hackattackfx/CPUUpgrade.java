@@ -41,10 +41,26 @@ public class CPUUpgrade extends Module {
      * @return Whether the module was successfully upgraded.
      */
     public boolean upgrade(){
-        level++;
-        minionBonusMultiplier = level*10;
-        return true;
+        if(this.level >= 3)
+        {
+            System.out.print("Current level >= 3, can't upgrade object");
+            return false;
+        }
+        else{
+            level++;
+            
+            // Bonus multiplier sample value
+            // The value could be handled by the API, or we can use a nice formula to calculate the minionBonusMultiplier
+            minionBonusMultiplier = level*10;
+            return true;
+        }
     }
+    
+    public void operation()
+    {
+        
+    }
+    
     
     
 }

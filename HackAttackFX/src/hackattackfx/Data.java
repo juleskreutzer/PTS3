@@ -175,33 +175,83 @@ public class Data {
             String name = obj.getString("name");
             int range = obj.getInt("defense_range");
             int requiredLevel = obj.getInt("requiredLevel");
-            String type = obj.getString("type");
+            String typeString = obj.getString("type");
             SpellName spellName;
+            SpellType type;
             
             switch(name)
             {
                 case "Corrupt":
                     spellName = SpellName.CORRUPT;
+                    
+                    if(typeString == "attack")
+                    {
+                        type = SpellType.ATTACK;
+                    }
+                    else
+                    {
+                        type = SpellType.DEFENSE;
+                    }
                     DEFAULT_SPELL_CORRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Encrypt":
                     spellName = SpellName.ENCRYPT;
+                    if(typeString == "attack")
+                    {
+                        type = SpellType.ATTACK;
+                    }
+                    else
+                    {
+                        type = SpellType.DEFENSE;
+                    }
                     DEFAULT_SPELL_ENCRYPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Disrupt":
                     spellName = SpellName.DISRUPT;
+                    if(typeString == "attack")
+                    {
+                        type = SpellType.ATTACK;
+                    }
+                    else
+                    {
+                        type = SpellType.DEFENSE;
+                    }
                     DEFAULT_SPELL_DISRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Lock-down":
                     spellName = SpellName.LOCKDOWN;
+                    if(typeString == "attack")
+                    {
+                        type = SpellType.ATTACK;
+                    }
+                    else
+                    {
+                        type = SpellType.DEFENSE;
+                    }
                     DEFAULT_SPELL_LOCKDOWN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Firewall":
                     spellName = SpellName.FIREWALL;
+                    if(typeString == "attack")
+                    {
+                        type = SpellType.ATTACK;
+                    }
+                    else
+                    {
+                        type = SpellType.DEFENSE;
+                    }
                     DEFAULT_SPELL_FIREWALL = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Virus-scan":
                     spellName = SpellName.VIRUSSCAN;
+                    if(typeString == "attack")
+                    {
+                        type = SpellType.ATTACK;
+                    }
+                    else
+                    {
+                        type = SpellType.DEFENSE;
+                    }
                     DEFAULT_SPELL_VIRUSSCAN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 default:

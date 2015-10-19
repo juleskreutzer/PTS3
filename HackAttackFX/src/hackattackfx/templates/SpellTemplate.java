@@ -13,11 +13,11 @@ import hackattackfx.enums.*;
 public class SpellTemplate {
     private SpellName name;
     private double range;
-    private String type;
+    private SpellType type;
     private int cooldown;
     private int requiredLevel;
     
-    public SpellTemplate(SpellName name, double range, String type, int cooldown, int requiredLevel)
+    public SpellTemplate(SpellName name, double range, SpellType type, int cooldown, int requiredLevel)
     {
         this.name = name;
         this.range = range;
@@ -36,7 +36,7 @@ public class SpellTemplate {
         return this.range;
     }
     
-    public String getType()
+    public SpellType getType()
     {
         return this.type;
     }
