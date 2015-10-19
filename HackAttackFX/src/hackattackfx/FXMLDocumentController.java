@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Ellipse;
 
 /**
  *
@@ -80,7 +81,8 @@ public class FXMLDocumentController implements Initializable {
         for(Object n : list){
             if(n instanceof Node){
                 Node node = (Node)n;
-                if(node.getId().equals(fxid)){
+                String s = node.getId();
+                if (node.getId() != null && s.equals(fxid)){
                     return node;
                 }
             }

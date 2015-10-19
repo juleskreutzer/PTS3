@@ -156,6 +156,7 @@ public class Wave {
         if (minionList.contains(minion)){
             minionList.remove(minion);
             killedMinions.add(minion);
+            minion.deactivate();
         return true;
         } 
         else{

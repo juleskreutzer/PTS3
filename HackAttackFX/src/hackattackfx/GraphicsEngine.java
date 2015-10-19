@@ -9,6 +9,7 @@ import hackattackfx.enums.ModuleName;
 import java.util.List;
 import hackattackfx.exceptions.*;
 import java.io.File;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -77,7 +78,8 @@ public class GraphicsEngine{
      * @return 
      */
     public Node getNode(String id){
-        return parent.getNode(id);
+        Node n = parent.getNode(id);
+        return n;
     }
     
     /**
@@ -137,8 +139,18 @@ public class GraphicsEngine{
                     if(n instanceof MinionImage){
                         MinionImage mi = (MinionImage)n;
                         Minion m = ((MinionImage)n).getMinion();
+                        
+                        if (m.getHealth() > 0){
                         mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
                         mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
+                        }
+                        else{
+                            try {
+                                deSpawn(n);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
 
                     }else if(n instanceof ModuleImage){
                         ModuleImage mi = (ModuleImage)n;
@@ -148,14 +160,20 @@ public class GraphicsEngine{
                                 drawModuleRange((Module)mi.getReference());
                             }
                         }else{
-                            if(moduleRange != null){
                                 try {
-                                    deSpawn(moduleRange);
+                                    // loops through all nodes, if it is an ModuleRange node, remove it.
+                                        Iterator i = parent.getAllNodes().iterator();
+                                        while (i.hasNext())
+                                        {
+                                            Node node = (Node)i.next();
+                                            if ("ModuleRange".equals(node.getId())) {
+                                                deSpawn(node);
+                                            }
+                                        }
                                     moduleRange = null;
                                 } catch (InvalidObjectException ex) {
                                     Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                            }
                         }
                         
                         
@@ -232,8 +250,9 @@ public class GraphicsEngine{
         rangecircle.setStroke(Color.BLACK);
         rangecircle.setFill(null);
         rangecircle.setStrokeWidth(3);
-        parent.addNode(rangecircle);
+        rangecircle.setId("ModuleRange");
         moduleRange = rangecircle;
+        parent.addNode(rangecircle);
         return rangecircle;
     }
     
@@ -250,7 +269,6 @@ public class GraphicsEngine{
                 lblPlayerHealth.setText(String.format("Health: %s", health));
                 lblPlayerBitcoins.setText(String.format("Bitcoins: %s", bitcoins));
             }
-        
         });
         
     }
