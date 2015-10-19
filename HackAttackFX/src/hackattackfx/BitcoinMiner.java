@@ -57,11 +57,31 @@ public class BitcoinMiner extends Module {
      * Upgrades this module
      * @return Whether the module was successfully upgraded.
      */
-    public boolean upgrade(){
-        level++;
-        super.setLevel(level);
-        valuePerSecond = level * 10;
-        return true;
+    public boolean upgrade() throws NoUpgradeAllowedException{
+        BitCoinMinerTemplate newBCM;
+
+        if(this.level == 1)
+        {
+            newBCM = Data.DEFAULT_MODULE_BITCOINMINER_2;
+            this.level = newBCM.getLevel();
+            super.setLevel(newBCM.getLevel());
+            return true;
+        }
+        else if(this.level == 2)
+        {
+            newBCM = Data.DEFAULT_MODULE_BITCOINMINER_3;
+            this.level = newBCM.getLevel();
+            super.setLevel(newBCM.getLevel());
+            return true;
+        }
+        else if(this.level == 3)
+        {
+            throw new NoUpgradeAllowedException("You already reached the maximum level for this Bitcoin Miner. Upgrade is not available.");
+        }
+        else
+        {
+            throw new NoUpgradeAllowedException("Something went wrong, you can't upgrade the Bitcoin Miner at this time.");
+        }
     }
     
     /**

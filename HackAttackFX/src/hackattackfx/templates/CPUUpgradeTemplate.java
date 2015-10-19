@@ -13,8 +13,15 @@ import hackattackfx.enums.ModuleName;
  */
 public class CPUUpgradeTemplate extends ModuleTemplate {
 
-    public CPUUpgradeTemplate(double cost, int level, ModuleName name) {
+    private int minionBonusMultiplier;
+    public CPUUpgradeTemplate(double cost, int level, ModuleName name, int multiplier) {
         super(cost, level, name);
+        this.minionBonusMultiplier = multiplier;
+    }
+    
+    public int getMinionBonusMultiplier()
+    {
+        return this.minionBonusMultiplier;
     }
     
 }

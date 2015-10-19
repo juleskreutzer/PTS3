@@ -296,15 +296,15 @@ public class Data {
                     {
                         case 1:
                             moduleName = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_1 = new BitCoinMinerTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_BITCOINMINER_1 = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_2 = new BitCoinMinerTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_BITCOINMINER_2 = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_3 = new BitCoinMinerTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_BITCOINMINER_3 = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Bitcoin Miner)");
@@ -315,15 +315,15 @@ public class Data {
                     {
                         case 1:
                             moduleName = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_1 = new CPUUpgradeTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_CPUUPGRADE_1 = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_2 = new CPUUpgradeTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_CPUUPGRADE_2 = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_3 = new CPUUpgradeTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_CPUUPGRADE_3 = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (CPU Upgrade)");

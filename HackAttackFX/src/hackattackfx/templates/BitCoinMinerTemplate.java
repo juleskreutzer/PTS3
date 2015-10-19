@@ -13,7 +13,16 @@ import hackattackfx.enums.ModuleName;
  */
 public class BitCoinMinerTemplate extends ModuleTemplate {
 
-    public BitCoinMinerTemplate(double cost, int level, ModuleName name) {
+    private int valuePerSecond;
+    public BitCoinMinerTemplate(double cost, int level, ModuleName name, int value) {
         super(cost, level, name);
+        this.valuePerSecond = value;
     }
+    
+    public int getValuePerSecond()
+    {
+        return this.valuePerSecond;
+    }
+    
+    
 }
