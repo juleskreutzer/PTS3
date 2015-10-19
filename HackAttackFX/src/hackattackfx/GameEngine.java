@@ -154,6 +154,7 @@ public class GameEngine extends Thread implements MouseListener {
             @Override
             public void run() {
                 tick();
+                System.out.print("use javaFX thread (gameEngine line 157) (animationTimer)");
             }
         }, 0, 15);
                 
