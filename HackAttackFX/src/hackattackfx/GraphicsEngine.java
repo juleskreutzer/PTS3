@@ -137,8 +137,20 @@ public class GraphicsEngine{
                     if(n instanceof MinionImage){
                         MinionImage mi = (MinionImage)n;
                         Minion m = ((MinionImage)n).getMinion();
+                        
+                        if (m.getHealth() > 0){
                         mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
                         mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
+                        }
+                        else{
+                            //parent.removeNode(n);
+                            
+                            try {
+                                deSpawn(n);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
 
                     }else if(n instanceof ModuleImage){
                         ModuleImage mi = (ModuleImage)n;
@@ -151,6 +163,7 @@ public class GraphicsEngine{
                             if(moduleRange != null){
                                 try {
                                     deSpawn(moduleRange);
+                                    //deSpawn(getNode(moduleRange.getId()));
                                     moduleRange = null;
                                 } catch (InvalidObjectException ex) {
                                     Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
