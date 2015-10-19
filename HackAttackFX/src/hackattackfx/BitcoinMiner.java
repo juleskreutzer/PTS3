@@ -48,7 +48,7 @@ public class BitcoinMiner extends Module {
             // ModuleName is incorrect
             throw new InvalidModuleEnumException();
         }
-        
+        this.valuePerSecond = template.getValuePerSecond();
         listeners = new ArrayList<OnMineComplete>();
         lastMine = 0;
     }
@@ -65,6 +65,7 @@ public class BitcoinMiner extends Module {
             newBCM = Data.DEFAULT_MODULE_BITCOINMINER_2;
             this.level = newBCM.getLevel();
             super.setLevel(newBCM.getLevel());
+            this.valuePerSecond = newBCM.getValuePerSecond();
             return true;
         }
         else if(this.level == 2)
@@ -72,6 +73,7 @@ public class BitcoinMiner extends Module {
             newBCM = Data.DEFAULT_MODULE_BITCOINMINER_3;
             this.level = newBCM.getLevel();
             super.setLevel(newBCM.getLevel());
+            this.valuePerSecond = newBCM.getValuePerSecond();
             return true;
         }
         else if(this.level == 3)

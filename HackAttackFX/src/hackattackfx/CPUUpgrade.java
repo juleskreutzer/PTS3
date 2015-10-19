@@ -40,21 +40,33 @@ public class CPUUpgrade extends Module {
      * Upgrades this module
      * @return Whether the module was successfully upgraded.
      */
-    public boolean upgrade(){
-        if(this.level >= 3)
+    public boolean upgrade() throws NoUpgradeAllowedException{
+        CPUUpgradeTemplate newCPU;
+        if(this.level == 1)
         {
-            System.out.print("Current level >= 3, can't upgrade object");
-            return false;
+           newCPU = Data.DEFAULT_MODULE_CPUUPGRADE_2;
+           this.level = newCPU.getLevel();
+           super.setLevel(newCPU.getLevel());
+           this.minionBonusMultiplier = newCPU.getMinionBonusMultiplier();
+           return true;
         }
-        else{
-            level++;
-            super.setLevel(level);
-            
-            // Bonus multiplier sample value
-            // The value could be handled by the API, or we can use a nice formula to calculate the minionBonusMultiplier
-            minionBonusMultiplier = level*10;
+        else if(this.level == 2)
+        {
+            newCPU = Data.DEFAULT_MODULE_CPUUPGRADE_3;
+            this.level = newCPU.getLevel();
+            super.setLevel(newCPU.getLevel());
+            this.minionBonusMultiplier = newCPU.getMinionBonusMultiplier();
             return true;
         }
+        else if(this.level == 3)
+        {
+            throw new NoUpgradeAllowedException("This CPU Upgrade has already reached it's maximal level. An upgrade is not available.");
+        }
+        else
+        {
+            throw new NoUpgradeAllowedException("Something is wrong, we can't upgrade your CPU Upgrade at this time.");
+        }
+        
     }
     
     public void operation()

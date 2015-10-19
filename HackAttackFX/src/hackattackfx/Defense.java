@@ -205,11 +205,135 @@ public class Defense extends Module {
      * Upgrades this module
      * @return Whether the module was successfully upgraded.
      */
-    public boolean upgrade(){
-        level++;
-        super.setLevel(level);
-        damage = level * 10;
-        return true;
+    public boolean upgrade() throws NoUpgradeAllowedException{
+        DefenseTemplate newDefense;
+        if(this.level == 1)
+        {
+            if(this.moduleName == ModuleName.BOTTLECAP_ANTIVIRUS)
+            {
+                newDefense = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_2;
+                this.type = newDefense.getDefenseType();
+                super.setLevel(newDefense.getLevel());
+                this.level = newDefense.getLevel();
+                this.effect = newDefense.getEffect();
+                this.damage = newDefense.getDamage();
+                this.range = newDefense.getRange();
+                this.frequency = newDefense.getFrequency();
+                
+                return true;
+            }
+            else if(this.moduleName == ModuleName.MUSCLE_ANTIVIRUS)
+            {
+                newDefense = Data.DEFAULT_MODULE_DEFENSE_MUSCLE_2;
+                this.type = newDefense.getDefenseType();
+                super.setLevel(newDefense.getLevel());
+                this.level = newDefense.getLevel();
+                this.effect = newDefense.getEffect();
+                this.damage = newDefense.getDamage();
+                this.range = newDefense.getRange();
+                this.frequency = newDefense.getFrequency();
+                
+                return true;
+            }
+            else if(this.moduleName == ModuleName.SCALE_ANTIVIRUS)
+            {
+                newDefense = Data.DEFAULT_MODULE_DEFENSE_SCALE_2;
+                this.type = newDefense.getDefenseType();
+                super.setLevel(newDefense.getLevel());
+                this.level = newDefense.getLevel();
+                this.effect = newDefense.getEffect();
+                this.damage = newDefense.getDamage();
+                this.range = newDefense.getRange();
+                this.frequency = newDefense.getFrequency();
+                
+                return true;
+            }
+            else if(this.moduleName == ModuleName.SNIPER_ANTIVIRUS)
+            {
+                newDefense = Data.DEFAULT_MODULE_DEFENSE_SNIPER_2;
+                this.type = newDefense.getDefenseType();
+                super.setLevel(newDefense.getLevel());
+                this.level = newDefense.getLevel();
+                this.effect = newDefense.getEffect();
+                this.damage = newDefense.getDamage();
+                this.range = newDefense.getRange();
+                this.frequency = newDefense.getFrequency();
+                
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+        else if(this.level == 2)
+        {
+            if(this.moduleName == ModuleName.BOTTLECAP_ANTIVIRUS)
+            {
+                newDefense = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_3;
+                this.type = newDefense.getDefenseType();
+                super.setLevel(newDefense.getLevel());
+                this.level = newDefense.getLevel();
+                this.effect = newDefense.getEffect();
+                this.damage = newDefense.getDamage();
+                this.range = newDefense.getRange();
+                this.frequency = newDefense.getFrequency();
+                
+                return true;
+            }
+            else if(this.moduleName == ModuleName.MUSCLE_ANTIVIRUS)
+            {
+                newDefense = Data.DEFAULT_MODULE_DEFENSE_MUSCLE_3;
+                this.type = newDefense.getDefenseType();
+                super.setLevel(newDefense.getLevel());
+                this.level = newDefense.getLevel();
+                this.effect = newDefense.getEffect();
+                this.damage = newDefense.getDamage();
+                this.range = newDefense.getRange();
+                this.frequency = newDefense.getFrequency();
+                
+                return true;
+            }
+            else if(this.moduleName == ModuleName.SCALE_ANTIVIRUS)
+            {
+                newDefense = Data.DEFAULT_MODULE_DEFENSE_SCALE_3;
+                this.type = newDefense.getDefenseType();
+                super.setLevel(newDefense.getLevel());
+                this.level = newDefense.getLevel();
+                this.effect = newDefense.getEffect();
+                this.damage = newDefense.getDamage();
+                this.range = newDefense.getRange();
+                this.frequency = newDefense.getFrequency();
+                
+                return true;
+            }
+            else if(this.moduleName == ModuleName.SNIPER_ANTIVIRUS)
+            {
+                newDefense = Data.DEFAULT_MODULE_DEFENSE_SNIPER_3;
+                this.type = newDefense.getDefenseType();
+                super.setLevel(newDefense.getLevel());
+                this.level = newDefense.getLevel();
+                this.effect = newDefense.getEffect();
+                this.damage = newDefense.getDamage();
+                this.range = newDefense.getRange();
+                this.frequency = newDefense.getFrequency();
+                
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if(this.level == 3)
+        {
+           throw new NoUpgradeAllowedException(String.format("Your %s has already reached it's maximal level. You can't upgrade it anymore.", this.moduleName.toString()));
+        }
+        else
+        {
+            throw new NoUpgradeAllowedException("Something went wrong. We can't upgrade your defense module at this time.");
+        }
     }
     
     /**
