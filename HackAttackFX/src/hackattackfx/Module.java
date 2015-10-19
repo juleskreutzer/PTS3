@@ -52,20 +52,32 @@ abstract public class Module {
         return this.position;
     }
     
+    /**
+     * Set the position of the module
+     * @param position Point where the position of the module will be set to
+     */
     public void setPosition(Point position){
         this.position = position;
     }
     
+    /**
+     * Get the width of the module
+     * @return (Int) width of the module
+     */
     public int getWidth(){
         return width;
     }
 
+    /**
+     * Get the hight of the module
+     * @return (Int) Height of the module
+     */
     public int getHeight(){
         return height;
     }
     
     /**
-     * 
+     * Get the cost of the module
      * @return the cost of the object
      */
     public double getCost()
@@ -73,10 +85,18 @@ abstract public class Module {
         return this.cost;
     }
     
+    /**
+     * Get the current level of te module
+     * @return (int) the level of the module
+     */
     public int getLevel(){
         return level;
     }
     
+    /**
+     * Set the level of the module to the giver param
+     * @param l The level the module will be set to
+     */
     public void setLevel(int l){
         level = l;
     }
@@ -108,7 +128,7 @@ abstract public class Module {
         return this.moduleName;
     }
     /**
-     * 
+     * Get the name of the module as a String
      * @return the name of the object as a String
      */
     protected void getName()

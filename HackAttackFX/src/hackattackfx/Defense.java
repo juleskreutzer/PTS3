@@ -207,6 +207,7 @@ public class Defense extends Module {
      */
     public boolean upgrade(){
         level++;
+        super.setLevel(level);
         damage = level * 10;
         return true;
     }

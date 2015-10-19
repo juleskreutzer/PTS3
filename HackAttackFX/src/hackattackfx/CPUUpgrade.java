@@ -48,6 +48,7 @@ public class CPUUpgrade extends Module {
         }
         else{
             level++;
+            super.setLevel(level);
             
             // Bonus multiplier sample value
             // The value could be handled by the API, or we can use a nice formula to calculate the minionBonusMultiplier

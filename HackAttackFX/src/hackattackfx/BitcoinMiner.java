@@ -59,6 +59,7 @@ public class BitcoinMiner extends Module {
      */
     public boolean upgrade(){
         level++;
+        super.setLevel(level);
         valuePerSecond = level * 10;
         return true;
     }
