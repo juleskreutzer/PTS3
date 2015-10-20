@@ -10,6 +10,8 @@ import hackattackfx.enums.ModuleName;
 import java.awt.Point;
 import hackattackfx.exceptions.*;
 import hackattackfx.templates.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 /**
  * The CPUUpgrade is a module that's used to increase the minions hp and damage.
  * The higher this module is upgraded, the higher the multiplier.
@@ -40,7 +42,7 @@ public class CPUUpgrade extends Module {
      * Upgrades this module
      * @return Whether the module was successfully upgraded.
      */
-    public boolean upgrade() throws NoUpgradeAllowedException{
+    public boolean upgrade(Iterator<Minion> minions) throws NoUpgradeAllowedException{
         CPUUpgradeTemplate newCPU;
         if(this.level == 1)
         {
@@ -48,6 +50,13 @@ public class CPUUpgrade extends Module {
            this.level = newCPU.getLevel();
            super.setLevel(newCPU.getLevel());
            this.minionBonusMultiplier = newCPU.getMinionBonusMultiplier();
+           
+           // Increase the stats of all minions working for the player
+           while(minions.hasNext())
+           {
+               Minion m = minions.next();
+               m.applyMultiplier(this.minionBonusMultiplier);
+           }
            return true;
         }
         else if(this.level == 2)
@@ -56,6 +65,13 @@ public class CPUUpgrade extends Module {
             this.level = newCPU.getLevel();
             super.setLevel(newCPU.getLevel());
             this.minionBonusMultiplier = newCPU.getMinionBonusMultiplier();
+            
+            // Increase the stats of all minions working for the player
+            while(minions.hasNext())
+            {
+                Minion m = minions.next();
+                m.applyMultiplier(this.minionBonusMultiplier);
+            }
             return true;
         }
         else if(this.level == 3)

@@ -260,4 +260,16 @@ public class Minion implements IMoveable {
         }
     }
     
+    /**
+     * Increase some stats with the given multiplier
+     * The stats are increased by the current value + (currentvalue*multiplier)
+     * @param multiplier The multiplier the value will be increased with
+     */
+    public void applyMultiplier(double multiplier)
+    {
+        this.health += this.health*multiplier;
+        this.damage += this.damage*multiplier;
+        this.reward += this.reward*multiplier;
+    }
+    
 }
