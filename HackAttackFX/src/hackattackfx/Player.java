@@ -101,7 +101,12 @@ public class Player {
      * @return boolean if the upgrade was successfully executed 
      */
     public boolean upgradeBitcoinMiner(BitcoinMiner miner){
-        if(miner.upgrade()) { return true; } else { return false; }
+        try {
+            return miner.upgrade();
+        } catch (NoUpgradeAllowedException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
     
     /**
@@ -113,7 +118,12 @@ public class Player {
     }
     
     public boolean upgradeCPUUpgrade(CPUUpgrade cpu){
-        if(cpu.upgrade()) { return true; } else { return false; }
+        try {
+            return cpu.upgrade();
+        } catch (NoUpgradeAllowedException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
     
     public Defense buildDefense(Defense defense){
@@ -195,15 +205,20 @@ public class Player {
     }
     
     public boolean upgradeDefense(Defense defense, Effect effect){
-        if(defense.upgrade())
-        {
-            defense.setEffect(effect);
-            return true;
+        try {
+            if(defense.upgrade())
+            {
+                defense.setEffect(effect);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        } catch (NoUpgradeAllowedException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
     
     public Point getBaseLocation(){

@@ -141,8 +141,8 @@ public class GraphicsEngine{
                         Minion m = ((MinionImage)n).getMinion();
                         
                         if (m.getHealth() > 0){
-                        mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
-                        mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
+                            mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
+                            mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
                         }
                         else{
                             try {

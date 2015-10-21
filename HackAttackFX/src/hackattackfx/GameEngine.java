@@ -131,6 +131,40 @@ public class GameEngine extends Thread implements MouseListener {
             }
             
         });
+        
+        ImageView scaleav = (ImageView)graphicsEngine.getNode("buildScaleAV");
+        scaleav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                SpawnTargetImage st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SCALE_ANTIVIRUS);
+                // Set a listener for a second click to occur
+                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                        try {
+                            Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50));
+                            
+                            try {
+                                graphicsEngine.spawn(defense);
+                                graphicsEngine.deSpawn(st);
+                            } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            defense.activate();
+                            
+                        } catch (InvalidModuleEnumException ex) {
+                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                
+                });
+            }
+            
+        });
     }
     
     /**
