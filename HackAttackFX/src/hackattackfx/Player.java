@@ -11,6 +11,7 @@ import hackattackfx.BitcoinMiner.OnMineComplete;
 import hackattackfx.enums.Effect;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +47,16 @@ public class Player {
     }
     
     //Methods
+    
+    /**
+     * Check if the player can build or upgrade the desired module
+     * @param cost cost of the module to build or upgrade it
+     * @return returns true if the player can build or upgrade, false if not
+     */
+    private boolean CheckCostToBuildOrUpgrade(double cost)
+    {
+        if(cost <= this.bitcoins) { return true; } else { return false; }
+    }
     
     /**
     * Initialize a SoftwareInjector object, add the object to the modules field and return a list of spells that became available
@@ -100,6 +111,7 @@ public class Player {
      * Retrieve a BitcoinMiner object from the modules field and call the Upgrade method from inside the class
      * @return boolean if the upgrade was successfully executed 
      */
+
     public boolean upgradeBitcoinMiner(BitcoinMiner miner){
         try {
             return miner.upgrade();
@@ -107,7 +119,6 @@ public class Player {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-    }
     
     /**
      * Initialize a CpuUpgrade object and add the object to the modules field
@@ -119,12 +130,14 @@ public class Player {
     
     public boolean upgradeCPUUpgrade(CPUUpgrade cpu){
         try {
-            return cpu.upgrade();
+			// First get a list of all minions
+			Iterator<Minion> minions = GameEngine.getInstance().getActiveWave().minions();
+            return cpu.upgrade(minions);
         } catch (NoUpgradeAllowedException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-    }
+	}
     
     public Defense buildDefense(Defense defense){
         modules.add(defense);
@@ -204,6 +217,7 @@ public class Player {
         bitcoins -= amount;
     }
     
+
     public boolean upgradeDefense(Defense defense, Effect effect){
         try {
             if(defense.upgrade())
@@ -217,9 +231,8 @@ public class Player {
             }
         } catch (NoUpgradeAllowedException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
+		}
+	}		
     
     public Point getBaseLocation(){
         return baseLocation;
