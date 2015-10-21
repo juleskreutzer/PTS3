@@ -198,33 +198,43 @@ public class GraphicsEngine{
      */
     public SpawnTargetImage drawModuleSpawnTarget(ModuleName module){
         
+        File file = null;
+        
         switch(module){
             case BITCOIN_MINER:
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_BITCOINMINER_1);
+                file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
                 break;
             case SOFTWARE_INJECTOR:
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1);
+                file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
                 break;
             case CPU_UPGRADE:
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_CPUUPGRADE_1);
+                file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
                 break;
             case SNIPER_ANTIVIRUS:
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1);
+                file = new File("src/hackattackfx/resources/interface/module/40x40/Sniper-Module.png");
                 break;
             case BOTTLECAP_ANTIVIRUS:
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1);
+                file = new File("src/hackattackfx/resources/interface/module/40x40/Bottlecap-Module.png");
                 break;
             case SCALE_ANTIVIRUS:
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SCALE_1);
+                file = new File("src/hackattackfx/resources/interface/module/40x40/Scale-Module.png");
                 break;
             case MUSCLE_ANTIVIRUS:
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1);
+                file = new File("src/hackattackfx/resources/interface/module/40x40/Muscle-Module.png");
                 break;
         }
         
-        File file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+        
         Image targetimage = new Image(file.toURI().toString());
         spawnTarget.setImage(targetimage);
+        spawnTarget.setOpacity(0.5);
         parent.addNode(spawnTarget);
         parent.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
 

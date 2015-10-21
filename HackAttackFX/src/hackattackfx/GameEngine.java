@@ -165,6 +165,74 @@ public class GameEngine extends Thread implements MouseListener {
             }
             
         });
+        
+        ImageView bottlecapav = (ImageView)graphicsEngine.getNode("buildBottlecapAV");
+        bottlecapav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                SpawnTargetImage st = graphicsEngine.drawModuleSpawnTarget(ModuleName.BOTTLECAP_ANTIVIRUS);
+                // Set a listener for a second click to occur
+                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                        try {
+                            Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50));
+                            
+                            try {
+                                graphicsEngine.spawn(defense);
+                                graphicsEngine.deSpawn(st);
+                            } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            defense.activate();
+                            
+                        } catch (InvalidModuleEnumException ex) {
+                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                
+                });
+            }
+            
+        });
+        
+        ImageView muscleav = (ImageView)graphicsEngine.getNode("buildMuscleAV");
+        muscleav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                SpawnTargetImage st = graphicsEngine.drawModuleSpawnTarget(ModuleName.MUSCLE_ANTIVIRUS);
+                // Set a listener for a second click to occur
+                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                        try {
+                            Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50));
+                            
+                            try {
+                                graphicsEngine.spawn(defense);
+                                graphicsEngine.deSpawn(st);
+                            } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            defense.activate();
+                            
+                        } catch (InvalidModuleEnumException ex) {
+                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                
+                });
+            }
+            
+        });
     }
     
     /**
@@ -172,7 +240,7 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void startGame(){
         gameRunning = true;
-        Wave wave = new Wave(1,1,playerB,1,0,0,0,0,0);
+        Wave wave = new Wave(1,1,playerB,10,0,0,0,0,0);
         waveList.add(wave);
         currentWave = wave;
         
@@ -224,11 +292,11 @@ public class GameEngine extends Thread implements MouseListener {
     private void processUnsubscribers(){
         if(unsubscribedListeners.size() > 0 ){
             listeners.removeAll(unsubscribedListeners);
-            listeners.clear();
+            unsubscribedListeners.clear();
         }
         if(unsubscribedCompleteListeners.size() > 0){
             tickCompleteListeners.removeAll(unsubscribedCompleteListeners);
-            tickCompleteListeners.clear();
+            unsubscribedCompleteListeners.clear();
         }
     }
     

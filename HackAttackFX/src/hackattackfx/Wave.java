@@ -5,15 +5,13 @@
  */
 package hackattackfx;
 
-import hackattackfx.GameEngine.OnExecuteTick;
+import hackattackfx.GameEngine.OnCompleteTick;
 import hackattackfx.exceptions.DuplicateSpawnException;
 import hackattackfx.exceptions.InvalidObjectException;
 import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,8 +28,8 @@ public class Wave {
     private static int spawnedMinions;
     private ArrayList<Minion> killedMinions;
     
-    // Initial -3000 is the compensation with the spawning interval so the minions will be spawned the first frame of the game
-    private long lastSpawn = -3000;
+    // Initial -1000 is the compensation with the spawning interval so the minions will be spawned the first frame of the game
+    private long lastSpawn = -1000;
     
     
     //TODO Add a WaveTemplate
@@ -106,13 +104,12 @@ public class Wave {
     public void startWave(){
         //Set to true so the wave becomes active.
         waveActive = true;
-        
-        GameEngine.getInstance().setOnTickCompleteListener(new GameEngine.OnCompleteTick(){
+        OnCompleteTick listener = new GameEngine.OnCompleteTick(){
             
             @Override
             public void tickComplete(long elapsedtime){
                 if(elapsedtime >= (lastSpawn + 1000)){
-                    if(minionList.size() == spawnedMinions+1){
+                    if(spawnedMinions < minionList.size()){
                         Minion m = minionList.get(spawnedMinions++);
                         try{
                             GraphicsEngine.getInstance().spawn(m); //Get an instance of the graphics engine, and spawn the minion with it.
@@ -131,11 +128,19 @@ public class Wave {
                         }catch(InvalidObjectException e){
                             System.out.println(e.toString());
                         }
+                    }else{
+                        try {
+                            GameEngine.getInstance().unsubscribeListener(this);
+                        } catch (UnsubscribeNonListenerException e) {
+                            System.out.println(e.toString());
+                        }
                     }
                 }
             }
             
-        });
+        };
+        
+        GameEngine.getInstance().setOnTickCompleteListener(listener);
     }
     
     /**
@@ -154,8 +159,9 @@ public class Wave {
      */
     private boolean removeMinion(Minion minion){
         if (minionList.contains(minion)){
-            minionList.remove(minion);
             killedMinions.add(minion);
+            minionList.remove(minion);
+            spawnedMinions--;
             minion.deactivate();
         return true;
         } 

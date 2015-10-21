@@ -377,6 +377,9 @@ public class Defense extends Module {
     public void fire(Minion minion){
         System.out.println(this.toString() + " is attacking " + minion.toString());
         minion.receiveDamage(damage);
+        if(minion.getHealth() <= 0){
+            target = null;
+        }
     }
     
 }
