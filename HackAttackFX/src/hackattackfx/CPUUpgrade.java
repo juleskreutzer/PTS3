@@ -10,6 +10,7 @@ import hackattackfx.enums.ModuleName;
 import java.awt.Point;
 import hackattackfx.exceptions.*;
 import hackattackfx.templates.*;
+import java.util.Iterator;
 /**
  * The CPUUpgrade is a module that's used to increase the minions hp and damage.
  * The higher this module is upgraded, the higher the multiplier.
@@ -40,7 +41,7 @@ public class CPUUpgrade extends Module {
      * Upgrades this module
      * @return Whether the module was successfully upgraded.
      */
-    public boolean upgrade() throws NoUpgradeAllowedException{
+    public boolean upgrade(Iterator<Minion> minions) throws NoUpgradeAllowedException{
         CPUUpgradeTemplate newCPU;
         if(this.level == 1)
         {

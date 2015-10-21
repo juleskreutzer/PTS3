@@ -119,6 +119,7 @@ public class Player {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
     
     /**
      * Initialize a CpuUpgrade object and add the object to the modules field
@@ -130,8 +131,8 @@ public class Player {
     
     public boolean upgradeCPUUpgrade(CPUUpgrade cpu){
         try {
-			// First get a list of all minions
-			Iterator<Minion> minions = GameEngine.getInstance().getActiveWave().minions();
+            // First get a list of all minions
+            Iterator<Minion> minions = GameEngine.getInstance().getActiveWave().minions();
             return cpu.upgrade(minions);
         } catch (NoUpgradeAllowedException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
@@ -231,8 +232,9 @@ public class Player {
             }
         } catch (NoUpgradeAllowedException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}		
+	}
+        return false;
+    }		
     
     public Point getBaseLocation(){
         return baseLocation;
