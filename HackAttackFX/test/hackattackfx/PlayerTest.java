@@ -69,8 +69,8 @@ public class PlayerTest {
         point5 = new Point(500, 500);
         point6 = new Point(600, 600);
         
-        player1 = new Player(1, "player1", 999999, point1);
-        player2 = new Player(1, "player2", 0, point2);
+        player1 = new Player(100, "player1", 999999, point1);
+        player2 = new Player(1, "player2", 1, point2);
         playerWithMoney = new Player(1, "playerWithMoney", 999999, point4);
         
         try {
@@ -181,17 +181,48 @@ public class PlayerTest {
          assertEquals(modules.get(0).getModuleName(), cpuUpgrade.moduleName);
     }
 
+        /**
+     * Test of upgradeCPUUpgrade method, of class Player.
+     */
+    @Test
+    public void testUpgradeCPUUpgradeSucces() {
+         List<Module> modules;
+        
+        //Can upgrade
+        modules = player1.getModules();
+        CPUUpgrade cpuUpgrade1 = (CPUUpgrade) modules.get(0);
+        player1.upgradeCPUUpgrade(cpuUpgrade1);
+        
+        assertEquals("Levels aren't equal", cpuUpgrade.getLevel(), 2);
+    }
+    
+        /**
+     * Test of upgradeCPUUpgrade method, of class Player.
+     */
+    @Test
+    public void testUpgradeCPUUpgradeFail() {
+        List<Module> modules;
+        
+        player1.setBitcoins(0);
+        modules = player1.getModules();
+        CPUUpgrade cpuUpgrade1 = (CPUUpgrade) modules.get(0);
+        player1.upgradeCPUUpgrade(cpuUpgrade1);
+        
+        assertEquals("Levels aren't equal", bitcoinMiner.getLevel(), 1);
+    }
+    
+    
     /**
      * Test of setHealth and getHealth method, of class Player.
      */
     @Test
     public void testSetGetHealth() {
         //Test getHealth
-        assertEquals("getHealth error.", 1, player1.getHealth());
+        assertEquals("getHealth error.", 100, player1.getHealth());
         
         //Test setHealth
-        player1.setHealth(100);
-        assertEquals("setHealth error.", 100, player1.getHealth());
+        player1.setHealth(101);
+        assertEquals("setHealth error.", 101, player1.getHealth());
     }
 
     /**
@@ -286,14 +317,8 @@ public class PlayerTest {
      */
     @Test
     public void testReceiveDamage() {
-        System.out.println("receiveDamage");
-        double damage = 10.0;
-        Player instance = new Player();
-        instance.setHealth(20.0);
-        instance.receiveDamage(damage);
-        double result = instance.getHealth();
-        double expResult = 10.0;
-        assertEquals(expResult, result, 0.0);
+        player1.receiveDamage(10);
+        assertEquals("recieveDamage error", 90, player1.getHealth());
     }
 
     /**
@@ -301,28 +326,12 @@ public class PlayerTest {
      */
     @Test
     public void testGetSpells() {
-        System.out.println("getSpells");
-        Player instance = new Player();
-        List<Spell> expResult = null;
-        List<Spell> result = instance.getSpells();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of upgradeCPUUpgrade method, of class Player.
-     */
-    @Test
-    public void testUpgradeCPUUpgrade() {
-        System.out.println("upgradeCPUUpgrade");
-        CPUUpgrade cpu = null;
-        Player instance = new Player();
-        boolean expResult = false;
-        boolean result = instance.upgradeCPUUpgrade(cpu);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        List<Spell> spells = softwareInjector.getSpells();
+        List<Spell> otherSpells = player1.getSpells();
+        assertEquals("Not the same ammount of spells", spells.size(), otherSpells.size());
+        
+        List<Spell> noSpells = player2.getSpells();
+        assertNull("player2 somehow has spells", noSpells);
     }
 
     /**
@@ -330,95 +339,7 @@ public class PlayerTest {
      */
     @Test
     public void testBuildDefense() throws Exception {
-        System.out.println("buildDefense");
-        Defense defense = null;
-        Player instance = new Player();
-        Defense expResult = null;
-        Defense result = instance.buildDefense(defense);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
-    /**
-     * Test of getHealth method, of class Player.
-     */
-    @Test
-    public void testGetHealth() {
-        System.out.println("getHealth");
-        Player instance = new Player();
-        double expResult = 0.0;
-        double result = instance.getHealth();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setHealth method, of class Player.
-     */
-    @Test
-    public void testSetHealth() {
-        System.out.println("setHealth");
-        double Health = 0.0;
-        Player instance = new Player();
-        instance.setHealth(Health);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getName method, of class Player.
-     */
-    @Test
-    public void testGetName() {
-        System.out.println("getName");
-        Player instance = new Player();
-        String expResult = "";
-        String result = instance.getName();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setName method, of class Player.
-     */
-    @Test
-    public void testSetName() {
-        System.out.println("setName");
-        String Name = "";
-        Player instance = new Player();
-        instance.setName(Name);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getBitcoins method, of class Player.
-     */
-    @Test
-    public void testGetBitcoins() {
-        System.out.println("getBitcoins");
-        Player instance = new Player();
-        double expResult = 0.0;
-        double result = instance.getBitcoins();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setBitcoins method, of class Player.
-     */
-    @Test
-    public void testSetBitcoins() {
-        System.out.println("setBitcoins");
-        double Bitcoins = 0.0;
-        Player instance = new Player();
-        instance.setBitcoins(Bitcoins);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -426,26 +347,8 @@ public class PlayerTest {
      */
     @Test
     public void testGetModules() {
-        System.out.println("getModules");
-        Player instance = new Player();
-        List<Module> expResult = null;
-        List<Module> result = instance.getModules();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of addBitcoins method, of class Player.
-     */
-    @Test
-    public void testAddBitcoins() {
-        System.out.println("addBitcoins");
-        double amount = 0.0;
-        Player instance = new Player();
-        instance.addBitcoins(amount);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNull(player2.getModules());
+        assertEquals(player1.getModules().size(), 2);
     }
 
     /**
@@ -453,28 +356,8 @@ public class PlayerTest {
      */
     @Test
     public void testRemoveBitcoins() throws Exception {
-        System.out.println("removeBitcoins");
-        double amount = 0.0;
-        Player instance = new Player();
-        instance.removeBitcoins(amount);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of upgradeDefense method, of class Player.
-     */
-    @Test
-    public void testUpgradeDefense() throws Exception {
-        System.out.println("upgradeDefense");
-        Defense defense = null;
-        Effect effect = null;
-        Player instance = new Player();
-        boolean expResult = false;
-        boolean result = instance.upgradeDefense(defense, effect);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        player2.removeBitcoins(1);
+        assertEquals("error removeBitcoins", 0, player2.getBitcoins());
     }
 
     /**
@@ -482,13 +365,7 @@ public class PlayerTest {
      */
     @Test
     public void testGetBaseLocation() {
-        System.out.println("getBaseLocation");
-        Player instance = new Player();
-        Point expResult = null;
-        Point result = instance.getBaseLocation();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("error get baseLocation", point1, player1.getBaseLocation());
     }
     
 }
