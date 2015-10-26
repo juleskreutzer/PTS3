@@ -122,7 +122,7 @@ public class GameEngine extends Thread implements MouseListener {
                             
                             defense.activate();
                             
-                        } catch (InvalidModuleEnumException ex) {
+                        } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -156,7 +156,7 @@ public class GameEngine extends Thread implements MouseListener {
                             
                             defense.activate();
                             
-                        } catch (InvalidModuleEnumException ex) {
+                        } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -190,7 +190,7 @@ public class GameEngine extends Thread implements MouseListener {
                             
                             defense.activate();
                             
-                        } catch (InvalidModuleEnumException ex) {
+                        } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -224,7 +224,7 @@ public class GameEngine extends Thread implements MouseListener {
                             
                             defense.activate();
                             
-                        } catch (InvalidModuleEnumException ex) {
+                        } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }

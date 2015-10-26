@@ -37,16 +37,16 @@ public class ModuleImage extends ObjectImage {
                 file = new File("src/hackattackfx/resources/sniper_av.png");
                 break;
             case SNIPER_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/Sniper-Module.png");
+                file = new File("src/hackattackfx/resources/interface/module/40x40/sniper_module.png");
                 break;
             case BOTTLECAP_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/Bottlecap-Module.png");
+                file = new File("src/hackattackfx/resources/interface/module/40x40/bottlecap_module.png");
                 break;
             case SCALE_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/Scale-Module.png");
+                file = new File("src/hackattackfx/resources/interface/module/40x40/scale_module.png");
                 break;
             case MUSCLE_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/Muscle-Module.png");
+                file = new File("src/hackattackfx/resources/interface/module/40x40/muscle_module.png");
                 break;
         }
         
