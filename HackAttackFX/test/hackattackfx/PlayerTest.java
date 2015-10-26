@@ -6,8 +6,18 @@
 package hackattackfx;
 
 import hackattackfx.enums.Effect;
+import hackattackfx.exceptions.InvalidModuleEnumException;
+import hackattackfx.exceptions.NotEnoughBitcoinsException;
+import hackattackfx.templates.BitCoinMinerTemplate;
+import hackattackfx.templates.CPUUpgradeTemplate;
+import hackattackfx.templates.SoftwareInjectorTemplate;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,6 +30,24 @@ import static org.junit.Assert.*;
  * @author Igor
  */
 public class PlayerTest {
+    Player player1;
+    Player player2;
+    Player playerWithMoney;
+    
+    BitcoinMiner bitcoinMiner;
+    CPUUpgrade cpuUpgrade;
+    SoftwareInjector softwareInjector;
+    
+    BitCoinMinerTemplate bitcoinTemplate = Data.DEFAULT_MODULE_BITCOINMINER_1;
+    CPUUpgradeTemplate cpuUpgradeTemplate = Data.DEFAULT_MODULE_CPUUPGRADE_1;
+    SoftwareInjectorTemplate softwareInjectorTemplate = Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1;
+    
+    Point point1;
+    Point point2;
+    Point point3;
+    Point point4;
+    Point point5;
+    Point point6;
     
     public PlayerTest() {
     }
@@ -34,6 +62,27 @@ public class PlayerTest {
     
     @Before
     public void setUp() {
+        point1 = new Point(100, 100);
+        point2 = new Point(200, 200);
+        point3 = new Point(300, 300);
+        point4 = new Point(400, 400);
+        point5 = new Point(500, 500);
+        point6 = new Point(600, 600);
+        
+        player1 = new Player(1, "player1", 999999, point1);
+        player2 = new Player(1, "player2", 0, point2);
+        playerWithMoney = new Player(1, "playerWithMoney", 999999, point4);
+        
+        try {
+            bitcoinMiner = new BitcoinMiner(bitcoinTemplate, point3, 50, 50);
+            cpuUpgrade = new CPUUpgrade(cpuUpgradeTemplate, point4, 50, 50);
+            softwareInjector = new SoftwareInjector(softwareInjectorTemplate, point5, 50, 50);
+            player1.buildBitcoinMiner(bitcoinMiner);
+            player2.buildCPUUpgrade(cpuUpgrade);
+        } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Setup went wrong!");
+        }
     }
     
     @After
@@ -44,26 +93,61 @@ public class PlayerTest {
      * Test of buildBitcoinMiner method, of class Player.
      */
     @Test
-    public void testBuildBitcoinMiner() {
-        System.out.println("buildBitcoinMiner");
-        Player instance = new Player();
-        double expResult = 1;
-        double result = 0;
-        instance.buildBitcoinMiner();
-        for (Module module : instance.getModules())
-            if(module instanceof BitcoinMiner)
-                result++;
-        assertEquals(expResult, result, 0.0);
+    public void testBuildBitcoinMiner(){       
+        //This player has no bitcoins and cannot build.
+        try {
+            player2.buildBitcoinMiner(bitcoinMiner);
+        } catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //This player has bitcoins and can build.
+        try {
+            playerWithMoney.buildBitcoinMiner(bitcoinMiner);
+        } catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Create a list
+         List<Module> modules;
+         
+         //Check if player2 has no modules
+         modules = player2.getModules();
+         assertTrue(modules.isEmpty());
+         
+         //Check if playerWithMoney has the bitcoinminr module.
+         modules = playerWithMoney.getModules();
+         assertEquals(modules.get(0).getModuleName(), bitcoinMiner.moduleName);
     }
 
     /**
      * Test of upgradeBitcoinMiner method, of class Player.
      */
     @Test
-    public void testUpgradeBitcoinMiner() {
-        System.out.println("upgradeBitcoinMiner");
-        Player instance = new Player();
-        assertTrue(instance.upgradeBitcoinMiner());
+    public void testUpgradeBitcoinMinerSucces() throws NotEnoughBitcoinsException {
+        List<Module> modules;
+        
+        //Can upgrade
+        modules = player1.getModules();
+        BitcoinMiner bitcoinMiner1 = (BitcoinMiner) modules.get(0);
+        player1.upgradeBitcoinMiner(bitcoinMiner1);
+        
+        assertEquals("Levels aren't equal", bitcoinMiner.getLevel(), 2);
+    }
+    
+      /**
+     * Test of upgradeBitcoinMiner method, of class Player.
+     */
+    @Test
+    public void testUpgradeBitcoinMinerFail() throws NotEnoughBitcoinsException {
+        List<Module> modules;
+        
+        player1.setBitcoins(0);
+        modules = player1.getModules();
+        BitcoinMiner bitcoinMiner = (BitcoinMiner) modules.get(0);
+        player1.upgradeBitcoinMiner(bitcoinMiner);
+        
+        assertEquals("Levels aren't equal", bitcoinMiner.getLevel(), 1);
     }
 
     /**
@@ -71,15 +155,30 @@ public class PlayerTest {
      */
     @Test
     public void testBuildCPUUpgrade() {
-        System.out.println("buildCPUUpgrade");
-        Player instance = new Player();
-        double expResult = 1;
-        double result = 0;
-        instance.buildCPUUpgrade();
-        for (Module module : instance.getModules())
-            if(module instanceof CPUUpgrade)
-                result++;
-        assertEquals(expResult, result, 0.0);
+        //This player has no bitcoins and cannot build.
+        try {
+            player2.buildCPUUpgrade(cpuUpgrade);
+        } catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //This player has bitcoins and can build.
+        try {
+            playerWithMoney.buildCPUUpgrade(cpuUpgrade);
+        } catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Create a list
+         List<Module> modules;
+         
+         //Check if player2 has no modules
+         modules = player2.getModules();
+         assertTrue(modules.isEmpty());
+         
+         //Check if playerWithMoney has the CPUUpgrade module.
+         modules = playerWithMoney.getModules();
+         assertEquals(modules.get(0).getModuleName(), cpuUpgrade.moduleName);
     }
 
     /**
@@ -87,13 +186,12 @@ public class PlayerTest {
      */
     @Test
     public void testSetGetHealth() {
-        System.out.println("setHealth & getHealth");
-        double Health = 99.88;
-        Player instance = new Player();
-        instance.setHealth(Health);
-        double expResult = Health;
-        double result = instance.getHealth();
-        assertEquals(expResult, result, 0.0);
+        //Test getHealth
+        assertEquals("getHealth error.", 1, player1.getHealth());
+        
+        //Test setHealth
+        player1.setHealth(100);
+        assertEquals("setHealth error.", 100, player1.getHealth());
     }
 
     /**
@@ -101,13 +199,12 @@ public class PlayerTest {
      */
     @Test
     public void testSetGetName() {
-        System.out.println("setName & getName");
-        String Name = "SetGetNameTest";
-        Player instance = new Player();
-        instance.setName(Name);
-        String expResult = Name;
-        String result = instance.getName();
-        assertEquals(expResult, result);
+        //Test getName
+        assertEquals("getName error.", "player1", player1.getName());
+        
+        //Test setName
+        player1.setName("Jaap");
+        assertEquals("setName error.", "Jaap", player1.getName());
     }
 
     /**
@@ -115,13 +212,12 @@ public class PlayerTest {
      */
     @Test
     public void testSetGetBitcoins() {
-        System.out.println("setBitcoins & getBitcoins");
-        Player instance = new Player();
-        double Bitcoins = 20.0;
-        instance.setBitcoins(Bitcoins);
-        double expResult = 20.0;
-        double result = instance.getBitcoins();
-        assertEquals(expResult, result, 0.0);
+       //Test getBitcoins
+        assertEquals("getBitcoins error.", 0, player2.getBitcoins());
+        
+        //Test setBitcoins
+        player1.setBitcoins(100);
+        assertEquals("setBitcoins error.", 100, player1.getBitcoins());
     }
 
     /**
@@ -129,26 +225,60 @@ public class PlayerTest {
      */
     @Test
     public void testBuildSoftwareInjector() {
-        System.out.println("buildSoftwareInjector");
-        Player instance = new Player();
-        double expResult = 1;
-        double result = 0;
-        instance.buildSoftwareInjector();
-        for (Module module : instance.getModules())
-            if(module instanceof SoftwareInjector)
-                result++;
-        assertEquals(expResult, result, 0.0);
-
+        //This player has no bitcoins and cannot build.
+        try {
+            player2.buildSoftwareInjector(softwareInjector);
+        } catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //This player has bitcoins and can build.
+        try {
+            playerWithMoney.buildSoftwareInjector(softwareInjector);
+        } catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Create a list
+         List<Module> modules;
+         
+         //Check if player2 has no modules
+         modules = player2.getModules();
+         assertTrue(modules.isEmpty());
+         
+         //Check if playerWithMoney has the bitcoinminr module.
+         modules = playerWithMoney.getModules();
+         assertEquals(modules.get(0).getModuleName(), softwareInjector.moduleName);
     }
 
     /**
      * Test of upgradeSoftwareInjector method, of class Player.
      */
     @Test
-    public void testUpgradeSoftwareInjector() {
-        System.out.println("upgradeSoftwareInjector");
-        Player instance = new Player();
-        assertTrue(instance.upgradeSoftwareInjector());
+    public void testUpgradeSoftwareInjectorSucces() throws NotEnoughBitcoinsException {
+         List<Module> modules;
+        
+        //Can upgrade
+        modules = player1.getModules();
+        SoftwareInjector softwareInjector1 = (SoftwareInjector) modules.get(0);
+        player1.upgradeSoftwareInjector(softwareInjector1);
+        
+        assertEquals("Levels aren't equal", softwareInjector.getLevel(), 2);
+    }
+    
+    /**
+     * Test of upgradeSoftwareInjector method, of class Player.
+     */
+    @Test
+    public void testUpgradeSoftwareInjectorFail() throws NotEnoughBitcoinsException {
+        List<Module> modules;
+        
+        player1.setBitcoins(0);
+        modules = player1.getModules();
+        SoftwareInjector softwareInjector1 = (SoftwareInjector) modules.get(0);
+        player1.upgradeSoftwareInjector(softwareInjector1);
+        
+        assertEquals("Levels aren't equal", bitcoinMiner.getLevel(), 1);
     }
     
     /**
