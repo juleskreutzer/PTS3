@@ -49,10 +49,13 @@ public class BitcoinMiner extends Module {
             throw new InvalidModuleEnumException();
         }
         this.valuePerSecond = template.getValuePerSecond();
-        listeners = new ArrayList<OnMineComplete>();
+        listeners = new ArrayList<>();
         lastMine = 0;
     }
     
+    public double getValuePerSecond(){
+        return valuePerSecond;
+    }
     /**
      * Upgrades this module
      * @return Whether the module was successfully upgraded.
@@ -91,7 +94,6 @@ public class BitcoinMiner extends Module {
      */
     public void activate()
     {
-        
         tick = new OnExecuteTick() {
 
             @Override
@@ -99,9 +101,9 @@ public class BitcoinMiner extends Module {
                 if(elapsedtime >= (lastMine + 3000))
                 {
                     lastMine = elapsedtime;
-                    for(OnMineComplete listen : listeners)
+                    for(OnMineComplete listener : listeners)
                     {
-                        listen.onMine(valuePerSecond);
+                        listener.onMine(valuePerSecond);
                     }
                 }
                 
@@ -117,7 +119,7 @@ public class BitcoinMiner extends Module {
         }
         else
         {
-            throw new DuplicateListenerException();
+        throw new DuplicateListenerException();
         }
     }
     

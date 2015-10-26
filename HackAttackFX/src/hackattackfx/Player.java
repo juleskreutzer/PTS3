@@ -30,7 +30,6 @@ public class Player {
     private List<Module> modules;
     
     public Player(){}
-    
     /**
      * Constructor for the player
      * @param h health value for the player
