@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -242,10 +243,59 @@ public class GraphicsEngine{
             public void handle(javafx.scene.input.MouseEvent event) {
                 spawnTarget.setX(event.getSceneX() - (spawnTarget.getImage().getWidth()/2));
                 spawnTarget.setY(event.getSceneY() - (spawnTarget.getImage().getHeight()/2));
+                
+                ObservableList nodes = parent.getAllNodes();
+                
+                // Check if we have a collision with another node, if true, change the image to let the user know about it
+                for(Object n : nodes)
+                {
+                    if(n instanceof PathImage)
+                    {
+                        PathImage pi = (PathImage) n;
+                        double x = pi.getX();
+                        double y = pi.getY();
+                        
+                        if((x - (x/2) < spawnTarget.getX()) && (spawnTarget.getX() < (x + (x*2))) && (y - (y/2) < spawnTarget.getY()) && (spawnTarget.getY() < (y + (y*2))))
+                        {
+                            File newFile = new File("src/hackattackfx/resources/unavailable.png");
+                            Image newTargetImage = new Image(newFile.toURI().toString());
+                            spawnTarget.setImage(newTargetImage);
+                        }
+                            
+                    }
+                    else if(n instanceof ModuleImage)
+                    {
+                        ModuleImage mi = (ModuleImage) n;
+                        double x = mi.getX();
+                        double y = mi.getY();
+                        
+                        if((x - (x/2) < spawnTarget.getX()) && (spawnTarget.getX() < (x + (x*2))) && (y - (y/2) < spawnTarget.getY()) && (spawnTarget.getY() < (y + (y*2))))
+                        {
+                            File newFile = new File("src/hackattackfx/resources/unavailable.png");
+                            Image newTargetImage = new Image(newFile.toURI().toString());
+                            spawnTarget.setImage(newTargetImage);
+                        }
+                    }
+                    else if(n instanceof MinionImage)
+                    {
+                        MinionImage mi = (MinionImage) n;
+                        double x = mi.getX();
+                        double y = mi.getY();
+                        
+                        if((x - (x/2) < spawnTarget.getX()) && (spawnTarget.getX() < (x + (x*2))) && (y - (y/2) < spawnTarget.getY()) && (spawnTarget.getY() < (y + (y*2))))
+                        {
+                            File newFile = new File("src/hackattackfx/resources/unavailable.png");
+                            Image newTargetImage = new Image(newFile.toURI().toString());
+                            spawnTarget.setImage(newTargetImage);
+                        }
+                    }
+                    else
+                    {
+                        throw new IllegalArgumentException("Image type not recognized!");
+                    }
+                }
             }
-
         });
-        
         return spawnTarget;
     }
     
