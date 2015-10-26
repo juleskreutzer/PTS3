@@ -11,7 +11,7 @@
   <children>
     <ImageView fx:id="buildSniperAV" fitHeight="150.0" fitWidth="500.0" layoutX="14.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
       <image>
-        <Image url="hackattackfx/resources/interface/module/500x500/Sniper-Module.png" backgroundLoading="true" />
+        <Image url="hackattackfx/resources/Interface/Module/500x500/Sniper-Module.png" backgroundLoading="true" />
       </image>
     </ImageView>
     <Label fx:id="lblPlayerName" layoutX="1119.0" layoutY="44.0" prefHeight="17.0" prefWidth="136.0" text="Player Name" />
@@ -19,17 +19,17 @@
     <Label fx:id="lblPlayerBitcoins" layoutX="1119.0" layoutY="78.0" prefHeight="17.0" prefWidth="136.0" text="Player Bitcoins" />
     <ImageView id="buildScaleAV" fitHeight="150.0" fitWidth="500.0" layoutX="165.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
       <image>
-        <Image url="hackattackfx/resources/interface/module/500x500/Scale-Module.png" backgroundLoading="true" />
+        <Image url="hackattackfx/resources/Interface/Module/500x500/Scale-Module.png" backgroundLoading="true" />
       </image>
     </ImageView>
     <ImageView id="buildBottlecapAV" fitHeight="150.0" fitWidth="500.0" layoutX="316.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
       <image>
-        <Image url="hackattackfx/resources/interface/module/500x500/Bottlecap-Module.png" backgroundLoading="true" />
+        <Image url="hackattackfx/resources/Interface/Module/500x500/Bottlecap-Module.png" backgroundLoading="true" />
       </image>
     </ImageView>
     <ImageView id="buildMuscleAV" fitHeight="150.0" fitWidth="500.0" layoutX="470.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
       <image>
-        <Image url="hackattackfx/resources/interface/module/500x500/Muscle-Module.png" backgroundLoading="true" />
+        <Image url="hackattackfx/resources/Interface/Module/500x500/Muscle-Module.png" backgroundLoading="true" />
       </image>
     </ImageView>
   </children>
