@@ -59,9 +59,9 @@ public class Data {
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_2;
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_3;
     
-    private static String urlMinion = "http://api.nujules.nl/minion";
-    private static String urlSpell = "http://api.nujules.nl/spell";
-    private static String urlModule = "http://api.nujules.nl/module";
+    private static String urlMinion = "https://api.nujules.nl/minion";
+    private static String urlSpell = "https://api.nujules.nl/spell";
+    private static String urlModule = "https://api.nujules.nl/module";
     
     public Data(UpdateProgress callback) throws IOException, InvalidMinionTypeException, InvalidSpellNameException, InvalidDefenseTypeException, InvalidEffectException
     {
