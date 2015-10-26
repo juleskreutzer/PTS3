@@ -51,6 +51,7 @@ public class BitcoinMiner extends Module {
         this.valuePerSecond = template.getValuePerSecond();
         listeners = new ArrayList<>();
         lastMine = 0;
+        activate();
     }
     
     public double getValuePerSecond(){
