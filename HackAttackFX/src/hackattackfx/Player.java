@@ -59,11 +59,12 @@ public class Player {
     }
     
     /**
-    * Initialize a SoftwareInjector object, add the object to the modules field and return a list of spells that became available
+    * Initialize a SoftwareInjector object, add the object to the modules field, lower the player bitcoins and return a list of spells that became available
     * @return The newly created {@link SoftwareInjector}
     */  
-    public SoftwareInjector buildSoftwareInjector(SoftwareInjector injector){
+    public SoftwareInjector buildSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException{
         modules.add(injector);
+        this.removeBitcoins(injector.getCost());
         return injector;
     }
     
@@ -71,8 +72,10 @@ public class Player {
      * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
      * @return
      */
-    public boolean upgradeSoftwareInjector(SoftwareInjector injector){
-        if(injector.upgrade()) { return true; } else { return false; }
+    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException{
+        if(injector.upgrade()) { 
+            this.removeBitcoins(injector.getCost());
+            return true; } else { return false; }
     }
     
     public List<Spell> getSpells(){        
@@ -83,10 +86,10 @@ public class Player {
     }
     
     /**
-     * Initialize a BitcoinMiner object and add the object to the modules field
+     * Initialize a BitcoinMiner object, lower the player bitcoins and add the object to the modules field
      * @return The newly created {@link BitcoinMiner}
      */
-    public BitcoinMiner buildBitcoinMiner(BitcoinMiner miner){
+    public BitcoinMiner buildBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException{
         modules.add(miner);
         try{
             miner.setOnMineListener(new OnMineComplete() {
@@ -98,6 +101,7 @@ public class Player {
 
                 }
             });
+            this.removeBitcoins(miner.getCost());
         }
         catch(DuplicateListenerException ex)
         {
@@ -108,13 +112,21 @@ public class Player {
     }
     
     /**
-     * Retrieve a BitcoinMiner object from the modules field and call the Upgrade method from inside the class
+     * Retrieve a BitcoinMiner object from the modules field, lower the player bitcoins and call the Upgrade method from inside the class
      * @return boolean if the upgrade was successfully executed 
      */
 
-    public boolean upgradeBitcoinMiner(BitcoinMiner miner){
+    public boolean upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException{
         try {
-            return miner.upgrade();
+            if(miner.upgrade())
+            {
+                this.removeBitcoins(miner.getCost());
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         } catch (NoUpgradeAllowedException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -124,8 +136,9 @@ public class Player {
     /**
      * Initialize a CpuUpgrade object and add the object to the modules field
      */
-    public CPUUpgrade buildCPUUpgrade(CPUUpgrade cpu){
+    public CPUUpgrade buildCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException{
         modules.add(cpu);
+        this.removeBitcoins(cpu.getCost());
         return cpu;
     }
     
@@ -140,8 +153,9 @@ public class Player {
         return false;
 	}
     
-    public Defense buildDefense(Defense defense){
+    public Defense buildDefense(Defense defense) throws NotEnoughBitcoinsException{
         modules.add(defense);
+        this.removeBitcoins(defense.getCost());
         return defense;
     }
     
@@ -210,20 +224,36 @@ public class Player {
         return modules;
     }
     
+    /**
+     * Increase the amount of bitcoins for the player with the given amount value
+     * @param amount The amout of bitcoins that will be increased.
+     */
     public void addBitcoins(double amount){
+        if(amount < 0) throw new IllegalArgumentException("Amount may not be less than 0");
         bitcoins += amount;
     }
     
-    public void removeBitcoins(double amount){
-        bitcoins -= amount;
+    /**
+     * Remove the amount from the player's bitcoins.
+     * First check if the amount > 0, than check if the amount is not greater than the amount of bitcoins the player has.
+     * @param amount The amount that the players bitcoins will be lowered with
+     * @throws NotEnoughBitcoinsException Throws when the amount > bitcoins of the player.
+     */
+    public void removeBitcoins(double amount) throws NotEnoughBitcoinsException{
+        if (amount < 0) throw new IllegalArgumentException("Amount may not be less than 0");
+        
+        if (amount > this.bitcoins) throw new NotEnoughBitcoinsException("Amount may not be more than the total bitcoins for this player.");
+        
+        this.bitcoins -= amount;
     }
     
 
-    public boolean upgradeDefense(Defense defense, Effect effect){
+    public boolean upgradeDefense(Defense defense, Effect effect) throws NotEnoughBitcoinsException{
         try {
             if(defense.upgrade())
             {
                 defense.setEffect(effect);
+                this.removeBitcoins(defense.getCost());
                 return true;
             }
             else
@@ -232,7 +262,10 @@ public class Player {
             }
         } catch (NoUpgradeAllowedException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-	}
+	} catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+        }
+        
         return false;
     }		
     
