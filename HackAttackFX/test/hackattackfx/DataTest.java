@@ -975,33 +975,34 @@ public class DataTest {
                         
                     }
                 });
-        
-        String json = "[{\"class\": \"money\", \"damage\": 10, \"description\" : \"Default Bitcoin Miner\", \"effect\": \"\", \"frequency\": 3, \"name\": \"Bitcoin Miner\", \"price\": 1000, \"range\": 200, \"sell_price\": 0, \"tier\": 1, \"type\": \"\", \"value\": 0}]";
-        String jsonWrong = "[{\"class\": \"moneie\", \"damage\": 10, \"description\" : \"Default Bitcoin Miner\", \"effect\": \"\", \"frequency\": 3, \"name\": \"Bitcoin Miner\", \"price\": 1000, \"range\": 200, \"sell_price\": 0, \"tier\": 1, \"type\": \"\", \"value\": 0}]";
-        
-        JSONArray jsonArray = new JSONArray();
-        JSONObject obj = new JSONObject();
-        obj.put(json, jsonArray);
-        
-        System.out.print(obj.toString());
-        this.createModules(jsonArray);
+        String ModuleURLBM = "https://api.nujules.nl/module/money";  
+        JSONArray json = this.sendGet(ModuleURLBM);
+        this.createModules(json);
         assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getValuePerSecond(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getValuePerSecond());
-        assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getCost(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getCost());
+        assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getCost(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getCost(), 0);
         assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getLevel(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getLevel());
         assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getModuleName(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getModuleName());
-        assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getDisplayName(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getDisplayName());
+        assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getDisplayName(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getDisplayName());  
+        
+        JSONArray jsonWrongClass = json;
         
         try{
-            JSONArray jsonWrongArray = new JSONArray();
-            JSONObject objWrong = new JSONObject();
-            objWrong.put(jsonWrong, jsonWrongArray);
+            JSONArray temp = new JSONArray();
+            for(int i = 0; i < jsonWrongClass.length(); ++i)
+            {
+                JSONObject obj = jsonWrongClass.getJSONObject(i);
+                
+                obj.remove("class");
+                obj.append("class", "moneie");
+                
+                temp.put(obj);
+            }
             
-            this.createModules(jsonWrongArray);
+            this.createModules(temp);
         }
         catch(IOException ex)
         {
             
         }
     }
-    
 }

@@ -6,6 +6,7 @@
 package hackattackfx;
 
 import hackattackfx.templates.ModuleTemplate;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
@@ -15,9 +16,23 @@ import javafx.scene.image.ImageView;
 public class SpawnTargetImage extends ImageView{
     
     private ModuleTemplate spawnable;
+    private Image unavailable;
+    private Image available;
     
-    public SpawnTargetImage(ModuleTemplate m){
+    public SpawnTargetImage(ModuleTemplate m, Image unavailable, Image available){
         spawnable = m;
+        this.unavailable = unavailable;
+        this.available = available;
+    }
+    
+    public Image getUnavailable()
+    {
+        return unavailable;
+    }
+    
+    public Image getAvailable()
+    {
+        return available;
     }
     
 }
