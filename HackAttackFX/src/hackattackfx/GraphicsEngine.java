@@ -83,6 +83,11 @@ public class GraphicsEngine{
         return n;
     }
     
+    public ObservableList getNodes()
+    {
+        return parent.getAllNodes();
+    }
+    
     /**
      * From the moment an object is spawned, it will be updated every tick.
      * This is the entry point for an object to be updated every tick.
@@ -210,77 +215,53 @@ public class GraphicsEngine{
         
         File file = null;
         
+        File unavailableFile = new File("src/hackattackfx/resources/unavailable.png");
+        Image unavailableTargetImage = new Image(unavailableFile.toURI().toString());
+        Image availableTargetImage;
+        
         switch(module){
             case BITCOIN_MINER:
-                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_BITCOINMINER_1);
                 file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+                availableTargetImage = new Image(file.toURI().toString());
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_BITCOINMINER_1, unavailableTargetImage, availableTargetImage);
                 break;
             case SOFTWARE_INJECTOR:
-                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1);
                 file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+                availableTargetImage = new Image(file.toURI().toString());
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1, unavailableTargetImage, availableTargetImage);
                 break;
             case CPU_UPGRADE:
-                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_CPUUPGRADE_1);
                 file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+                availableTargetImage = new Image(file.toURI().toString());
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_CPUUPGRADE_1, unavailableTargetImage, availableTargetImage);
                 break;
             case SNIPER_ANTIVIRUS:
-                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1);
                 file = new File("src/hackattackfx/resources/interface/module/40x40/sniper_module.png");
+                availableTargetImage = new Image(file.toURI().toString());
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, unavailableTargetImage, availableTargetImage);
                 break;
             case BOTTLECAP_ANTIVIRUS:
-                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1);
                 file = new File("src/hackattackfx/resources/interface/module/40x40/bottlecap_module.png");
+                availableTargetImage = new Image(file.toURI().toString());
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, unavailableTargetImage, availableTargetImage);
                 break;
             case SCALE_ANTIVIRUS:
-                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SCALE_1);
                 file = new File("src/hackattackfx/resources/interface/module/40x40/scale_module.png");
+                availableTargetImage = new Image(file.toURI().toString());
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, unavailableTargetImage, availableTargetImage);
                 break;
             case MUSCLE_ANTIVIRUS:
-                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1);
                 file = new File("src/hackattackfx/resources/interface/module/40x40/muscle_module.png");
+                availableTargetImage = new Image(file.toURI().toString());
+                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, unavailableTargetImage, availableTargetImage);
                 break;
         }
         
-        File unavailableFile = new File("src/hackattack/resources/unavailable.png");
-        Image unavailableTargetImage = new Image(unavailableFile.toURI().toString());
         Image targetimage = new Image(file.toURI().toString());
         spawnTarget.setImage(targetimage);
         spawnTarget.setOpacity(0.5);
         parent.addNode(spawnTarget);
-        parent.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
-
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event) {
-                spawnTarget.setX(event.getSceneX() - (spawnTarget.getImage().getWidth()/2));
-                spawnTarget.setY(event.getSceneY() - (spawnTarget.getImage().getHeight()/2));
-                
-                ObservableList nodes = parent.getAllNodes();
-                
-                // Check if we have a collision with another node, if true, change the image to let the user know about it
-                for(Object n : nodes)
-                {
-                    if(n instanceof Rectangle)
-                    {
-                        Rectangle r = (Rectangle) n;
-                        
-                        double x = spawnTarget.getX();
-                        double y = spawnTarget.getY();
-                        double width = targetimage.getWidth();
-                        double height = targetimage.getHeight();
-                        
-                        if(r.intersects(x, y, width, height))
-                        {
-                            spawnTarget.setImage(unavailableTargetImage);
-                        }
-                        else
-                        {
-                            spawnTarget.setImage(targetimage);
-                        }
-                    }
-                    
-                }
-            }
-        });
+        
         return spawnTarget;
     }
     

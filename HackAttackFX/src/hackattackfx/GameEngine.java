@@ -14,8 +14,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -67,6 +70,9 @@ public class GameEngine extends Thread implements MouseListener {
     private List<OnExecuteTick> listeners;
     private List<OnExecuteTick> unsubscribedListeners;
     
+    private SpawnTargetImage st = null;
+
+    
     private GameEngine(){
         instance = this;
         initialize();
@@ -103,7 +109,7 @@ public class GameEngine extends Thread implements MouseListener {
  
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
-                SpawnTargetImage st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SNIPER_ANTIVIRUS);
+                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SNIPER_ANTIVIRUS);
                 // Set a listener for a second click to occur
                 st.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -137,7 +143,7 @@ public class GameEngine extends Thread implements MouseListener {
  
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
-                SpawnTargetImage st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SCALE_ANTIVIRUS);
+                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SCALE_ANTIVIRUS);
                 // Set a listener for a second click to occur
                 st.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -171,7 +177,7 @@ public class GameEngine extends Thread implements MouseListener {
  
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
-                SpawnTargetImage st = graphicsEngine.drawModuleSpawnTarget(ModuleName.BOTTLECAP_ANTIVIRUS);
+                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.BOTTLECAP_ANTIVIRUS);
                 // Set a listener for a second click to occur
                 st.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -205,7 +211,7 @@ public class GameEngine extends Thread implements MouseListener {
  
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
-                SpawnTargetImage st = graphicsEngine.drawModuleSpawnTarget(ModuleName.MUSCLE_ANTIVIRUS);
+                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.MUSCLE_ANTIVIRUS);
                 // Set a listener for a second click to occur
                 st.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -232,6 +238,42 @@ public class GameEngine extends Thread implements MouseListener {
                 });
             }
             
+        });
+        
+        graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
+                st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+                
+                ObservableList<Node> nodes = graphicsEngine.getNodes();             
+                // Check if we have a collision with another node, if true, change the image to let the user know about it
+                for(Node n : nodes)
+                {
+                    
+                    if(n instanceof Rectangle)
+                    {
+                        Rectangle r = (Rectangle) n;
+                        
+                        double x = st.getX();
+                        double y = st.getY();
+                        double width = st.getImage().getWidth();
+                        double height = st.getImage().getHeight();
+                        
+                        
+                        if(r.intersects(x, y, width, height))
+                        {
+                            st.setImage(st.getUnavailable());
+                        }
+                        else
+                        {
+                            st.setImage(st.getAvailable());
+                        }
+                    }
+                    
+                }
+            }
         });
     }
     
