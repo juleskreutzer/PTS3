@@ -97,10 +97,12 @@ public class Minion implements IMoveable {
     //TODO Doesn't Use elapsedTime yet.
     @Override
     public void move(double elapsedtime) {
+        //Sets the targetposition to the beginning of the road if the targetposition is null.
         if(targetPosition == null){
             targetPosition = Map.getInstance().getRoad().getBegin();
         }
         
+        //Let's see if the minion has reached it's target already.
         if(position.x < targetPosition.x){
             position.x += (speed);
             // Correct the position if the minions new position is over the targetposition
@@ -115,6 +117,8 @@ public class Minion implements IMoveable {
                 position.x = targetPosition.x;
             }
         }
+        
+        //The minion is over it's target, let's put it in place.
         else if(position.y < targetPosition.y){
             position.y += (speed);
             // Correct the position if the minions new position is over the targetposition
@@ -129,13 +133,20 @@ public class Minion implements IMoveable {
                 position.y = targetPosition.y;
             }
         }
+        
+        //The else statement here get's called upon when the x and y value of the minion are equal to their targetpositions.
         else{
+            //get all the paths the road consists of.
             List<Path> paths = Map.getInstance().getRoad().getPaths();
             for(Path p : paths){
+                //If the targetposition of x equals the starting position of the current path.
                 if(targetPosition.x == p.getStart().x && targetPosition.y == p.getStart().y){
+                    //Set the targetposition the the end of the current path.
                     targetPosition = p.getEnd();
                     break;
+                //If the targetposition of x equals the end position of the current path.
                 }else if(targetPosition.x == p.getEnd().x && targetPosition.y == p.getEnd().y){
+                    //Get the next path, and set the current targetposition to the end of that path.
                     if(paths.indexOf(p) != paths.size() -1){
                         targetPosition = paths.get(paths.indexOf(p)+1).getEnd();
                     }
