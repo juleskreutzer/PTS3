@@ -6,12 +6,17 @@
 package hackattackfx;
 
 import hackattackfx.enums.Effect;
+import hackattackfx.exceptions.InvalidDefenseTypeException;
+import hackattackfx.exceptions.InvalidEffectException;
+import hackattackfx.exceptions.InvalidMinionTypeException;
 import hackattackfx.exceptions.InvalidModuleEnumException;
+import hackattackfx.exceptions.InvalidSpellNameException;
 import hackattackfx.exceptions.NotEnoughBitcoinsException;
 import hackattackfx.templates.BitCoinMinerTemplate;
 import hackattackfx.templates.CPUUpgradeTemplate;
 import hackattackfx.templates.SoftwareInjectorTemplate;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +32,8 @@ import static org.junit.Assert.*;
  * @author Igor
  */
 public class PlayerTest {
+    Data data;
+    
     Player player1;
     Player player2;
     Player playerWithMoney;
@@ -35,9 +42,9 @@ public class PlayerTest {
     CPUUpgrade cpuUpgrade;
     SoftwareInjector softwareInjector;
     
-    BitCoinMinerTemplate bitcoinTemplate = Data.DEFAULT_MODULE_BITCOINMINER_1;
-    CPUUpgradeTemplate cpuUpgradeTemplate = Data.DEFAULT_MODULE_CPUUPGRADE_1;
-    SoftwareInjectorTemplate softwareInjectorTemplate = Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1;
+    BitCoinMinerTemplate bitcoinTemplate;
+    CPUUpgradeTemplate cpuUpgradeTemplate;
+    SoftwareInjectorTemplate softwareInjectorTemplate;
     
     Point point1;
     Point point2;
@@ -58,7 +65,17 @@ public class PlayerTest {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws IOException, InvalidMinionTypeException, InvalidSpellNameException, InvalidDefenseTypeException, InvalidEffectException {
+        data = new Data(new Data.UpdateProgress() {
+                        @Override
+                        public void update(double value) {
+                    }
+                });
+        
+        bitcoinTemplate = Data.DEFAULT_MODULE_BITCOINMINER_1;
+        cpuUpgradeTemplate = Data.DEFAULT_MODULE_CPUUPGRADE_1;
+        softwareInjectorTemplate = Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1;
+    
         point1 = new Point(100, 100);
         point2 = new Point(200, 200);
         point3 = new Point(300, 300);
@@ -134,6 +151,7 @@ public class PlayerTest {
     
       /**
      * Test of upgradeBitcoinMiner method, of class Player.
+     * @throws hackattackfx.exceptions.NotEnoughBitcoinsException
      */
     @Test
     public void testUpgradeBitcoinMinerFail() throws NotEnoughBitcoinsException {
@@ -141,10 +159,10 @@ public class PlayerTest {
         
         player1.setBitcoins(0);
         modules = player1.getModules();
-        BitcoinMiner bitcoinMiner = (BitcoinMiner) modules.get(0);
-        player1.upgradeBitcoinMiner(bitcoinMiner);
+        BitcoinMiner bitcoinMiner1 = (BitcoinMiner) modules.get(0);
+        player1.upgradeBitcoinMiner(bitcoinMiner1);
         
-        assertEquals("Levels aren't equal", bitcoinMiner.getLevel(), 1);
+        assertEquals("Levels aren't equal", 1, bitcoinMiner1.getLevel());
     }
 
     /**
@@ -215,11 +233,11 @@ public class PlayerTest {
     @Test
     public void testSetGetHealth() {
         //Test getHealth
-        assertEquals("getHealth error.", 100, player1.getHealth());
+        assertEquals("getHealth error.", 100, player1.getHealth(), 0);
         
         //Test setHealth
         player1.setHealth(101);
-        assertEquals("setHealth error.", 101, player1.getHealth());
+        assertEquals("setHealth error.", 101, player1.getHealth(), 0);
     }
 
     /**
