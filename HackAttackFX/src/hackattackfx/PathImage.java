@@ -33,27 +33,35 @@ public class PathImage extends ObjectImage {
             case Up:
                 image = new Image(file.toURI().toString(), 50, path.getLength()+50, false, true);
                 // 25 = width of the path.png / 2
-                setX(path.getEnd().x - (image.getWidth() / 2));
-                setY(path.getEnd().y - (image.getHeight() / 2));
+                //setX(path.getEnd().x - (image.getWidth() / 2));
+                //setY(path.getEnd().y - (image.getHeight() / 2));
+                setX(path.getEnd().x - 25);
+                setY(path.getEnd().y - 25);
                 break;
             case Down:
                 image = new Image(file.toURI().toString(), 50, path.getLength(), false, true);
                 // 25 = width of the path.png / 2
                 
-                setX(path.getStart().x - (image.getWidth() / 2));
-                setY(path.getStart().y - (image.getHeight() / 2));
+//                setX(path.getStart().x - (image.getWidth() / 2));
+//                setY(path.getStart().y - (image.getHeight() / 2));
+                setX(path.getStart().x - 25);
+                setY(path.getStart().y - 25);
                 break;
             case Right:
                 image = new Image(file.toURI().toString(), path.getLength(), 50, false, true);
                 // 25 = width of the path.png / 2
-                setX(path.getStart().x - (image.getWidth() / 2));
-                setY(path.getStart().y - (image.getHeight() / 2));
+//                setX(path.getStart().x - (image.getWidth() / 2));
+//                setY(path.getStart().y - (image.getHeight() / 2));
+                setX(path.getStart().x - 25);
+                setY(path.getStart().y - 25);
                 break;
             case Left:
                 image = new Image(file.toURI().toString(), path.getLength()+50, 50, false, true);
                 // 25 = width of the path.png / 2
-                setX(path.getEnd().x - (image.getWidth() / 2));
-                setY(path.getEnd().y - (image.getHeight() / 2));
+//                setX(path.getEnd().x - (image.getWidth() / 2));
+//                setY(path.getEnd().y - (image.getHeight() / 2));
+                setX(path.getEnd().x - 25);
+                setY(path.getEnd().y - 25);
                 break;
         }
         
