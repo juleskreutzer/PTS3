@@ -5,9 +5,23 @@
  */
 package hackattackfx;
 
-import hackattackfx.templates.*;
-import hackattackfx.enums.*;
-import hackattackfx.exceptions.*;
+import hackattackfx.Data.*;
+import hackattackfx.enums.DefenseType;
+import hackattackfx.enums.Effect;
+import hackattackfx.enums.MinionType;
+import hackattackfx.enums.ModuleName;
+import hackattackfx.enums.SpellName;
+import hackattackfx.enums.SpellType;
+import hackattackfx.exceptions.InvalidDefenseTypeException;
+import hackattackfx.exceptions.InvalidEffectException;
+import hackattackfx.exceptions.InvalidMinionTypeException;
+import hackattackfx.exceptions.InvalidSpellNameException;
+import hackattackfx.templates.BitCoinMinerTemplate;
+import hackattackfx.templates.CPUUpgradeTemplate;
+import hackattackfx.templates.DefenseTemplate;
+import hackattackfx.templates.MinionTemplate;
+import hackattackfx.templates.SoftwareInjectorTemplate;
+import hackattackfx.templates.SpellTemplate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,74 +30,76 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.ws.http.HTTPException;
-import org.json.*;
-
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
- * @author juleskreutzer, Jasper Rouwhorst
+ * @author juleskreutzer
  */
-public class Data {
+public class DataTest {
     
-    public interface UpdateProgress {
-        void update(double value);
+    private static MinionTemplate DEFAULT_BYTE_TEST;
+    private static MinionTemplate DEFAULT_KILOBYTE_TEST;
+    private static MinionTemplate DEFAULT_MEGABYTE_TEST;
+    private static MinionTemplate DEFAULT_GIGABYTE_TEST;
+    private static MinionTemplate DEFAULT_TERABYTE_TEST;
+    private static MinionTemplate DEFAULT_PETABYTE_TEST;
+    private static SpellTemplate DEFAULT_SPELL_CORRUPT_TEST;
+    private static SpellTemplate DEFAULT_SPELL_ENCRYPT_TEST;
+    private static SpellTemplate DEFAULT_SPELL_DISRUPT_TEST;
+    private static SpellTemplate DEFAULT_SPELL_LOCKDOWN_TEST;
+    private static SpellTemplate DEFAULT_SPELL_FIREWALL_TEST;
+    private static SpellTemplate DEFAULT_SPELL_VIRUSSCAN_TEST;
+    private static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_1_TEST;
+    private static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_2_TEST;
+    private static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_3_TEST;
+    private static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_1_TEST;
+    private static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_2_TEST;
+    private static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_3_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_1_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_2_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_3_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_1_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_2_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_3_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_1_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_2_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_3_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_1_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_2_TEST;
+    private static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_3_TEST;
+    private static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_1_TEST;
+    private static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_2_TEST;
+    private static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_3_TEST;
+    
+    public DataTest() {
     }
-    public static MinionTemplate DEFAULT_BYTE;
-    public static MinionTemplate DEFAULT_KILOBYTE;
-    public static MinionTemplate DEFAULT_MEGABYTE;
-    public static MinionTemplate DEFAULT_GIGABYTE;
-    public static MinionTemplate DEFAULT_TERABYTE;
-    public static MinionTemplate DEFAULT_PETABYTE;
-    public static SpellTemplate DEFAULT_SPELL_CORRUPT;
-    public static SpellTemplate DEFAULT_SPELL_ENCRYPT;
-    public static SpellTemplate DEFAULT_SPELL_DISRUPT;
-    public static SpellTemplate DEFAULT_SPELL_LOCKDOWN;
-    public static SpellTemplate DEFAULT_SPELL_FIREWALL;
-    public static SpellTemplate DEFAULT_SPELL_VIRUSSCAN;
-    public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_1;
-    public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_2;
-    public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_3;
-    public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_1;
-    public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_2;
-    public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_3;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_2;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_3;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_1;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_2;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_3;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_1;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_2;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_3;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_1;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_2;
-    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_3;
-    public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_1;
-    public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_2;
-    public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_3;
     
-    private static String urlMinion = "http://api.nujules.nl/minion";
-    private static String urlSpell = "http://api.nujules.nl/spell";
-    private static String urlModule = "http://api.nujules.nl/module";
+    @BeforeClass
+    public static void setUpClass() {
+    }
     
-    public Data(UpdateProgress callback) throws IOException, InvalidMinionTypeException, InvalidSpellNameException, InvalidDefenseTypeException, InvalidEffectException
-    {
-        /**
-         * First we create the JSONArray object by requesting the data from the HackAttack API.
-         * Then we call the create method for the objects we want te create which will parse the JSONArray.
-         */
-        JSONArray minions = sendGet(urlMinion);
-        JSONArray spells = sendGet(urlSpell);
-        JSONArray modules = sendGet(urlModule);
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
         
-        createMinions(minions);
-        callback.update(0.33);
-        createSpells(spells);
-        callback.update(0.66);
-        createModules(modules);
-        callback.update(0.99);
     }
     
+    @After
+    public void tearDown() {
+    }
+
+    // Default method to get the data from the API
     private JSONArray sendGet(String url) throws IOException, HTTPException
     {
         try{
@@ -119,11 +135,11 @@ public class Data {
         catch(HTTPException ex)
         {
             System.out.print("HTTP ERROR: " + ex.getStatusCode());
-            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch(IOException ex)
         {
-            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -151,27 +167,27 @@ public class Data {
             {
                 case "Byte":
                     type = MinionType.b;
-                    DEFAULT_BYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
+                    DEFAULT_BYTE_TEST = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 case "KiloByte":
                     type = MinionType.kb;
-                    DEFAULT_KILOBYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
+                    DEFAULT_KILOBYTE_TEST = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 case "MegaByte":
                     type = MinionType.mb;
-                    DEFAULT_MEGABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
+                    DEFAULT_MEGABYTE_TEST = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 case "GigaByte":
                     type = MinionType.gb;
-                    DEFAULT_GIGABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
+                    DEFAULT_GIGABYTE_TEST = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 case "TeraByte":
                     type = MinionType.tb;
-                    DEFAULT_TERABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
+                    DEFAULT_TERABYTE_TEST = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 case "PetaByte":
                     type = MinionType.pb;
-                    DEFAULT_PETABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);
+                    DEFAULT_PETABYTE_TEST = new MinionTemplate(type, health, speed, damage, encrypted, reward);
                     break;
                 default:
                     throw new InvalidMinionTypeException();
@@ -206,7 +222,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_CORRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_CORRUPT_TEST = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Encrypt":
                     spellName = SpellName.ENCRYPT;
@@ -218,7 +234,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_ENCRYPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_ENCRYPT_TEST = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Disrupt":
                     spellName = SpellName.DISRUPT;
@@ -230,7 +246,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_DISRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_DISRUPT_TEST = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Lock-down":
                     spellName = SpellName.LOCKDOWN;
@@ -242,7 +258,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_LOCKDOWN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_LOCKDOWN_TEST = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Firewall":
                     spellName = SpellName.FIREWALL;
@@ -254,7 +270,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_FIREWALL = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_FIREWALL_TEST = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 case "Virus-scan":
                     spellName = SpellName.VIRUSSCAN;
@@ -266,7 +282,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_VIRUSSCAN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_VIRUSSCAN_TEST = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
                     break;
                 default:
                     throw new InvalidSpellNameException();
@@ -310,15 +326,15 @@ public class Data {
                     {
                         case 1:
                             moduleName = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_1 = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_BITCOINMINER_1_TEST = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_2 = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_BITCOINMINER_2_TEST = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_3 = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_BITCOINMINER_3_TEST = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Bitcoin Miner)");
@@ -329,15 +345,15 @@ public class Data {
                     {
                         case 1:
                             moduleName = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_1 = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_CPUUPGRADE_1_TEST = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_2 = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_CPUUPGRADE_2_TEST = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_3 = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_CPUUPGRADE_3_TEST = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (CPU Upgrade)");
@@ -348,15 +364,15 @@ public class Data {
                     {
                         case 1:
                             moduleName = ModuleName.SOFTWARE_INJECTOR;
-                            DEFAULT_MODULE_SOFTWAREINJECTOR_1 = new SoftwareInjectorTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_1_TEST = new SoftwareInjectorTemplate(cost, tier, moduleName);
                             break;
                         case 2:
                             moduleName = ModuleName.SOFTWARE_INJECTOR;
-                            DEFAULT_MODULE_SOFTWAREINJECTOR_2 = new SoftwareInjectorTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_2_TEST = new SoftwareInjectorTemplate(cost, tier, moduleName);
                             break;
                         case 3:
                             moduleName = ModuleName.SOFTWARE_INJECTOR;
-                            DEFAULT_MODULE_SOFTWAREINJECTOR_3 = new SoftwareInjectorTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_3_TEST = new SoftwareInjectorTemplate(cost, tier, moduleName);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Software Injector)");
@@ -409,7 +425,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;
@@ -455,7 +471,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;
@@ -501,7 +517,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Bottlecap Antivirus)");
@@ -554,7 +570,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -600,7 +616,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -646,7 +662,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Muscle Antivirus)");
@@ -699,7 +715,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SCALE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SCALE_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -745,7 +761,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SCALE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SCALE_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -791,7 +807,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SCALE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SCALE_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Scale Antivirus)");                            
@@ -844,7 +860,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SNIPER_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SNIPER_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 2:
                             moduleName = ModuleName.SNIPER_ANTIVIRUS;
@@ -890,7 +906,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SNIPER_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SNIPER_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         case 3:
                             moduleName = ModuleName.SNIPER_ANTIVIRUS;
@@ -936,7 +952,7 @@ public class Data {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SNIPER_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SNIPER_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Sniper Antivirus)");
@@ -948,4 +964,44 @@ public class Data {
         }
         
     }
+    
+    @Test
+    public void TestBicoinTemplateConstructor() throws IOException, InvalidMinionTypeException, InvalidSpellNameException, InvalidDefenseTypeException, InvalidEffectException
+    {
+        Data data = new Data(new Data.UpdateProgress() {
+                    
+                    @Override
+                    public void update(double value) {
+                        
+                    }
+                });
+        
+        String json = "[{\"class\": \"money\", \"damage\": 10, \"description\" : \"Default Bitcoin Miner\", \"effect\": \"\", \"frequency\": 3, \"name\": \"Bitcoin Miner\", \"price\": 1000, \"range\": 200, \"sell_price\": 0, \"tier\": 1, \"type\": \"\", \"value\": 0}]";
+        String jsonWrong = "[{\"class\": \"moneie\", \"damage\": 10, \"description\" : \"Default Bitcoin Miner\", \"effect\": \"\", \"frequency\": 3, \"name\": \"Bitcoin Miner\", \"price\": 1000, \"range\": 200, \"sell_price\": 0, \"tier\": 1, \"type\": \"\", \"value\": 0}]";
+        
+        JSONArray jsonArray = new JSONArray();
+        JSONObject obj = new JSONObject();
+        obj.put(json, jsonArray);
+        
+        System.out.print(obj.toString());
+        this.createModules(jsonArray);
+        assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getValuePerSecond(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getValuePerSecond());
+        assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getCost(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getCost());
+        assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getLevel(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getLevel());
+        assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getModuleName(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getModuleName());
+        assertEquals(Data.DEFAULT_MODULE_BITCOINMINER_1.getDisplayName(), DEFAULT_MODULE_BITCOINMINER_1_TEST.getDisplayName());
+        
+        try{
+            JSONArray jsonWrongArray = new JSONArray();
+            JSONObject objWrong = new JSONObject();
+            objWrong.put(jsonWrong, jsonWrongArray);
+            
+            this.createModules(jsonWrongArray);
+        }
+        catch(IOException ex)
+        {
+            
+        }
+    }
+    
 }
