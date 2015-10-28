@@ -19,6 +19,8 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -199,12 +201,24 @@ public class DefenseTest {
      * @throws hackattackfx.exceptions.NoUpgradeAllowedException
      */
     @Test
-    public void testUpgrade() throws NoUpgradeAllowedException {
+    public void testUpgradeSucces() throws NoUpgradeAllowedException {
         defense.upgrade();
         defenseLv2.upgrade();
-        defenseLv3.upgrade();
     }
 
+      /**
+     * Test of upgrade method, of class Defense.
+     * @throws hackattackfx.exceptions.NoUpgradeAllowedException
+     */
+    @Test
+    public void testUpgradeFail() {
+        try{
+        defenseLv3.upgrade();
+        } catch (NoUpgradeAllowedException ex) {
+            Logger.getLogger(DefenseTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /**
      * Test of findTarget method, of class Defense.
      */
@@ -246,18 +260,17 @@ public class DefenseTest {
      */
     @Test
     public void testFire() {
+       //Damage minion
        defense.setDamage(1);
        minionTarget.setHealth(100);
        defense.fire(minionTarget);
        assertEquals("Fire didn't do one damage", 99, minionTarget.getHealth(), 0);
        
+       //Kill minion
        defense.setDamage(100);
        minionTarget.setHealth(1);
        defense.fire(minionTarget);
-       boolean failed = false;
-       if (minionTarget.getHealth() > 0) failed = true;
-       assertFalse("Fire didn't kill the minion", failed);
-        
+       assertNull("Fire didn't kill the minion", minionTarget);
     }
     
 }

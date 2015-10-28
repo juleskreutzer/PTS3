@@ -11,6 +11,7 @@ import hackattackfx.exceptions.InvalidEffectException;
 import hackattackfx.exceptions.InvalidMinionTypeException;
 import hackattackfx.exceptions.InvalidModuleEnumException;
 import hackattackfx.exceptions.InvalidSpellNameException;
+import hackattackfx.exceptions.NoUpgradeAllowedException;
 import hackattackfx.exceptions.NotEnoughBitcoinsException;
 import hackattackfx.templates.BitCoinMinerTemplate;
 import hackattackfx.templates.CPUUpgradeTemplate;
@@ -303,7 +304,7 @@ public class PlayerTest {
      * Test of upgradeSoftwareInjector method, of class Player.
      */
     @Test
-    public void testUpgradeSoftwareInjectorSucces() throws NotEnoughBitcoinsException {
+    public void testUpgradeSoftwareInjectorSucces() throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
          List<Module> modules;
         
         //Can upgrade
@@ -318,7 +319,7 @@ public class PlayerTest {
      * Test of upgradeSoftwareInjector method, of class Player.
      */
     @Test
-    public void testUpgradeSoftwareInjectorFail() throws NotEnoughBitcoinsException {
+    public void testUpgradeSoftwareInjectorFail() throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
         List<Module> modules;
         
         player1.setBitcoins(0);
