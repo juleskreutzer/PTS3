@@ -99,32 +99,44 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     
-    private boolean isPointInNode(Point p)
+    private boolean isPointInNode(Point p) throws LocationUnavailableException
     {
         try{
-        ObservableList<Node> nodes = graphicsEngine.getNodes();
-        
-        for(Node n : nodes)
-        {
-            Rectangle r = (Rectangle) n;
-            
-            if(r.getX() < p.getX() && r.getY() < p.getY() && r.getX() + r.getWidth() > p.getX() && r.getY() + r.getHeight() > p.getY())
+            ObservableList<Node> nodes = graphicsEngine.getNodes();
+
+            for(Node n : nodes)
             {
-                return true;
+                if(n instanceof ModuleImage)
+                {
+                    ModuleImage mi = (ModuleImage) n;
+                    if(mi.getX() < p.getX() && mi.getY() < p.getY() && mi.getX() +  mi.getImage().getWidth() > p.getX() && mi.getY() + mi.getImage().getHeight() > p.getY())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        throw new LocationUnavailableException("You cannot place your object here.");
+                    }
+                }
+                else if(n instanceof PathImage)
+                {
+                    PathImage pi = (PathImage) n;
+                    if(pi.getX() < p.getX() && pi.getY() < p.getY() && pi.getX() + pi.getImage().getWidth() > p.getX() && pi.getY() + pi.getImage().getHeight() > p.getY())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        throw new LocationUnavailableException("You cannot place your object here.");
+                    }
+                }
             }
-            else
-            {
-                throw new LocationUnavailableException("You cannot place your object here.");
-            }
-        }
-        return false;
+            return false;
         }
         catch(LocationUnavailableException ex)
         {
-            
-            
+            throw new LocationUnavailableException(ex.getMessage());
         }
-        return false;
     }
     
     /**
@@ -163,10 +175,15 @@ public class GameEngine extends Thread implements MouseListener {
                             Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
                             
                             try {
-                                graphicsEngine.spawn(defense);
-                                graphicsEngine.deSpawn(st);
+                                if(isPointInNode(position))
+                                {
+                                    graphicsEngine.spawn(defense);
+                                    graphicsEngine.deSpawn(st);
+                                }
                             } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (LocationUnavailableException ex) {
+                                graphicsEngine.showError(ex.getMessage());
                             }
                             
                             defense.activate();
@@ -206,10 +223,15 @@ public class GameEngine extends Thread implements MouseListener {
                             Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50));
                             
                             try {
-                                graphicsEngine.spawn(defense);
-                                graphicsEngine.deSpawn(st);
+                                if(isPointInNode(position))
+                                {
+                                    graphicsEngine.spawn(defense);
+                                    graphicsEngine.deSpawn(st);
+                                }
                             } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (LocationUnavailableException ex) {
+                                graphicsEngine.showError(ex.getMessage());
                             }
                             
                             defense.activate();
@@ -249,10 +271,15 @@ public class GameEngine extends Thread implements MouseListener {
                             Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50));
                             
                             try {
-                                graphicsEngine.spawn(defense);
-                                graphicsEngine.deSpawn(st);
+                                if(isPointInNode(position))
+                                {
+                                    graphicsEngine.spawn(defense);
+                                    graphicsEngine.deSpawn(st);
+                                }
                             } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (LocationUnavailableException ex) {
+                                graphicsEngine.showError(ex.getMessage());
                             }
                             
                             defense.activate();

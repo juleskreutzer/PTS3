@@ -313,7 +313,7 @@ public class GraphicsEngine{
             @Override
             public void run() {
                 errorImage.setVisible(true);
-                errorLabel.setText(String.format("<!> %s", message));
+                errorLabel.setText(String.format("%s", message));
             }
             
         });
