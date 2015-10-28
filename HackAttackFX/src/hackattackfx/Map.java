@@ -29,22 +29,23 @@ public class Map {
         
         road = new Road();
         
-        baseLocationA = new Point(50,50);
+        baseLocationA = new Point(135,430);
         baseLocationB = new Point(500,500); 
         
         //Create the map's road out of Paths.
         try {
-            road.addPath(new Path(new Point(baseLocationA.x, baseLocationA.y),1000, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),500, Path.Direction.Down));
-            road.addPath(new Path(road.getEnd(),900, Path.Direction.Left));
-            road.addPath(new Path(road.getEnd(),400, Path.Direction.Up));
-            road.addPath(new Path(road.getEnd(),800, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),300, Path.Direction.Down));
-            road.addPath(new Path(road.getEnd(),700, Path.Direction.Left));
-            road.addPath(new Path(road.getEnd(),200, Path.Direction.Up));
-            road.addPath(new Path(road.getEnd(),600, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),100, Path.Direction.Down));
-            road.addPath(new Path(road.getEnd(),500, Path.Direction.Left));
+            road.addPath(new Path(new Point(baseLocationA.x, baseLocationA.y),50, Path.Direction.Right));
+            road.addPath(new Path(road.getEnd(),70, Path.Direction.Up));
+            road.addPath(new Path(road.getEnd(),360, Path.Direction.Right));
+            road.addPath(new Path(road.getEnd(),140, Path.Direction.Down));
+            road.addPath(new Path(road.getEnd(),180, Path.Direction.Right));
+            road.addPath(new Path(road.getEnd(),140, Path.Direction.Up));
+            road.addPath(new Path(road.getEnd(),95, Path.Direction.Right));
+            road.addPath(new Path(road.getEnd(),165, Path.Direction.Up));
+            road.addPath(new Path(road.getEnd(),360, Path.Direction.Right));
+            road.addPath(new Path(road.getEnd(),70, Path.Direction.Down));
+            road.addPath(new Path(road.getEnd(),50, Path.Direction.Right));
+            
         } catch (FloatingPathException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
         }

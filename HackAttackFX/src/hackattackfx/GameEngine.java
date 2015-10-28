@@ -103,15 +103,7 @@ public class GameEngine extends Thread implements MouseListener {
     private void preStart(){
         graphicsEngine.drawRoad(map.getRoad());
         
-        graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
-
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event) {
-                st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
-                st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
-                
-            }
-        });
+        
         
         // Initialize all GUI buttons
         ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV");
@@ -120,6 +112,16 @@ public class GameEngine extends Thread implements MouseListener {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SNIPER_ANTIVIRUS);
+                
+                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+
+                    }
+                });
                 // Set a listener for a second click to occur
                 st.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -155,6 +157,15 @@ public class GameEngine extends Thread implements MouseListener {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SCALE_ANTIVIRUS);
+                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+
+                    }
+                });
                 // Set a listener for a second click to occur
                 st.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -189,6 +200,15 @@ public class GameEngine extends Thread implements MouseListener {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 st = graphicsEngine.drawModuleSpawnTarget(ModuleName.BOTTLECAP_ANTIVIRUS);
+                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+
+                    }
+                });
                 // Set a listener for a second click to occur
                 st.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -223,6 +243,15 @@ public class GameEngine extends Thread implements MouseListener {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 st = graphicsEngine.drawModuleSpawnTarget(ModuleName.MUSCLE_ANTIVIRUS);
+                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+
+                    }
+                });
                 // Set a listener for a second click to occur
                 st.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -276,13 +305,7 @@ public class GameEngine extends Thread implements MouseListener {
                 System.out.print("use javaFX thread (gameEngine line 157) (animationTimer)");
             }
         }, 0, 15);
-                
         
-//        while(gameRunning){
-//            while(GameTime.getDeltaTime() < GameTime.OPTIMAL_TIME){
-//                
-//            }
-//        }
     }
     
     private void tick(){

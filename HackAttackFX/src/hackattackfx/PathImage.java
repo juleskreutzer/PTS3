@@ -31,25 +31,25 @@ public class PathImage extends ObjectImage {
 
         switch(path.getDirection()){
             case Up:
-                image = new Image(file.toURI().toString(), 50, path.getLength()+50, false, true);
+                image = new Image(file.toURI().toString(), 20, path.getLength()+20, false, true);
                 // 25 = width of the path.png / 2
                 setX(path.getEnd().x - (image.getWidth() / 2));
                 setY(path.getEnd().y - (image.getWidth() / 2));
                 break;
             case Down:
-                image = new Image(file.toURI().toString(), 50, path.getLength(), false, true);
+                image = new Image(file.toURI().toString(), 20, path.getLength(), false, true);
                 // 25 = width of the path.png / 2
                 setX(path.getStart().x - (image.getWidth() / 2));
                 setY(path.getStart().y - (image.getWidth() / 2));
                 break;
             case Right:
-                image = new Image(file.toURI().toString(), path.getLength(), 50, false, true);
+                image = new Image(file.toURI().toString(), path.getLength(), 20, false, true);
                 // 25 = width of the path.png / 2
                 setX(path.getStart().x - (image.getHeight() / 2));
                 setY(path.getStart().y - (image.getHeight() / 2));
                 break;
             case Left:
-                image = new Image(file.toURI().toString(), path.getLength()+50, 50, false, true);
+                image = new Image(file.toURI().toString(), path.getLength()+20, 20, false, true);
                 // 25 = width of the path.png / 2
                 setX(path.getEnd().x - (image.getHeight() / 2));
                 setY(path.getEnd().y - (image.getHeight() / 2));
