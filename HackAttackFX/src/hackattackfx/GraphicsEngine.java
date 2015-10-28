@@ -199,16 +199,14 @@ public class GraphicsEngine{
     public void drawRoad(Road road){
         for(Path p : road.getPaths()){
             PathImage image = new PathImage(p);
+            parent.addNode(image);
+            
             Rectangle r = new Rectangle();
             
             r.setX(image.getX());
             r.setY(image.getY() - (image.getImage().getHeight() / 2));
-            r.setWidth(image.getImage().getWidth());
-            //r.setHeight(image.getImage().getHeight());
             
-            System.out.print("Rectangle needs to be added to drawRoad() in GraphicsEngine:198");
             parent.addNode(r);
-            parent.addNode(image);
         }
     }
     
