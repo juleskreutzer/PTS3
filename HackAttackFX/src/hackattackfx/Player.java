@@ -54,7 +54,7 @@ public class Player {
      */
     private boolean CheckCostToBuildOrUpgrade(double cost)
     {
-        if(cost <= this.bitcoins) { return true; } else { return false; }
+        return cost <= this.bitcoins;
     }
     
     /**
