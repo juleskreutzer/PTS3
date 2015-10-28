@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -39,6 +40,9 @@ public class GraphicsEngine{
     private Label lblPlayerName;
     private Label lblPlayerHealth;
     private Label lblPlayerBitcoins;
+    private Label errorLabel;
+    
+    private ImageView errorImage;
     
     private GraphicsEngine(){
         instance = this;
@@ -46,6 +50,11 @@ public class GraphicsEngine{
         lblPlayerName = (Label)parent.getNode("lblPlayerName");
         lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth");
         lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins");
+        errorLabel = (Label)parent.getNode("errorLabel");
+        File file = new File("src/hackattackfx/resources/error.png");
+        errorImage.setImage(new Image(file.toURI().toString()));
+        errorImage.setVisible(false);
+        showError("Test Message");
         initialize();
         
     }
@@ -293,6 +302,19 @@ public class GraphicsEngine{
             }
         });
         
+    }
+    
+    public void showError(String message)
+    {
+        Platform.runLater(new Runnable(){
+
+            @Override
+            public void run() {
+                errorImage.setVisible(true);
+                errorLabel.setText(String.format("<!> %s", message));
+            }
+            
+        });
     }
     
 }

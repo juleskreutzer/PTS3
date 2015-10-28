@@ -19,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -95,6 +96,35 @@ public class GameEngine extends Thread implements MouseListener {
         gameRunning = false;
         preStart();
         startGame();
+    }
+    
+    
+    private boolean isPointInNode(Point p)
+    {
+        try{
+        ObservableList<Node> nodes = graphicsEngine.getNodes();
+        
+        for(Node n : nodes)
+        {
+            Rectangle r = (Rectangle) n;
+            
+            if(r.getX() < p.getX() && r.getY() < p.getY() && r.getX() + r.getWidth() > p.getX() && r.getY() + r.getHeight() > p.getY())
+            {
+                return true;
+            }
+            else
+            {
+                throw new LocationUnavailableException("You cannot place your object here.");
+            }
+        }
+        return false;
+        }
+        catch(LocationUnavailableException ex)
+        {
+            
+            
+        }
+        return false;
     }
     
     /**

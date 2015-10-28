@@ -7,11 +7,11 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" style="-fx-background-image: url(&quot;hackattackfx/resources/Background.png&quot;);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="hackattackfx.FXMLDocumentController">
+<AnchorPane fx:id="window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" style="-fx-background-image: url(&quot;hackattackfx/resources/Background.png&quot;);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hackattackfx.FXMLDocumentController">
   <children>
     <ImageView fx:id="buildSniperAV" fitHeight="150.0" fitWidth="500.0" layoutX="14.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
       <image>
-        <Image url="hackattackfx/resources/interface/module/500x500/sniper_module.png" backgroundLoading="false" />
+        <Image backgroundLoading="false" url="hackattackfx/resources/interface/module/500x500/sniper_module.png" />
       </image>
     </ImageView>
     <Label fx:id="lblPlayerName" layoutX="1119.0" layoutY="44.0" prefHeight="17.0" prefWidth="136.0" text="Player Name" />
@@ -19,18 +19,24 @@
     <Label fx:id="lblPlayerBitcoins" layoutX="1119.0" layoutY="78.0" prefHeight="17.0" prefWidth="136.0" text="Player Bitcoins" />
     <ImageView id="buildScaleAV" fitHeight="150.0" fitWidth="500.0" layoutX="165.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
       <image>
-        <Image url="hackattackfx/resources/interface/module/500x500/scale_module.png" backgroundLoading="false" />
+        <Image url="hackattackfx/resources/interface/module/500x500/scale_module.png" />
       </image>
     </ImageView>
     <ImageView id="buildBottlecapAV" fitHeight="150.0" fitWidth="500.0" layoutX="316.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
       <image>
-        <Image url="hackattackfx/resources/interface/module/500x500/bottlecap_module.png" backgroundLoading="false" />
+        <Image backgroundLoading="false" url="hackattackfx/resources/interface/module/500x500/bottlecap_module.png" />
       </image>
     </ImageView>
     <ImageView id="buildMuscleAV" fitHeight="150.0" fitWidth="500.0" layoutX="470.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
       <image>
-        <Image url="hackattackfx/resources/interface/module/500x500/muscle_module.png" backgroundLoading="false" />
+        <Image backgroundLoading="false" url="hackattackfx/resources/interface/module/500x500/muscle_module.png" />
       </image>
     </ImageView>
+      <Label id="errorLabel" fx:id="errorLabel" layoutX="58.0" layoutY="27.0" prefHeight="17.0" prefWidth="752.0" text="Label" textFill="RED" />
+      <ImageView id="errorImage" fx:id="errorImage" fitHeight="25.0" fitWidth="25.0" layoutX="26.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="hackattackfx/resources/error.png" />
+         </image>
+      </ImageView>
   </children>
 </AnchorPane>

@@ -28,8 +28,16 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private AnchorPane window;
+    
+    @FXML
+    private Label errorLabel;
+    
+    @FXML
+    private ImageView errorImage;
+    
     private GraphicsEngine gEngine;
     private static FXMLDocumentController instance;
+    
     
     // This constructor is public even this class represents a Singleton class.
     // This is because the Scene Builder creates an instance of this class using the constructor.
