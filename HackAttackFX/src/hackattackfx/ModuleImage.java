@@ -51,8 +51,8 @@ public class ModuleImage extends ObjectImage {
         }
         
         Image image = new Image(file.toURI().toString());
-        setX(module.getPosition().x - image.getWidth()/2);
-        setY(module.getPosition().y - image.getHeight()/2);
+        setX(module.getPosition().x - (image.getHeight()/2));
+        setY(module.getPosition().y - (image.getWidth()/2));
         this.setImage(image);
         
         if(module instanceof Defense){

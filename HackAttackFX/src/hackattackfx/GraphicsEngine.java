@@ -200,16 +200,6 @@ public class GraphicsEngine{
         for(Path p : road.getPaths()){
             PathImage image = new PathImage(p);
             parent.addNode(image);
-            
-            Rectangle r = new Rectangle();
-            
-            r.setFill(Color.BLUE);
-            r.setX(((Path)image.getReference()).getStart().getX());
-            r.setY(((Path)image.getReference()).getStart().getY());
-            r.setHeight(image.getImage().getHeight());
-            r.setWidth(image.getImage().getWidth());
-            
-            parent.addNode(r);
         }
     }
     

@@ -110,32 +110,6 @@ public class GameEngine extends Thread implements MouseListener {
                 st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
                 st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
                 
-                ObservableList<Node> nodes = graphicsEngine.getNodes();             
-                // Check if we have a collision with another node, if true, change the image to let the user know about it
-                for(Node n : nodes)
-                {
-                    
-                    if(n instanceof Rectangle)
-                    {
-                        Rectangle r = (Rectangle) n;
-                        
-                        double x = st.getX();
-                        double y = st.getY();
-                        double width = st.getImage().getWidth();
-                        double height = st.getImage().getHeight();
-                        
-                        
-                        if(r.intersects(x, y, width, height))
-                        {
-                            st.setImage(st.getUnavailable());
-                        }
-                        else
-                        {
-                            st.setImage(st.getAvailable());
-                        }
-                    }
-                    
-                }
             }
         });
         
@@ -151,6 +125,7 @@ public class GameEngine extends Thread implements MouseListener {
 
                     @Override
                     public void handle(MouseEvent event) {
+                        
                         Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                         try {
                             Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
