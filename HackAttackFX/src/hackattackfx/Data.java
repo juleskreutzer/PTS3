@@ -28,24 +28,38 @@ public class Data {
     public interface UpdateProgress {
         void update(double value);
     }
+    
+    // Minion Template
     public static MinionTemplate DEFAULT_BYTE;
     public static MinionTemplate DEFAULT_KILOBYTE;
     public static MinionTemplate DEFAULT_MEGABYTE;
     public static MinionTemplate DEFAULT_GIGABYTE;
     public static MinionTemplate DEFAULT_TERABYTE;
     public static MinionTemplate DEFAULT_PETABYTE;
+    
+    // Spell Templates
     public static SpellTemplate DEFAULT_SPELL_CORRUPT;
     public static SpellTemplate DEFAULT_SPELL_ENCRYPT;
     public static SpellTemplate DEFAULT_SPELL_DISRUPT;
     public static SpellTemplate DEFAULT_SPELL_LOCKDOWN;
     public static SpellTemplate DEFAULT_SPELL_FIREWALL;
     public static SpellTemplate DEFAULT_SPELL_VIRUSSCAN;
+    
+    /**
+     * MODULE TEMPLATES - START
+     */
+    
+    // Bitcoin Miner Templates
     public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_1;
     public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_2;
     public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_3;
+    
+    // CPU Upgrade Templates
     public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_1;
     public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_2;
     public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_3;
+    
+    // Defense Templates
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_2;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_3;
@@ -58,13 +72,19 @@ public class Data {
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_1;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_2;
     public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_3;
+    
+    // Software Injector Templates
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_1;
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_2;
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_3;
     
-    private static String urlMinion = "http://api.nujules.nl/minion";
-    private static String urlSpell = "http://api.nujules.nl/spell";
-    private static String urlModule = "http://api.nujules.nl/module";
+    /**
+     * MODULE TEMPLATES - END
+     */
+    
+    private static String urlMinion = "https://api.nujules.nl/minion";
+    private static String urlSpell = "https://api.nujules.nl/spell";
+    private static String urlModule = "https://api.nujules.nl/module";
     
     public Data(UpdateProgress callback) throws IOException, InvalidMinionTypeException, InvalidSpellNameException, InvalidDefenseTypeException, InvalidEffectException
     {

@@ -71,7 +71,7 @@ public class Player {
      * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
      * @return
      */
-    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException{
+    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException{
         if(injector.upgrade()) { 
             this.removeBitcoins(injector.getCost());
             return true; } else { return false; }
