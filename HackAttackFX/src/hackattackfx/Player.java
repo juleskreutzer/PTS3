@@ -62,8 +62,8 @@ public class Player {
     * @return The newly created {@link SoftwareInjector}
     */  
     public SoftwareInjector buildSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException{
-        modules.add(injector);
         this.removeBitcoins(injector.getCost());
+        modules.add(injector);
         return injector;
     }
     
@@ -117,15 +117,8 @@ public class Player {
 
     public boolean upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException{
         try {
-            if(miner.upgrade())
-            {
-                this.removeBitcoins(miner.getCost());
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            this.removeBitcoins(miner.getCost());
+            return miner.upgrade();
         } catch (NoUpgradeAllowedException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,10 +134,11 @@ public class Player {
         return cpu;
     }
     
-    public boolean upgradeCPUUpgrade(CPUUpgrade cpu){
+    public boolean upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException{
         try {
             // First get a list of all minions
             Iterator<Minion> minions = GameEngine.getInstance().getActiveWave().minions();
+            this.removeBitcoins(cpu.getCost());
             return cpu.upgrade(minions);
         } catch (NoUpgradeAllowedException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
@@ -153,8 +147,8 @@ public class Player {
 	}
     
     public Defense buildDefense(Defense defense) throws NotEnoughBitcoinsException{
-        modules.add(defense);
         this.removeBitcoins(defense.getCost());
+        modules.add(defense);
         return defense;
     }
     
