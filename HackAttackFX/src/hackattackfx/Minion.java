@@ -177,7 +177,10 @@ public class Minion implements IMoveable {
      */
     public void setHealth(double health)
     {
+        if (health >= 0) {
         this.health = health;
+        }
+        else this.health = 0;
     }
     
     /**

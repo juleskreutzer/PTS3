@@ -209,6 +209,14 @@ public class Defense extends Module {
         return target;
     }
     
+    public void setLastAttack(long lastAttack){
+        this.lastAttack = lastAttack;
+    }
+    
+    public long getLastAttack(){
+        return lastAttack;
+    }
+    
     /**
      * Upgrades this module
      * @return Whether the module was successfully upgraded.

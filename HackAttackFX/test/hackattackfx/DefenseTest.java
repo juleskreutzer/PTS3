@@ -7,6 +7,11 @@ package hackattackfx;
 
 import hackattackfx.enums.DefenseType;
 import hackattackfx.enums.Effect;
+import hackattackfx.templates.DefenseTemplate;
+import hackattackfx.templates.MinionTemplate;
+import java.awt.Point;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,10 +24,13 @@ import static org.junit.Assert.*;
  * @author Bart van Keersop
  */
 public class DefenseTest {
-    GameEngine engine;
-    Player player1;
-    Wave wave;
+    Data data;
+    DefenseTemplate defenseTemplate;
+    MinionTemplate minionTemplate;
     Minion minionTarget;
+    Defense defense;
+    Point point1;
+    Point point2;
     
     
     public DefenseTest() {
@@ -38,6 +46,17 @@ public class DefenseTest {
     
     @Before
     public void setUp() {
+        try{
+        defenseTemplate = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
+        minionTemplate = Data.DEFAULT_BYTE;
+        minionTarget = new Minion(minionTemplate, 0);
+        point1 = new Point(100, 100);
+        point2 = new Point(99999, 99999);
+        defense = new Defense(defenseTemplate, point1, 50, 50);
+        }
+        catch (Exception e){
+            System.out.printf("Set up went wrong: " + e.toString());
+        }
     }
     
     @After
@@ -48,24 +67,38 @@ public class DefenseTest {
      * Test of activate method, of class Defense.
      */
     @Test
-    public void testActivate() {
-        System.out.println("activate");
-        Defense instance = null;
-        instance.activate();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testActivate1() {
+        defense.activate();
+    }
+    
+    @Test
+    public void testActivate2() {
+        //In range
+        minionTarget.setPosition(point1);
+        defense.activate();
     }
 
+    @Test
+    public void testActivate3() {
+        //Out of range
+        minionTarget.setPosition(point2);
+        defense.setTarget(minionTarget);
+        defense.activate();
+    }
     /**
      * Test of deactivate method, of class Defense.
      */
     @Test
     public void testDeactivate() {
-        System.out.println("deactivate");
-        Defense instance = null;
-        instance.deactivate();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        defense.activate();
+        defense.deactivate();
+        
+        try {
+        defense.deactivate();
+        }
+        catch (Exception e) {
+        System.out.printf("Defense isn't activated yet: " + e.toString());
+        }
     }
 
     /**
@@ -73,13 +106,7 @@ public class DefenseTest {
      */
     @Test
     public void testGetDefenceTypeString() {
-        System.out.println("getDefenceTypeString");
-        Defense instance = null;
-        String expResult = "";
-        String result = instance.getDefenceTypeString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -87,13 +114,7 @@ public class DefenseTest {
      */
     @Test
     public void testGetEffectString() {
-        System.out.println("getEffectString");
-        Defense instance = null;
-        String expResult = "";
-        String result = instance.getEffectString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -101,13 +122,7 @@ public class DefenseTest {
      */
     @Test
     public void testGetDefenceType() {
-        System.out.println("getDefenceType");
-        Defense instance = null;
-        DefenseType expResult = null;
-        DefenseType result = instance.getDefenceType();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -115,13 +130,7 @@ public class DefenseTest {
      */
     @Test
     public void testGetEffect() {
-        System.out.println("getEffect");
-        Defense instance = null;
-        Effect expResult = null;
-        Effect result = instance.getEffect();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -129,12 +138,7 @@ public class DefenseTest {
      */
     @Test
     public void testSetEffect() {
-        System.out.println("setEffect");
-        Effect e = null;
-        Defense instance = null;
-        instance.setEffect(e);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -142,13 +146,7 @@ public class DefenseTest {
      */
     @Test
     public void testGetDamage() {
-        System.out.println("getDamage");
-        Defense instance = null;
-        double expResult = 0.0;
-        double result = instance.getDamage();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -156,12 +154,7 @@ public class DefenseTest {
      */
     @Test
     public void testSetDamage() {
-        System.out.println("setDamage");
-        double d = 0.0;
-        Defense instance = null;
-        instance.setDamage(d);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -169,13 +162,7 @@ public class DefenseTest {
      */
     @Test
     public void testGetRange() {
-        System.out.println("getRange");
-        Defense instance = null;
-        int expResult = 0;
-        int result = instance.getRange();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -183,12 +170,7 @@ public class DefenseTest {
      */
     @Test
     public void testSetRange() {
-        System.out.println("setRange");
-        int r = 0;
-        Defense instance = null;
-        instance.setRange(r);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -196,13 +178,7 @@ public class DefenseTest {
      */
     @Test
     public void testUpgrade() throws Exception {
-        System.out.println("upgrade");
-        Defense instance = null;
-        boolean expResult = false;
-        boolean result = instance.upgrade();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -210,13 +186,7 @@ public class DefenseTest {
      */
     @Test
     public void testFindTarget() {
-        System.out.println("findTarget");
-        Defense instance = null;
-        Minion expResult = null;
-        Minion result = instance.findTarget();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -224,14 +194,7 @@ public class DefenseTest {
      */
     @Test
     public void testTargetInRange() {
-        System.out.println("targetInRange");
-        Minion m = null;
-        Defense instance = null;
-        boolean expResult = false;
-        boolean result = instance.targetInRange(m);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -239,13 +202,7 @@ public class DefenseTest {
      */
     @Test
     public void testHasTarget() {
-        System.out.println("hasTarget");
-        Defense instance = null;
-        boolean expResult = false;
-        boolean result = instance.hasTarget();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -253,12 +210,16 @@ public class DefenseTest {
      */
     @Test
     public void testFire() {
-        System.out.println("fire");
-        Minion minion = null;
-        Defense instance = null;
-        instance.fire(minion);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       defense.setDamage(1);
+       minionTarget.setHealth(100);
+       defense.fire(minionTarget);
+       assertEquals("Fire didn't do one damage", 99, minionTarget.getHealth());
+       
+       defense.setDamage(100);
+       minionTarget.setHealth(1);
+       defense.fire(minionTarget);
+       assertEquals("Fire didn't kill the minion", 99, minionTarget.getHealth());
+        
     }
     
 }
