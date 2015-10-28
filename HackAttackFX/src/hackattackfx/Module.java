@@ -30,6 +30,7 @@ abstract public class Module {
         this.cost = cost;
         this.position = position;
         this.moduleName = name;
+        this.level = level;
         
         getName();
     }
