@@ -51,8 +51,11 @@ public class GraphicsEngine{
         lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth");
         lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins");
         errorLabel = (Label)parent.getNode("errorLabel");
+        errorImage = (ImageView)parent.getNode("errorImage");
         File file = new File("src/hackattackfx/resources/error.png");
-        errorImage.setImage(new Image(file.toURI().toString()));
+        Image image = new Image(file.toURI().toString());
+        System.out.print(file.toURI().toString());
+        errorImage.setImage(image);
         errorImage.setVisible(false);
         showError("Test Message");
         initialize();
