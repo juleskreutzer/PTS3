@@ -27,6 +27,7 @@ public class Wave {
     private ArrayList<Minion> minionList;
     private static int spawnedMinions;
     private ArrayList<Minion> killedMinions;
+    private Player enemyPlayer;
     
     // Initial -1000 is the compensation with the spawning interval so the minions will be spawned the first frame of the game
     private long lastSpawn = -1000;
@@ -54,43 +55,44 @@ public class Wave {
         waveMultiplier = multiplier;
         minionList = new ArrayList<>();
         killedMinions = new ArrayList<>();
+        this.enemyPlayer = enemyplayer;
         Map map = Map.getInstance();
         Point base = map.getBaseLocationA();
         
         //Create the minions for this wave.
         //Bytes
         for(int i=0; i<bamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_BYTE, multiplier);
+            Minion minion = new Minion(Data.DEFAULT_BYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //KiloBytes
         for(int i=0; i<kbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_KILOBYTE, multiplier);
+            Minion minion = new Minion(Data.DEFAULT_KILOBYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //MegaBytes
         for(int i=0; i<mbamount; i++){
-           Minion minion = new Minion(Data.DEFAULT_MEGABYTE, multiplier);
+           Minion minion = new Minion(Data.DEFAULT_MEGABYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //GigaBytes
         for(int i=0; i<gbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_GIGABYTE, multiplier);
+            Minion minion = new Minion(Data.DEFAULT_GIGABYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //TeraBytes
         for(int i=0; i<tbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_TERABYTE, multiplier);
+            Minion minion = new Minion(Data.DEFAULT_TERABYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //PetaBytes
         for(int i=0; i<pbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_PETABYTE, multiplier);
+            Minion minion = new Minion(Data.DEFAULT_PETABYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
@@ -116,8 +118,8 @@ public class Wave {
                             m.activate(new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
 
                                 @Override //Override this method, remove the passed minion from the current wave with removeMinion.
-                                public void onMinionDeath(Minion minion) {
-                                    removeMinion(minion);
+                                public void onMinionDeath(Minion minion, Boolean reachedBase) {
+                                    removeMinion(minion, reachedBase);
                                 }
 
                             });
@@ -157,18 +159,22 @@ public class Wave {
      * @param minion, the minion
      * @return, true if removed successfully, false if not.
      */
-    private boolean removeMinion(Minion minion){
+    private boolean removeMinion(Minion minion, Boolean reachedBase){
         if (minionList.contains(minion)){
             killedMinions.add(minion);
             minionList.remove(minion);
             spawnedMinions--;
             minion.deactivate();
-        return true;
+            if (reachedBase) {
+                enemyPlayer.receiveDamage(minion.getDamage());
+            }
+            else{
+            enemyPlayer.addBitcoins(minion.getReward());
+        }
+            return true;
         } 
         else{
             return false;
         }
     }
-    
-    
 }

@@ -150,7 +150,6 @@ public class GraphicsEngine{
     
     private void draw(){
         Platform.runLater(new Runnable(){
-
             @Override
             public void run() {
                 List<Node> nodes = parent.getAllNodes();

@@ -316,7 +316,7 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void startGame(){
         gameRunning = true;
-        Wave wave = new Wave(1,1,playerB,10,0,0,0,0,0);
+        Wave wave = new Wave(1,1,playerA,10,0,0,0,0,0);
         waveList.add(wave);
         currentWave = wave;
         
