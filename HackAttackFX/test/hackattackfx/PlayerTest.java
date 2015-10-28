@@ -198,9 +198,10 @@ public class PlayerTest {
 
         /**
      * Test of upgradeCPUUpgrade method, of class Player.
+     * @throws hackattackfx.exceptions.NotEnoughBitcoinsException
      */
     @Test
-    public void testUpgradeCPUUpgradeSucces() {
+    public void testUpgradeCPUUpgradeSucces() throws NotEnoughBitcoinsException {
          List<Module> modules;
         
         //Can upgrade
@@ -213,9 +214,10 @@ public class PlayerTest {
     
         /**
      * Test of upgradeCPUUpgrade method, of class Player.
+     * @throws hackattackfx.exceptions.NotEnoughBitcoinsException
      */
     @Test
-    public void testUpgradeCPUUpgradeFail() {
+    public void testUpgradeCPUUpgradeFail() throws NotEnoughBitcoinsException {
         List<Module> modules;
         
         player1.setBitcoins(0);

@@ -7,9 +7,16 @@ package hackattackfx;
 
 import hackattackfx.enums.DefenseType;
 import hackattackfx.enums.Effect;
+import hackattackfx.exceptions.InvalidDefenseTypeException;
+import hackattackfx.exceptions.InvalidEffectException;
+import hackattackfx.exceptions.InvalidMinionTypeException;
+import hackattackfx.exceptions.InvalidModuleEnumException;
+import hackattackfx.exceptions.InvalidSpellNameException;
+import hackattackfx.exceptions.NoUpgradeAllowedException;
 import hackattackfx.templates.DefenseTemplate;
 import hackattackfx.templates.MinionTemplate;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.After;
@@ -26,9 +33,13 @@ import static org.junit.Assert.*;
 public class DefenseTest {
     Data data;
     DefenseTemplate defenseTemplate;
+    DefenseTemplate defenseTemplateLv2;
+    DefenseTemplate defenseTemplateLv3;
     MinionTemplate minionTemplate;
     Minion minionTarget;
     Defense defense;
+    Defense defenseLv2;
+    Defense defenseLv3;
     Point point1;
     Point point2;
     
@@ -47,14 +58,24 @@ public class DefenseTest {
     @Before
     public void setUp() {
         try{
+            data = new Data(new Data.UpdateProgress() {
+                        @Override
+                        public void update(double value) {
+                    }
+                });
+            
         defenseTemplate = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
+        defenseTemplateLv2 = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_2;
+        defenseTemplateLv3 = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_3;
         minionTemplate = Data.DEFAULT_BYTE;
         minionTarget = new Minion(minionTemplate, 0);
         point1 = new Point(100, 100);
-        point2 = new Point(99999, 99999);
+        point2 = new Point(999, 999);
         defense = new Defense(defenseTemplate, point1, 50, 50);
+        defenseLv2 = new Defense(defenseTemplateLv2, point1, 50, 50);
+        defenseLv3 = new Defense(defenseTemplateLv3, point1, 50, 50);
         }
-        catch (Exception e){
+        catch (IOException | InvalidMinionTypeException | InvalidSpellNameException | InvalidDefenseTypeException | InvalidEffectException | InvalidModuleEnumException e){
             System.out.printf("Set up went wrong: " + e.toString());
         }
     }
@@ -175,10 +196,13 @@ public class DefenseTest {
 
     /**
      * Test of upgrade method, of class Defense.
+     * @throws hackattackfx.exceptions.NoUpgradeAllowedException
      */
     @Test
-    public void testUpgrade() throws Exception {
-
+    public void testUpgrade() throws NoUpgradeAllowedException {
+        defense.upgrade();
+        defenseLv2.upgrade();
+        defenseLv3.upgrade();
     }
 
     /**
@@ -186,7 +210,7 @@ public class DefenseTest {
      */
     @Test
     public void testFindTarget() {
-
+        
     }
 
     /**
@@ -194,7 +218,13 @@ public class DefenseTest {
      */
     @Test
     public void testTargetInRange() {
+        //In range
+        minionTarget.setPosition(point1);
+        assertTrue(defense.targetInRange(minionTarget));
         
+        //Out of range
+        minionTarget.setPosition(point2);
+        assertFalse(defense.targetInRange(minionTarget));
     }
 
     /**
@@ -219,7 +249,7 @@ public class DefenseTest {
        defense.setDamage(1);
        minionTarget.setHealth(100);
        defense.fire(minionTarget);
-       assertEquals("Fire didn't do one damage", 99, minionTarget.getHealth());
+       assertEquals("Fire didn't do one damage", 99, minionTarget.getHealth(), 0);
        
        defense.setDamage(100);
        minionTarget.setHealth(1);
