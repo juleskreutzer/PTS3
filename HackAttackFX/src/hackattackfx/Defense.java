@@ -374,7 +374,7 @@ public class Defense extends Module {
      * @return True if the given minion is in range.
      */
     public boolean targetInRange(Minion m){
-        int distance = (int)Math.sqrt((position.x-m.getPosition().x)*(position.x-m.getPosition().x) + (position.y-m.getPosition().y)*(position.y-m.getPosition().y));
+        //return true if the square root of range is bigger than (minion and tower variables used) -> Delta X^2 + Delta Y^2 (Pythagoras).
         return range >= (int)Math.sqrt((position.x-m.getPosition().x)*(position.x-m.getPosition().x) + (position.y-m.getPosition().y)*(position.y-m.getPosition().y));
     }
     

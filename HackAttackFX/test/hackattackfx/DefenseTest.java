@@ -194,7 +194,7 @@ public class DefenseTest {
      */
     @Test
     public void testTargetInRange() {
-
+        
     }
 
     /**
@@ -202,7 +202,13 @@ public class DefenseTest {
      */
     @Test
     public void testHasTarget() {
-
+        //Has target
+        defense.setTarget(minionTarget);
+        assertTrue(defense.hasTarget());
+        
+        //No target
+        defense.setTarget(null);
+        assertFalse(defense.hasTarget());
     }
 
     /**
@@ -218,7 +224,9 @@ public class DefenseTest {
        defense.setDamage(100);
        minionTarget.setHealth(1);
        defense.fire(minionTarget);
-       assertEquals("Fire didn't kill the minion", 99, minionTarget.getHealth());
+       boolean failed = false;
+       if (minionTarget.getHealth() > 0) failed = true;
+       assertFalse("Fire didn't kill the minion", failed);
         
     }
     
