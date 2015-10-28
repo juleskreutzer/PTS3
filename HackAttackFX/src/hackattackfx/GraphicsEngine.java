@@ -203,8 +203,11 @@ public class GraphicsEngine{
             
             Rectangle r = new Rectangle();
             
-            r.setX(image.getX());
-            r.setY(image.getY() - (image.getImage().getHeight() / 2));
+            r.setFill(Color.BLUE);
+            r.setX(((Path)image.getReference()).getStart().getX());
+            r.setY(((Path)image.getReference()).getStart().getY());
+            r.setHeight(image.getImage().getHeight());
+            r.setWidth(image.getImage().getWidth());
             
             parent.addNode(r);
         }
