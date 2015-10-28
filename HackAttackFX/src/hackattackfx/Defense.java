@@ -201,6 +201,14 @@ public class Defense extends Module {
         }
     }
     
+    public void setTarget(Minion target){
+        this.target = target;
+    }
+    
+    public Minion getTarget(){
+        return target;
+    }
+    
     /**
      * Upgrades this module
      * @return Whether the module was successfully upgraded.
