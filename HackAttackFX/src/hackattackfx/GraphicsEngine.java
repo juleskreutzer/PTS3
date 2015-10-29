@@ -122,13 +122,12 @@ public class GraphicsEngine{
         }
         
         if(object instanceof Minion){
-            parent.addNode(new MinionImage((Minion)object));
+            Minion m = (Minion)object;
+            MinionImage mi = new MinionImage(m);
+            parent.addNode(mi);
+            parent.addNode(mi.getHealthBar());
         }else if(object instanceof Module){
-            Rectangle r = new Rectangle();
             Module m = (Module) object;
-            r.setX(m.getPosition().getX() - (m.getWidth()/2));
-            r.setY(m.getPosition().getY() - (m.getHeight()/2));
-            parent.addNode(r);
             parent.addNode(new ModuleImage((Module)object));
         }else if(object instanceof Spell){
             parent.addNode(new SpellImage((Spell)object));
@@ -162,15 +161,21 @@ public class GraphicsEngine{
                 for(Node n : nodes){
                     if(n instanceof MinionImage){
                         MinionImage mi = (MinionImage)n;
+                        Rectangle hb = mi.getHealthBar();
                         Minion m = ((MinionImage)n).getMinion();
                         
                         if (m.getHealth() > 0){
                             mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
                             mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
+                            hb.setX(mi.getX());
+                            hb.setY(mi.getY()+mi.getImage().getHeight());
+                            hb.setWidth((mi.getImage().getWidth()/100) * m.getHealth());
+                            
                         }
                         else{
                             try {
                                 deSpawn(n);
+                                deSpawn(hb);
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
                             }

@@ -12,8 +12,9 @@ import hackattackfx.enums.ModuleName;
 import hackattackfx.exceptions.*;
 import java.awt.Point;
 import hackattackfx.templates.*;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -209,10 +210,17 @@ public class Defense extends Module {
         return target;
     }
     
+    /**
+     * Sets the last time this module attacked
+     * @param lastAttack The time in milliseconds at the moment this module fired
+     */
     public void setLastAttack(long lastAttack){
         this.lastAttack = lastAttack;
     }
     
+    /**
+     * The last moment this module attacked in milliseconds
+     */
     public long getLastAttack(){
         return lastAttack;
     }
@@ -357,13 +365,18 @@ public class Defense extends Module {
      * @return The enemy minion that's targeted. If no minion is found, return null
      */
     public Minion findTarget(){
+        ArrayList<Minion> inrange = new ArrayList<Minion>();
         GameEngine engine = GameEngine.getInstance();
-        Iterator<Minion> minions = engine.getActiveWave().minions();
-        while(minions.hasNext()){
-            Minion m = minions.next();
+        ArrayList<Minion> minions = engine.getActiveWave().minionsAsList();
+        for(Minion m : minions){
             if(targetInRange(m)){
-                return m;
+                inrange.add(m);
             }
+        }
+        Random random = new Random();
+        if(inrange.size()>0){
+            Minion m = inrange.get(random.nextInt(inrange.size()));
+            return m;
         }
         return null;
     }
@@ -394,7 +407,7 @@ public class Defense extends Module {
     public void fire(Minion minion){
         System.out.println(this.toString() + " is attacking " + minion.toString());
         minion.receiveDamage(damage);
-        if(minion.getHealth() <= 0){
+        if(!targetInRange(minion)||minion.getHealth() <= 0){
             target = null;
         }
     }

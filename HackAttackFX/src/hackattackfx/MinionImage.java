@@ -5,14 +5,11 @@
  */
 package hackattackfx;
 
-import hackattackfx.enums.MinionType;
-import java.awt.Graphics;
 import javafx.scene.image.Image;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import hackattackfx.exceptions.*;
 import java.io.File;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -21,6 +18,7 @@ import javafx.scene.image.ImageView;
 public class MinionImage extends ObjectImage {
 
     private Minion minion;
+    private Rectangle healthBar;
     
     public MinionImage(Minion m){
         super(m);
@@ -52,10 +50,23 @@ public class MinionImage extends ObjectImage {
         setX(minion.getPosition().x);
         setY(minion.getPosition().y);
         this.setImage(image);
+        
+        // Initialize healthbar
+        healthBar = new Rectangle();
+        healthBar.setWidth((this.getImage().getWidth()/100)*minion.getHealth());
+        healthBar.setHeight(5);
+        healthBar.setX(this.getX());
+        healthBar.setY(this.getY() + this.getImage().getHeight());
+        healthBar.setFill(Color.RED);
+        
     }
     
     public Minion getMinion(){
         return minion;
+    }
+    
+    public Rectangle getHealthBar(){
+        return healthBar;
     }
     
 }

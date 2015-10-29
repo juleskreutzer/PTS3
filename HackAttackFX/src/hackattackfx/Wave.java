@@ -153,6 +153,10 @@ public class Wave {
         return minionList.iterator();
     }
     
+    public ArrayList<Minion> minionsAsList(){
+        return minionList;
+    }
+    
     /**
      * If the given minion is in the current wave, it gets removed and true is returned.
      * If the given minion isn't in the current wave, false is returned.
