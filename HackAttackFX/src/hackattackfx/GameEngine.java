@@ -111,11 +111,11 @@ public class GameEngine extends Thread implements MouseListener {
                     ModuleImage mi = (ModuleImage) n;
                     if(mi.getX() < p.getX() && mi.getY() < p.getY() && mi.getX() +  mi.getImage().getWidth() > p.getX() && mi.getY() + mi.getImage().getHeight() > p.getY())
                     {
-                        return true;
+                        throw new LocationUnavailableException("You cannot place your object here.");
                     }
                     else
                     {
-                        throw new LocationUnavailableException("You cannot place your object here.");
+                        return false;
                     }
                 }
                 else if(n instanceof PathImage)
@@ -319,10 +319,15 @@ public class GameEngine extends Thread implements MouseListener {
                             Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50));
                             
                             try {
-                                graphicsEngine.spawn(defense);
-                                graphicsEngine.deSpawn(st);
+                                if(isPointInNode(position))
+                                {
+                                    graphicsEngine.spawn(defense);
+                                    graphicsEngine.deSpawn(st);
+                                }
                             } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (LocationUnavailableException ex) {
+                                graphicsEngine.showError(ex.getMessage());
                             }
                             
                             defense.activate();

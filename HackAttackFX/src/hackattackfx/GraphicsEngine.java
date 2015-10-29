@@ -56,9 +56,9 @@ public class GraphicsEngine{
         errorImage = (ImageView)parent.getNode("errorImage");
         File file = new File("src/hackattackfx/resources/error.png");
         Image image = new Image(file.toURI().toString());
-        System.out.print(file.toURI().toString());
         errorImage.setImage(image);
         errorImage.setVisible(false);
+        errorLabel.setVisible(false);
 
         initialize();
         
@@ -307,15 +307,34 @@ public class GraphicsEngine{
         });
         
     }
+
     
+    /**
+     * Display an error message for the user. First show the error image and error label, than, after 5 seconds, make them magicaly disappear
+     * @param message Error message to be shown
+     */
     public void showError(String message)
     {
+        Timer timer = new Timer();
+        
+        
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
                 errorImage.setVisible(true);
                 errorLabel.setText(String.format("%s", message));
+                errorLabel.setVisible(true);
             }
         });
+        
+        timer.scheduleAtFixedRate(new TimerTask(){
+
+            @Override
+            public void run() {
+                errorImage.setVisible(false);
+                errorLabel.setVisible(false);
+            }
+            
+        }, 0 , 5000);
     }
 }
