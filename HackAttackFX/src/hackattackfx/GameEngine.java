@@ -111,11 +111,11 @@ public class GameEngine extends Thread implements MouseListener {
                     ModuleImage mi = (ModuleImage) n;
                     if(mi.getX() < p.getX() && mi.getY() < p.getY() && mi.getX() +  mi.getImage().getWidth() > p.getX() && mi.getY() + mi.getImage().getHeight() > p.getY())
                     {
-                        throw new LocationUnavailableException("You cannot place your object here.");
+                        return false;
                     }
                     else
                     {
-                        return false;
+                        throw new LocationUnavailableException("You cannot place your object here.");
                     }
                 }
                 else if(n instanceof PathImage)
@@ -123,12 +123,16 @@ public class GameEngine extends Thread implements MouseListener {
                     PathImage pi = (PathImage) n;
                     if(pi.getX() < p.getX() && pi.getY() < p.getY() && pi.getX() + pi.getImage().getWidth() > p.getX() && pi.getY() + pi.getImage().getHeight() > p.getY())
                     {
-                        return true;
+                        return false;
                     }
                     else
                     {
                         throw new LocationUnavailableException("You cannot place your object here.");
                     }
+                }
+                else
+                {
+                    return false;
                 }
             }
             return false;
@@ -175,7 +179,7 @@ public class GameEngine extends Thread implements MouseListener {
                             Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
                             
                             try {
-                                if(isPointInNode(position))
+                                if(!isPointInNode(position))
                                 {
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
@@ -223,7 +227,7 @@ public class GameEngine extends Thread implements MouseListener {
                             Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50));
                             
                             try {
-                                if(isPointInNode(position))
+                                if(!isPointInNode(position))
                                 {
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
@@ -271,7 +275,7 @@ public class GameEngine extends Thread implements MouseListener {
                             Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50));
                             
                             try {
-                                if(isPointInNode(position))
+                                if(!isPointInNode(position))
                                 {
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
@@ -319,7 +323,7 @@ public class GameEngine extends Thread implements MouseListener {
                             Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50));
                             
                             try {
-                                if(isPointInNode(position))
+                                if(!isPointInNode(position))
                                 {
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
