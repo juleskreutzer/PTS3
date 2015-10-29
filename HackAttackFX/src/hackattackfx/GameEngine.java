@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javax.swing.JOptionPane;
 
@@ -118,9 +119,21 @@ public class GameEngine extends Thread implements MouseListener {
                     // Create switch (direction)
                     PathImage pi = (PathImage) n;
                     Path pt = (Path) pi.getReference();
+                    switch(pt.getDirection())
+                    {
+                        case Up:
+                            break;
+                        case Down:
+                            break;
+                        case Left:
+                            return(pt.getEnd().getX() < x && x < pt.getStart().getX() && pt.getEnd().getY() > y && y < (pt.getEnd().getY() + pi.getImage().getHeight()));
+                        case Right:
+                            return(pt.getStart().getX() < x && x < pt.getEnd().getX() && pt.getStart().getY() < y && y < (pt.getStart().getY() + pi.getImage().getHeight()));
+                        default:
+                            throw new IllegalArgumentException("Direction is not recognized");
+                    }
                     int length = pt.getLength();
-                    // Doesn't work
-                    if(x > pi.getX() && x < (pi.getX() + length) && (x + width) > pi.getX() && (x+width) < (pi.getX() + length));
+                    if(x > pi.getX() && x < (pi.getX() + length) && (x + width) > pi.getX() && (x+width) < (pi.getX() + length))
                     //return (pi.getX() < p.getX() && pi.getY() < p.getY() && pi.getX() + pi.getImage().getWidth() > p.getX() && pi.getY() + pi.getImage().getHeight() > p.getY());
                     return false;
                 }
@@ -169,7 +182,7 @@ public class GameEngine extends Thread implements MouseListener {
                                 int y = (int)st.getY();
                                 
                                 
-                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                if(isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                 {
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
