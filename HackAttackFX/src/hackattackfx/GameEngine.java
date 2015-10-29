@@ -10,6 +10,7 @@ import hackattackfx.exceptions.*;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -59,6 +60,7 @@ public class GameEngine extends Thread implements MouseListener {
     private Map map;
     private ArrayList<Wave> waveList;
     private Wave currentWave;
+    private int waveNumber;
     private Player playerA;
     private Player playerB;
     
@@ -94,6 +96,7 @@ public class GameEngine extends Thread implements MouseListener {
         playerA = new Player(100, "Jasper", 100, new Point(0,50));
         playerB = new Player(100, "Jules", 100, new Point(100,50));
         gameRunning = false;
+        waveNumber = 0;
         preStart();
         startGame();
     }
@@ -342,12 +345,17 @@ public class GameEngine extends Thread implements MouseListener {
      * Starts the game. From this point, the initial wave will be created and the game will run from this point on.
      */
     private void startGame(){
-        gameRunning = true;
-        Wave wave = new Wave(1,1,playerA,10,0,0,0,0,0);
-        waveList.add(wave);
-        currentWave = wave;
-        
-        wave.startWave();
+        gameRunning = true;        
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask(){
+            @Override
+            public void run() {
+             Wave w = generateNextWave();
+             waveList.add(w);
+             currentWave = w;
+             w.startWave();
+            }
+        }, 0, 30000);
         
     }
     
@@ -373,6 +381,64 @@ public class GameEngine extends Thread implements MouseListener {
     
     public Wave getActiveWave(){
         return currentWave;
+    }
+    
+    private Wave generateNextWave(){
+        // calculates how strong this wave should be and ups  waveNumber by one
+        int waveStrongness = 5 + (int)(0.5 * ++waveNumber * waveNumber);
+        int bytes = 0;
+        int kiloBytes = 0;
+        int megaBytes = 0;
+        int gigaBytes = 0;
+        int teraBytes = 0;
+        int petaBytes = 0;
+        Random r = new Random();
+        while(waveStrongness  > 100) {
+            if (r.nextDouble() > 0.5) {
+                ++petaBytes;
+                waveStrongness -= 32;
+            } else {
+                ++teraBytes;
+                waveStrongness -= 16;
+            }
+        }
+        while(waveStrongness  > 50) {
+            if (r.nextDouble() > 0.5) {
+                ++teraBytes;
+                waveStrongness -= 16;
+            } else {
+                ++gigaBytes;
+                waveStrongness -= 8;
+            }
+        }
+        while(waveStrongness  > 25) {
+            if (r.nextDouble() > 0.5) {
+                ++gigaBytes;
+                waveStrongness -= 8;
+            } else {
+                ++megaBytes;
+                waveStrongness -= 4;
+            }
+        }
+        while(waveStrongness  > 10) {
+            if (r.nextDouble() > 0.25) {
+                ++megaBytes;
+                waveStrongness -= 4;
+            } else {
+                ++kiloBytes;
+                waveStrongness -= 2;
+            }
+        }
+        while(waveStrongness  > 5) {
+                ++kiloBytes;
+                waveStrongness -= 2;
+        }
+        while (waveStrongness > 0) {
+            ++bytes;
+            waveStrongness -= 1;
+        }
+        System.err.println(bytes + " : " + kiloBytes + " : " +megaBytes + " : " +gigaBytes + " : " + teraBytes + " : " + petaBytes);
+        return new Wave(waveNumber,1 + 0.1*waveNumber,playerA,bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);
     }
     
     public void setOnTickListener(OnExecuteTick callback){
