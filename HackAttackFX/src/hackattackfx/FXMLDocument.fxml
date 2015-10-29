@@ -32,7 +32,7 @@
         <Image backgroundLoading="false" url="hackattackfx/resources/interface/module/500x500/muscle_module.png" />
       </image>
     </ImageView>
-      <Label id="errorLabel" fx:id="errorLabel" layoutX="58.0" layoutY="27.0" prefHeight="17.0" prefWidth="752.0" text="Label" textFill="RED" />
+      <Label id="errorLabel" fx:id="errorLabel" layoutX="58.0" layoutY="27.0" prefHeight="17.0" prefWidth="752.0" text="Error Label" textFill="RED" />
       <ImageView id="errorImage" fx:id="errorImage" fitHeight="25.0" fitWidth="25.0" layoutX="26.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="hackattackfx/resources/error.png" />

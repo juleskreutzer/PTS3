@@ -10,6 +10,8 @@ import java.util.List;
 import hackattackfx.exceptions.*;
 import java.io.File;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -57,7 +59,7 @@ public class GraphicsEngine{
         System.out.print(file.toURI().toString());
         errorImage.setImage(image);
         errorImage.setVisible(false);
-        showError("Test Message");
+
         initialize();
         
     }
@@ -309,14 +311,11 @@ public class GraphicsEngine{
     public void showError(String message)
     {
         Platform.runLater(new Runnable(){
-
             @Override
             public void run() {
                 errorImage.setVisible(true);
                 errorLabel.setText(String.format("%s", message));
             }
-            
         });
     }
-    
 }
