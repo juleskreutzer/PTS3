@@ -524,6 +524,8 @@ public class GameEngine extends Thread implements MouseListener {
         String name = playerA.getName();
         double health = playerA.getHealth();
         double coins = playerA.getBitcoins();
+        if(health < 0)
+            graphicsEngine.showEndGame(name);
         graphicsEngine.drawLabels(name, health, coins);
     }
     

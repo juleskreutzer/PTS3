@@ -43,6 +43,7 @@ public class GraphicsEngine{
     private Label lblPlayerHealth;
     private Label lblPlayerBitcoins;
     private Label errorLabel;
+    private Label lostLabel;
     
     private ImageView errorImage;
     
@@ -53,13 +54,15 @@ public class GraphicsEngine{
         lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth");
         lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins");
         errorLabel = (Label)parent.getNode("errorLabel");
+        lostLabel = (Label)parent.getNode("lostLabel");
         errorImage = (ImageView)parent.getNode("errorImage");
         File file = new File("src/hackattackfx/resources/error.png");
         Image image = new Image(file.toURI().toString());
         errorImage.setImage(image);
         errorImage.setVisible(false);
         errorLabel.setVisible(false);
-
+        lostLabel.setVisible(false);
+        
         initialize();
         
     }
@@ -311,6 +314,19 @@ public class GraphicsEngine{
             }
         });
         
+    }
+    
+    public void showEndGame(String name)
+    {
+        Platform.runLater(new Runnable(){
+
+            @Override
+            public void run() {
+                lostLabel.setText(String.format("You lost, %s", name));
+                lostLabel.setVisible(true);
+            }
+            
+        });
     }
 
     
