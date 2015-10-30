@@ -36,6 +36,7 @@ public class SoftwareInjector extends Module {
         {
             throw new InvalidModuleEnumException();
         }
+        spells = new ArrayList<>();
     }
     
     /**
@@ -55,6 +56,7 @@ public class SoftwareInjector extends Module {
             this.moduleName = sit.getModuleName();
             
             // At the first upgrade, make 2 defense and 1 attack spell available
+           
             spells.add(new Spell(Data.DEFAULT_SPELL_CORRUPT));
             spells.add(new Spell(Data.DEFAULT_SPELL_LOCKDOWN));
             spells.add(new Spell(Data.DEFAULT_SPELL_FIREWALL));
