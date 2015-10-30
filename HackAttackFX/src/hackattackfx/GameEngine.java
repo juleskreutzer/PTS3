@@ -165,7 +165,7 @@ public class GameEngine extends Thread implements MouseListener {
                                 
                                 
                                 if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
-                                {
+                                {   
                                     defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
@@ -176,10 +176,11 @@ public class GameEngine extends Thread implements MouseListener {
                                 }
                             } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            
+                            } catch (NotEnoughBitcoinsException ex) {
+                                graphicsEngine.showError(ex.getMessage());
+                            } 
                             if (defense != null) defense.activate();
-                        } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
+                        } catch (InvalidModuleEnumException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -227,12 +228,14 @@ public class GameEngine extends Thread implements MouseListener {
                                 }
                             } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            } 
                             
                             defense.activate();
                             
-                        } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
+                        } catch (InvalidModuleEnumException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (NotEnoughBitcoinsException ex) {
+                            graphicsEngine.showError(ex.getMessage());
                         }
                     }
                 
@@ -285,8 +288,11 @@ public class GameEngine extends Thread implements MouseListener {
                             
                             defense.activate();
                             
-                        } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
+                        } catch (InvalidModuleEnumException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (NotEnoughBitcoinsException ex)
+                        {
+                            graphicsEngine.showError(ex.getMessage());
                         }
                     }
                 
@@ -338,8 +344,11 @@ public class GameEngine extends Thread implements MouseListener {
                             
                             defense.activate();
                             
-                        } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
+                        } catch (InvalidModuleEnumException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (NotEnoughBitcoinsException ex)
+                        {
+                            graphicsEngine.showError(ex.getMessage());
                         }
                     }
                 
