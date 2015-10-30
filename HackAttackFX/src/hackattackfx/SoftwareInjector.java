@@ -58,7 +58,7 @@ public class SoftwareInjector extends Module {
             spells.add(new Spell(Data.DEFAULT_SPELL_CORRUPT));
             spells.add(new Spell(Data.DEFAULT_SPELL_LOCKDOWN));
             spells.add(new Spell(Data.DEFAULT_SPELL_FIREWALL));
-            
+
             return true;
         }
         else if(this.level == 2)

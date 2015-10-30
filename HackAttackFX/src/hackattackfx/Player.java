@@ -242,7 +242,10 @@ public class Player {
     public void removeBitcoins(double amount) throws NotEnoughBitcoinsException{
         if (amount < 0) throw new IllegalArgumentException("Amount may not be less than 0");
         
-        if (!this.CheckCostToBuildOrUpgrade(amount)) throw new NotEnoughBitcoinsException("Amount may not be more than the total bitcoins for this player.");
+        if (amount > this.getBitcoins())
+        {
+            throw new NotEnoughBitcoinsException ("Not enough bitcoins");
+        } 
         
         this.bitcoins -= amount;
     }

@@ -86,7 +86,7 @@ public class PlayerTest {
         
         player1 = new Player(100, "player1", 999999, point1);
         player2 = new Player(1, "player2", 0, point2);
-        playerWithMoney = new Player(1, "playerWithMoney", 999999, point4);
+        playerWithMoney = new Player(1, "playerWithMoney", 9999, point4);
         
         try {
             bitcoinMiner = new BitcoinMiner(bitcoinTemplate, point3, 50, 50);
@@ -308,7 +308,7 @@ public class PlayerTest {
          
          //Check if playerWithMoney has the bitcoinminr module.
          modules = playerWithMoney.getModules();
-         assertEquals(modules.get(0).getModuleName(), softwareInjector.moduleName);
+        assertEquals(modules.get(0).getModuleName(), softwareInjector.moduleName);
     }
 
     /**
