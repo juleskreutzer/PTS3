@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -76,7 +77,6 @@ public class GameEngine extends Thread implements MouseListener {
     
     private SpawnTargetImage st = null;
 
-    
     private GameEngine(){
         instance = this;
         initialize();
@@ -102,47 +102,30 @@ public class GameEngine extends Thread implements MouseListener {
         startGame();
     }
     
-    
-    private boolean isPointInNode(int x, int y, int width, int height)
-    {
+    /**
+     * Calculates if there is an existing node in the given square
+     * @param x the x-location of the left upper corner
+     * @param y the y-location of the left upper corner
+     * @param width the width of the square
+     * @param height the height of the square
+     * @return whether or not the given square is overlapping an existing node
+     */
+    private boolean isPointInNode(int x, int y, int width, int height) {
             ObservableList<Node> nodes = graphicsEngine.getNodes();
-
             for(Node n : nodes)
             {
-                if(n instanceof ModuleImage)
+                if(n instanceof ModuleImage || n instanceof PathImage || n instanceof ImageView)
                 {
-                    Point p = new Point(x,y);
-                    ModuleImage mi = (ModuleImage) n;
-                    return (mi.getX() > p.getX() && mi.getX() < (p.getX() + width) && mi.getY() > p.getY() && mi.getY() < (p.getY() + height));
-                    //return (mi.getX() > p.getX() && mi.getY() < p.getY() && mi.getX() +  mi.getImage().getWidth() > p.getX() && mi.getY() + mi.getImage().getHeight() > p.getY());
-                    
+                    Point2D p1 = new Point2D(x, y);
+                    Point2D p2 = new Point2D(x, y + height);
+                    Point2D p3 = new Point2D(x + width, y);
+                    Point2D p4 = new Point2D(x + width, y + height);
+                    Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height);
+                    boolean b = n.contains(p1) || n.contains(p2) || n.contains(p3) || n.contains(p4) || n.contains(p5);
+                    if (b) return true;
                 }
-                else if(n instanceof PathImage)
-                {
-                    // Create switch (direction)
-                    PathImage pi = (PathImage) n;
-                    Path pt = (Path) pi.getReference();
-                    switch(pt.getDirection())
-                    {
-                        case Up:
-                            break;
-                        case Down:
-                            break;
-                        case Left:
-                            return(pt.getEnd().getX() < x && x < pt.getStart().getX() && pt.getEnd().getY() > y && y < (pt.getEnd().getY() + pi.getImage().getHeight()));
-                        case Right:
-                            return(pt.getStart().getX() < x && x < pt.getEnd().getX() && pt.getStart().getY() < y && y < (pt.getStart().getY() + pi.getImage().getHeight()));
-                        default:
-                            throw new IllegalArgumentException("Direction is not recognized");
-                    }
-                    int length = pt.getLength();
-                    if(x > pi.getX() && x < (pi.getX() + length) && (x + width) > pi.getX() && (x+width) < (pi.getX() + length))
-                    //return (pi.getX() < p.getX() && pi.getY() < p.getY() && pi.getX() + pi.getImage().getWidth() > p.getX() && pi.getY() + pi.getImage().getHeight() > p.getY());
-                    return false;
-                }
-                
             }
-        return false;
+            return false;
     }
     
     /**
@@ -150,8 +133,6 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void preStart(){
         graphicsEngine.drawRoad(map.getRoad());
-        
-        
         
         // Initialize all GUI buttons
         ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV");
@@ -167,7 +148,6 @@ public class GameEngine extends Thread implements MouseListener {
                     public void handle(javafx.scene.input.MouseEvent event) {
                         st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
                         st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
-
                     }
                 });
                 // Set a listener for a second click to occur
@@ -178,15 +158,15 @@ public class GameEngine extends Thread implements MouseListener {
                         
                         Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                         try {
-                            Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
-                            
+                                Defense defense = null;
                             try {
                                 int x = (int)st.getX();
                                 int y = (int)st.getY();
                                 
                                 
-                                if(isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                 {
+                                    defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
                                 }
@@ -198,13 +178,11 @@ public class GameEngine extends Thread implements MouseListener {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
-                            defense.activate();
-                            
+                            if (defense != null) defense.activate();
                         } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                
                 });
             }
             
@@ -467,7 +445,7 @@ public class GameEngine extends Thread implements MouseListener {
             ++bytes;
             waveStrongness -= 1;
         }
-        System.err.println(bytes + " : " + kiloBytes + " : " +megaBytes + " : " +gigaBytes + " : " + teraBytes + " : " + petaBytes);
+        System.err.println(bytes + " : " + kiloBytes + " : " +megaBytes + " : " +gigaBytes + " : " + teraBytes + " : " + petaBytes); // for logging purpose
         return new Wave(waveNumber,1 + 0.1*waveNumber,playerA,bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);
     }
     
