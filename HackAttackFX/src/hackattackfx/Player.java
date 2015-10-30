@@ -89,7 +89,6 @@ public class Player {
      * @return The newly created {@link BitcoinMiner}
      */
     public BitcoinMiner buildBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException{
-        modules.add(miner);
         try{
             miner.setOnMineListener(new OnMineComplete() {
 
@@ -100,6 +99,7 @@ public class Player {
 
                 }
             });
+            modules.add(miner);
             this.removeBitcoins(miner.getCost());
         }
         catch(DuplicateListenerException ex)

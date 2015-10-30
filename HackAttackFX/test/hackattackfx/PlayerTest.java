@@ -5,7 +5,6 @@
  */
 package hackattackfx;
 
-import hackattackfx.enums.Effect;
 import hackattackfx.exceptions.InvalidDefenseTypeException;
 import hackattackfx.exceptions.InvalidEffectException;
 import hackattackfx.exceptions.InvalidMinionTypeException;
@@ -85,7 +84,7 @@ public class PlayerTest {
         point6 = new Point(600, 600);
         
         player1 = new Player(100, "player1", 999999, point1);
-        player2 = new Player(1, "player2", 1, point2);
+        player2 = new Player(1, "player2", 0, point2);
         playerWithMoney = new Player(1, "playerWithMoney", 999999, point4);
         
         try {
@@ -93,7 +92,8 @@ public class PlayerTest {
             cpuUpgrade = new CPUUpgrade(cpuUpgradeTemplate, point4, 50, 50);
             softwareInjector = new SoftwareInjector(softwareInjectorTemplate, point5, 50, 50);
             player1.buildBitcoinMiner(bitcoinMiner);
-            player2.buildCPUUpgrade(cpuUpgrade);
+            player1.buildCPUUpgrade(cpuUpgrade);
+            player1.buildSoftwareInjector(softwareInjector);
         } catch (InvalidModuleEnumException | NotEnoughBitcoinsException ex) {
             Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Setup went wrong!");
@@ -108,7 +108,9 @@ public class PlayerTest {
      * Test of buildBitcoinMiner method, of class Player.
      */
     @Test
-    public void testBuildBitcoinMiner(){       
+    public void testBuildBitcoinMiner(){
+        List<Module> modules;
+        modules = player2.getModules();
         //This player has no bitcoins and cannot build.
         try {
             player2.buildBitcoinMiner(bitcoinMiner);
@@ -122,13 +124,10 @@ public class PlayerTest {
         } catch (NotEnoughBitcoinsException ex) {
             Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        //Create a list
-         List<Module> modules;
          
          //Check if player2 has no modules
          modules = player2.getModules();
-         assertTrue(modules.isEmpty());
+         assertEquals(0, player2.getModules().size());
          
          //Check if playerWithMoney has the bitcoinminr module.
          modules = playerWithMoney.getModules();
@@ -189,8 +188,7 @@ public class PlayerTest {
          List<Module> modules;
          
          //Check if player2 has no modules
-         modules = player2.getModules();
-         assertTrue(modules.isEmpty());
+         assertEquals(0, player2.getModules().size());
          
          //Check if playerWithMoney has the CPUUpgrade module.
          modules = playerWithMoney.getModules();
@@ -262,11 +260,11 @@ public class PlayerTest {
     @Test
     public void testSetGetBitcoins() {
        //Test getBitcoins
-        assertEquals("getBitcoins error.", 0, player2.getBitcoins());
+        assertEquals("getBitcoins error.", 0, player2.getBitcoins(), 0);
         
         //Test setBitcoins
         player1.setBitcoins(100);
-        assertEquals("setBitcoins error.", 100, player1.getBitcoins());
+        assertEquals("setBitcoins error.", 100, player1.getBitcoins(), 0);
     }
 
     /**
@@ -292,8 +290,7 @@ public class PlayerTest {
          List<Module> modules;
          
          //Check if player2 has no modules
-         modules = player2.getModules();
-         assertTrue(modules.isEmpty());
+        assertEquals(0, player2.getModules().size());
          
          //Check if playerWithMoney has the bitcoinminr module.
          modules = playerWithMoney.getModules();
@@ -309,7 +306,7 @@ public class PlayerTest {
         
         //Can upgrade
         modules = player1.getModules();
-        SoftwareInjector softwareInjector1 = (SoftwareInjector) modules.get(0);
+        SoftwareInjector softwareInjector1 = (SoftwareInjector) modules.get(1);
         player1.upgradeSoftwareInjector(softwareInjector1);
         
         assertEquals("Levels aren't equal", softwareInjector.getLevel(), 2);
@@ -336,7 +333,7 @@ public class PlayerTest {
     @Test
     public void testReceiveDamage() {
         player1.receiveDamage(10);
-        assertEquals("recieveDamage error", 90, player1.getHealth());
+        assertEquals("recieveDamage error", 90, player1.getHealth(), 0);
     }
 
     /**
@@ -365,8 +362,8 @@ public class PlayerTest {
      */
     @Test
     public void testGetModules() {
-        assertNull(player2.getModules());
-        assertEquals(player1.getModules().size(), 2);
+        assertEquals(0, player2.getModules().size());
+        assertEquals(2, player1.getModules().size(), 3);
     }
 
     /**
@@ -375,7 +372,7 @@ public class PlayerTest {
     @Test
     public void testRemoveBitcoins() throws Exception {
         player2.removeBitcoins(1);
-        assertEquals("error removeBitcoins", 0, player2.getBitcoins());
+        assertEquals("error removeBitcoins", 0, player2.getBitcoins(), 0);
     }
 
     /**

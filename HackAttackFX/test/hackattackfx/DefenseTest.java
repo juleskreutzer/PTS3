@@ -34,6 +34,7 @@ import static org.junit.Assert.*;
  */
 public class DefenseTest {
     Data data;
+    Player enemyPlayer;
     DefenseTemplate defenseTemplate;
     DefenseTemplate defenseTemplateLv2;
     DefenseTemplate defenseTemplateLv3;
@@ -66,11 +67,12 @@ public class DefenseTest {
                     }
                 });
             
+        enemyPlayer = new Player();
         defenseTemplate = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
         defenseTemplateLv2 = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_2;
         defenseTemplateLv3 = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_3;
         minionTemplate = Data.DEFAULT_BYTE;
-        minionTarget = new Minion(minionTemplate, 0);
+        minionTarget = new Minion(minionTemplate, 0, enemyPlayer);
         point1 = new Point(100, 100);
         point2 = new Point(999, 999);
         defense = new Defense(defenseTemplate, point1, 50, 50);
