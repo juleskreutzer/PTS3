@@ -114,13 +114,13 @@ public class GameEngine extends Thread implements MouseListener {
             ObservableList<Node> nodes = graphicsEngine.getNodes();
             for(Node n : nodes)
             {
-                if(n instanceof ModuleImage || n instanceof PathImage || n instanceof ImageView)
+                if(n instanceof ModuleImage || n instanceof PathImage)
                 {
-                    Point2D p1 = new Point2D(x, y);
-                    Point2D p2 = new Point2D(x, y + height);
-                    Point2D p3 = new Point2D(x + width, y);
-                    Point2D p4 = new Point2D(x + width, y + height);
-                    Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height);
+                    Point2D p1 = new Point2D(x, y); // left upper corner
+                    Point2D p2 = new Point2D(x, y + height); // left bottom corner
+                    Point2D p3 = new Point2D(x + width, y); // right upper corner
+                    Point2D p4 = new Point2D(x + width, y + height); // right bottom corner
+                    Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height); // the middle
                     boolean b = n.contains(p1) || n.contains(p2) || n.contains(p3) || n.contains(p4) || n.contains(p5);
                     if (b) return true;
                 }
