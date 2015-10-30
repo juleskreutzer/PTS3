@@ -71,10 +71,17 @@ public class Player {
      * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
      * @return
      */
-    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException{
-        if(injector.upgrade()) { 
-            this.removeBitcoins(injector.getCost());
-            return true; } else { return false; }
+    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException
+    {
+        if(injector.getCost() <= this.getBitcoins())
+        {
+            if(injector.upgrade()) 
+            { 
+                this.removeBitcoins(injector.getCost());
+                return true; 
+            }
+        }
+        return false;
     }
     
     public List<Spell> getSpells(){        
@@ -89,7 +96,6 @@ public class Player {
      * @return The newly created {@link BitcoinMiner}
      */
     public BitcoinMiner buildBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException{
-        modules.add(miner);
         try{
             miner.setOnMineListener(new OnMineComplete() {
 
@@ -101,6 +107,7 @@ public class Player {
                 }
             });
             this.removeBitcoins(miner.getCost());
+            modules.add(miner);
         }
         catch(DuplicateListenerException ex)
         {
@@ -129,8 +136,8 @@ public class Player {
      * Initialize a CpuUpgrade object and add the object to the modules field
      */
     public CPUUpgrade buildCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException{
-        modules.add(cpu);
         this.removeBitcoins(cpu.getCost());
+        modules.add(cpu);
         return cpu;
     }
     
@@ -235,7 +242,14 @@ public class Player {
     public void removeBitcoins(double amount) throws NotEnoughBitcoinsException{
         if (amount < 0) throw new IllegalArgumentException("Amount may not be less than 0");
         
+
         if (!this.CheckCostToBuildOrUpgrade(amount)) throw new NotEnoughBitcoinsException("You do not have enough Bitcoins to build this module.");
+
+        if (amount > this.getBitcoins())
+        {
+            throw new NotEnoughBitcoinsException ("Not enough bitcoins");
+        } 
+
         
         this.bitcoins -= amount;
     }
