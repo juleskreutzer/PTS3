@@ -5,6 +5,7 @@
  */
 package hackattackfx;
 
+import hackattackfx.enums.ModuleName;
 import hackattackfx.exceptions.InvalidDefenseTypeException;
 import hackattackfx.exceptions.InvalidEffectException;
 import hackattackfx.exceptions.InvalidMinionTypeException;
@@ -109,8 +110,7 @@ public class PlayerTest {
      */
     @Test
     public void testBuildBitcoinMiner(){
-        List<Module> modules;
-        modules = player2.getModules();
+
         //This player has no bitcoins and cannot build.
         try {
             player2.buildBitcoinMiner(bitcoinMiner);
@@ -126,12 +126,10 @@ public class PlayerTest {
         }
          
          //Check if player2 has no modules
-         modules = player2.getModules();
          assertEquals(0, player2.getModules().size());
          
-         //Check if playerWithMoney has the bitcoinminr module.
-         modules = playerWithMoney.getModules();
-         assertEquals(modules.get(0).getModuleName(), bitcoinMiner.moduleName);
+         //Check if playerWithMoney has the bitcoinminr module.        
+         assertEquals(playerWithMoney.getModules().get(0).getModuleName().name(), bitcoinMiner.moduleName.name());
     }
 
     /**
@@ -154,13 +152,19 @@ public class PlayerTest {
      * @throws hackattackfx.exceptions.NotEnoughBitcoinsException
      */
     @Test
-    public void testUpgradeBitcoinMinerFail() throws NotEnoughBitcoinsException {
+    public void testUpgradeBitcoinMinerFail() {
         List<Module> modules;
         
         player1.setBitcoins(0);
         modules = player1.getModules();
         BitcoinMiner bitcoinMiner1 = (BitcoinMiner) modules.get(0);
-        player1.upgradeBitcoinMiner(bitcoinMiner1);
+
+        try {
+            player1.upgradeBitcoinMiner(bitcoinMiner1);
+        } catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         
         assertEquals("Levels aren't equal", 1, bitcoinMiner1.getLevel());
     }
@@ -200,13 +204,18 @@ public class PlayerTest {
      * @throws hackattackfx.exceptions.NotEnoughBitcoinsException
      */
     @Test
-    public void testUpgradeCPUUpgradeSucces() throws NotEnoughBitcoinsException {
-         List<Module> modules;
+    public void testUpgradeCPUUpgradeSucces() {
+        List<Module> modules;
         
         //Can upgrade
         modules = player1.getModules();
-        CPUUpgrade cpuUpgrade1 = (CPUUpgrade) modules.get(0);
-        player1.upgradeCPUUpgrade(cpuUpgrade1);
+        CPUUpgrade cpuUpgrade1 = (CPUUpgrade) modules.get(1);
+        
+        try {
+            player1.upgradeCPUUpgrade(cpuUpgrade1);
+        } catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         assertEquals("Levels aren't equal", cpuUpgrade.getLevel(), 2);
     }
@@ -216,13 +225,18 @@ public class PlayerTest {
      * @throws hackattackfx.exceptions.NotEnoughBitcoinsException
      */
     @Test
-    public void testUpgradeCPUUpgradeFail() throws NotEnoughBitcoinsException {
+    public void testUpgradeCPUUpgradeFail() {
         List<Module> modules;
         
         player1.setBitcoins(0);
         modules = player1.getModules();
-        CPUUpgrade cpuUpgrade1 = (CPUUpgrade) modules.get(0);
-        player1.upgradeCPUUpgrade(cpuUpgrade1);
+        CPUUpgrade cpuUpgrade1 = (CPUUpgrade) modules.get(1);
+        
+        try {
+            player1.upgradeCPUUpgrade(cpuUpgrade1);
+        } catch (NotEnoughBitcoinsException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         assertEquals("Levels aren't equal", bitcoinMiner.getLevel(), 1);
     }
@@ -301,13 +315,17 @@ public class PlayerTest {
      * Test of upgradeSoftwareInjector method, of class Player.
      */
     @Test
-    public void testUpgradeSoftwareInjectorSucces() throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
+    public void testUpgradeSoftwareInjectorSucces() {
          List<Module> modules;
         
         //Can upgrade
         modules = player1.getModules();
-        SoftwareInjector softwareInjector1 = (SoftwareInjector) modules.get(1);
-        player1.upgradeSoftwareInjector(softwareInjector1);
+        SoftwareInjector softwareInjector1 = (SoftwareInjector) modules.get(2);
+        try {
+            player1.upgradeSoftwareInjector(softwareInjector1);
+        } catch (NotEnoughBitcoinsException | NoUpgradeAllowedException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         assertEquals("Levels aren't equal", softwareInjector.getLevel(), 2);
     }
@@ -316,13 +334,18 @@ public class PlayerTest {
      * Test of upgradeSoftwareInjector method, of class Player.
      */
     @Test
-    public void testUpgradeSoftwareInjectorFail() throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
+    public void testUpgradeSoftwareInjectorFail() {
         List<Module> modules;
         
         player1.setBitcoins(0);
         modules = player1.getModules();
-        SoftwareInjector softwareInjector1 = (SoftwareInjector) modules.get(0);
-        player1.upgradeSoftwareInjector(softwareInjector1);
+        SoftwareInjector softwareInjector1 = (SoftwareInjector) modules.get(2);
+        
+        try {
+            player1.upgradeSoftwareInjector(softwareInjector1);
+        } catch (NotEnoughBitcoinsException | NoUpgradeAllowedException ex) {
+            Logger.getLogger(PlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         assertEquals("Levels aren't equal", bitcoinMiner.getLevel(), 1);
     }
@@ -371,6 +394,7 @@ public class PlayerTest {
      */
     @Test
     public void testRemoveBitcoins() throws Exception {
+        player2.setBitcoins(1);
         player2.removeBitcoins(1);
         assertEquals("error removeBitcoins", 0, player2.getBitcoins(), 0);
     }

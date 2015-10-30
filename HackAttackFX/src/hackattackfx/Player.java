@@ -71,10 +71,17 @@ public class Player {
      * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
      * @return
      */
-    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException{
-        if(injector.upgrade()) { 
-            this.removeBitcoins(injector.getCost());
-            return true; } else { return false; }
+    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException
+    {
+        if(injector.getCost() <= this.getBitcoins())
+        {
+            if(injector.upgrade()) 
+            { 
+                this.removeBitcoins(injector.getCost());
+                return true; 
+            }
+        }
+        return false;
     }
     
     public List<Spell> getSpells(){        
@@ -99,8 +106,8 @@ public class Player {
 
                 }
             });
-            modules.add(miner);
             this.removeBitcoins(miner.getCost());
+            modules.add(miner);
         }
         catch(DuplicateListenerException ex)
         {
@@ -129,8 +136,8 @@ public class Player {
      * Initialize a CpuUpgrade object and add the object to the modules field
      */
     public CPUUpgrade buildCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException{
-        modules.add(cpu);
         this.removeBitcoins(cpu.getCost());
+        modules.add(cpu);
         return cpu;
     }
     
