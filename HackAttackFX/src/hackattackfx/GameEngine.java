@@ -368,7 +368,7 @@ public class GameEngine extends Thread implements MouseListener {
     
     private void tick(){
         
-        if(!currentWave.waveActive()){
+        if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
             Wave w = generateNextWave();
             lastWaveStart = GameTime.getElapsedTime();
             waveList.add(w);
