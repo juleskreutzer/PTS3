@@ -76,7 +76,6 @@ public class Minion implements IMoveable {
     public void activate(MinionHeartbeat callback){
         this.heartbeat = callback;
         tickListener = new OnExecuteTick(){
-
             @Override
             public void onTick(long elapsedtime) {
                 move(elapsedtime);
@@ -89,7 +88,6 @@ public class Minion implements IMoveable {
     public void deactivate(){
         try {
             GameEngine.getInstance().unsubscribeListener(tickListener);
-            
         } catch (UnsubscribeNonListenerException ex) {
             Logger.getLogger(Minion.class.getName()).log(Level.SEVERE, null, ex);
         }

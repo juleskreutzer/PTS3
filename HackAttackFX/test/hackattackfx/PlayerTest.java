@@ -285,7 +285,8 @@ public class PlayerTest {
      * Test of buildSoftwareInjector method, of class Player.
      */
     @Test
-    public void testBuildSoftwareInjector() {
+    public void testBuildSoftwareInjector() throws IOException, InvalidMinionTypeException, InvalidSpellNameException, InvalidDefenseTypeException, InvalidEffectException {
+        
         //This player has no bitcoins and cannot build.
         try {
             player2.buildSoftwareInjector(softwareInjector);
