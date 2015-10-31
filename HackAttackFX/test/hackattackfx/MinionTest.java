@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
  * @author Bart van Keersop
  */
 public class MinionTest {
+    Data data;
     MinionTemplate minionTemplate;
     Player enemyPlayer;
     Point point1;
@@ -46,10 +47,16 @@ public class MinionTest {
     public void setUp() {
         try
         {
-            minionTemplate = Data.DEFAULT_KILOBYTE;
+            data = new Data(new Data.UpdateProgress() {
+                        @Override
+                        public void update(double value) {
+                    }
+                });
+            
+            minionTemplate = Data.DEFAULT_BYTE;
             point1 = new Point(100, 100);
             enemyPlayer = new Player(100, "enemyPlayer", 0, point1);
-            minion1 = new Minion(minionTemplate, 0, enemyPlayer );
+            minion1 = new Minion(minionTemplate, 1, enemyPlayer);
             wave1 = new Wave(1, 1, enemyPlayer, 1, 0, 0, 0, 0, 0);
         }
         catch (Exception e)
@@ -133,12 +140,11 @@ public class MinionTest {
      */
     @Test
     public void testMove() {
-        System.out.println("move");
-        double elapsedtime = 0.0;
-        Minion instance = null;
-        instance.move(elapsedtime);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        minion1.setPosition(point1);
+        Point minionStart = minion1.getPosition();
+        minion1.move(1);
+        Point minionAfterMove = minion1.getPosition();
+        assertFalse(minionStart == minionAfterMove);
     }
 
     /**
@@ -146,13 +152,7 @@ public class MinionTest {
      */
     @Test
     public void testGetCollision() {
-        System.out.println("getCollision");
-        Minion instance = null;
-        Object expResult = null;
-        Object result = instance.getCollision();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -174,12 +174,7 @@ public class MinionTest {
      */
     @Test
     public void testSetHealth() {
-        System.out.println("setHealth");
-        double health = 0.0;
-        Minion instance = null;
-        instance.setHealth(health);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -187,13 +182,7 @@ public class MinionTest {
      */
     @Test
     public void testGetPosition() {
-        System.out.println("getPosition");
-        Minion instance = null;
-        Point expResult = null;
-        Point result = instance.getPosition();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -201,12 +190,7 @@ public class MinionTest {
      */
     @Test
     public void testSetPosition() {
-        System.out.println("setPosition");
-        Point position = null;
-        Minion instance = null;
-        instance.setPosition(position);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -214,13 +198,7 @@ public class MinionTest {
      */
     @Test
     public void testGetSpeed() {
-        System.out.println("getSpeed");
-        Minion instance = null;
-        double expResult = 0.0;
-        double result = instance.getSpeed();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -228,12 +206,7 @@ public class MinionTest {
      */
     @Test
     public void testSetSpeed() {
-        System.out.println("setSpeed");
-        double speed = 0.0;
-        Minion instance = null;
-        instance.setSpeed(speed);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -241,13 +214,7 @@ public class MinionTest {
      */
     @Test
     public void testGetDamage() {
-        System.out.println("getDamage");
-        Minion instance = null;
-        double expResult = 0.0;
-        double result = instance.getDamage();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+ 
     }
 
     /**
@@ -255,13 +222,7 @@ public class MinionTest {
      */
     @Test
     public void testGetEncrypted() {
-        System.out.println("getEncrypted");
-        Minion instance = null;
-        boolean expResult = false;
-        boolean result = instance.getEncrypted();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -269,12 +230,7 @@ public class MinionTest {
      */
     @Test
     public void testSetEncrypted() {
-        System.out.println("setEncrypted");
-        boolean encrypted = false;
-        Minion instance = null;
-        instance.setEncrypted(encrypted);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    
     }
 
     /**
@@ -282,13 +238,7 @@ public class MinionTest {
      */
     @Test
     public void testGetReward() {
-        System.out.println("getReward");
-        Minion instance = null;
-        double expResult = 0.0;
-        double result = instance.getReward();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -296,12 +246,10 @@ public class MinionTest {
      */
     @Test
     public void testAttack() {
-        System.out.println("attack");
-        Player player = null;
-        Minion instance = null;
-        instance.attack(player);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+     double healthBefore = enemyPlayer.getHealth();
+     minion1.attack(enemyPlayer);
+     double healthAfter = enemyPlayer.getHealth();
+     assertFalse(healthBefore == healthAfter);
     }
 
     /**
@@ -309,13 +257,7 @@ public class MinionTest {
      */
     @Test
     public void testGetMinionType() {
-        System.out.println("getMinionType");
-        Minion instance = null;
-        MinionType expResult = null;
-        MinionType result = instance.getMinionType();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -323,12 +265,7 @@ public class MinionTest {
      */
     @Test
     public void testReceiveDamage() {
-        System.out.println("receiveDamage");
-        double damage = 0.0;
-        Minion instance = null;
-        instance.receiveDamage(damage);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+   
     }
     
 }
