@@ -62,6 +62,10 @@ public class GameEngine extends Thread implements MouseListener {
     private Map map;
     private ArrayList<Wave> waveList;
     private Wave currentWave;
+    // The elapsed game time a wave has started
+    private long lastWaveStart;
+    // The elapsed game time a wave has ended
+    private long lastWaveEnd;
     private int waveNumber;
     private Player playerA;
     private Player playerB;
@@ -98,35 +102,12 @@ public class GameEngine extends Thread implements MouseListener {
         playerB = new Player(100, "Jules", 100, new Point(100,50));
         gameRunning = false;
         waveNumber = 0;
+        lastWaveStart = GameTime.getElapsedTime();
         preStart();
         startGame();
     }
     
-    /**
-     * Calculates if there is an existing node in the given square
-     * @param x the x-location of the left upper corner
-     * @param y the y-location of the left upper corner
-     * @param width the width of the square
-     * @param height the height of the square
-     * @return whether or not the given square is overlapping an existing node
-     */
-    private boolean isPointInNode(int x, int y, int width, int height) {
-            ObservableList<Node> nodes = graphicsEngine.getNodes();
-            for(Node n : nodes)
-            {
-                if(n instanceof ModuleImage || n instanceof PathImage)
-                {
-                    Point2D p1 = new Point2D(x, y); // left upper corner
-                    Point2D p2 = new Point2D(x, y + height); // left bottom corner
-                    Point2D p3 = new Point2D(x + width, y); // right upper corner
-                    Point2D p4 = new Point2D(x + width, y + height); // right bottom corner
-                    Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height); // the middle
-                    boolean b = n.contains(p1) || n.contains(p2) || n.contains(p3) || n.contains(p4) || n.contains(p5);
-                    if (b) return true;
-                }
-            }
-            return false;
-    }
+    
     
     /**
      * Mostly used to draw the initial components like the bases and roads
@@ -363,16 +344,11 @@ public class GameEngine extends Thread implements MouseListener {
      */
     private void startGame(){
         gameRunning = true;        
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask(){
-            @Override
-            public void run() {
-             Wave w = generateNextWave();
-             waveList.add(w);
-             currentWave = w;
-             w.startWave();
-            }
-        }, 0, 30000);
+        
+        Wave w = generateNextWave();
+        waveList.add(w);
+        currentWave = w;
+        w.startWave();
         
     }
     
@@ -391,6 +367,16 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     private void tick(){
+        
+        if(!currentWave.waveActive()){
+            Wave w = generateNextWave();
+            lastWaveStart = GameTime.getElapsedTime();
+            waveList.add(w);
+            currentWave = w;
+            w.startWave();
+            
+        }
+        
         processUnsubscribers();
         notifyListeners();
         fillLabels();
@@ -454,7 +440,8 @@ public class GameEngine extends Thread implements MouseListener {
             ++bytes;
             waveStrongness -= 1;
         }
-        System.err.println(bytes + " : " + kiloBytes + " : " +megaBytes + " : " +gigaBytes + " : " + teraBytes + " : " + petaBytes); // for logging purpose
+        System.out.println(bytes + " : " + kiloBytes + " : " +megaBytes + " : " +gigaBytes + " : " + teraBytes + " : " + petaBytes); // for logging purpose
+        
         return new Wave(waveNumber,1 + 0.1*waveNumber,playerA,bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);
     }
     
@@ -527,6 +514,32 @@ public class GameEngine extends Thread implements MouseListener {
         if(health < 0)
             graphicsEngine.showEndGame(name);
         graphicsEngine.drawLabels(name, health, coins);
+    }
+    
+    /**
+     * Calculates if there is an existing node in the given square
+     * @param x the x-location of the left upper corner
+     * @param y the y-location of the left upper corner
+     * @param width the width of the square
+     * @param height the height of the square
+     * @return whether or not the given square is overlapping an existing node
+     */
+    private boolean isPointInNode(int x, int y, int width, int height) {
+            ObservableList<Node> nodes = graphicsEngine.getNodes();
+            for(Node n : nodes)
+            {
+                if(n instanceof ModuleImage || n instanceof PathImage)
+                {
+                    Point2D p1 = new Point2D(x, y); // left upper corner
+                    Point2D p2 = new Point2D(x, y + height); // left bottom corner
+                    Point2D p3 = new Point2D(x + width, y); // right upper corner
+                    Point2D p4 = new Point2D(x + width, y + height); // right bottom corner
+                    Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height); // the middle
+                    boolean b = n.contains(p1) || n.contains(p2) || n.contains(p3) || n.contains(p4) || n.contains(p5);
+                    if (b) return true;
+                }
+            }
+            return false;
     }
     
     @Override
