@@ -534,11 +534,6 @@ public class GameEngine extends Thread implements MouseListener {
                     Point2D p3 = new Point2D(x + width, y); // right upper corner
                     Point2D p4 = new Point2D(x + width, y + height); // right bottom corner
                     Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height); // the middle
-                    boolean b1 = n.contains(p1);
-                    boolean b2 = n.contains(p2);
-                    boolean b3 = n.contains(p3);
-                    boolean b4 = n.contains(p4);
-                    boolean b5 = n.contains(p5);
                     boolean b = n.contains(p1) || n.contains(p2) || n.contains(p3) || n.contains(p4) || n.contains(p5);
                     if (b) return true;
                 }
