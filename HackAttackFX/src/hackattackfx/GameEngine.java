@@ -139,7 +139,6 @@ public class GameEngine extends Thread implements MouseListener {
                         
                         Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                         try {
-                                Defense defense = null;
                             try {
                                 int x = (int)st.getX();
                                 int y = (int)st.getY();
@@ -147,9 +146,10 @@ public class GameEngine extends Thread implements MouseListener {
                                 
                                 if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                 {   
-                                    defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
+                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
+                                    defense.activate();
                                 }
                                 else
                                 {
@@ -160,7 +160,6 @@ public class GameEngine extends Thread implements MouseListener {
                             } catch (NotEnoughBitcoinsException ex) {
                                 graphicsEngine.showError(ex.getMessage());
                             } 
-                            if (defense != null) defense.activate();
                         } catch (InvalidModuleEnumException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -192,7 +191,6 @@ public class GameEngine extends Thread implements MouseListener {
                     public void handle(MouseEvent event) {
                         Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                         try {
-                            Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50));
                             
                             try {
                                 int x = (int)st.getX();
@@ -201,8 +199,10 @@ public class GameEngine extends Thread implements MouseListener {
                                 
                                 if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                 {
+                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50));
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
+                                    defense.activate();
                                 }
                                 else{
                                     graphicsEngine.showError("You are not allowed to build here.");
@@ -211,7 +211,6 @@ public class GameEngine extends Thread implements MouseListener {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                             } 
                             
-                            defense.activate();
                             
                         } catch (InvalidModuleEnumException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -247,7 +246,6 @@ public class GameEngine extends Thread implements MouseListener {
                     public void handle(MouseEvent event) {
                         Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                         try {
-                            Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50));
                             
                             try {
                                 int x = (int)st.getX();
@@ -256,8 +254,10 @@ public class GameEngine extends Thread implements MouseListener {
                                 
                                 if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                 {
+                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50));
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
+                                    defense.activate();
                                 }
                                 else
                                 {
@@ -267,7 +267,6 @@ public class GameEngine extends Thread implements MouseListener {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
-                            defense.activate();
                             
                         } catch (InvalidModuleEnumException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -304,7 +303,6 @@ public class GameEngine extends Thread implements MouseListener {
                     public void handle(MouseEvent event) {
                         Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                         try {
-                            Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50));
                             
                             try {
                                 int x = (int)st.getX();
@@ -312,8 +310,10 @@ public class GameEngine extends Thread implements MouseListener {
                                 
                                 if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                 {
+                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50));
                                     graphicsEngine.spawn(defense);
                                     graphicsEngine.deSpawn(st);
+                                    defense.activate();
                                 }
                                 else
                                 {
@@ -323,7 +323,6 @@ public class GameEngine extends Thread implements MouseListener {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
-                            defense.activate();
                             
                         } catch (InvalidModuleEnumException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -535,6 +534,11 @@ public class GameEngine extends Thread implements MouseListener {
                     Point2D p3 = new Point2D(x + width, y); // right upper corner
                     Point2D p4 = new Point2D(x + width, y + height); // right bottom corner
                     Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height); // the middle
+                    boolean b1 = n.contains(p1);
+                    boolean b2 = n.contains(p2);
+                    boolean b3 = n.contains(p3);
+                    boolean b4 = n.contains(p4);
+                    boolean b5 = n.contains(p5);
                     boolean b = n.contains(p1) || n.contains(p2) || n.contains(p3) || n.contains(p4) || n.contains(p5);
                     if (b) return true;
                 }
