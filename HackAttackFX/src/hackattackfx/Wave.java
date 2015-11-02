@@ -158,7 +158,7 @@ public class Wave {
     }
     
     public boolean waveActive(){
-        return minionList.size() > 0 ? true : false;
+        return (minionList.size() > 0);
     }
     
     /**
