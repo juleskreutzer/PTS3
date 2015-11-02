@@ -5,7 +5,12 @@
  */
 package hackattackfx;
 
+import hackattackfx.exceptions.InvalidDefenseTypeException;
+import hackattackfx.exceptions.InvalidEffectException;
+import hackattackfx.exceptions.InvalidMinionTypeException;
+import hackattackfx.exceptions.InvalidSpellNameException;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,11 +24,16 @@ import static org.junit.Assert.*;
  * @author Bart van Keersop
  */
 public class WaveTest {
+    Data data;
     Wave wave1;
     Wave wave2;
     Player player1;
     Point point1;
 
+    public WaveTest(){
+        
+    }
+    
     @BeforeClass
     public static void setUpClass() {
     }
@@ -33,11 +43,17 @@ public class WaveTest {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws InvalidMinionTypeException, IOException, InvalidSpellNameException, InvalidDefenseTypeException, InvalidEffectException {
+        data = new Data(new Data.UpdateProgress() {
+                        @Override
+                        public void update(double value) {
+                    }
+                });
+         
         point1 = new Point(100, 100);
         player1 = new Player(1, "Player1", 1, point1);
         wave1 = new Wave(1, 1, player1, 1, 0, 0, 0, 0, 0);
-        wave1 = new Wave(1, 1, player1, 0, 0, 0, 0, 0, 0);
+        wave2 = new Wave(1, 1, player1, 0, 0, 0, 0, 0, 0);
     }
     
     @After
@@ -47,14 +63,6 @@ public class WaveTest {
     /**
      * Test of startWave method, of class Wave.
      */
-    
-    @Test
-    public void testConstructor(){
-        Point p = new Point (10, 10);
-        Player player = new Player(1, "testPlayer", 1, p);
-        Wave testConstructor = new Wave(1, 1, player, 1, 1, 1, 1, 1, 1);
-    }
-    
     @Test
     public void testStartWave() {
     }
@@ -79,6 +87,7 @@ public class WaveTest {
      */
     @Test
     public void testWaveActive() {
+        ArrayList<Minion> wavedqw = wave1.minionsAsList();
         assertTrue(wave1.waveActive());
         assertFalse(wave2.waveActive());
     }
