@@ -53,7 +53,7 @@ public class Defense extends Module {
      */
     public Defense(DefenseTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
     {
-        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel());
+        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
         ModuleName ModuleNameList[] = new ModuleName[] {ModuleName.BOTTLECAP_ANTIVIRUS, ModuleName.MUSCLE_ANTIVIRUS, ModuleName.SCALE_ANTIVIRUS, ModuleName.SNIPER_ANTIVIRUS};
         if(!Arrays.asList(ModuleNameList).contains(template.getModuleName()))
         {

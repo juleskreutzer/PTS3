@@ -67,6 +67,8 @@ public class GameEngine extends Thread implements MouseListener {
     private int waveNumber;
     private Player playerA;
     private Player playerB;
+    private String playerAName;
+    private String playerBName;
     
     private boolean gameRunning;
     private Spell selectedSpell;
@@ -81,6 +83,7 @@ public class GameEngine extends Thread implements MouseListener {
 
     private GameEngine(){
         instance = this;
+        
         initialize();
     }
     
@@ -103,9 +106,14 @@ public class GameEngine extends Thread implements MouseListener {
         lastWaveStart = GameTime.getElapsedTime();
         preStart();
         startGame();
+
     }
     
-    
+    public void setNames(String a)
+    {
+        this.playerAName = a;
+        //this.playerBName = b;
+    }
     
     /**
      * Mostly used to draw the initial components like the bases and roads

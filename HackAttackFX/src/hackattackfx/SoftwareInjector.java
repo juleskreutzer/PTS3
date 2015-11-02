@@ -31,7 +31,7 @@ public class SoftwareInjector extends Module {
      */
     public SoftwareInjector(SoftwareInjectorTemplate softwareInjector, Point position, int width, int height) throws InvalidModuleEnumException
     {
-        super(softwareInjector.getCost(), position, width, height, softwareInjector.getModuleName(), softwareInjector.getLevel());
+        super(softwareInjector.getCost(), position, width, height, softwareInjector.getModuleName(), softwareInjector.getLevel(), softwareInjector.getDescription());
         if( softwareInjector.getModuleName() != ModuleName.SOFTWARE_INJECTOR)
         {
             throw new InvalidModuleEnumException();

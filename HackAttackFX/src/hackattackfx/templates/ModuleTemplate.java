@@ -18,12 +18,14 @@ public abstract class ModuleTemplate {
     protected String displayName;
     protected boolean allowBuild = false;
     protected ModuleName moduleName;
+    protected String desc;
     
-    public ModuleTemplate(double cost, int level, ModuleName name)
+    public ModuleTemplate(double cost, int level, ModuleName name, String desc)
     {
         this.cost = cost;
         this.level = level;
         this.moduleName = name;
+        this.desc = desc;
         
         getName();
     }
@@ -99,6 +101,15 @@ public abstract class ModuleTemplate {
             default:
                 throw new IllegalArgumentException();
         }
+    }
+    
+    /**
+     * Get the description of the module
+     * @return Description of the module
+     */
+    public String getDescription()
+    {
+        return this.desc;
     }
     
 }

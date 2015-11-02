@@ -17,9 +17,13 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -29,6 +33,8 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
@@ -38,15 +44,24 @@ import javafx.scene.Scene;
 public class FXMLLoaderController implements Initializable {
 
     private ProgressBar progressBar;
+    private TextField txtPlayerName;
+    private Button btnPlayGame;
     
     @FXML
     private Pane pane;
+    
     @FXML
     private Label errorlabel;
     
+    @FXML
+    private Button playButton;
+    
+    @FXML
+    private TextField playerName;
+    
     
     public FXMLLoaderController() throws IOException, InvalidMinionTypeException, InvalidSpellNameException
-    {   
+    {  
     }
 
     @Override
@@ -55,6 +70,51 @@ public class FXMLLoaderController implements Initializable {
         for(Node node : list){
             if(node instanceof ProgressBar){
                 progressBar = (ProgressBar)node;
+            }
+            if(node instanceof Button)
+            {
+                btnPlayGame = (Button)node;
+                btnPlayGame.setOnMouseClicked(new EventHandler(){
+
+                    @Override
+                    public void handle(Event event) {
+                        if(txtPlayerName.getText() != ""){
+                            String name = txtPlayerName.getText();
+                            Stage stage  = (Stage)pane.getScene().getWindow();
+                            stage.close();
+
+                            FXMLLoader gameloader = new FXMLLoader();
+                            Parent mainroot;
+                            try {
+                                mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
+
+                            Stage gamestage = new Stage();
+                            Scene scene = new Scene(mainroot);
+                            gamestage.setScene(scene);
+                            gamestage.show();
+                            gamestage.setTitle("Hack Attack");
+
+                            GameEngine.getInstance().setName(name);
+                            GameEngine.getInstance().start();
+                            
+                            
+                            } catch (IOException ex) {
+                                Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            errorlabel.setVisible(true);
+                            errorlabel.setText("Please enter a playername.");
+                        }
+                        
+                    }
+                    
+                });
+            }
+            if(node instanceof TextField)
+            {
+                txtPlayerName = (TextField)node;
             }
         }
     }
@@ -68,8 +128,9 @@ public class FXMLLoaderController implements Initializable {
                     public void update(double value) {
                         progressBar.setProgress(value);
                         if(value >= 0.99){
-                            Stage stage  = (Stage)pane.getScene().getWindow();
-                            stage.close();
+                            btnPlayGame.setDisable(false);
+                            //Stage stage  = (Stage)pane.getScene().getWindow();
+                            //stage.close();
                         }
                     }
                 });
@@ -83,13 +144,17 @@ public class FXMLLoaderController implements Initializable {
 //           Alert alert = new Alert(Alert.AlertType.ERROR, "Oops.. we can't connect to our service. Is your internet connection OK?\n" + to.toString());
 //           alert.initModality(Modality.APPLICATION_MODAL);
 //           alert.show();
+           errorlabel.setVisible(true);
            errorlabel.setText("Oops.. we can't connect to our service. is your internet connection OK? \n" + to.toString());
            
        } catch (IOException ex) {
+           errorlabel.setVisible(true);
            errorlabel.setText("Oops.. Something went wrong.\n" + ex.toString());
        } catch (InvalidMinionTypeException ex) {
+           errorlabel.setVisible(true);
            errorlabel.setText("The miniontype is not recognized.");
        } catch (InvalidSpellNameException ex) {
+           errorlabel.setVisible(true);
            errorlabel.setText("The spellname is not recognized.");
        }
     }

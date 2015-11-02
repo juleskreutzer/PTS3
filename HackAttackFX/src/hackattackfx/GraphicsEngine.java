@@ -329,8 +329,20 @@ public class GraphicsEngine{
 
             @Override
             public void run() {
-            }
-            
+
+                Text text = new Text();
+                text.setText(String.format("Game over, %s", name));
+                text.setFill(Color.RED);
+                text.setStyle("-fx-font-size: 40");
+                double height = parent.getScene().getHeight();
+                double width = parent.getScene().getWidth();
+                height -= 40;
+                width -= 280;
+                text.setLayoutX(width/2);
+                text.setLayoutY(height/2);
+                
+                parent.addNode(text);
+            }            
         });
     }
 
