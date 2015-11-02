@@ -13,8 +13,8 @@ import hackattackfx.enums.ModuleName;
  */
 public class SoftwareInjectorTemplate extends ModuleTemplate {
 
-    public SoftwareInjectorTemplate(double cost, int level, ModuleName name) {
-        super(cost, level, name);
+    public SoftwareInjectorTemplate(double cost, int level, ModuleName name, String desc) {
+        super(cost, level, name, desc);
     }
     
 }

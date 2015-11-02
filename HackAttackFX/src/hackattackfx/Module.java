@@ -22,8 +22,9 @@ abstract public class Module {
     protected String displayName;
     protected boolean allowBuild = false;
     protected ModuleName moduleName;
+    protected String desc;
     
-    public Module(double cost, Point position, int width, int height, ModuleName name, int level)
+    public Module(double cost, Point position, int width, int height, ModuleName name, int level, String desc)
     {
         this.width = width;
         this.height = height;
@@ -161,4 +162,13 @@ abstract public class Module {
                 throw new IllegalArgumentException();
         }
     }
+    
+    /**
+     * Get the description of the module
+     * @return description of the module
+     */
+    public String getDescription()
+        {
+            return this.desc;
+        }
 }

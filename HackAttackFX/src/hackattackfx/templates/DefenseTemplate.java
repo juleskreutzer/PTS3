@@ -19,8 +19,8 @@ public class DefenseTemplate extends ModuleTemplate {
     private int frequency;
     
     
-    public DefenseTemplate(double cost, int level, ModuleName moduleName, double damage, int range, DefenseType type, Effect effect, int frequency ) {
-        super(cost, level, moduleName);
+    public DefenseTemplate(double cost, int level, ModuleName moduleName, double damage, int range, DefenseType type, Effect effect, int frequency, String desc) {
+        super(cost, level, moduleName, desc);
         this.damage = damage;
         this.range = range;
         this.defenseType = type;
