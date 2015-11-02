@@ -94,8 +94,10 @@ public class FXMLLoaderController implements Initializable {
                             gamestage.show();
                             gamestage.setTitle("Hack Attack");
 
+                            GameEngine.getInstance().setName(name);
                             GameEngine.getInstance().start();
-                            GameEngine.getInstance().initialize(name);
+                            
+                            
                             } catch (IOException ex) {
                                 Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
                             }

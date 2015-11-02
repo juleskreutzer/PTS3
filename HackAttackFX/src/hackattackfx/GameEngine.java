@@ -67,6 +67,8 @@ public class GameEngine extends Thread implements MouseListener {
     private int waveNumber;
     private Player playerA;
     private Player playerB;
+    private String playerAName;
+    private String playerBName;
     
     private boolean gameRunning;
     private Spell selectedSpell;
@@ -81,14 +83,16 @@ public class GameEngine extends Thread implements MouseListener {
 
     private GameEngine(){
         instance = this;
+        
+        initialize();
     }
     
     public static GameEngine getInstance(){
         return instance == null ? new GameEngine() : instance;
     }
     
-    public void initialize(String playerNameA){
-        if(graphicsEngine == null){
+    private void initialize(){
+        
             graphicsEngine = GraphicsEngine.getInstance();
             map = Map.getInstance();
             tickCompleteListeners = new ArrayList<>();
@@ -96,17 +100,20 @@ public class GameEngine extends Thread implements MouseListener {
             listeners = new ArrayList<>();
             unsubscribedListeners = new ArrayList<>();
             waveList = new ArrayList<>();
-            playerA = new Player(100, playerNameA, 100, new Point(0,50));
+            playerA = new Player(100, playerAName, 100, new Point(0,50));
             playerB = new Player(100, "Jules", 100, new Point(100,50));
             gameRunning = false;
             waveNumber = 0;
             lastWaveStart = GameTime.getElapsedTime();
             preStart();
             startGame();
-        }
     }
     
-    
+    public void setNames(String a)
+    {
+        this.playerAName = a;
+        //this.playerBName = b;
+    }
     
     /**
      * Mostly used to draw the initial components like the bases and roads
