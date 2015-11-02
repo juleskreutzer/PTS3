@@ -46,6 +46,12 @@ public class GraphicsEngine{
     private Label lblPlayerHealth;
     private Label lblPlayerBitcoins;
     private Label errorLabel;
+    private Label lblStatsName;
+    private Label lblStatsDescription;
+    private Label lblStatsLevel;
+    private Label lblStatsROF;
+    private Label lblStatsEffect;
+    private Label lblStatsRange;
     
     private ImageView errorImage;
     
@@ -215,6 +221,10 @@ public class GraphicsEngine{
                 }
             }
         });
+    }
+    
+    private void drawModuleStats(Module m){
+        
     }
     
     public void drawRoad(Road road){
