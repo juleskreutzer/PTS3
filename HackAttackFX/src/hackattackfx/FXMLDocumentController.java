@@ -9,16 +9,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Ellipse;
 
 /**
  *
@@ -84,13 +81,22 @@ public class FXMLDocumentController implements Initializable {
      * @param fxid 
      * @return If found the corresponding Node. If not return null
      */
-    public Node getNode(String fxid){
+    public Node getNode(String id){
         ObservableList list = window.getChildren();
         for(Object n : list){
             if(n instanceof Node){
                 Node node = (Node)n;
+                if(node instanceof Parent){
+                    Parent p = (Parent)node;
+                    for(Node child : p.getChildrenUnmodifiable()){
+                        String s = child.getId();
+                        if (child.getId() != null && s.equals(id)){
+                            return child;
+                        }
+                    }
+                }
                 String s = node.getId();
-                if (node.getId() != null && s.equals(fxid)){
+                if (node.getId() != null && s.equals(id)){
                     return node;
                 }
             }

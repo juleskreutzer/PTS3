@@ -20,9 +20,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javax.swing.JOptionPane;
+import javafx.scene.layout.AnchorPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -117,7 +115,7 @@ public class GameEngine extends Thread implements MouseListener {
         
         // Initialize all GUI buttons
         ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV");
-        sniperav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+        sniperav.setOnMouseClicked(new EventHandler<MouseEvent>(){
  
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
@@ -167,6 +165,14 @@ public class GameEngine extends Thread implements MouseListener {
                 });
             }
             
+        });
+        sniperav.setOnMouseEntered(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                
+            }
+        
         });
         
         ImageView scaleav = (ImageView)graphicsEngine.getNode("buildScaleAV");
