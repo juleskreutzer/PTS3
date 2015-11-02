@@ -5,10 +5,7 @@
  */
 package hackattackfx;
 
-import hackattackfx.exceptions.FloatingPathException;
 import java.awt.Point;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,6 +18,9 @@ import static org.junit.Assert.*;
  * @author Bart van Keersop
  */
 public class PathTest {
+    Path path1;
+    Path path2;
+    Point start;
 
     public PathTest() {
     }
@@ -35,7 +35,10 @@ public class PathTest {
     
     @Before
     public void setUp() {
-
+        start = new Point(10, 10);
+        
+        path1 = new Path(start, 10, Path.Direction.Right);
+        path2 = new Path(start, 10, Path.Direction.Up);
     }
     
     @After
@@ -64,6 +67,8 @@ public class PathTest {
      */
     @Test
     public void testGetLength() {
+        assertEquals(path1.getLength(), 10);
+        assertEquals(path2.getLength(), 10);
       
     }
 
