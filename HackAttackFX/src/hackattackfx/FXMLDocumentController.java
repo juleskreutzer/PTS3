@@ -35,9 +35,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private ImageView errorImage;
     
-    @FXML
-    private Label lostLabel;
-    
     private GraphicsEngine gEngine;
     private static FXMLDocumentController instance;
     
