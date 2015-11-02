@@ -8,6 +8,7 @@ package hackattackfx;
 import hackattackfx.enums.ModuleName;
 import java.util.List;
 import hackattackfx.exceptions.*;
+import java.awt.Font;
 import java.io.File;
 import java.util.Iterator;
 import java.util.Timer;
@@ -24,6 +25,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  *
@@ -175,7 +178,7 @@ public class GraphicsEngine{
                             mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
                             hb.setX(mi.getX());
                             hb.setY(mi.getY()+mi.getImage().getHeight());
-                            hb.setWidth((mi.getImage().getWidth()/100) * m.getHealth());
+                            hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
                             
                         }
                         else{
@@ -323,12 +326,28 @@ public class GraphicsEngine{
         
     }
     
+    /**
+     * Indicate that the game has ended
+     * @param name Name of the defeated Player
+     */
     public void showEndGame(String name)
     {
         Platform.runLater(new Runnable(){
 
             @Override
             public void run() {
+                Text text = new Text();
+                text.setText(String.format("You lost, %s", name));
+                text.setFill(Color.RED);
+                text.setStyle("-fx-font-size: 40");
+                double height = parent.getScene().getHeight();
+                double width = parent.getScene().getWidth();
+                height -= 40;
+                width -= 280;
+                text.setLayoutX(width/2);
+                text.setLayoutY(height/2);
+                
+                parent.addNode(text);
             }
             
         });
