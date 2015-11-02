@@ -33,6 +33,7 @@ public class Minion implements IMoveable {
     private MinionType minionType; //The MinionType of the minion
     private Player enemyPlayer; //The player the minions are supposed to attack.
     private double health; //The ammunt of health the minion currently has.
+    private double initialHealth; // the health this minion had when created.
     private double speed; //The rate at which the minion moves towards the targetPosition.
     private Point position; //The current position of the minion.
     private double damage; //The damage the minion will deal upon reching enemyPlayer.
@@ -64,6 +65,7 @@ public class Minion implements IMoveable {
     public Minion(MinionTemplate minion, double multiplier, Player enemyPlayer)
     {
         health = (minion.getHealth() * multiplier);
+        initialHealth = health;
         speed = (minion.getSpeed() * multiplier);
         damage = (minion.getDamage() * multiplier);
         reward = (minion.getReward() * multiplier);
@@ -164,6 +166,10 @@ public class Minion implements IMoveable {
         return this.health;
     }
     
+    public double getHealthInPercentage() {
+        return (this.health / this.initialHealth) * 100;
+    }
+    
     /**
      * This method will change the health of the minion to the amount given
      * @param health the amount of health for the minion
@@ -260,7 +266,10 @@ public class Minion implements IMoveable {
         health -= damage;
         System.out.println(String.format("Dealing damage: %f, remaining health: %f", damage, health));
         if(health <= 0){
-            heartbeat.onMinionDeath(this, false);
+            if (heartbeat != null) {
+                System.out.println();
+                heartbeat.onMinionDeath(this, false);
+            }
         }
     }
     

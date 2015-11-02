@@ -169,8 +169,7 @@ public class GraphicsEngine{
                             mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
                             hb.setX(mi.getX());
                             hb.setY(mi.getY()+mi.getImage().getHeight());
-                            hb.setWidth((mi.getImage().getWidth()/100) * m.getHealth());
-                            
+                            hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
                         }
                         else{
                             try {
