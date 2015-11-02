@@ -368,7 +368,7 @@ public class Defense extends Module {
         ArrayList<Minion> inrange = new ArrayList<Minion>();
         GameEngine engine = GameEngine.getInstance();
         ArrayList<Wave> waves = engine.getActiveWaves();
-        ArrayList<Minion> minions = engine.getActiveWave().minionsAsList();
+        ArrayList<Minion> minions = new ArrayList<Minion>();
         for (Wave w : waves) {
             minions.addAll(w.minionsAsList());
         }
@@ -409,7 +409,7 @@ public class Defense extends Module {
      * @param minion The enemy minion target.
      */
     public void fire(Minion minion){
-        System.out.println(this.toString() + " is attacking " + minion.toString());
+        //System.out.println(this.toString() + " is attacking " + minion.toString());
         minion.receiveDamage(damage);
         if(!targetInRange(minion)||minion.getHealth() <= 0){
             target = null;

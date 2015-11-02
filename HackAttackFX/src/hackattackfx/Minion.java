@@ -35,7 +35,7 @@ public class Minion implements IMoveable {
     private double health; //The ammunt of health the minion currently has.
     private double initialHealth; // the health this minion had when created.
     private double speed; //The rate at which the minion moves towards the targetPosition.
-    private Point position; //The current position of the minion.
+    private Point.Double position; //The current position of the minion.
     private double damage; //The damage the minion will deal upon reching enemyPlayer.
     
     private Point targetPosition; // The position this minion is currently moving to. Can change.
@@ -66,9 +66,9 @@ public class Minion implements IMoveable {
     {
         health = (minion.getHealth() * multiplier);
         initialHealth = health;
-        speed = (minion.getSpeed() * multiplier);
-        damage = (minion.getDamage() * multiplier);
-        reward = (minion.getReward() * multiplier);
+        speed = (minion.getSpeed());
+        damage = (minion.getDamage());
+        reward = (minion.getReward());
         encrypted = minion.getEncrypted();
         minionType = minion.getMinionType();
         this.enemyPlayer = enemyPlayer;
@@ -185,11 +185,11 @@ public class Minion implements IMoveable {
      */
     public Point getPosition()
     {
-        return this.position;
+        return new Point((int)position.x, (int)position.y);
     }
     
-    public void setPosition(Point position){
-        this.position = position;
+    public void setPosition(Point pos){
+        this.position = new Point.Double(pos.x, pos.y);
     }
     
     /**
@@ -264,10 +264,9 @@ public class Minion implements IMoveable {
     
     public void receiveDamage(double damage){
         health -= damage;
-        System.out.println(String.format("Dealing damage: %f, remaining health: %f", damage, health));
+        //System.out.println(String.format("Dealing damage: %f, remaining health: %f", damage, health));
         if(health <= 0){
             if (heartbeat != null) {
-                System.out.println();
                 heartbeat.onMinionDeath(this, false);
             }
         }

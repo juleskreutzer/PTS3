@@ -99,7 +99,7 @@ public class GameEngine extends Thread implements MouseListener {
         unsubscribedListeners = new ArrayList<>();
         waveList = new ArrayList<>();
         playerA = new Player(100, "Jasper", 100, new Point(0,50));
-        playerB = new Player(100, "Jules", 100, new Point(100,50));
+        playerB = new Player(100, "Jules-iDiot", 100, new Point(100,50));
         gameRunning = false;
         waveNumber = 0;
         lastWaveStart = GameTime.getElapsedTime();
@@ -156,7 +156,7 @@ public class GameEngine extends Thread implements MouseListener {
                                     graphicsEngine.showError("You are not allowed to build here.");
                                 }
                             } catch (DuplicateSpawnException | InvalidObjectException ex) {
-                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                                //Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (NotEnoughBitcoinsException ex) {
                                 graphicsEngine.showError(ex.getMessage());
                             } 
@@ -396,6 +396,7 @@ public class GameEngine extends Thread implements MouseListener {
     private Wave generateNextWave(){
         // calculates how strong this wave should be and ups  waveNumber by one
         int waveStrongness = 5 + (int)(0.5 * ++waveNumber * waveNumber);
+        // calculates the amount of different minions semi-randomly
         int bytes = 0;
         int kiloBytes = 0;
         int megaBytes = 0;
