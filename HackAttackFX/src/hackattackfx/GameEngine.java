@@ -385,6 +385,14 @@ public class GameEngine extends Thread implements MouseListener {
         return currentWave;
     }
     
+    public ArrayList<Wave> getActiveWaves() {
+        ArrayList<Wave> result = new ArrayList<Wave>();
+        for (Wave w : this.waveList) {
+            if (w.waveActive()) result.add(w);
+        }
+        return result;
+    }
+    
     private Wave generateNextWave(){
         // calculates how strong this wave should be and ups  waveNumber by one
         int waveStrongness = 5 + (int)(0.5 * ++waveNumber * waveNumber);

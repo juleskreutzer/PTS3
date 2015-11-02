@@ -367,7 +367,11 @@ public class Defense extends Module {
     public Minion findTarget(){
         ArrayList<Minion> inrange = new ArrayList<Minion>();
         GameEngine engine = GameEngine.getInstance();
+        ArrayList<Wave> waves = engine.getActiveWaves();
         ArrayList<Minion> minions = engine.getActiveWave().minionsAsList();
+        for (Wave w : waves) {
+            minions.addAll(w.minionsAsList());
+        }
         for(Minion m : minions){
             if(targetInRange(m)){
                 inrange.add(m);
