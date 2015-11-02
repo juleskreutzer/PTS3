@@ -8,17 +8,20 @@
 
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hackattackfx.FXMLLoaderController">
   <children>
-    <ProgressBar id="progressbar" layoutX="150.0" layoutY="297.0" opacity="0.25" prefHeight="15.0" prefWidth="500.0" progress="0.25">
+    <ProgressBar id="progressbar" layoutX="150.0" layoutY="331.0" opacity="0.25" prefHeight="15.0" prefWidth="500.0" progress="0.25">
       <effect>
         <Blend />
       </effect>
     </ProgressBar>
-    <Label id="label" layoutX="262.0" layoutY="170.0" text="Hack Attack" textFill="#386db2">
+    <Label id="label" layoutX="262.0" layoutY="70.0" text="Hack Attack" textFill="#386db2">
       <font>
         <Font size="48.0" />
       </font>
     </Label>
-      <Label fx:id="errorlabel" layoutX="150.0" layoutY="323.0" prefHeight="17.0" prefWidth="500.0" text="Label" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="errorlabel" layoutX="150.0" layoutY="357.0" prefHeight="17.0" prefWidth="500.0" text="Label" textAlignment="CENTER" textFill="RED" visible="false" />
+      <TextField id="playerName" fx:id="playerName" layoutX="150.0" layoutY="215.0" prefHeight="27.0" prefWidth="500.0" />
+      <Label layoutX="150.0" layoutY="192.0" text="Enter your Hack Attack player name" />
+      <Button fx:id="playButton" defaultButton="true" disable="true" layoutX="339.0" layoutY="273.0" mnemonicParsing="false" text="Play Hack Attack" />
   </children>
   <effect>
     <Glow />

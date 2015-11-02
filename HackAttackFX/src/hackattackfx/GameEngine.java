@@ -83,28 +83,29 @@ public class GameEngine extends Thread implements MouseListener {
 
     private GameEngine(){
         instance = this;
-        initialize();
     }
     
     public static GameEngine getInstance(){
         return instance == null ? new GameEngine() : instance;
     }
     
-    private void initialize(){
-        graphicsEngine = GraphicsEngine.getInstance();
-        map = Map.getInstance();
-        tickCompleteListeners = new ArrayList<>();
-        unsubscribedCompleteListeners = new ArrayList<>();
-        listeners = new ArrayList<>();
-        unsubscribedListeners = new ArrayList<>();
-        waveList = new ArrayList<>();
-        playerA = new Player(10, "Jasper", 100, new Point(0,50));
-        playerB = new Player(100, "Jules", 100, new Point(100,50));
-        gameRunning = false;
-        waveNumber = 0;
-        lastWaveStart = GameTime.getElapsedTime();
-        preStart();
-        startGame();
+    public void initialize(String playerNameA){
+        if(graphicsEngine == null){
+            graphicsEngine = GraphicsEngine.getInstance();
+            map = Map.getInstance();
+            tickCompleteListeners = new ArrayList<>();
+            unsubscribedCompleteListeners = new ArrayList<>();
+            listeners = new ArrayList<>();
+            unsubscribedListeners = new ArrayList<>();
+            waveList = new ArrayList<>();
+            playerA = new Player(100, playerNameA, 100, new Point(0,50));
+            playerB = new Player(100, "Jules", 100, new Point(100,50));
+            gameRunning = false;
+            waveNumber = 0;
+            lastWaveStart = GameTime.getElapsedTime();
+            preStart();
+            startGame();
+        }
     }
     
     
