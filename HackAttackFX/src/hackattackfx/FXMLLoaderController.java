@@ -59,6 +59,8 @@ public class FXMLLoaderController implements Initializable {
     @FXML
     private TextField playerName;
     
+    Data data;
+    
     
     public FXMLLoaderController() throws IOException, InvalidMinionTypeException, InvalidSpellNameException
     {  
@@ -86,18 +88,17 @@ public class FXMLLoaderController implements Initializable {
                             FXMLLoader gameloader = new FXMLLoader();
                             Parent mainroot;
                             try {
+                                Data.playerAName = name;
                                 mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
+                                Stage gamestage = new Stage();
+                                Scene scene = new Scene(mainroot);
+                                gamestage.setScene(scene);
+                                gamestage.show();
+                                gamestage.setTitle("Hack Attack");
 
-                            Stage gamestage = new Stage();
-                            Scene scene = new Scene(mainroot);
-                            gamestage.setScene(scene);
-                            gamestage.show();
-                            gamestage.setTitle("Hack Attack");
+                                
 
-                            GameEngine.getInstance().setName(name);
-                            GameEngine.getInstance().start();
-                            
-                            
+                                GameEngine.getInstance().start();
                             } catch (IOException ex) {
                                 Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -122,7 +123,7 @@ public class FXMLLoaderController implements Initializable {
     public void initializeData(){
         try {
             try {
-                Data data = new Data(new Data.UpdateProgress() {
+                data = new Data(new Data.UpdateProgress() {
                     
                     @Override
                     public void update(double value) {

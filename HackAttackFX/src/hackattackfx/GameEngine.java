@@ -99,7 +99,7 @@ public class GameEngine extends Thread implements MouseListener {
         listeners = new ArrayList<>();
         unsubscribedListeners = new ArrayList<>();
         waveList = new ArrayList<>();
-        playerA = new Player(100, "Jasper", 100, new Point(0,50));
+        playerA = new Player(100, Data.playerAName, 100, new Point(0,50));
         playerB = new Player(100, "Jules", 100, new Point(100,50));
         gameRunning = false;
         waveNumber = 0;
@@ -111,7 +111,8 @@ public class GameEngine extends Thread implements MouseListener {
     
     public void setNames(String a)
     {
-        this.playerAName = a;
+        playerA.setName(a);
+        String b = "";
         //this.playerBName = b;
     }
     

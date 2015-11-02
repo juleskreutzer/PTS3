@@ -78,6 +78,9 @@ public class Data {
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_2;
     public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_3;
     
+    public static String playerAName;
+    public static String playerBName;
+    
     /**
      * MODULE TEMPLATES - END
      */
