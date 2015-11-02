@@ -98,7 +98,7 @@ public class GameEngine extends Thread implements MouseListener {
         listeners = new ArrayList<>();
         unsubscribedListeners = new ArrayList<>();
         waveList = new ArrayList<>();
-        playerA = new Player(100, "Jasper", 100, new Point(0,50));
+        playerA = new Player(10, "Jasper", 100, new Point(0,50));
         playerB = new Player(100, "Jules", 100, new Point(100,50));
         gameRunning = false;
         waveNumber = 0;
@@ -366,19 +366,29 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     private void tick(){
-        
-        if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
-            Wave w = generateNextWave();
-            lastWaveStart = GameTime.getElapsedTime();
-            waveList.add(w);
-            currentWave = w;
-            w.startWave();
-            
-        }
-        
-        processUnsubscribers();
-        notifyListeners();
-        fillLabels();
+       // Only execute a tick when the player is not defeated
+       if(gameRunning)
+       {
+            if(playerA.getHealth() <= 0)
+            {
+               graphicsEngine.showEndGame(playerA.getName());
+               gameRunning = false;
+               
+            }
+
+            if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
+                Wave w = generateNextWave();
+                lastWaveStart = GameTime.getElapsedTime();
+                waveList.add(w);
+                currentWave = w;
+                w.startWave();
+
+            }
+
+            processUnsubscribers();
+            notifyListeners();
+            fillLabels();
+       }
     }
     
     public Wave getActiveWave(){
@@ -510,8 +520,6 @@ public class GameEngine extends Thread implements MouseListener {
         String name = playerA.getName();
         double health = playerA.getHealth();
         double coins = playerA.getBitcoins();
-        if(health < 0)
-            graphicsEngine.showEndGame(name);
         graphicsEngine.drawLabels(name, health, coins);
     }
     
