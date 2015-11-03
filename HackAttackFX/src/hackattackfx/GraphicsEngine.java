@@ -40,31 +40,37 @@ public class GraphicsEngine{
     private Ellipse moduleRange;
     private double updateTime;
     
+    private Label lblCurrentWave;
     private Label lblPlayerName;
     private Label lblPlayerHealth;
     private Label lblPlayerBitcoins;
     private Label errorLabel;
     private Label lblStatsName;
     private Label lblStatsDescription;
+    private Label lblStatsDamage;
     private Label lblStatsLevel;
     private Label lblStatsROF;
     private Label lblStatsEffect;
     private Label lblStatsRange;
+    private Label lblStatsCosts;
     
     private ImageView errorImage;
     
     private GraphicsEngine(){
         instance = this;
         parent = FXMLDocumentController.getInstance();
+        lblCurrentWave = (Label)parent.getNode("lblCurrentWave",null);
         lblPlayerName = (Label)parent.getNode("lblPlayerName",null);
         lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth",null);
         lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins",null);
         lblStatsName = (Label)parent.getNode("lblStatsName",null);
         lblStatsDescription = (Label)parent.getNode("lblStatsDescription",null);
+        lblStatsDamage = (Label)parent.getNode("lblStatsDamage",null);
         lblStatsLevel = (Label)parent.getNode("lblStatsLevel",null);
         lblStatsROF = (Label)parent.getNode("lblStatsROF",null);
         lblStatsEffect = (Label)parent.getNode("lblStatsEffect",null);
         lblStatsRange = (Label)parent.getNode("lblStatsRange",null);
+        lblStatsCosts = (Label)parent.getNode("lblStatsCosts",null);
         errorLabel = (Label)parent.getNode("errorLabel",null);
         errorImage = (ImageView)parent.getNode("errorImage",null);
         File file = new File("src/hackattackfx/resources/error.png");
@@ -232,11 +238,13 @@ public class GraphicsEngine{
         lblStatsName.setText(String.format("Name: %s",m.getName()));
         lblStatsDescription.setText(String.format("Description: %s","No description available"));
         lblStatsLevel.setText(String.format("Level: %d",m.getLevel()));
+        lblStatsCosts.setText(String.format("Costs: %d",Math.round(m.getCost())));
         if(m instanceof Defense){
             Defense d = (Defense)m;
             lblStatsROF.setText(String.format("Rate of fire: %d",d.getFrequecy()));
             lblStatsEffect.setText(String.format("Effect: %s",d.getEffectString()));
             lblStatsRange.setText(String.format("Range: %d",d.getRange()));
+            lblStatsDamage.setText(String.format("Damage: %d",Math.round(d.getDamage())));
         }
     }
     
@@ -326,12 +334,13 @@ public class GraphicsEngine{
         
     }
     
-    public void drawLabels(String name, double health, double bitcoins){
+    public void drawLabels(int wavenr, String name, double health, double bitcoins){
         Platform.runLater(new Runnable(){
 
             @Override
             public void run() {
-                lblPlayerName.setText(String.format("Playername = %s", name));
+                lblCurrentWave.setText(String.format("Wave: %d", wavenr));
+                lblPlayerName.setText(String.format("Playername: %s", name));
                 lblPlayerHealth.setText(String.format("Health: %s", health));
                 lblPlayerBitcoins.setText(String.format("Bitcoins: %s", bitcoins));
             }

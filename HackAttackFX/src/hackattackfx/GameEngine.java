@@ -92,6 +92,10 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     private void initialize(){
+        // This makes a daemon thread of the gameengine. This means that this thread will not prevent the JVM from shutting down. 
+        // This is implemented due previous bugs that kept the gameengine thread running while the game was closed.
+        setDaemon(true);
+        
         graphicsEngine = GraphicsEngine.getInstance();
         map = Map.getInstance();
         tickCompleteListeners = new ArrayList<>();
@@ -574,9 +578,8 @@ public class GameEngine extends Thread implements MouseListener {
         String name = playerA.getName();
         double health = playerA.getHealth();
         double coins = playerA.getBitcoins();
-        if(health < 0)
-            graphicsEngine.showEndGame(name);
-        graphicsEngine.drawLabels(name, health, coins);
+        int wave = currentWave.getWaveNr();
+        graphicsEngine.drawLabels(wave, name, health, coins);
     }
     
     /**

@@ -153,6 +153,10 @@ public class Wave {
         return minionList.iterator();
     }
     
+    public int getWaveNr(){
+        return waveNr;
+    }
+    
     public ArrayList<Minion> minionsAsList(){
         return minionList;
     }

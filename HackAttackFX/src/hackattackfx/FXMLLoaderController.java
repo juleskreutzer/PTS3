@@ -35,6 +35,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -80,7 +81,7 @@ public class FXMLLoaderController implements Initializable {
 
                     @Override
                     public void handle(Event event) {
-                        if(txtPlayerName.getText() != ""){
+                        if(txtPlayerName.getText().length() > 0){
                             String name = txtPlayerName.getText();
                             Stage stage  = (Stage)pane.getScene().getWindow();
                             stage.close();
@@ -93,12 +94,12 @@ public class FXMLLoaderController implements Initializable {
                                 Stage gamestage = new Stage();
                                 Scene scene = new Scene(mainroot);
                                 gamestage.setScene(scene);
-                                gamestage.show();
                                 gamestage.setTitle("Hack Attack");
+                                gamestage.show();
 
+                                GameEngine engine = GameEngine.getInstance();
+                                engine.start();
                                 
-
-                                GameEngine.getInstance().start();
                             } catch (IOException ex) {
                                 Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
                             }
