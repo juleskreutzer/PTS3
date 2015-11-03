@@ -29,7 +29,7 @@ public class Map {
         
         road = new Road();
         
-        baseLocationA = new Point(135,280);
+        baseLocationA = new Point(135,350);
         baseLocationB = new Point(500,500); 
         
         //Create the map's road out of Paths.

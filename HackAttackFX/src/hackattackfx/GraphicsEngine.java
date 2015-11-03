@@ -16,12 +16,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
@@ -55,11 +55,17 @@ public class GraphicsEngine{
     private GraphicsEngine(){
         instance = this;
         parent = FXMLDocumentController.getInstance();
-        lblPlayerName = (Label)parent.getNode("lblPlayerName");
-        lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth");
-        lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins");
-        errorLabel = (Label)parent.getNode("errorLabel");
-        errorImage = (ImageView)parent.getNode("errorImage");
+        lblPlayerName = (Label)parent.getNode("lblPlayerName",null);
+        lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth",null);
+        lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins",null);
+        lblStatsName = (Label)parent.getNode("lblStatsName",null);
+        lblStatsDescription = (Label)parent.getNode("lblStatsDescription",null);
+        lblStatsLevel = (Label)parent.getNode("lblStatsLevel",null);
+        lblStatsROF = (Label)parent.getNode("lblStatsROF",null);
+        lblStatsEffect = (Label)parent.getNode("lblStatsEffect",null);
+        lblStatsRange = (Label)parent.getNode("lblStatsRange",null);
+        errorLabel = (Label)parent.getNode("errorLabel",null);
+        errorImage = (ImageView)parent.getNode("errorImage",null);
         File file = new File("src/hackattackfx/resources/error.png");
         Image image = new Image(file.toURI().toString());
         errorImage.setImage(image);
@@ -96,10 +102,11 @@ public class GraphicsEngine{
     /**
      * Returns a node selected by the given id
      * @param id
+     * @param parent
      * @return 
      */
-    public Node getNode(String id){
-        Node n = parent.getNode(id);
+    public Node getNode(String id, Pane p){
+        Node n = parent.getNode(id, p);
         return n;
     }
     
@@ -220,8 +227,16 @@ public class GraphicsEngine{
         });
     }
     
-    private void drawModuleStats(Module m){
-        
+    public void showModuleStats(Module m){
+        lblStatsName.setText(String.format("Name: %s",m.getName()));
+        lblStatsDescription.setText(String.format("Description: %s","No description available"));
+        lblStatsLevel.setText(String.format("Level: %d",m.getLevel()));
+        if(m instanceof Defense){
+            Defense d = (Defense)m;
+            lblStatsROF.setText(String.format("Rate of fire: %d",d.getFrequecy()));
+            lblStatsEffect.setText(String.format("Effect: %s",d.getEffectString()));
+            lblStatsRange.setText(String.format("Range: %d",d.getRange()));
+        }
     }
     
     public void drawRoad(Road road){

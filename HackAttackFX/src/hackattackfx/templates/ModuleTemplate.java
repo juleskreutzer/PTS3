@@ -25,7 +25,6 @@ public abstract class ModuleTemplate {
         this.level = level;
         this.moduleName = name;
         
-        getName();
     }
     
     /**
