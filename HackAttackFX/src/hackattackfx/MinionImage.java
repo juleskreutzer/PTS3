@@ -53,7 +53,7 @@ public class MinionImage extends ObjectImage {
         
         // Initialize healthbar
         healthBar = new Rectangle();
-        healthBar.setWidth((this.getImage().getWidth()/100)*minion.getHealth());
+        healthBar.setWidth((this.getImage().getWidth()/100)*minion.getHealthInPercentage());
         healthBar.setHeight(5);
         healthBar.setX(this.getX());
         healthBar.setY(this.getY() + this.getImage().getHeight());
