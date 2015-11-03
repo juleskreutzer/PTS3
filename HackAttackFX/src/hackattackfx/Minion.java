@@ -214,6 +214,10 @@ public class Minion implements IMoveable {
         return damage;
     }
     
+    public double setDamage(double damage){
+        this.damage = damage;
+    }
+    
     /**
      * Ask if the minion is encrypted or not
      * @return True if encrypted, false if not encrypted
@@ -248,14 +252,6 @@ public class Minion implements IMoveable {
     public void attack(Player player)
     {
         player.receiveDamage(this.damage);
-    }
-    
-    /**
-     * Get the next position the minion should go to
-     */
-    private void getNextTarget()
-    {
-        
     }
     
     public MinionType getMinionType(){

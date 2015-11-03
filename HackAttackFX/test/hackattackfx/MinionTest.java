@@ -148,73 +148,38 @@ public class MinionTest {
     }
 
     /**
-     * Test of getCollision method, of class Minion.
-     */
-    @Test
-    public void testGetCollision() {
-
-    }
-
-    /**
      * Test of getHealth method, of class Minion.
      */
     @Test
-    public void testGetHealth() {
-        System.out.println("getHealth");
-        Minion instance = null;
-        double expResult = 0.0;
-        double result = instance.getHealth();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setHealth method, of class Minion.
-     */
-    @Test
-    public void testSetHealth() {
-
+    public void testGetSetHealth() {
+        minion1.setHealth(1);
+        assertEquals(minion1.getHealth(), 1, 0);
     }
 
     /**
      * Test of getPosition method, of class Minion.
      */
     @Test
-    public void testGetPosition() {
-
-    }
-
-    /**
-     * Test of setPosition method, of class Minion.
-     */
-    @Test
-    public void testSetPosition() {
-
+    public void testGetSetPosition() {
+        minion1.setPosition(point1);
+        assertEquals(minion1.getPosition(), point1);
     }
 
     /**
      * Test of getSpeed method, of class Minion.
      */
     @Test
-    public void testGetSpeed() {
-
-    }
-
-    /**
-     * Test of setSpeed method, of class Minion.
-     */
-    @Test
-    public void testSetSpeed() {
-
+    public void testGetSetSpeed() {
+        minion1.setSpeed(1);
+        assertEquals(minion1.getSpeed(), 1, 0);
     }
 
     /**
      * Test of getDamage method, of class Minion.
      */
     @Test
-    public void testGetDamage() {
- 
+    public void testGetSetDamage() {
+        minion1.set
     }
 
     /**

@@ -93,7 +93,7 @@ public class BitcoinMinerTest {
             bitcoinMinerLv2 = new BitcoinMiner(template2, point2, 50, 50);
             bitcoinMinerLv3 = new BitcoinMiner(template3, point3, 50, 50);
             
-            player1 = new Player(1, "player1", 0, point4);
+            player1 = new Player(1, "player1", 900, point4);
             player2 = new Player(1, "player2", 0, point5);
             player1.buildBitcoinMiner(bitcoinMinerLv1);
             
