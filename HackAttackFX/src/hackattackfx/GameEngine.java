@@ -373,19 +373,28 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     private void tick(){
-        
-        if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
-            Wave w = generateNextWave();
-            lastWaveStart = GameTime.getElapsedTime();
-            waveList.add(w);
-            currentWave = w;
-            w.startWave();
-            
+        if(gameRunning)
+        {
+            if(playerA.getHealth() <= 0)
+            {
+               graphicsEngine.showEndGame(playerA.getName());
+               gameRunning = false;
+               
+            }
+
+            if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
+                Wave w = generateNextWave();
+                lastWaveStart = GameTime.getElapsedTime();
+                waveList.add(w);
+                currentWave = w;
+                w.startWave();
+
+            }
+
+            processUnsubscribers();
+            notifyListeners();
+            fillLabels();
         }
-        
-        processUnsubscribers();
-        notifyListeners();
-        fillLabels();
     }
     
     public Wave getActiveWave(){
