@@ -108,7 +108,7 @@ public class Defense extends Module {
     {
         String result;
         
-<span class="nc bnc" id="L111" title="All 5 branches missed.">        switch(type)</span>
+<span class="pc bnc" id="L111" title="All 5 branches missed.">        switch(type)</span>
         {
             case RANGE:
 <span class="nc" id="L114">                result = &quot;range&quot;;</span>
@@ -136,10 +136,10 @@ public class Defense extends Module {
     {
         String result;
         
-<span class="nc bnc" id="L139" title="All 2 branches missed.">        if(effect == null){</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if(effect == null){</span>
 <span class="nc" id="L140">            return &quot;&quot;;</span>
         }
-<span class="nc bnc" id="L142" title="All 5 branches missed.">        switch(effect)</span>
+<span class="pc bpc" id="L142" title="4 of 5 branches missed.">        switch(effect)</span>
         {
             case SLOWED:
 <span class="nc" id="L145">                result = &quot;slow&quot;;</span>
@@ -151,20 +151,20 @@ public class Defense extends Module {
 <span class="nc" id="L151">                result = &quot;slash&quot;;</span>
 <span class="nc" id="L152">                break;</span>
             case DECRYPTED:
-<span class="nc" id="L154">                result = &quot;decryptor&quot;;</span>
-<span class="nc" id="L155">                break;</span>
+<span class="fc" id="L154">                result = &quot;decryptor&quot;;</span>
+<span class="fc" id="L155">                break;</span>
             default:
 <span class="nc" id="L157">                result = &quot;&quot;;</span>
         }
-<span class="nc" id="L159">        return result;</span>
+<span class="fc" id="L159">        return result;</span>
     }
     
     public DefenseType getDefenceType(){
-<span class="nc" id="L163">        return type;</span>
+<span class="fc" id="L163">        return type;</span>
     }
     
     public Effect getEffect(){
-<span class="nc" id="L167">        return effect;</span>
+<span class="fc" id="L167">        return effect;</span>
     }
     
     public int getFrequecy(){
@@ -176,11 +176,11 @@ public class Defense extends Module {
      * @param e
      */
     public void setEffect(Effect e){
-<span class="nc" id="L179">        effect = e;</span>
-<span class="nc" id="L180">    }</span>
+<span class="fc" id="L179">        effect = e;</span>
+<span class="fc" id="L180">    }</span>
     
     public double getDamage(){
-<span class="nc" id="L183">        return damage;</span>
+<span class="fc" id="L183">        return damage;</span>
     }
     
     /**
@@ -195,7 +195,7 @@ public class Defense extends Module {
 <span class="fc" id="L195">    }</span>
     
     public int getRange(){
-<span class="nc" id="L198">        return range;</span>
+<span class="fc" id="L198">        return range;</span>
     }
     
     /**
@@ -203,11 +203,11 @@ public class Defense extends Module {
      * @param r, must be above 0.
      */
     public void setRange(int r){
-<span class="nc bnc" id="L206" title="All 2 branches missed.">        if (range &gt; 0)</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">        if (range &gt; 0)</span>
         {
-<span class="nc" id="L208">            range = r;</span>
+<span class="fc" id="L208">            range = r;</span>
         }
-<span class="nc" id="L210">    }</span>
+<span class="fc" id="L210">    }</span>
     
     public void setTarget(Minion target){
 <span class="fc" id="L213">        this.target = target;</span>

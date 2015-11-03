@@ -40,6 +40,9 @@ public class GraphicsEngine{
     private Ellipse moduleRange;
     private double updateTime;
     
+    private ImageView pauseButton;
+    private Image pauseImage;
+    private Image playImage;
     private Label lblCurrentWave;
     private Label lblPlayerName;
     private Label lblPlayerHealth;
@@ -56,54 +59,59 @@ public class GraphicsEngine{
     
     private ImageView errorImage;
     
-<span class="fc" id="L59">    private GraphicsEngine(){</span>
-<span class="fc" id="L60">        instance = this;</span>
-<span class="fc" id="L61">        parent = FXMLDocumentController.getInstance();</span>
-<span class="nc" id="L62">        lblCurrentWave = (Label)parent.getNode(&quot;lblCurrentWave&quot;,null);</span>
-<span class="nc" id="L63">        lblPlayerName = (Label)parent.getNode(&quot;lblPlayerName&quot;,null);</span>
-<span class="nc" id="L64">        lblPlayerHealth = (Label)parent.getNode(&quot;lblPlayerHealth&quot;,null);</span>
-<span class="nc" id="L65">        lblPlayerBitcoins = (Label)parent.getNode(&quot;lblPlayerBitcoins&quot;,null);</span>
-<span class="nc" id="L66">        lblStatsName = (Label)parent.getNode(&quot;lblStatsName&quot;,null);</span>
-<span class="nc" id="L67">        lblStatsDescription = (Label)parent.getNode(&quot;lblStatsDescription&quot;,null);</span>
-<span class="nc" id="L68">        lblStatsDamage = (Label)parent.getNode(&quot;lblStatsDamage&quot;,null);</span>
-<span class="nc" id="L69">        lblStatsLevel = (Label)parent.getNode(&quot;lblStatsLevel&quot;,null);</span>
-<span class="nc" id="L70">        lblStatsROF = (Label)parent.getNode(&quot;lblStatsROF&quot;,null);</span>
-<span class="nc" id="L71">        lblStatsEffect = (Label)parent.getNode(&quot;lblStatsEffect&quot;,null);</span>
-<span class="nc" id="L72">        lblStatsRange = (Label)parent.getNode(&quot;lblStatsRange&quot;,null);</span>
-<span class="nc" id="L73">        lblStatsCosts = (Label)parent.getNode(&quot;lblStatsCosts&quot;,null);</span>
-<span class="nc" id="L74">        errorLabel = (Label)parent.getNode(&quot;errorLabel&quot;,null);</span>
-<span class="nc" id="L75">        errorImage = (ImageView)parent.getNode(&quot;errorImage&quot;,null);</span>
-<span class="nc" id="L76">        File file = new File(&quot;src/hackattackfx/resources/error.png&quot;);</span>
-<span class="nc" id="L77">        Image image = new Image(file.toURI().toString());</span>
-<span class="nc" id="L78">        errorImage.setImage(image);</span>
-<span class="nc" id="L79">        errorImage.setVisible(false);</span>
-<span class="nc" id="L80">        errorLabel.setVisible(false);</span>
+<span class="fc" id="L62">    private GraphicsEngine(){</span>
+<span class="fc" id="L63">        instance = this;</span>
+<span class="fc" id="L64">        parent = FXMLDocumentController.getInstance();</span>
+<span class="nc" id="L65">        pauseButton = (ImageView)parent.getNode(&quot;btnPause&quot;, null);</span>
+<span class="nc" id="L66">        File pause = new File(&quot;src/hackattackfx/resources/interface/Icons/PauseButton.png&quot;);</span>
+<span class="nc" id="L67">        pauseImage = new Image(pause.toURI().toString());</span>
+<span class="nc" id="L68">        File play = new File(&quot;src/hackattackfx/resources/interface/Icons/PlayButton.png&quot;);</span>
+<span class="nc" id="L69">        playImage = new Image(play.toURI().toString());</span>
+<span class="nc" id="L70">        lblCurrentWave = (Label)parent.getNode(&quot;lblCurrentWave&quot;,null);</span>
+<span class="nc" id="L71">        lblPlayerName = (Label)parent.getNode(&quot;lblPlayerName&quot;,null);</span>
+<span class="nc" id="L72">        lblPlayerHealth = (Label)parent.getNode(&quot;lblPlayerHealth&quot;,null);</span>
+<span class="nc" id="L73">        lblPlayerBitcoins = (Label)parent.getNode(&quot;lblPlayerBitcoins&quot;,null);</span>
+<span class="nc" id="L74">        lblStatsName = (Label)parent.getNode(&quot;lblStatsName&quot;,null);</span>
+<span class="nc" id="L75">        lblStatsDescription = (Label)parent.getNode(&quot;lblStatsDescription&quot;,null);</span>
+<span class="nc" id="L76">        lblStatsDamage = (Label)parent.getNode(&quot;lblStatsDamage&quot;,null);</span>
+<span class="nc" id="L77">        lblStatsLevel = (Label)parent.getNode(&quot;lblStatsLevel&quot;,null);</span>
+<span class="nc" id="L78">        lblStatsROF = (Label)parent.getNode(&quot;lblStatsROF&quot;,null);</span>
+<span class="nc" id="L79">        lblStatsEffect = (Label)parent.getNode(&quot;lblStatsEffect&quot;,null);</span>
+<span class="nc" id="L80">        lblStatsRange = (Label)parent.getNode(&quot;lblStatsRange&quot;,null);</span>
+<span class="nc" id="L81">        lblStatsCosts = (Label)parent.getNode(&quot;lblStatsCosts&quot;,null);</span>
+<span class="nc" id="L82">        errorLabel = (Label)parent.getNode(&quot;errorLabel&quot;,null);</span>
+<span class="nc" id="L83">        errorImage = (ImageView)parent.getNode(&quot;errorImage&quot;,null);</span>
+<span class="nc" id="L84">        File file = new File(&quot;src/hackattackfx/resources/error.png&quot;);</span>
+<span class="nc" id="L85">        Image image = new Image(file.toURI().toString());</span>
+<span class="nc" id="L86">        errorImage.setImage(image);</span>
+<span class="nc" id="L87">        errorImage.setVisible(false);</span>
+<span class="nc" id="L88">        errorLabel.setVisible(false);</span>
         
-<span class="nc" id="L82">        initialize();</span>
+<span class="nc" id="L90">        initialize();</span>
         
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L92">    }</span>
     
     public static GraphicsEngine getInstance(){
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        return instance == null ? new GraphicsEngine() : instance;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        return instance == null ? new GraphicsEngine() : instance;</span>
     }
     
     private void initialize(){
-<span class="nc" id="L91">        GameEngine.getInstance().setOnTickCompleteListener(new GameEngine.OnCompleteTick() {</span>
+<span class="nc" id="L99">        GameEngine.getInstance().setOnTickCompleteListener(new GameEngine.OnCompleteTick() {</span>
 
             @Override
             public void tickComplete(long elapsedtime) {
-<span class="nc" id="L95">                update();</span>
-<span class="nc" id="L96">            }</span>
+<span class="nc" id="L103">                update();</span>
+<span class="nc" id="L104">            }</span>
             
         });
-<span class="nc" id="L99">    }</span>
+<span class="nc" id="L107">    }</span>
     
     /**
      * The Scene is the main window the whole application runs in
      * @return The main AnchorPane
      */
     public AnchorPane getScene(){
-<span class="nc" id="L106">        return parent.getScene();</span>
+<span class="nc" id="L114">        return parent.getScene();</span>
     }
     
     /**
@@ -113,13 +121,13 @@ public class GraphicsEngine{
      * @return 
      */
     public Node getNode(String id, Pane p){
-<span class="nc" id="L116">        Node n = parent.getNode(id, p);</span>
-<span class="nc" id="L117">        return n;</span>
+<span class="nc" id="L124">        Node n = parent.getNode(id, p);</span>
+<span class="nc" id="L125">        return n;</span>
     }
     
     public ObservableList getNodes()
     {
-<span class="nc" id="L122">        return parent.getAllNodes();</span>
+<span class="nc" id="L130">        return parent.getAllNodes();</span>
     }
     
     /**
@@ -131,129 +139,155 @@ public class GraphicsEngine{
      */
     public void spawn(Object object) throws DuplicateSpawnException, InvalidObjectException{
         // Checks if the object doesn't exists already
-<span class="nc" id="L134">        List&lt;Node&gt; list = parent.getAllNodes();</span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">        for(Node node : list){</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">            if(node instanceof ObjectImage){</span>
-<span class="nc" id="L137">                ObjectImage image = (ObjectImage)node;</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">                if(image.getReference() == object){</span>
-<span class="nc" id="L139">                    throw new DuplicateSpawnException(&quot;This object already spawned!&quot;);</span>
+<span class="nc" id="L142">        List&lt;Node&gt; list = parent.getAllNodes();</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        for(Node node : list){</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if(node instanceof ObjectImage){</span>
+<span class="nc" id="L145">                ObjectImage image = (ObjectImage)node;</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                if(image.getReference() == object){</span>
+<span class="nc" id="L147">                    throw new DuplicateSpawnException(&quot;This object already spawned!&quot;);</span>
                 }
             }
-<span class="nc" id="L142">        }</span>
+<span class="nc" id="L150">        }</span>
         
-<span class="nc bnc" id="L144" title="All 2 branches missed.">        if(object instanceof Minion){</span>
-<span class="nc" id="L145">            Minion m = (Minion)object;</span>
-<span class="nc" id="L146">            MinionImage mi = new MinionImage(m);</span>
-<span class="nc" id="L147">            parent.addNode(mi);</span>
-<span class="nc" id="L148">            parent.addNode(mi.getHealthBar());</span>
-<span class="nc bnc" id="L149" title="All 2 branches missed.">        }else if(object instanceof Module){</span>
-<span class="nc" id="L150">            Module m = (Module) object;</span>
-<span class="nc" id="L151">            parent.addNode(new ModuleImage((Module)object));</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">        }else if(object instanceof Spell){</span>
-<span class="nc" id="L153">            parent.addNode(new SpellImage((Spell)object));</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if(object instanceof Minion){</span>
+<span class="nc" id="L153">            Minion m = (Minion)object;</span>
+<span class="nc" id="L154">            MinionImage mi = new MinionImage(m);</span>
+<span class="nc" id="L155">            parent.addNode(mi);</span>
+<span class="nc" id="L156">            parent.addNode(mi.getHealthBar());</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        }else if(object instanceof Module){</span>
+<span class="nc" id="L158">            Module m = (Module) object;</span>
+<span class="nc" id="L159">            parent.addNode(new ModuleImage((Module)object));</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        }else if(object instanceof Spell){</span>
+<span class="nc" id="L161">            parent.addNode(new SpellImage((Spell)object));</span>
         }else{
-<span class="nc" id="L155">            throw new InvalidObjectException(&quot;The object you tried to spawn doesn't have a corresponding ObjectImage implementation&quot;);</span>
+<span class="nc" id="L163">            throw new InvalidObjectException(&quot;The object you tried to spawn doesn't have a corresponding ObjectImage implementation&quot;);</span>
         }
-<span class="nc" id="L157">    }</span>
+<span class="nc" id="L165">    }</span>
     
     /**
      * Check if the give {@link Node} exists then remove it from the UI.
      * @param n The node to despawn
      */
     public void deSpawn(Node n) throws InvalidObjectException{
-<span class="nc bnc" id="L164" title="All 2 branches missed.">        if(!parent.getAllNodes().contains(n)){</span>
-<span class="nc" id="L165">            throw new InvalidObjectException(&quot;The despawned object does not exist&quot;);</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">        if(!parent.getAllNodes().contains(n)){</span>
+<span class="nc" id="L173">            throw new InvalidObjectException(&quot;The despawned object does not exist&quot;);</span>
         }
-<span class="nc" id="L167">        parent.removeNode(n);</span>
-<span class="nc" id="L168">    }</span>
+<span class="nc" id="L175">        parent.removeNode(n);</span>
+<span class="nc" id="L176">    }</span>
     
     public double update(){
-<span class="nc" id="L171">        draw();</span>
-<span class="nc" id="L172">        return 0;</span>
+<span class="nc" id="L179">        draw();</span>
+<span class="nc" id="L180">        return 0;</span>
     }
     
     private void draw(){
-<span class="nc" id="L176">        Platform.runLater(new Runnable(){</span>
+<span class="nc" id="L184">        Platform.runLater(new Runnable(){</span>
             @Override
             public void run() {
-<span class="nc" id="L179">                List&lt;Node&gt; nodes = parent.getAllNodes();</span>
-
-<span class="nc bnc" id="L181" title="All 2 branches missed.">                for(Node n : nodes){</span>
-<span class="nc bnc" id="L182" title="All 2 branches missed.">                    if(n instanceof MinionImage){</span>
-<span class="nc" id="L183">                        MinionImage mi = (MinionImage)n;</span>
-<span class="nc" id="L184">                        Rectangle hb = mi.getHealthBar();</span>
-<span class="nc" id="L185">                        Minion m = ((MinionImage)n).getMinion();</span>
+<span class="nc" id="L187">                List&lt;Node&gt; nodes = parent.getAllNodes();</span>
+                
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                for(Node n : nodes){</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">                    if(n instanceof MinionImage){</span>
+<span class="nc" id="L191">                        MinionImage mi = (MinionImage)n;</span>
+<span class="nc" id="L192">                        Rectangle hb = mi.getHealthBar();</span>
+<span class="nc" id="L193">                        Minion m = ((MinionImage)n).getMinion();</span>
                         
-<span class="nc bnc" id="L187" title="All 2 branches missed.">                        if (m.getHealth() &gt; 0){</span>
-<span class="nc" id="L188">                            mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));</span>
-<span class="nc" id="L189">                            mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));</span>
-<span class="nc" id="L190">                            hb.setX(mi.getX());</span>
-<span class="nc" id="L191">                            hb.setY(mi.getY()+mi.getImage().getHeight());</span>
-<span class="nc" id="L192">                            hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                        if (m.getHealth() &gt; 0){</span>
+<span class="nc" id="L196">                            mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));</span>
+<span class="nc" id="L197">                            mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));</span>
+<span class="nc" id="L198">                            hb.setX(mi.getX());</span>
+<span class="nc" id="L199">                            hb.setY(mi.getY()+mi.getImage().getHeight());</span>
+<span class="nc" id="L200">                            hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());</span>
                             
                         }
                         else{
                             try {
-<span class="nc" id="L197">                                deSpawn(n);</span>
-<span class="nc" id="L198">                                deSpawn(hb);</span>
-<span class="nc" id="L199">                            } catch (InvalidObjectException ex) {</span>
-<span class="nc" id="L200">                                Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L201">                            }</span>
+<span class="nc" id="L205">                                deSpawn(n);</span>
+<span class="nc" id="L206">                                deSpawn(hb);</span>
+<span class="nc" id="L207">                            } catch (InvalidObjectException ex) {</span>
+<span class="nc" id="L208">                                Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L209">                            }</span>
                         }
 
-<span class="nc bnc" id="L204" title="All 2 branches missed.">                    }else if(n instanceof ModuleImage){</span>
-<span class="nc" id="L205">                        ModuleImage mi = (ModuleImage)n;</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">                    }else if(n instanceof ModuleImage){</span>
+<span class="nc" id="L213">                        ModuleImage mi = (ModuleImage)n;</span>
                         
-<span class="nc bnc" id="L207" title="All 2 branches missed.">                        if(mi.showRange()){</span>
-<span class="nc bnc" id="L208" title="All 2 branches missed.">                            if(moduleRange == null){</span>
-<span class="nc" id="L209">                                drawModuleRange((Module)mi.getReference());</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                        if(mi.hovered()){</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                            if(moduleRange == null){</span>
+<span class="nc" id="L217">                                drawModuleRange((Module)mi.getReference());</span>
                             }
                         }else{
                                 try {
                                     // loops through all nodes, if it is an ModuleRange node, remove it.
-<span class="nc" id="L214">                                        Iterator i = parent.getAllNodes().iterator();</span>
-<span class="nc bnc" id="L215" title="All 2 branches missed.">                                        while (i.hasNext())</span>
+<span class="nc" id="L222">                                        Iterator i = parent.getAllNodes().iterator();</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">                                        while (i.hasNext())</span>
                                         {
-<span class="nc" id="L217">                                            Node node = (Node)i.next();</span>
-<span class="nc bnc" id="L218" title="All 2 branches missed.">                                            if (&quot;ModuleRange&quot;.equals(node.getId())) {</span>
-<span class="nc" id="L219">                                                deSpawn(node);</span>
+<span class="nc" id="L225">                                            Node node = (Node)i.next();</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">                                            if (&quot;ModuleRange&quot;.equals(node.getId())) {</span>
+<span class="nc" id="L227">                                                deSpawn(node);</span>
                                             }
-<span class="nc" id="L221">                                        }</span>
-<span class="nc" id="L222">                                    moduleRange = null;</span>
-<span class="nc" id="L223">                                } catch (InvalidObjectException ex) {</span>
-<span class="nc" id="L224">                                    Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L225">                                }</span>
+<span class="nc" id="L229">                                        }</span>
+<span class="nc" id="L230">                                    moduleRange = null;</span>
+<span class="nc" id="L231">                                } catch (InvalidObjectException ex) {</span>
+<span class="nc" id="L232">                                    Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L233">                                }</span>
                         }
                         
                         
-<span class="nc bnc" id="L229" title="All 2 branches missed.">                    }else if(n instanceof SpellImage){</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">                    }else if(n instanceof SpellImage){</span>
 
                     }
-<span class="nc" id="L232">                }</span>
-<span class="nc" id="L233">            }</span>
+<span class="nc" id="L240">                }</span>
+<span class="nc" id="L241">            }</span>
         });
-<span class="nc" id="L235">    }</span>
+<span class="nc" id="L243">    }</span>
     
-    public void showModuleStats(Module m){
-<span class="nc" id="L238">        lblStatsName.setText(String.format(&quot;Name: %s&quot;,m.getName()));</span>
-<span class="nc" id="L239">        lblStatsDescription.setText(String.format(&quot;Description: %s&quot;,&quot;No description available&quot;));</span>
-<span class="nc" id="L240">        lblStatsLevel.setText(String.format(&quot;Level: %d&quot;,m.getLevel()));</span>
-<span class="nc" id="L241">        lblStatsCosts.setText(String.format(&quot;Costs: %d&quot;,Math.round(m.getCost())));</span>
-<span class="nc bnc" id="L242" title="All 2 branches missed.">        if(m instanceof Defense){</span>
-<span class="nc" id="L243">            Defense d = (Defense)m;</span>
-<span class="nc" id="L244">            lblStatsROF.setText(String.format(&quot;Rate of fire: %d&quot;,d.getFrequecy()));</span>
-<span class="nc" id="L245">            lblStatsEffect.setText(String.format(&quot;Effect: %s&quot;,d.getEffectString()));</span>
-<span class="nc" id="L246">            lblStatsRange.setText(String.format(&quot;Range: %d&quot;,d.getRange()));</span>
-<span class="nc" id="L247">            lblStatsDamage.setText(String.format(&quot;Damage: %d&quot;,Math.round(d.getDamage())));</span>
+    /**
+     * Updates the module stats with the right values given by the parameter.
+     * @param m The module the stats should be shown of. Can be null. If null empty values will be shown.
+     */
+    public void drawModuleStats(Module m){
+<span class="nc bnc" id="L250" title="All 2 branches missed.">        if(m != null){</span>
+<span class="nc" id="L251">            lblStatsName.setText(String.format(&quot;Name: %s&quot;,m.getName()));</span>
+<span class="nc" id="L252">            lblStatsDescription.setText(String.format(&quot;Description: %s&quot;,&quot;No description available&quot;));</span>
+<span class="nc" id="L253">            lblStatsLevel.setText(String.format(&quot;Level: %d&quot;,m.getLevel()));</span>
+            /*if(GameEngine.getInstance().getPlayer().getBitcoins() &lt; m.getCost()){
+                lblStatsCosts.setStyle(&quot;-fx-text-fill: #ff0000;-fx-font-weight: bold&quot;);
+            }else{
+                lblStatsCosts.setStyle(&quot;-fx-color: black&quot;);
+            }*/
+<span class="nc" id="L259">            lblStatsCosts.setText(String.format(&quot;Costs: %d&quot;,Math.round(m.getCost())));</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">            if(m instanceof Defense){</span>
+<span class="nc" id="L261">                Defense d = (Defense)m;</span>
+<span class="nc" id="L262">                lblStatsROF.setText(String.format(&quot;Rate of fire: %d&quot;,d.getFrequecy()));</span>
+<span class="nc" id="L263">                lblStatsEffect.setText(String.format(&quot;Effect: %s&quot;,d.getEffectString()));</span>
+<span class="nc" id="L264">                lblStatsRange.setText(String.format(&quot;Range: %d&quot;,d.getRange()));</span>
+<span class="nc" id="L265">                lblStatsDamage.setText(String.format(&quot;Damage: %d&quot;,Math.round(d.getDamage())));</span>
+<span class="nc" id="L266">            }</span>
+        }else{
+<span class="nc" id="L268">            lblStatsName.setText(&quot;Name:&quot;);</span>
+<span class="nc" id="L269">            lblStatsDescription.setText(&quot;Description:&quot;);</span>
+<span class="nc" id="L270">            lblStatsLevel.setText(&quot;Level&quot;);</span>
+            /*if(GameEngine.getInstance().getPlayer().getBitcoins() &lt; m.getCost()){
+                lblStatsCosts.setStyle(&quot;-fx-text-fill: #ff0000;-fx-font-weight: bold&quot;);
+            }else{
+                lblStatsCosts.setStyle(&quot;-fx-color: black&quot;);
+            }*/
+<span class="nc" id="L276">            lblStatsCosts.setText(&quot;Costs:&quot;);</span>
+<span class="nc" id="L277">            lblStatsROF.setText(&quot;Rate of fire:&quot;);</span>
+<span class="nc" id="L278">            lblStatsEffect.setText(&quot;Effect:&quot;);</span>
+<span class="nc" id="L279">            lblStatsRange.setText(&quot;Range:&quot;);</span>
+<span class="nc" id="L280">            lblStatsDamage.setText(&quot;Damage:&quot;);</span>
         }
-<span class="nc" id="L249">    }</span>
+        
+<span class="nc" id="L283">    }</span>
     
     public void drawRoad(Road road){
-<span class="nc bnc" id="L252" title="All 2 branches missed.">        for(Path p : road.getPaths()){</span>
-<span class="nc" id="L253">            PathImage image = new PathImage(p);</span>
-<span class="nc" id="L254">            parent.addNode(image);</span>
-<span class="nc" id="L255">        }</span>
-<span class="nc" id="L256">    }</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">        for(Path p : road.getPaths()){</span>
+<span class="nc" id="L287">            PathImage image = new PathImage(p);</span>
+<span class="nc" id="L288">            parent.addNode(image);</span>
+<span class="nc" id="L289">        }</span>
+<span class="nc" id="L290">    }</span>
     
     /**
      * Draws an holographic version of the module you want to build.
@@ -261,144 +295,151 @@ public class GraphicsEngine{
      */
     public SpawnTargetImage drawModuleSpawnTarget(ModuleName module){
         
-<span class="nc" id="L264">        File file = null;</span>
+<span class="nc" id="L298">        File file = null;</span>
         
-<span class="nc" id="L266">        File unavailableFile = new File(&quot;src/hackattackfx/resources/unavailable.png&quot;);</span>
-<span class="nc" id="L267">        Image unavailableTargetImage = new Image(unavailableFile.toURI().toString());</span>
+<span class="nc" id="L300">        File unavailableFile = new File(&quot;src/hackattackfx/resources/unavailable.png&quot;);</span>
+<span class="nc" id="L301">        Image unavailableTargetImage = new Image(unavailableFile.toURI().toString());</span>
         Image availableTargetImage;
         
-<span class="nc bnc" id="L270" title="All 8 branches missed.">        switch(module){</span>
+<span class="nc bnc" id="L304" title="All 8 branches missed.">        switch(module){</span>
             case BITCOIN_MINER:
-<span class="nc" id="L272">                file = new File(&quot;src/hackattackfx/resources/DefenceSpawnTarget.png&quot;);</span>
-<span class="nc" id="L273">                availableTargetImage = new Image(file.toURI().toString());</span>
-<span class="nc" id="L274">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_BITCOINMINER_1, unavailableTargetImage, availableTargetImage);</span>
-<span class="nc" id="L275">                break;</span>
+<span class="nc" id="L306">                file = new File(&quot;src/hackattackfx/resources/DefenceSpawnTarget.png&quot;);</span>
+<span class="nc" id="L307">                availableTargetImage = new Image(file.toURI().toString());</span>
+<span class="nc" id="L308">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_BITCOINMINER_1, unavailableTargetImage, availableTargetImage);</span>
+<span class="nc" id="L309">                break;</span>
             case SOFTWARE_INJECTOR:
-<span class="nc" id="L277">                file = new File(&quot;src/hackattackfx/resources/DefenceSpawnTarget.png&quot;);</span>
-<span class="nc" id="L278">                availableTargetImage = new Image(file.toURI().toString());</span>
-<span class="nc" id="L279">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1, unavailableTargetImage, availableTargetImage);</span>
-<span class="nc" id="L280">                break;</span>
+<span class="nc" id="L311">                file = new File(&quot;src/hackattackfx/resources/DefenceSpawnTarget.png&quot;);</span>
+<span class="nc" id="L312">                availableTargetImage = new Image(file.toURI().toString());</span>
+<span class="nc" id="L313">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1, unavailableTargetImage, availableTargetImage);</span>
+<span class="nc" id="L314">                break;</span>
             case CPU_UPGRADE:
-<span class="nc" id="L282">                file = new File(&quot;src/hackattackfx/resources/DefenceSpawnTarget.png&quot;);</span>
-<span class="nc" id="L283">                availableTargetImage = new Image(file.toURI().toString());</span>
-<span class="nc" id="L284">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_CPUUPGRADE_1, unavailableTargetImage, availableTargetImage);</span>
-<span class="nc" id="L285">                break;</span>
+<span class="nc" id="L316">                file = new File(&quot;src/hackattackfx/resources/DefenceSpawnTarget.png&quot;);</span>
+<span class="nc" id="L317">                availableTargetImage = new Image(file.toURI().toString());</span>
+<span class="nc" id="L318">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_CPUUPGRADE_1, unavailableTargetImage, availableTargetImage);</span>
+<span class="nc" id="L319">                break;</span>
             case SNIPER_ANTIVIRUS:
-<span class="nc" id="L287">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/sniper_module.png&quot;);</span>
-<span class="nc" id="L288">                availableTargetImage = new Image(file.toURI().toString());</span>
-<span class="nc" id="L289">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, unavailableTargetImage, availableTargetImage);</span>
-<span class="nc" id="L290">                break;</span>
+<span class="nc" id="L321">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/sniper_module.png&quot;);</span>
+<span class="nc" id="L322">                availableTargetImage = new Image(file.toURI().toString());</span>
+<span class="nc" id="L323">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, unavailableTargetImage, availableTargetImage);</span>
+<span class="nc" id="L324">                break;</span>
             case BOTTLECAP_ANTIVIRUS:
-<span class="nc" id="L292">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/bottlecap_module.png&quot;);</span>
-<span class="nc" id="L293">                availableTargetImage = new Image(file.toURI().toString());</span>
-<span class="nc" id="L294">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, unavailableTargetImage, availableTargetImage);</span>
-<span class="nc" id="L295">                break;</span>
+<span class="nc" id="L326">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/bottlecap_module.png&quot;);</span>
+<span class="nc" id="L327">                availableTargetImage = new Image(file.toURI().toString());</span>
+<span class="nc" id="L328">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, unavailableTargetImage, availableTargetImage);</span>
+<span class="nc" id="L329">                break;</span>
             case SCALE_ANTIVIRUS:
-<span class="nc" id="L297">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/scale_module.png&quot;);</span>
-<span class="nc" id="L298">                availableTargetImage = new Image(file.toURI().toString());</span>
-<span class="nc" id="L299">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, unavailableTargetImage, availableTargetImage);</span>
-<span class="nc" id="L300">                break;</span>
+<span class="nc" id="L331">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/scale_module.png&quot;);</span>
+<span class="nc" id="L332">                availableTargetImage = new Image(file.toURI().toString());</span>
+<span class="nc" id="L333">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, unavailableTargetImage, availableTargetImage);</span>
+<span class="nc" id="L334">                break;</span>
             case MUSCLE_ANTIVIRUS:
-<span class="nc" id="L302">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/muscle_module.png&quot;);</span>
-<span class="nc" id="L303">                availableTargetImage = new Image(file.toURI().toString());</span>
-<span class="nc" id="L304">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, unavailableTargetImage, availableTargetImage);</span>
+<span class="nc" id="L336">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/muscle_module.png&quot;);</span>
+<span class="nc" id="L337">                availableTargetImage = new Image(file.toURI().toString());</span>
+<span class="nc" id="L338">                spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, unavailableTargetImage, availableTargetImage);</span>
                 break;
         }
         
-<span class="nc" id="L308">        Image targetimage = new Image(file.toURI().toString());</span>
-<span class="nc" id="L309">        spawnTarget.setImage(targetimage);</span>
-<span class="nc" id="L310">        spawnTarget.setOpacity(0.5);</span>
-<span class="nc" id="L311">        parent.addNode(spawnTarget);</span>
+<span class="nc" id="L342">        Image targetimage = new Image(file.toURI().toString());</span>
+<span class="nc" id="L343">        spawnTarget.setImage(targetimage);</span>
+<span class="nc" id="L344">        spawnTarget.setOpacity(0.5);</span>
+<span class="nc" id="L345">        parent.addNode(spawnTarget);</span>
         
-<span class="nc" id="L313">        return spawnTarget;</span>
+<span class="nc" id="L347">        return spawnTarget;</span>
     }
     
     public Ellipse drawModuleRange(Module module){
-<span class="nc" id="L317">        Ellipse rangecircle = null;</span>
-<span class="nc bnc" id="L318" title="All 2 branches missed.">        if(module instanceof Defense){</span>
-<span class="nc" id="L319">            Defense defense = (Defense)module;</span>
-<span class="nc" id="L320">            rangecircle = new Ellipse(defense.getRange(), defense.getRange());</span>
+<span class="nc" id="L351">        Ellipse rangecircle = null;</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">        if(module instanceof Defense){</span>
+<span class="nc" id="L353">            Defense defense = (Defense)module;</span>
+<span class="nc" id="L354">            rangecircle = new Ellipse(defense.getRange(), defense.getRange());</span>
         }
-<span class="nc" id="L322">        rangecircle.setCenterX(module.getPosition().x);</span>
-<span class="nc" id="L323">        rangecircle.setCenterY(module.getPosition().y);</span>
-<span class="nc" id="L324">        rangecircle.setStroke(Color.BLACK);</span>
-<span class="nc" id="L325">        rangecircle.setFill(null);</span>
-<span class="nc" id="L326">        rangecircle.setStrokeWidth(3);</span>
-<span class="nc" id="L327">        rangecircle.setId(&quot;ModuleRange&quot;);</span>
-<span class="nc" id="L328">        moduleRange = rangecircle;</span>
-<span class="nc" id="L329">        parent.addNode(rangecircle);</span>
-<span class="nc" id="L330">        return rangecircle;</span>
+<span class="nc" id="L356">        rangecircle.setCenterX(module.getPosition().x);</span>
+<span class="nc" id="L357">        rangecircle.setCenterY(module.getPosition().y);</span>
+<span class="nc" id="L358">        rangecircle.setStroke(Color.BLACK);</span>
+<span class="nc" id="L359">        rangecircle.setFill(null);</span>
+<span class="nc" id="L360">        rangecircle.setStrokeWidth(3);</span>
+<span class="nc" id="L361">        rangecircle.setId(&quot;ModuleRange&quot;);</span>
+<span class="nc" id="L362">        moduleRange = rangecircle;</span>
+<span class="nc" id="L363">        parent.addNode(rangecircle);</span>
+<span class="nc" id="L364">        return rangecircle;</span>
     }
     
     public void drawSpellRange(Spell spell){
         
-<span class="nc" id="L335">    }</span>
+<span class="nc" id="L369">    }</span>
     
     public void drawLabels(int wavenr, String name, double health, double bitcoins){
-<span class="nc" id="L338">        Platform.runLater(new Runnable(){</span>
+<span class="nc" id="L372">        Platform.runLater(new Runnable(){</span>
 
             @Override
             public void run() {
-<span class="nc" id="L342">                lblCurrentWave.setText(String.format(&quot;Wave: %d&quot;, wavenr));</span>
-<span class="nc" id="L343">                lblPlayerName.setText(String.format(&quot;Playername: %s&quot;, name));</span>
-<span class="nc" id="L344">                lblPlayerHealth.setText(String.format(&quot;Health: %s&quot;, health));</span>
-<span class="nc" id="L345">                lblPlayerBitcoins.setText(String.format(&quot;Bitcoins: %s&quot;, bitcoins));</span>
-<span class="nc" id="L346">            }</span>
+<span class="nc" id="L376">                lblCurrentWave.setText(String.format(&quot;Wave: %d&quot;, wavenr));</span>
+<span class="nc" id="L377">                lblPlayerName.setText(String.format(&quot;Playername: %s&quot;, name));</span>
+<span class="nc" id="L378">                lblPlayerHealth.setText(String.format(&quot;Health: %s&quot;, health));</span>
+<span class="nc" id="L379">                lblPlayerBitcoins.setText(String.format(&quot;Bitcoins: %s&quot;, bitcoins));</span>
+<span class="nc" id="L380">            }</span>
         });
         
-<span class="nc" id="L349">    }</span>
+<span class="nc" id="L383">    }</span>
     
     public void showEndGame(String name)
     {
-<span class="nc" id="L353">        Platform.runLater(new Runnable(){</span>
+<span class="nc" id="L387">        Platform.runLater(new Runnable(){</span>
 
             @Override
             public void run() {
 
-<span class="nc" id="L358">                Text text = new Text();</span>
-<span class="nc" id="L359">                text.setText(String.format(&quot;Game over, %s&quot;, name));</span>
-<span class="nc" id="L360">                text.setFill(Color.RED);</span>
-<span class="nc" id="L361">                text.setStyle(&quot;-fx-font-size: 40&quot;);</span>
-<span class="nc" id="L362">                double height = parent.getScene().getHeight();</span>
-<span class="nc" id="L363">                double width = parent.getScene().getWidth();</span>
-<span class="nc" id="L364">                height -= 40;</span>
-<span class="nc" id="L365">                width -= 280;</span>
-<span class="nc" id="L366">                text.setLayoutX(width/2);</span>
-<span class="nc" id="L367">                text.setLayoutY(height/2);</span>
+<span class="nc" id="L392">                Text text = new Text();</span>
+<span class="nc" id="L393">                text.setText(String.format(&quot;Game over, %s&quot;, name));</span>
+<span class="nc" id="L394">                text.setFill(Color.RED);</span>
+<span class="nc" id="L395">                text.setStyle(&quot;-fx-font-size: 40&quot;);</span>
+<span class="nc" id="L396">                double height = parent.getScene().getHeight();</span>
+<span class="nc" id="L397">                double width = parent.getScene().getWidth();</span>
+<span class="nc" id="L398">                height -= 40;</span>
+<span class="nc" id="L399">                width -= 280;</span>
+<span class="nc" id="L400">                text.setLayoutX(width/2);</span>
+<span class="nc" id="L401">                text.setLayoutY(height/2);</span>
                 
-<span class="nc" id="L369">                parent.addNode(text);</span>
-<span class="nc" id="L370">            }            </span>
+<span class="nc" id="L403">                parent.addNode(text);</span>
+<span class="nc" id="L404">            }            </span>
         });
-<span class="nc" id="L372">    }</span>
-
+<span class="nc" id="L406">    }</span>
     
+    public void setPauseButton(boolean running){
+<span class="nc bnc" id="L409" title="All 2 branches missed.">        if(running){</span>
+<span class="nc" id="L410">                pauseButton.setImage(pauseImage);</span>
+            }else{
+<span class="nc" id="L412">                pauseButton.setImage(playImage);</span>
+            }
+<span class="nc" id="L414">    }</span>
+
     /**
      * Display an error message for the user. First show the error image and error label, than, after 5 seconds, make them magicaly disappear
      * @param message Error message to be shown
      */
     public void showError(String message)
     {
-<span class="nc" id="L381">        Timer timer = new Timer();</span>
+<span class="nc" id="L422">        Timer timer = new Timer();</span>
         
         
-<span class="nc" id="L384">        Platform.runLater(new Runnable(){</span>
+<span class="nc" id="L425">        Platform.runLater(new Runnable(){</span>
             @Override
             public void run() {
-<span class="nc" id="L387">                errorImage.setVisible(true);</span>
-<span class="nc" id="L388">                errorLabel.setText(String.format(&quot;%s&quot;, message));</span>
-<span class="nc" id="L389">                errorLabel.setVisible(true);</span>
-<span class="nc" id="L390">            }</span>
+<span class="nc" id="L428">                errorImage.setVisible(true);</span>
+<span class="nc" id="L429">                errorLabel.setText(String.format(&quot;%s&quot;, message));</span>
+<span class="nc" id="L430">                errorLabel.setVisible(true);</span>
+<span class="nc" id="L431">            }</span>
         });
         
-<span class="nc" id="L393">        timer.scheduleAtFixedRate(new TimerTask(){</span>
+<span class="nc" id="L434">        timer.scheduleAtFixedRate(new TimerTask(){</span>
 
             @Override
             public void run() {
-<span class="nc" id="L397">                errorImage.setVisible(false);</span>
-<span class="nc" id="L398">                errorLabel.setVisible(false);</span>
-<span class="nc" id="L399">            }</span>
+<span class="nc" id="L438">                errorImage.setVisible(false);</span>
+<span class="nc" id="L439">                errorLabel.setVisible(false);</span>
+<span class="nc" id="L440">            }</span>
             
         }, 0 , 5000);
-<span class="nc" id="L402">    }</span>
+<span class="nc" id="L443">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

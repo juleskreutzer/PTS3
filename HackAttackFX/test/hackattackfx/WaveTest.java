@@ -12,6 +12,7 @@ import hackattackfx.exceptions.InvalidSpellNameException;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -80,8 +81,9 @@ public class WaveTest {
     @Test
     public void testMinions() {
         int counter = 0;
-        while(wave1.minions().hasNext())
-        {
+        Iterator <Minion> minions = wave1.minions();
+         while (minions.hasNext()) {
+            minions.next();
             counter++;
         }
         assertEquals(counter, 1);   

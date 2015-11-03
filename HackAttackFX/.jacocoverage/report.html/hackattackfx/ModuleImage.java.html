@@ -19,7 +19,7 @@ import javafx.scene.shape.*;
 public class ModuleImage extends ObjectImage {
 
     private Module module;
-    private boolean showRange;
+    private boolean hovered;
     
     public ModuleImage(Module m){
 <span class="fc" id="L25">        super(m);</span>
@@ -62,8 +62,8 @@ public class ModuleImage extends ObjectImage {
                 @Override
                 public void handle(MouseEvent event) {
                     
-<span class="nc" id="L65">                    showRange = true;</span>
-                    
+<span class="nc" id="L65">                    hovered = true;</span>
+<span class="nc" id="L66">                    GraphicsEngine.getInstance().drawModuleStats(module);</span>
 <span class="nc" id="L67">                }</span>
             
             });
@@ -72,8 +72,8 @@ public class ModuleImage extends ObjectImage {
                 @Override
                 public void handle(MouseEvent event) {
                     
-<span class="nc" id="L75">                    showRange = false;</span>
-                    
+<span class="nc" id="L75">                    hovered = false;</span>
+<span class="nc" id="L76">                    GraphicsEngine.getInstance().drawModuleStats(null);</span>
 <span class="nc" id="L77">                }</span>
                 
             });
@@ -81,11 +81,11 @@ public class ModuleImage extends ObjectImage {
 <span class="nc" id="L81">    }</span>
     
     /**
-     * Checks if this module should show its range
+     * Checks if this module is hovered
      * @return
      */
-    public boolean showRange(){
-<span class="nc" id="L88">            return showRange;</span>
+    public boolean hovered(){
+<span class="nc" id="L88">            return hovered;</span>
     }
     
 }
