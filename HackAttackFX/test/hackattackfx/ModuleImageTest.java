@@ -74,8 +74,7 @@ public class ModuleImageTest {
     templateDfSn = Data.DEFAULT_MODULE_DEFENSE_SNIPER_1;
     templateDfMu = Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1;
     defense = new Defense(templateDfBc, point1, 50, 50);
-    module = (Module) defense;
-    moduleImage = new ModuleImage(module); 
+    moduleImage = new ModuleImage(defense); 
     }
     
     @After
@@ -90,6 +89,14 @@ public class ModuleImageTest {
         BitcoinMiner bc = new BitcoinMiner(templateBcm, point1, 50, 50);
         SoftwareInjector si = new SoftwareInjector(templateSwi, point1, 50, 50);
         CPUUpgrade cpu = new CPUUpgrade(templateCu, point1, 50, 50);
+        
+        ModuleImage m = new ModuleImage(defense1);
+        ModuleImage m2 = new ModuleImage(defense2);
+        ModuleImage m3 = new ModuleImage(defense3);
+        ModuleImage m4 = new ModuleImage(defense4);
+        ModuleImage m5 = new ModuleImage(bc);
+        ModuleImage m6 = new ModuleImage(si);
+        ModuleImage m7 = new ModuleImage(cpu);
     }
     /**
      * Test of showRange method, of class ModuleImage.

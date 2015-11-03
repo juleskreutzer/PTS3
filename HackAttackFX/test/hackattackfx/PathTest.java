@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
 public class PathTest {
     Path path1;
     Path path2;
+    Path path3;
+    Path path4;
     Point start;
 
     public PathTest() {
@@ -45,13 +47,20 @@ public class PathTest {
     public void tearDown() {
     }
 
+    @Test
+    public void testContructor() {
+        path1 = new Path(start, 10, Path.Direction.Right);
+        path2 = new Path(start, 10, Path.Direction.Up);
+        path3 = new Path(start, 10, Path.Direction.Left);
+        path4 = new Path(start, 10, Path.Direction.Down);
+    }
+    
     /**
      * Test of getStart method, of class Path.
      */
     @Test
     public void testGetStart() {
-
-        
+        assertEquals(path1.getStart(), start);
     }
 
     /**
@@ -59,7 +68,8 @@ public class PathTest {
      */
     @Test
     public void testGetEnd() {
-        
+        Point end = new Point((start.x + 10), start.y);
+        assertEquals(path1.getEnd(), end);
     }
 
     /**
@@ -69,7 +79,6 @@ public class PathTest {
     public void testGetLength() {
         assertEquals(path1.getLength(), 10);
         assertEquals(path2.getLength(), 10);
-      
     }
 
     /**
@@ -77,7 +86,7 @@ public class PathTest {
      */
     @Test
     public void testGetDirection() {
-     
+     assertEquals(path1.getDirection(), Path.Direction.Right);
     }
     
 }
