@@ -40,6 +40,9 @@ public class GraphicsEngine{
     private Ellipse moduleRange;
     private double updateTime;
     
+    private ImageView pauseButton;
+    private Image pauseImage;
+    private Image playImage;
     private Label lblCurrentWave;
     private Label lblPlayerName;
     private Label lblPlayerHealth;
@@ -59,6 +62,11 @@ public class GraphicsEngine{
     private GraphicsEngine(){
         instance = this;
         parent = FXMLDocumentController.getInstance();
+        pauseButton = (ImageView)parent.getNode("btnPause", null);
+        File pause = new File("src/hackattackfx/resources/interface/Icons/PauseButton.png");
+        pauseImage = new Image(pause.toURI().toString());
+        File play = new File("src/hackattackfx/resources/interface/Icons/PlayButton.png");
+        playImage = new Image(play.toURI().toString());
         lblCurrentWave = (Label)parent.getNode("lblCurrentWave",null);
         lblPlayerName = (Label)parent.getNode("lblPlayerName",null);
         lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth",null);
@@ -177,7 +185,7 @@ public class GraphicsEngine{
             @Override
             public void run() {
                 List<Node> nodes = parent.getAllNodes();
-
+                
                 for(Node n : nodes){
                     if(n instanceof MinionImage){
                         MinionImage mi = (MinionImage)n;
@@ -238,6 +246,11 @@ public class GraphicsEngine{
         lblStatsName.setText(String.format("Name: %s",m.getName()));
         lblStatsDescription.setText(String.format("Description: %s","No description available"));
         lblStatsLevel.setText(String.format("Level: %d",m.getLevel()));
+        /*if(GameEngine.getInstance().getPlayer().getBitcoins() < m.getCost()){
+            lblStatsCosts.setStyle("-fx-text-fill: #ff0000;-fx-font-weight: bold");
+        }else{
+            lblStatsCosts.setStyle("-fx-color: black");
+        }*/
         lblStatsCosts.setText(String.format("Costs: %d",Math.round(m.getCost())));
         if(m instanceof Defense){
             Defense d = (Defense)m;
@@ -370,8 +383,15 @@ public class GraphicsEngine{
             }            
         });
     }
-
     
+    public void setPauseButton(boolean running){
+        if(running){
+                pauseButton.setImage(pauseImage);
+            }else{
+                pauseButton.setImage(playImage);
+            }
+    }
+
     /**
      * Display an error message for the user. First show the error image and error label, than, after 5 seconds, make them magicaly disappear
      * @param message Error message to be shown

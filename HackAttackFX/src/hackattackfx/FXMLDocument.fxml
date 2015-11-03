@@ -22,6 +22,11 @@
         <Label fx:id="lblPlayerBitcoins" layoutX="1193.0" layoutY="25.0" prefHeight="17.0" prefWidth="136.0" text="Player Bitcoins" />
         <Label fx:id="lblPlayerHealth" layoutX="1057.0" layoutY="25.0" prefHeight="17.0" prefWidth="136.0" text="Player Health" />
         <Label id="lblCurrentWave" layoutX="785.0" layoutY="28.0" prefHeight="17.0" prefWidth="136.0" text="Wave:" />
+        <ImageView fx:id="btnPause" fitHeight="40.0" fitWidth="40.0" layoutX="1309.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="hackattackfx/resources/interface/Icons/PauseButton.png" backgroundLoading="true" />
+          </image>
+        </ImageView>
       </children>
     </AnchorPane>
     <AnchorPane id="guiControls" layoutX="0.0" layoutY="597.0" prefHeight="100.0" prefWidth="1366.0" style="-fx-border-color: #e2e2e2;&#10;-fx-border-width: 2 0 0 0;">

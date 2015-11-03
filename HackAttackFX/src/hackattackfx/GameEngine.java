@@ -113,7 +113,7 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     /**
-     * Mostly used to draw the initial components like the bases and roads
+     * Mostly used to draw the initial components like the bases and roads and event handlers
      */
     private void preStart(){
         graphicsEngine.drawRoad(map.getRoad());
@@ -387,6 +387,17 @@ public class GameEngine extends Thread implements MouseListener {
                 }
             }
         });
+        
+        ImageView pausebutton = (ImageView)graphicsEngine.getNode("btnPause",null);
+        pausebutton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                gameRunning = !gameRunning;
+                graphicsEngine.setPauseButton(gameRunning);
+            }
+        
+        });
     }
     
     /**
@@ -512,6 +523,14 @@ public class GameEngine extends Thread implements MouseListener {
         return new Wave(waveNumber,1 + 0.1*waveNumber,playerA,bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);
     }
     
+    /**
+     * Returns the player object from the player that's currently playing. So no enemy Player is returned.
+     * @return Current user
+     */
+    public Player getPlayer(){
+        return playerA;
+    }
+    
     public void setOnTickListener(OnExecuteTick callback){
         listeners.add(callback);
     }
@@ -606,6 +625,10 @@ public class GameEngine extends Thread implements MouseListener {
                 }
             }
             return false;
+    }
+    
+    public boolean gameRunning(){
+        return gameRunning;
     }
     
     @Override
