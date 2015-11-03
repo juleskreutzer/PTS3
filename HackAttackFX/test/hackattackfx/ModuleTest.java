@@ -122,12 +122,4 @@ public class ModuleTest {
     @Test
     public void testGetName() {
     }
-
-    public class ModuleImpl extends Module {
-
-        public ModuleImpl() {
-            super(0.0, null, 0, 0, null, 0);
-        }
-    }
-    
 }
