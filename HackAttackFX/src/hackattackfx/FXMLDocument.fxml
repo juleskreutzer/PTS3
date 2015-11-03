@@ -18,42 +18,42 @@
           </image>
         </ImageView>
         <Label fx:id="errorLabel" layoutX="47.0" layoutY="26.0" prefHeight="17.0" prefWidth="752.0" text="Error Label" textFill="RED" />
-        <Label fx:id="lblPlayerName" layoutX="297.0" layoutY="27.0" prefHeight="17.0" prefWidth="136.0" text="Player Name" />
-        <Label fx:id="lblPlayerBitcoins" layoutX="731.0" layoutY="26.0" prefHeight="17.0" prefWidth="136.0" text="Player Bitcoins" />
-        <Label fx:id="lblPlayerHealth" layoutX="520.0" layoutY="27.0" prefHeight="17.0" prefWidth="136.0" text="Player Health" />
+        <Label fx:id="lblPlayerName" layoutX="759.0" layoutY="26.0" prefHeight="17.0" prefWidth="136.0" text="Player Name" />
+        <Label fx:id="lblPlayerBitcoins" layoutX="1193.0" layoutY="25.0" prefHeight="17.0" prefWidth="136.0" text="Player Bitcoins" />
+        <Label fx:id="lblPlayerHealth" layoutX="982.0" layoutY="26.0" prefHeight="17.0" prefWidth="136.0" text="Player Health" />
       </children>
     </AnchorPane>
     <AnchorPane id="guiControls" layoutX="0.0" layoutY="597.0" prefHeight="100.0" prefWidth="1366.0" style="-fx-border-color: #e2e2e2;&#10;-fx-border-width: 2 0 0 0;">
       <children>
         <ImageView id="buildScaleAV" fitHeight="40.0" fitWidth="40.0" layoutX="50.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hackattackfx/resources/interface/module/40x40/scale_module.png" backgroundLoading="true" />
+            <Image url="hackattackfx/resources/interface/module/40x40/scale_module.png" backgroundLoading="false" />
           </image>
         </ImageView>
         <ImageView id="buildBottlecapAV" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hackattackfx/resources/interface/module/40x40/bottlecap_module.png" backgroundLoading="true" />
+            <Image url="hackattackfx/resources/interface/module/40x40/bottlecap_module.png" backgroundLoading="false" />
           </image>
         </ImageView>
         <ImageView id="buildMuscleAV" fitHeight="40.0" fitWidth="40.0" layoutX="90.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hackattackfx/resources/interface/module/40x40/muscle_module.png" backgroundLoading="true" />
+            <Image url="hackattackfx/resources/interface/module/40x40/muscle_module.png" backgroundLoading="false" />
           </image>
         </ImageView>
         <ImageView id="buildSniperAV" fitHeight="40.0" fitWidth="40.0" layoutX="130.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="hackattackfx/resources/interface/module/40x40/sniper_module.png" backgroundLoading="true" />
+            <Image url="hackattackfx/resources/interface/module/40x40/sniper_module.png" backgroundLoading="false" />
           </image>
         </ImageView>
         <AnchorPane id="moduleStats" layoutX="966.0" layoutY="0.0" prefHeight="100.0" prefWidth="400.0" style="-fx-border-color: #e2e2e2;&#10;-fx-border-width: 0 0 0 2;">
           <children>
-            <Label id="statsName" layoutX="14.0" layoutY="14.0" text="Name:" />
+            <Label fx:id="lblStatsName" layoutX="14.0" layoutY="14.0" text="Name:" />
             <Label id="statsCosts" layoutX="320.0" layoutY="14.0" text="Costs:" />
-            <Label id="statsEffect" layoutX="14.0" layoutY="62.0" text="Effect:" />
-            <Label id="statsDescription" layoutX="14.0" layoutY="30.0" text="Description:" />
-            <Label id="statsROF" layoutX="13.0" layoutY="46.0" text="Rate of fire:" />
-            <Label id="statsRange" layoutX="14.0" layoutY="78.0" text="Range:" />
-            <Label id="statsLevel" layoutX="225.0" layoutY="14.0" text="Level:" />
+            <Label fx:id="lblStatsEffect" layoutX="14.0" layoutY="62.0" text="Effect:" />
+            <Label fx:id="lblStatsDescription" layoutX="14.0" layoutY="30.0" text="Description:" />
+            <Label fx:id="lblStatsROF" layoutX="13.0" layoutY="46.0" text="Rate of fire:" />
+            <Label fx:id="lblStatsRange" layoutX="14.0" layoutY="78.0" text="Range:" />
+            <Label id="statsLevel" fx:id="lblStatsLevel" layoutX="225.0" layoutY="14.0" text="Level:" />
           </children>
         </AnchorPane>
       </children>

@@ -12,10 +12,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 /**
  *
@@ -76,29 +76,31 @@ public class FXMLDocumentController implements Initializable {
         return instance == null ? new FXMLDocumentController() : instance;
     }
     
+    
     /**
-     * Returns a node selected by the given id.
-     * @param fxid 
-     * @return If found the corresponding Node. If not return null
+     * This method is used to find a node in the scene. 
+     * @param id The id of the node that's given runtime or whithin the scene builder.
+     * @param parent The parent container the node will be searched in. If this is null, the main scene will be used as parent.
+     * @return The node with the corresponding id.
      */
-    public Node getNode(String id){
-        ObservableList list = window.getChildren();
-        for(Object n : list){
-            if(n instanceof Node){
-                Node node = (Node)n;
-                if(node instanceof Parent){
-                    Parent p = (Parent)node;
-                    for(Node child : p.getChildrenUnmodifiable()){
-                        String s = child.getId();
-                        if (child.getId() != null && s.equals(id)){
-                            return child;
-                        }
-                    }
-                }
-                String s = node.getId();
-                if (node.getId() != null && s.equals(id)){
+    public Node getNode(String id, Pane parent){
+        ObservableList<Node> list;
+        if(parent == null){
+            list = window.getChildren();
+        }else{
+            list = parent.getChildren();
+        }
+        for(Node n : list){
+            if(n instanceof AnchorPane){
+                AnchorPane p = (AnchorPane)n;
+                Node node = getNode(id, p);
+                if(node != null){
                     return node;
                 }
+            }
+            String s = n.getId();
+            if (n.getId() != null && s.equals(id)){
+                return n;
             }
         }
         return null;

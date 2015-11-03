@@ -115,7 +115,7 @@ public class GameEngine extends Thread implements MouseListener {
         graphicsEngine.drawRoad(map.getRoad());
         
         // Initialize all GUI buttons
-        ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV");
+        ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV",null);
         sniperav.setOnMouseClicked(new EventHandler<MouseEvent>(){
  
             @Override
@@ -171,12 +171,16 @@ public class GameEngine extends Thread implements MouseListener {
 
             @Override
             public void handle(MouseEvent event) {
-                
+                try {
+                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, null, 0,0);
+                    graphicsEngine.showModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        
         });
         
-        ImageView scaleav = (ImageView)graphicsEngine.getNode("buildScaleAV");
+        ImageView scaleav = (ImageView)graphicsEngine.getNode("buildScaleAV",null);
         scaleav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
  
             @Override
@@ -230,8 +234,20 @@ public class GameEngine extends Thread implements MouseListener {
             }
             
         });
+        scaleav.setOnMouseEntered(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, null, 0,0);
+                    graphicsEngine.showModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         
-        ImageView bottlecapav = (ImageView)graphicsEngine.getNode("buildBottlecapAV");
+        ImageView bottlecapav = (ImageView)graphicsEngine.getNode("buildBottlecapAV",null);
         bottlecapav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
  
             @Override
@@ -287,8 +303,20 @@ public class GameEngine extends Thread implements MouseListener {
             }
             
         });
+        bottlecapav.setOnMouseEntered(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, null, 0,0);
+                    graphicsEngine.showModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         
-        ImageView muscleav = (ImageView)graphicsEngine.getNode("buildMuscleAV");
+        ImageView muscleav = (ImageView)graphicsEngine.getNode("buildMuscleAV",null);
         muscleav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
  
             @Override
@@ -342,6 +370,18 @@ public class GameEngine extends Thread implements MouseListener {
                 });
             }
             
+        });
+        muscleav.setOnMouseEntered(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, null, 0,0);
+                    graphicsEngine.showModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         });
     }
     

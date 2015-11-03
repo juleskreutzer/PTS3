@@ -164,6 +164,10 @@ public class Defense extends Module {
         return effect;
     }
     
+    public int getFrequecy(){
+        return frequency;
+    }
+    
     /**
      * Sets the Defense modules effect.
      * @param e

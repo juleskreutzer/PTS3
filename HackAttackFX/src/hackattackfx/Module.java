@@ -33,7 +33,6 @@ abstract public class Module {
         this.moduleName = name;
         this.level = level;
         
-        getName();
     }
     
     /**
@@ -133,34 +132,36 @@ abstract public class Module {
      * Get the name of the module as a String
      * @return the name of the object as a String
      */
-    protected void getName()
-    {        
-        switch(moduleName)
-        {
-            case BITCOIN_MINER:
-                this.displayName = "Bitcoin Miner";
-                break;
-            case SOFTWARE_INJECTOR:
-                this.displayName = "Software Injector";
-                break;
-            case CPU_UPGRADE:
-                this.displayName = "CPU Upgrade";
-                break;
-            case SNIPER_ANTIVIRUS:
-                this.displayName = "Sniper Antivirus";
-                break;
-            case BOTTLECAP_ANTIVIRUS:
-                this.displayName = "Bottlecap Antivirus";
-                break;
-            case SCALE_ANTIVIRUS:
-                this.displayName = "Scale Antivirus";
-                break;
-            case MUSCLE_ANTIVIRUS:
-                this.displayName = "Muscle Antivirus";
-                break;
-            default:
-                throw new IllegalArgumentException();
+    protected String getName(){
+        if(displayName == null){
+            switch(moduleName)
+            {
+                case BITCOIN_MINER:
+                    this.displayName = "Bitcoin Miner";
+                    break;
+                case SOFTWARE_INJECTOR:
+                    this.displayName = "Software Injector";
+                    break;
+                case CPU_UPGRADE:
+                    this.displayName = "CPU Upgrade";
+                    break;
+                case SNIPER_ANTIVIRUS:
+                    this.displayName = "Sniper Antivirus";
+                    break;
+                case BOTTLECAP_ANTIVIRUS:
+                    this.displayName = "Bottlecap Antivirus";
+                    break;
+                case SCALE_ANTIVIRUS:
+                    this.displayName = "Scale Antivirus";
+                    break;
+                case MUSCLE_ANTIVIRUS:
+                    this.displayName = "Muscle Antivirus";
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
         }
+        return displayName;
     }
     
     /**
