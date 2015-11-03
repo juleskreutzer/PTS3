@@ -179,23 +179,18 @@ public class MinionTest {
      */
     @Test
     public void testGetSetDamage() {
-        minion1.set
+        minion1.setDamage(1);
+        assertEquals(minion1.getDamage(), 1, 0);
+        
     }
 
     /**
      * Test of getEncrypted method, of class Minion.
      */
     @Test
-    public void testGetEncrypted() {
-
-    }
-
-    /**
-     * Test of setEncrypted method, of class Minion.
-     */
-    @Test
-    public void testSetEncrypted() {
-    
+    public void testGetSetEncrypted() {
+        minion1.setEncrypted(true);
+        assertTrue(minion1.getEncrypted());
     }
 
     /**
@@ -203,7 +198,8 @@ public class MinionTest {
      */
     @Test
     public void testGetReward() {
-
+        minion1.setReward(1);
+        assertEquals(minion1.getReward(), 1, 0);
     }
 
     /**
@@ -222,7 +218,7 @@ public class MinionTest {
      */
     @Test
     public void testGetMinionType() {
-
+        assertEquals(minion1.getMinionType(), minionTemplate.getMinionType());
     }
 
     /**
@@ -230,7 +226,7 @@ public class MinionTest {
      */
     @Test
     public void testReceiveDamage() {
-   
+        //Can't implement because of callback.
     }
     
 }

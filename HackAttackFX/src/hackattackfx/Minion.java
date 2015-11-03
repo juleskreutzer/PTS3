@@ -214,7 +214,7 @@ public class Minion implements IMoveable {
         return damage;
     }
     
-    public double setDamage(double damage){
+    public void setDamage(double damage){
         this.damage = damage;
     }
     
@@ -243,6 +243,10 @@ public class Minion implements IMoveable {
     public double getReward()
     {
         return this.reward;
+    }
+    
+    public void setReward(double reward){
+        this.reward = reward;
     }
     
     /**
