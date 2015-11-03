@@ -136,6 +136,9 @@ public class Defense extends Module {
     {
         String result;
         
+        if(effect == null){
+            return "";
+        }
         switch(effect)
         {
             case SLOWED:

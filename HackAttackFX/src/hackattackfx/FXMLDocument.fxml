@@ -48,12 +48,12 @@
         <AnchorPane id="moduleStats" layoutX="966.0" layoutY="0.0" prefHeight="100.0" prefWidth="400.0" style="-fx-border-color: #e2e2e2;&#10;-fx-border-width: 0 0 0 2;">
           <children>
             <Label fx:id="lblStatsName" layoutX="14.0" layoutY="14.0" text="Name:" />
-            <Label id="statsCosts" layoutX="320.0" layoutY="14.0" text="Costs:" />
+            <Label id="lblStatsCosts" layoutX="320.0" layoutY="14.0" text="Costs:" />
             <Label fx:id="lblStatsEffect" layoutX="14.0" layoutY="62.0" text="Effect:" />
             <Label fx:id="lblStatsDescription" layoutX="14.0" layoutY="30.0" text="Description:" />
             <Label fx:id="lblStatsROF" layoutX="13.0" layoutY="46.0" text="Rate of fire:" />
             <Label fx:id="lblStatsRange" layoutX="14.0" layoutY="78.0" text="Range:" />
-            <Label id="statsLevel" fx:id="lblStatsLevel" layoutX="225.0" layoutY="14.0" text="Level:" />
+            <Label fx:id="lblStatsLevel" layoutX="225.0" layoutY="14.0" text="Level:" />
           </children>
         </AnchorPane>
       </children>
