@@ -5,8 +5,6 @@
  */
 package hackattackfx;
 
-import hackattackfx.GameEngine.OnExecuteTick;
-import hackattackfx.enums.MinionType;
 import hackattackfx.templates.MinionTemplate;
 import java.awt.Point;
 import java.util.ArrayList;

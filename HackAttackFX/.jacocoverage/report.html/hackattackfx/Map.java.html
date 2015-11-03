@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Map.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">Map.java</span></div><h1>Map.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+import hackattackfx.exceptions.FloatingPathException;
+import java.awt.Point;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+/**
+ * This is an implementation that works for a single player game.
+ * In the future different methods will be added to ensure multiplayer will be possible.
+ * @author Igor, Jasper Rouwhorst
+ */
+public class Map {
+    private static Map instance;
+    
+    private static Road road; //The road that belongs to the map.
+    private static Point baseLocationA; //The base location of player A.
+    private static Point baseLocationB; //The base location of player B.
+    
+    /**
+     * Constructor of Map, creates a new instance of Map.
+     */
+<span class="fc" id="L28">    private Map(){</span>
+        
+<span class="fc" id="L30">        road = new Road();</span>
+        
+<span class="fc" id="L32">        baseLocationA = new Point(135,350);</span>
+<span class="fc" id="L33">        baseLocationB = new Point(500,500); </span>
+        
+        //Create the map's road out of Paths.
+        try {
+<span class="fc" id="L37">            road.addPath(new Path(new Point(baseLocationA.x, baseLocationA.y),50, Path.Direction.Right));</span>
+<span class="fc" id="L38">            road.addPath(new Path(road.getEnd(),70, Path.Direction.Up));</span>
+<span class="fc" id="L39">            road.addPath(new Path(road.getEnd(),360, Path.Direction.Right));</span>
+<span class="fc" id="L40">            road.addPath(new Path(road.getEnd(),140, Path.Direction.Down));</span>
+<span class="fc" id="L41">            road.addPath(new Path(road.getEnd(),180, Path.Direction.Right));</span>
+<span class="fc" id="L42">            road.addPath(new Path(road.getEnd(),140, Path.Direction.Up));</span>
+<span class="fc" id="L43">            road.addPath(new Path(road.getEnd(),95, Path.Direction.Right));</span>
+<span class="fc" id="L44">            road.addPath(new Path(road.getEnd(),165, Path.Direction.Up));</span>
+<span class="fc" id="L45">            road.addPath(new Path(road.getEnd(),360, Path.Direction.Right));</span>
+<span class="fc" id="L46">            road.addPath(new Path(road.getEnd(),70, Path.Direction.Down));</span>
+<span class="fc" id="L47">            road.addPath(new Path(road.getEnd(),50, Path.Direction.Right));</span>
+            
+<span class="nc" id="L49">        } catch (FloatingPathException ex) {</span>
+<span class="nc" id="L50">            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L51">        }</span>
+<span class="fc" id="L52">    }</span>
+    
+    public static Map getInstance(){
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        return instance == null ? new Map() : instance;</span>
+    }
+    
+    public Road getRoad(){
+<span class="fc" id="L59">        return road;</span>
+    }
+    
+    public Point getBaseLocationA(){
+<span class="fc" id="L63">        return baseLocationA;</span>
+    }
+    
+    public Point getBaseLocationB(){
+<span class="nc" id="L67">        return baseLocationB;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

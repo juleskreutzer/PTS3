@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Minion.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">Minion.java</span></div><h1>Minion.java</h1><pre class="source lang-java linenums">package hackattackfx;
+
+import hackattackfx.GameEngine.OnExecuteTick;
+import hackattackfx.templates.MinionTemplate;
+import hackattackfx.enums.MinionType;
+import hackattackfx.exceptions.InvalidObjectException;
+import hackattackfx.exceptions.UnsubscribeNonListenerException;
+import hackattackfx.interfaces.IMoveable;
+import java.awt.Point;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.Node;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Jules Kreutzer, Jasper Rouwhorst
+ */
+public class Minion implements IMoveable {
+
+    public interface MinionHeartbeat{
+    //TODO Check if (hp &lt;= 0)
+        void onMinionDeath(Minion minion, Boolean reachedBase);
+    }
+    
+    //Fields
+    private MinionType minionType; //The MinionType of the minion
+    private Player enemyPlayer; //The player the minions are supposed to attack.
+    private double health; //The ammunt of health the minion currently has.
+    private double initialHealth; // the health this minion had when created.
+    private double speed; //The rate at which the minion moves towards the targetPosition.
+    private Point.Double position; //The current position of the minion.
+    private double damage; //The damage the minion will deal upon reching enemyPlayer.
+    
+    private Point targetPosition; // The position this minion is currently moving to. Can change.
+    private boolean encrypted; //Is true when the minion is encrypted.
+    private double reward; //The ammount of bitcoins the minion is worth, the opposing player gains this upon the minions destruction.
+    
+    private OnExecuteTick tickListener;
+    private MinionHeartbeat heartbeat;
+    
+    // Constructor
+    /**
+     * The constructor will get the data to create the minion instance from de DATA-class
+     * according to the minionType
+     * @param type is the MinionType of the minion than needs to be created
+     * @param callback this callback triggers the {@link MinionHeartBeat.onMinionDeath(Minion minion)} when a minion dies
+     */
+    public Minion(MinionType type)
+<span class="nc" id="L56">    {</span>
+<span class="nc" id="L57">        throw new UnsupportedOperationException(&quot;The minion class doesn't get it\'s data from the data-class yet.&quot;);</span>
+    }
+    
+    /**
+     * The minion, loaded from MinionTemplate with some modified stats.
+     * @param minion, the template of minion that is loaded from the database.
+     * @param multiplier, the multiplier that is used to increase certain values.
+     */
+    public Minion(MinionTemplate minion, double multiplier, Player enemyPlayer)
+<span class="fc" id="L66">    {</span>
+<span class="fc" id="L67">        health = (minion.getHealth() * multiplier);</span>
+<span class="fc" id="L68">        initialHealth = health;</span>
+<span class="fc" id="L69">        speed = (minion.getSpeed());</span>
+<span class="fc" id="L70">        damage = (minion.getDamage());</span>
+<span class="fc" id="L71">        reward = (minion.getReward());</span>
+<span class="fc" id="L72">        encrypted = minion.getEncrypted();</span>
+<span class="fc" id="L73">        minionType = minion.getMinionType();</span>
+<span class="fc" id="L74">        this.enemyPlayer = enemyPlayer;</span>
+<span class="fc" id="L75">    }</span>
+    
+    public double getHealthInPercentage() {
+<span class="nc" id="L78">        return (this.health / this.initialHealth) * 100;</span>
+    }
+    
+    // The minion will response to ticks from now on
+    public void activate(MinionHeartbeat callback){
+<span class="nc" id="L83">        this.heartbeat = callback;</span>
+<span class="nc" id="L84">        tickListener = new OnExecuteTick(){</span>
+            @Override
+            public void onTick(long elapsedtime) {
+<span class="nc" id="L87">                move(elapsedtime);</span>
+<span class="nc" id="L88">            }</span>
+            
+        };
+<span class="nc" id="L91">        GameEngine.getInstance().setOnTickListener(tickListener);</span>
+<span class="nc" id="L92">    }</span>
+    
+    public void deactivate(){
+        try {
+<span class="nc" id="L96">            GameEngine.getInstance().unsubscribeListener(tickListener);</span>
+<span class="nc" id="L97">        } catch (UnsubscribeNonListenerException ex) {</span>
+<span class="nc" id="L98">            Logger.getLogger(Minion.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L99">        }</span>
+<span class="nc" id="L100">    }</span>
+    
+    //TODO Doesn't Use elapsedTime yet.
+    @Override
+    public void move(double elapsedtime) {
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if(targetPosition == null){</span>
+<span class="fc" id="L106">            targetPosition = Map.getInstance().getRoad().getBegin();</span>
+        }
+        
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if(position.x &lt; targetPosition.x){</span>
+<span class="fc" id="L110">            position.x += (speed);</span>
+            // Correct the position if the minions new position is over the targetposition
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">            if(position.x &gt;= targetPosition.x){</span>
+<span class="nc" id="L113">                position.x = targetPosition.x;</span>
+            }
+        }
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        else if(position.x &gt; targetPosition.x){</span>
+<span class="nc" id="L117">            position.x -= (speed);</span>
+            // Correct the position if the minions new position is over the targetposition
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            if(position.x &lt;= targetPosition.x){</span>
+<span class="nc" id="L120">                position.x = targetPosition.x;</span>
+            }
+        }
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        else if(position.y &lt; targetPosition.y){</span>
+<span class="nc" id="L124">            position.y += (speed);</span>
+            // Correct the position if the minions new position is over the targetposition
+<span class="nc bnc" id="L126" title="All 2 branches missed.">            if(position.y &gt;= targetPosition.y){</span>
+<span class="nc" id="L127">                position.y = targetPosition.y;</span>
+            }
+        }
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        else if(position.y &gt; targetPosition.y){</span>
+<span class="nc" id="L131">            position.y -= (speed);</span>
+            // Correct the position if the minions new position is over the targetposition
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            if(position.y &lt;= targetPosition.y){</span>
+<span class="nc" id="L134">                position.y = targetPosition.y;</span>
+            }
+        }
+        else{
+<span class="nc" id="L138">            List&lt;Path&gt; paths = Map.getInstance().getRoad().getPaths();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">            for(Path p : paths){</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">                if(targetPosition.x == p.getStart().x &amp;&amp; targetPosition.y == p.getStart().y){</span>
+<span class="nc" id="L141">                    targetPosition = p.getEnd();</span>
+<span class="nc" id="L142">                    break;</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">                }else if(targetPosition.x == p.getEnd().x &amp;&amp; targetPosition.y == p.getEnd().y){</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                    if(paths.indexOf(p) != paths.size() -1){</span>
+<span class="nc" id="L145">                        targetPosition = paths.get(paths.indexOf(p)+1).getEnd();</span>
+                    }
+                    break;
+                }
+<span class="nc" id="L149">            }</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">            if (position.x == targetPosition.x &amp;&amp; position.y == targetPosition.y) {</span>
+                // minion has reached the end of the path
+<span class="nc" id="L152">                this.health = 0;</span>
+<span class="nc" id="L153">                heartbeat.onMinionDeath(this, true);</span>
+            }
+        }
+        
+<span class="fc" id="L157">    }</span>
+
+    @Override
+    public Object getCollision() {
+<span class="nc" id="L161">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+    
+    /**
+     * Get the health of the minion
+     * @return return the health of the minion as a double
+     */
+    public double getHealth()
+    {
+<span class="fc" id="L170">        return this.health;</span>
+    }
+    
+    /**
+     * This method will change the health of the minion to the amount given
+     * @param health the amount of health for the minion
+     */
+    public void setHealth(double health)
+    {
+<span class="fc" id="L179">        this.health = health;</span>
+<span class="fc" id="L180">    }</span>
+    
+    /**
+     * Get the x,y coordinate of a minion
+     * @return returns an array with the x and y coordinate of the minion
+     */
+    public Point getPosition()
+    {
+<span class="fc" id="L188">        return new Point((int)position.x, (int)position.y);</span>
+    }
+    
+    public void setPosition(Point pos){
+<span class="fc" id="L192">        this.position = new Point.Double(pos.x, pos.y);</span>
+<span class="fc" id="L193">    }</span>
+    
+    /**
+     * Get the speed of the minion
+     * @return the speed of the minion
+     */
+    public double getSpeed()
+    {
+<span class="fc" id="L201">        return this.speed;</span>
+    }
+    
+    /**
+     * Set the speed of the minion to the amount given
+     * @param speed the speed for the minion
+     */
+    public void setSpeed(double speed)
+    {
+<span class="fc" id="L210">        this.speed = speed;</span>
+<span class="fc" id="L211">    }</span>
+    
+    public double getDamage(){
+<span class="fc" id="L214">        return damage;</span>
+    }
+    
+    public void setDamage(double damage){
+<span class="fc" id="L218">        this.damage = damage;</span>
+<span class="fc" id="L219">    }</span>
+    
+    /**
+     * Ask if the minion is encrypted or not
+     * @return True if encrypted, false if not encrypted
+     */
+    public boolean getEncrypted()
+    {
+<span class="fc" id="L227">        return this.encrypted;</span>
+    }
+    
+    /**
+     * Change if a minion is encrypted or not
+     * @param encrypted boolean if minion is encrypted
+     */
+    public void setEncrypted(boolean encrypted)
+    {
+<span class="fc" id="L236">        this.encrypted = encrypted;</span>
+<span class="fc" id="L237">    }</span>
+    
+    /**
+     * Get the reward value
+     * @return reward value as double
+     */
+    public double getReward()
+    {
+<span class="fc" id="L245">        return this.reward;</span>
+    }
+    
+    public void setReward(double reward){
+<span class="fc" id="L249">        this.reward = reward;</span>
+<span class="fc" id="L250">    }</span>
+    
+    /**
+     * Attack the opposite player 
+     * @param player the object of the player you want to attack
+     */
+    public void attack(Player player)
+    {
+<span class="fc" id="L258">        player.receiveDamage(this.damage);</span>
+<span class="fc" id="L259">    }</span>
+    
+    public MinionType getMinionType(){
+<span class="fc" id="L262">        return minionType;</span>
+    }
+    
+    public void receiveDamage(double damage){
+<span class="fc" id="L266">        health -= damage;</span>
+        //System.out.println(String.format(&quot;Dealing damage: %f, remaining health: %f&quot;, damage, health));
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">        if(health &lt;= 0){</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">            if (heartbeat != null) {</span>
+                //System.out.println();
+<span class="nc" id="L271">                heartbeat.onMinionDeath(this, false);</span>
+            }
+        }
+<span class="fc" id="L274">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

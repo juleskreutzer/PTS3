@@ -13,8 +13,11 @@ import hackattackfx.exceptions.InvalidMinionTypeException;
 import hackattackfx.exceptions.InvalidModuleEnumException;
 import hackattackfx.exceptions.InvalidSpellNameException;
 import hackattackfx.exceptions.NoUpgradeAllowedException;
+import hackattackfx.templates.BitCoinMinerTemplate;
+import hackattackfx.templates.CPUUpgradeTemplate;
 import hackattackfx.templates.DefenseTemplate;
 import hackattackfx.templates.MinionTemplate;
+import hackattackfx.templates.SoftwareInjectorTemplate;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.HashSet;
@@ -45,6 +48,16 @@ public class DefenseTest {
     Defense defenseLv3;
     Point point1;
     Point point2;
+    
+
+    DefenseTemplate templateDfBc;
+    DefenseTemplate templateDfSc;
+    DefenseTemplate templateDfSn;
+    DefenseTemplate templateDfMu;
+    Defense defense1;
+    Defense defense2;
+    Defense defense3;
+    Defense defense4;
     
     
     public DefenseTest() {
@@ -78,6 +91,16 @@ public class DefenseTest {
         defense = new Defense(defenseTemplate, point1, 50, 50);
         defenseLv2 = new Defense(defenseTemplateLv2, point1, 50, 50);
         defenseLv3 = new Defense(defenseTemplateLv3, point1, 50, 50);
+
+        templateDfBc = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
+        templateDfSc = Data.DEFAULT_MODULE_DEFENSE_SCALE_1;
+        templateDfSn = Data.DEFAULT_MODULE_DEFENSE_SNIPER_1;
+        templateDfMu = Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1;
+        
+        defense1 = new Defense(templateDfBc, point1, 50, 50);
+        defense2 = new Defense(templateDfSc, point1, 50, 50);
+        defense3 = new Defense(templateDfSn, point1, 50, 50);
+        defense4 = new Defense(templateDfMu, point1, 50, 50);
         }
         catch (IOException | InvalidMinionTypeException | InvalidSpellNameException | InvalidDefenseTypeException | InvalidEffectException | InvalidModuleEnumException e){
             System.out.printf("Set up went wrong: " + e.toString());
@@ -131,15 +154,26 @@ public class DefenseTest {
      */
     @Test
     public void testGetDefenceTypeString() {
-
+        assertEquals(defense1.getDefenceTypeString(), templateDfBc.getDefenseType().toString());
+        assertEquals(defense2.getDefenceTypeString(), templateDfSc.getDefenseType().toString());
+        assertEquals(defense3.getDefenceTypeString(), templateDfSn.getDefenseType().toString());
+        assertEquals(defense4.getDefenceTypeString(), templateDfMu.getDefenseType().toString());
     }
 
     /**
      * Test of getEffectString method, of class Defense.
      */
     @Test
-    public void testGetEffectString() {
-
+    public void testGetSetEffectString() {
+        defense1.setEffect(Effect.SLOWED);
+        defense1.setEffect(Effect.POISENED);
+        defense1.setEffect(Effect.SPLASH);
+        defense1.setEffect(Effect.DECRYPTED);
+        
+        assertEquals(defense1.getEffectString(), Effect.SLOWED.toString());
+        assertEquals(defense2.getEffectString(), Effect.POISENED.toString());
+        assertEquals(defense3.getEffectString(), Effect.SPLASH.toString());
+        assertEquals(defense4.getEffectString(), Effect.DECRYPTED.toString());    
     }
 
     /**
@@ -147,55 +181,34 @@ public class DefenseTest {
      */
     @Test
     public void testGetDefenceType() {
-
+        assertEquals(defense1.getDefenceType(), DefenseType.CHEAP);
     }
 
     /**
      * Test of getEffect method, of class Defense.
      */
     @Test
-    public void testGetEffect() {
-
-    }
-
-    /**
-     * Test of setEffect method, of class Defense.
-     */
-    @Test
-    public void testSetEffect() {
-
+    public void testGetSetEffect() {
+        defense1.setEffect(Effect.SLOWED);
+        assertEquals(defense1.getEffect(), Effect.SLOWED);
     }
 
     /**
      * Test of getDamage method, of class Defense.
      */
     @Test
-    public void testGetDamage() {
-
-    }
-
-    /**
-     * Test of setDamage method, of class Defense.
-     */
-    @Test
-    public void testSetDamage() {
-
+    public void testGetSetDamage() {
+        defense1.setDamage(1);
+        assertEquals(defense1.getDamage(), 1, 0);
     }
 
     /**
      * Test of getRange method, of class Defense.
      */
     @Test
-    public void testGetRange() {
-
-    }
-
-    /**
-     * Test of setRange method, of class Defense.
-     */
-    @Test
-    public void testSetRange() {
-
+    public void testGetSetRange() {
+        defense1.setRange(1);
+        assertEquals(defense1.getRange(), 1, 0);
     }
 
     /**
@@ -226,7 +239,7 @@ public class DefenseTest {
      */
     @Test
     public void testFindTarget() {
-        
+        //IDK how to test
     }
 
     /**

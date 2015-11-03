@@ -60,11 +60,18 @@ public class WaveTest {
     public void tearDown() {
     }
 
+    @Test
+    public void testConstructor(){
+        Wave waveTest = new Wave(1, 1, player1, 1, 1, 1, 1, 1, 1);
+        assertEquals(waveTest.minionsAsList().size(), 6);
+    }
+    
     /**
      * Test of startWave method, of class Wave.
      */
     @Test
     public void testStartWave() {
+        //IDK how to test
     }
 
     /**
@@ -72,7 +79,12 @@ public class WaveTest {
      */
     @Test
     public void testMinions() {
-        
+        int counter = 0;
+        while(wave1.minions().hasNext())
+        {
+            counter++;
+        }
+        assertEquals(counter, 1);   
     }
 
     /**
@@ -80,6 +92,7 @@ public class WaveTest {
      */
     @Test
     public void testMinionsAsList() {
+        assertEquals(wave1.minionsAsList().size(), 1);
     }
 
     /**
@@ -87,7 +100,7 @@ public class WaveTest {
      */
     @Test
     public void testWaveActive() {
-        ArrayList<Minion> wavedqw = wave1.minionsAsList();
+        ArrayList<Minion> wave = wave1.minionsAsList();
         assertTrue(wave1.waveActive());
         assertFalse(wave2.waveActive());
     }
@@ -122,6 +135,14 @@ public class WaveTest {
         assertTrue(wave1.minionsAsList().isEmpty());
         assertTrue(player1.getBitcoins() == money + worth);
         */
+    }
+
+    /**
+     * Test of getWaveNr method, of class Wave.
+     */
+    @Test
+    public void testGetWaveNr() {
+        assertEquals(wave1.getWaveNr(), 1);
     }
     
 }

@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>XML.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">org.json</a> &gt; <span class="el_source">XML.java</span></div><h1>XML.java</h1><pre class="source lang-java linenums">package org.json;
+
+/*
+Copyright (c) 2002 JSON.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+The Software shall be used for Good, not Evil.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+import java.util.Iterator;
+
+/**
+ * This provides static methods to convert an XML text into a JSONObject,
+ * and to covert a JSONObject into an XML text.
+ * @author JSON.org
+ * @version 2014-05-03
+ */
+<span class="nc" id="L35">public class XML {</span>
+
+    /** The Character '&amp;amp;'. */
+<span class="nc" id="L38">    public static final Character AMP   = '&amp;';</span>
+
+    /** The Character '''. */
+<span class="nc" id="L41">    public static final Character APOS  = '\'';</span>
+
+    /** The Character '!'. */
+<span class="nc" id="L44">    public static final Character BANG  = '!';</span>
+
+    /** The Character '='. */
+<span class="nc" id="L47">    public static final Character EQ    = '=';</span>
+
+    /** The Character '&gt;'. */
+<span class="nc" id="L50">    public static final Character GT    = '&gt;';</span>
+
+    /** The Character '&amp;lt;'. */
+<span class="nc" id="L53">    public static final Character LT    = '&lt;';</span>
+
+    /** The Character '?'. */
+<span class="nc" id="L56">    public static final Character QUEST = '?';</span>
+
+    /** The Character '&quot;'. */
+<span class="nc" id="L59">    public static final Character QUOT  = '&quot;';</span>
+
+    /** The Character '/'. */
+<span class="nc" id="L62">    public static final Character SLASH = '/';</span>
+
+    /**
+     * Replace special characters with XML escapes:
+     * &lt;pre&gt;
+     * &amp;amp; &lt;small&gt;(ampersand)&lt;/small&gt; is replaced by &amp;amp;amp;
+     * &amp;lt; &lt;small&gt;(less than)&lt;/small&gt; is replaced by &amp;amp;lt;
+     * &amp;gt; &lt;small&gt;(greater than)&lt;/small&gt; is replaced by &amp;amp;gt;
+     * &amp;quot; &lt;small&gt;(double quote)&lt;/small&gt; is replaced by &amp;amp;quot;
+     * &lt;/pre&gt;
+     * @param string The string to be escaped.
+     * @return The escaped string.
+     */
+    public static String escape(String string) {
+<span class="nc" id="L76">        StringBuilder sb = new StringBuilder(string.length());</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (int i = 0, length = string.length(); i &lt; length; i++) {</span>
+<span class="nc" id="L78">            char c = string.charAt(i);</span>
+<span class="nc bnc" id="L79" title="All 6 branches missed.">            switch (c) {</span>
+            case '&amp;':
+<span class="nc" id="L81">                sb.append(&quot;&amp;amp;&quot;);</span>
+<span class="nc" id="L82">                break;</span>
+            case '&lt;':
+<span class="nc" id="L84">                sb.append(&quot;&amp;lt;&quot;);</span>
+<span class="nc" id="L85">                break;</span>
+            case '&gt;':
+<span class="nc" id="L87">                sb.append(&quot;&amp;gt;&quot;);</span>
+<span class="nc" id="L88">                break;</span>
+            case '&quot;':
+<span class="nc" id="L90">                sb.append(&quot;&amp;quot;&quot;);</span>
+<span class="nc" id="L91">                break;</span>
+            case '\'':
+<span class="nc" id="L93">                sb.append(&quot;&amp;apos;&quot;);</span>
+<span class="nc" id="L94">                break;</span>
+            default:
+<span class="nc" id="L96">                sb.append(c);</span>
+            }
+        }
+<span class="nc" id="L99">        return sb.toString();</span>
+    }
+
+    /**
+     * Throw an exception if the string contains whitespace.
+     * Whitespace is not allowed in tagNames and attributes.
+     * @param string A string.
+     * @throws JSONException
+     */
+    public static void noSpace(String string) throws JSONException {
+<span class="nc" id="L109">        int i, length = string.length();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (length == 0) {</span>
+<span class="nc" id="L111">            throw new JSONException(&quot;Empty string.&quot;);</span>
+        }
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        for (i = 0; i &lt; length; i += 1) {</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            if (Character.isWhitespace(string.charAt(i))) {</span>
+<span class="nc" id="L115">                throw new JSONException(&quot;'&quot; + string +</span>
+                        &quot;' contains a space character.&quot;);
+            }
+        }
+<span class="nc" id="L119">    }</span>
+
+    /**
+     * Scan the content following the named tag, attaching it to the context.
+     * @param x       The XMLTokener containing the source string.
+     * @param context The JSONObject that will include the new material.
+     * @param name    The tag name.
+     * @return true if the close tag is processed.
+     * @throws JSONException
+     */
+    private static boolean parse(XMLTokener x, JSONObject context,
+                                 String name) throws JSONException {
+        char       c;
+        int        i;
+<span class="nc" id="L133">        JSONObject jsonobject = null;</span>
+        String     string;
+        String     tagName;
+        Object     token;
+
+// Test for and skip past these forms:
+//      &lt;!-- ... --&gt;
+//      &lt;!   ...   &gt;
+//      &lt;![  ... ]]&gt;
+//      &lt;?   ...  ?&gt;
+// Report errors for these forms:
+//      &lt;&gt;
+//      &lt;=
+//      &lt;&lt;
+
+<span class="nc" id="L148">        token = x.nextToken();</span>
+
+// &lt;!
+
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (token == BANG) {</span>
+<span class="nc" id="L153">            c = x.next();</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">            if (c == '-') {</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                if (x.next() == '-') {</span>
+<span class="nc" id="L156">                    x.skipPast(&quot;--&gt;&quot;);</span>
+<span class="nc" id="L157">                    return false;</span>
+                }
+<span class="nc" id="L159">                x.back();</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            } else if (c == '[') {</span>
+<span class="nc" id="L161">                token = x.nextToken();</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                if (&quot;CDATA&quot;.equals(token)) {</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                    if (x.next() == '[') {</span>
+<span class="nc" id="L164">                        string = x.nextCDATA();</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                        if (string.length() &gt; 0) {</span>
+<span class="nc" id="L166">                            context.accumulate(&quot;content&quot;, string);</span>
+                        }
+<span class="nc" id="L168">                        return false;</span>
+                    }
+                }
+<span class="nc" id="L171">                throw x.syntaxError(&quot;Expected 'CDATA['&quot;);</span>
+            }
+<span class="nc" id="L173">            i = 1;</span>
+            do {
+<span class="nc" id="L175">                token = x.nextMeta();</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">                if (token == null) {</span>
+<span class="nc" id="L177">                    throw x.syntaxError(&quot;Missing '&gt;' after '&lt;!'.&quot;);</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">                } else if (token == LT) {</span>
+<span class="nc" id="L179">                    i += 1;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                } else if (token == GT) {</span>
+<span class="nc" id="L181">                    i -= 1;</span>
+                }
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            } while (i &gt; 0);</span>
+<span class="nc" id="L184">            return false;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">        } else if (token == QUEST) {</span>
+
+// &lt;?
+
+<span class="nc" id="L189">            x.skipPast(&quot;?&gt;&quot;);</span>
+<span class="nc" id="L190">            return false;</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        } else if (token == SLASH) {</span>
+
+// Close tag &lt;/
+
+<span class="nc" id="L195">            token = x.nextToken();</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            if (name == null) {</span>
+<span class="nc" id="L197">                throw x.syntaxError(&quot;Mismatched close tag &quot; + token);</span>
+            }
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            if (!token.equals(name)) {</span>
+<span class="nc" id="L200">                throw x.syntaxError(&quot;Mismatched &quot; + name + &quot; and &quot; + token);</span>
+            }
+<span class="nc bnc" id="L202" title="All 2 branches missed.">            if (x.nextToken() != GT) {</span>
+<span class="nc" id="L203">                throw x.syntaxError(&quot;Misshaped close tag&quot;);</span>
+            }
+<span class="nc" id="L205">            return true;</span>
+
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        } else if (token instanceof Character) {</span>
+<span class="nc" id="L208">            throw x.syntaxError(&quot;Misshaped tag&quot;);</span>
+
+// Open tag &lt;
+
+        } else {
+<span class="nc" id="L213">            tagName = (String)token;</span>
+<span class="nc" id="L214">            token = null;</span>
+<span class="nc" id="L215">            jsonobject = new JSONObject();</span>
+            for (;;) {
+<span class="nc bnc" id="L217" title="All 2 branches missed.">                if (token == null) {</span>
+<span class="nc" id="L218">                    token = x.nextToken();</span>
+                }
+
+// attribute = value
+
+<span class="nc bnc" id="L223" title="All 2 branches missed.">                if (token instanceof String) {</span>
+<span class="nc" id="L224">                    string = (String)token;</span>
+<span class="nc" id="L225">                    token = x.nextToken();</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">                    if (token == EQ) {</span>
+<span class="nc" id="L227">                        token = x.nextToken();</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">                        if (!(token instanceof String)) {</span>
+<span class="nc" id="L229">                            throw x.syntaxError(&quot;Missing value&quot;);</span>
+                        }
+<span class="nc" id="L231">                        jsonobject.accumulate(string,</span>
+<span class="nc" id="L232">                                XML.stringToValue((String)token));</span>
+<span class="nc" id="L233">                        token = null;</span>
+                    } else {
+<span class="nc" id="L235">                        jsonobject.accumulate(string, &quot;&quot;);</span>
+                    }
+
+// Empty tag &lt;.../&gt;
+
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                } else if (token == SLASH) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                    if (x.nextToken() != GT) {</span>
+<span class="nc" id="L242">                        throw x.syntaxError(&quot;Misshaped tag&quot;);</span>
+                    }
+<span class="nc bnc" id="L244" title="All 2 branches missed.">                    if (jsonobject.length() &gt; 0) {</span>
+<span class="nc" id="L245">                        context.accumulate(tagName, jsonobject);</span>
+                    } else {
+<span class="nc" id="L247">                        context.accumulate(tagName, &quot;&quot;);</span>
+                    }
+<span class="nc" id="L249">                    return false;</span>
+
+// Content, between &lt;...&gt; and &lt;/...&gt;
+
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                } else if (token == GT) {</span>
+                    for (;;) {
+<span class="nc" id="L255">                        token = x.nextContent();</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                        if (token == null) {</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">                            if (tagName != null) {</span>
+<span class="nc" id="L258">                                throw x.syntaxError(&quot;Unclosed tag &quot; + tagName);</span>
+                            }
+<span class="nc" id="L260">                            return false;</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">                        } else if (token instanceof String) {</span>
+<span class="nc" id="L262">                            string = (String)token;</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">                            if (string.length() &gt; 0) {</span>
+<span class="nc" id="L264">                                jsonobject.accumulate(&quot;content&quot;,</span>
+<span class="nc" id="L265">                                        XML.stringToValue(string));</span>
+                            }
+
+// Nested element
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">                        } else if (token == LT) {</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">                            if (parse(x, jsonobject, tagName)) {</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">                                if (jsonobject.length() == 0) {</span>
+<span class="nc" id="L273">                                    context.accumulate(tagName, &quot;&quot;);</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">                                } else if (jsonobject.length() == 1 &amp;&amp;</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">                                       jsonobject.opt(&quot;content&quot;) != null) {</span>
+<span class="nc" id="L276">                                    context.accumulate(tagName,</span>
+<span class="nc" id="L277">                                            jsonobject.opt(&quot;content&quot;));</span>
+                                } else {
+<span class="nc" id="L279">                                    context.accumulate(tagName, jsonobject);</span>
+                                }
+<span class="nc" id="L281">                                return false;</span>
+                            }
+                        }
+                    }
+                } else {
+<span class="nc" id="L286">                    throw x.syntaxError(&quot;Misshaped tag&quot;);</span>
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Try to convert a string into a number, boolean, or null. If the string
+     * can't be converted, return the string. This is much less ambitious than
+     * JSONObject.stringToValue, especially because it does not attempt to
+     * convert plus forms, octal forms, hex forms, or E forms lacking decimal
+     * points.
+     * @param string A String.
+     * @return A simple JSON value.
+     */
+    public static Object stringToValue(String string) {
+<span class="nc bnc" id="L303" title="All 2 branches missed.">        if (&quot;true&quot;.equalsIgnoreCase(string)) {</span>
+<span class="nc" id="L304">            return Boolean.TRUE;</span>
+        }
+<span class="nc bnc" id="L306" title="All 2 branches missed.">        if (&quot;false&quot;.equalsIgnoreCase(string)) {</span>
+<span class="nc" id="L307">            return Boolean.FALSE;</span>
+        }
+<span class="nc bnc" id="L309" title="All 2 branches missed.">        if (&quot;null&quot;.equalsIgnoreCase(string)) {</span>
+<span class="nc" id="L310">            return JSONObject.NULL;</span>
+        }
+
+// If it might be a number, try converting it, first as a Long, and then as a
+// Double. If that doesn't work, return the string.
+
+        try {
+<span class="nc" id="L317">            char initial = string.charAt(0);</span>
+<span class="nc bnc" id="L318" title="All 6 branches missed.">            if (initial == '-' || (initial &gt;= '0' &amp;&amp; initial &lt;= '9')) {</span>
+<span class="nc" id="L319">                Long value = new Long(string);</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">                if (value.toString().equals(string)) {</span>
+<span class="nc" id="L321">                    return value;</span>
+                }
+            }
+<span class="nc" id="L324">        }  catch (Exception ignore) {</span>
+            try {
+<span class="nc" id="L326">                Double value = new Double(string);</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">                if (value.toString().equals(string)) {</span>
+<span class="nc" id="L328">                    return value;</span>
+                }
+<span class="nc" id="L330">            }  catch (Exception ignoreAlso) {</span>
+<span class="nc" id="L331">            }</span>
+<span class="nc" id="L332">        }</span>
+<span class="nc" id="L333">        return string;</span>
+    }
+
+
+    /**
+     * Convert a well-formed (but not necessarily valid) XML string into a
+     * JSONObject. Some information may be lost in this transformation
+     * because JSON is a data format and XML is a document format. XML uses
+     * elements, attributes, and content text, while JSON uses unordered
+     * collections of name/value pairs and arrays of values. JSON does not
+     * does not like to distinguish between elements and attributes.
+     * Sequences of similar elements are represented as JSONArrays. Content
+     * text may be placed in a &quot;content&quot; member. Comments, prologs, DTDs, and
+     * &lt;code&gt;&amp;lt;[ [ ]]&gt;&lt;/code&gt; are ignored.
+     * @param string The source string.
+     * @return A JSONObject containing the structured data from the XML string.
+     * @throws JSONException
+     */
+    public static JSONObject toJSONObject(String string) throws JSONException {
+<span class="nc" id="L352">        JSONObject jo = new JSONObject();</span>
+<span class="nc" id="L353">        XMLTokener x = new XMLTokener(string);</span>
+<span class="nc bnc" id="L354" title="All 4 branches missed.">        while (x.more() &amp;&amp; x.skipPast(&quot;&lt;&quot;)) {</span>
+<span class="nc" id="L355">            parse(x, jo, null);</span>
+        }
+<span class="nc" id="L357">        return jo;</span>
+    }
+
+
+    /**
+     * Convert a JSONObject into a well-formed, element-normal XML string.
+     * @param object A JSONObject.
+     * @return  A string.
+     * @throws  JSONException
+     */
+    public static String toString(Object object) throws JSONException {
+<span class="nc" id="L368">        return toString(object, null);</span>
+    }
+
+
+    /**
+     * Convert a JSONObject into a well-formed, element-normal XML string.
+     * @param object A JSONObject.
+     * @param tagName The optional name of the enclosing tag.
+     * @return A string.
+     * @throws JSONException
+     */
+    public static String toString(Object object, String tagName)
+            throws JSONException {
+<span class="nc" id="L381">        StringBuilder       sb = new StringBuilder();</span>
+        int                 i;
+        JSONArray           ja;
+        JSONObject          jo;
+        String              key;
+        Iterator&lt;String&gt;    keys;
+        int                 length;
+        String              string;
+        Object              value;
+<span class="nc bnc" id="L390" title="All 2 branches missed.">        if (object instanceof JSONObject) {</span>
+
+// Emit &lt;tagName&gt;
+
+<span class="nc bnc" id="L394" title="All 2 branches missed.">            if (tagName != null) {</span>
+<span class="nc" id="L395">                sb.append('&lt;');</span>
+<span class="nc" id="L396">                sb.append(tagName);</span>
+<span class="nc" id="L397">                sb.append('&gt;');</span>
+            }
+
+// Loop thru the keys.
+
+<span class="nc" id="L402">            jo = (JSONObject)object;</span>
+<span class="nc" id="L403">            keys = jo.keys();</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">            while (keys.hasNext()) {</span>
+<span class="nc" id="L405">                key = keys.next();</span>
+<span class="nc" id="L406">                value = jo.opt(key);</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">                if (value == null) {</span>
+<span class="nc" id="L408">                    value = &quot;&quot;;</span>
+                }
+<span class="nc bnc" id="L410" title="All 2 branches missed.">                string = value instanceof String ? (String)value : null;</span>
+
+// Emit content in body
+
+<span class="nc bnc" id="L414" title="All 2 branches missed.">                if (&quot;content&quot;.equals(key)) {</span>
+<span class="nc bnc" id="L415" title="All 2 branches missed.">                    if (value instanceof JSONArray) {</span>
+<span class="nc" id="L416">                        ja = (JSONArray)value;</span>
+<span class="nc" id="L417">                        length = ja.length();</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">                        for (i = 0; i &lt; length; i += 1) {</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                            if (i &gt; 0) {</span>
+<span class="nc" id="L420">                                sb.append('\n');</span>
+                            }
+<span class="nc" id="L422">                            sb.append(escape(ja.get(i).toString()));</span>
+                        }
+                    } else {
+<span class="nc" id="L425">                        sb.append(escape(value.toString()));</span>
+                    }
+
+// Emit an array of similar keys
+
+<span class="nc bnc" id="L430" title="All 2 branches missed.">                } else if (value instanceof JSONArray) {</span>
+<span class="nc" id="L431">                    ja = (JSONArray)value;</span>
+<span class="nc" id="L432">                    length = ja.length();</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">                    for (i = 0; i &lt; length; i += 1) {</span>
+<span class="nc" id="L434">                        value = ja.get(i);</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">                        if (value instanceof JSONArray) {</span>
+<span class="nc" id="L436">                            sb.append('&lt;');</span>
+<span class="nc" id="L437">                            sb.append(key);</span>
+<span class="nc" id="L438">                            sb.append('&gt;');</span>
+<span class="nc" id="L439">                            sb.append(toString(value));</span>
+<span class="nc" id="L440">                            sb.append(&quot;&lt;/&quot;);</span>
+<span class="nc" id="L441">                            sb.append(key);</span>
+<span class="nc" id="L442">                            sb.append('&gt;');</span>
+                        } else {
+<span class="nc" id="L444">                            sb.append(toString(value, key));</span>
+                        }
+                    }
+<span class="nc bnc" id="L447" title="All 2 branches missed.">                } else if (&quot;&quot;.equals(value)) {</span>
+<span class="nc" id="L448">                    sb.append('&lt;');</span>
+<span class="nc" id="L449">                    sb.append(key);</span>
+<span class="nc" id="L450">                    sb.append(&quot;/&gt;&quot;);</span>
+
+// Emit a new tag &lt;k&gt;
+
+                } else {
+<span class="nc" id="L455">                    sb.append(toString(value, key));</span>
+                }
+            }
+<span class="nc bnc" id="L458" title="All 2 branches missed.">            if (tagName != null) {</span>
+
+// Emit the &lt;/tagname&gt; close tag
+
+<span class="nc" id="L462">                sb.append(&quot;&lt;/&quot;);</span>
+<span class="nc" id="L463">                sb.append(tagName);</span>
+<span class="nc" id="L464">                sb.append('&gt;');</span>
+            }
+<span class="nc" id="L466">            return sb.toString();</span>
+
+// XML does not have good support for arrays. If an array appears in a place
+// where XML is lacking, synthesize an &lt;array&gt; element.
+
+        } else {
+<span class="nc bnc" id="L472" title="All 2 branches missed.">            if (object.getClass().isArray()) {</span>
+<span class="nc" id="L473">                object = new JSONArray(object);</span>
+            }
+<span class="nc bnc" id="L475" title="All 2 branches missed.">            if (object instanceof JSONArray) {</span>
+<span class="nc" id="L476">                ja = (JSONArray)object;</span>
+<span class="nc" id="L477">                length = ja.length();</span>
+<span class="nc bnc" id="L478" title="All 2 branches missed.">                for (i = 0; i &lt; length; i += 1) {</span>
+<span class="nc bnc" id="L479" title="All 2 branches missed.">                    sb.append(toString(ja.opt(i), tagName == null ? &quot;array&quot; : tagName));</span>
+                }
+<span class="nc" id="L481">                return sb.toString();</span>
+            } else {
+<span class="nc bnc" id="L483" title="All 2 branches missed.">                string = (object == null) ? &quot;null&quot; : escape(object.toString());</span>
+<span class="nc bnc" id="L484" title="All 2 branches missed.">                return (tagName == null) ? &quot;\&quot;&quot; + string + &quot;\&quot;&quot; :</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">                    (string.length() == 0) ? &quot;&lt;&quot; + tagName + &quot;/&gt;&quot; :</span>
+                    &quot;&lt;&quot; + tagName + &quot;&gt;&quot; + string + &quot;&lt;/&quot; + tagName + &quot;&gt;&quot;;
+            }
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

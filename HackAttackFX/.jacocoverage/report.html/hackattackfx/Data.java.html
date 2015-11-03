@@ -1,0 +1,976 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Data.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">Data.java</span></div><h1>Data.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import hackattackfx.templates.*;
+import hackattackfx.enums.*;
+import hackattackfx.exceptions.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.ws.http.HTTPException;
+import org.json.*;
+
+
+/**
+ *
+ * @author juleskreutzer, Jasper Rouwhorst
+ */
+public class Data {
+    
+    public interface UpdateProgress {
+        void update(double value);
+    }
+    
+    // Minion Template
+    public static MinionTemplate DEFAULT_BYTE;
+    public static MinionTemplate DEFAULT_KILOBYTE;
+    public static MinionTemplate DEFAULT_MEGABYTE;
+    public static MinionTemplate DEFAULT_GIGABYTE;
+    public static MinionTemplate DEFAULT_TERABYTE;
+    public static MinionTemplate DEFAULT_PETABYTE;
+    
+    // Spell Templates
+    public static SpellTemplate DEFAULT_SPELL_CORRUPT;
+    public static SpellTemplate DEFAULT_SPELL_ENCRYPT;
+    public static SpellTemplate DEFAULT_SPELL_DISRUPT;
+    public static SpellTemplate DEFAULT_SPELL_LOCKDOWN;
+    public static SpellTemplate DEFAULT_SPELL_FIREWALL;
+    public static SpellTemplate DEFAULT_SPELL_VIRUSSCAN;
+    
+    /**
+     * MODULE TEMPLATES - START
+     */
+    
+    // Bitcoin Miner Templates
+    public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_1;
+    public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_2;
+    public static BitCoinMinerTemplate DEFAULT_MODULE_BITCOINMINER_3;
+    
+    // CPU Upgrade Templates
+    public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_1;
+    public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_2;
+    public static CPUUpgradeTemplate DEFAULT_MODULE_CPUUPGRADE_3;
+    
+    // Defense Templates
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_2;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_BOTTLECAP_3;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_1;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_2;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_MUSCLE_3;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_1;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_2;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SCALE_3;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_1;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_2;
+    public static DefenseTemplate DEFAULT_MODULE_DEFENSE_SNIPER_3;
+    
+    // Software Injector Templates
+    public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_1;
+    public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_2;
+    public static SoftwareInjectorTemplate DEFAULT_MODULE_SOFTWAREINJECTOR_3;
+    
+    public static String playerAName;
+    public static String playerBName;
+    
+    /**
+     * MODULE TEMPLATES - END
+     */
+    
+<span class="fc" id="L88">    private static String urlMinion = &quot;https://api.nujules.nl/minion&quot;;</span>
+<span class="fc" id="L89">    private static String urlSpell = &quot;https://api.nujules.nl/spell&quot;;</span>
+<span class="fc" id="L90">    private static String urlModule = &quot;https://api.nujules.nl/module&quot;;</span>
+    
+    public Data(UpdateProgress callback) throws IOException, InvalidMinionTypeException, InvalidSpellNameException, InvalidDefenseTypeException, InvalidEffectException
+<span class="fc" id="L93">    {</span>
+        /**
+         * First we create the JSONArray object by requesting the data from the HackAttack API.
+         * Then we call the create method for the objects we want te create which will parse the JSONArray.
+         */
+<span class="fc" id="L98">        JSONArray minions = sendGet(urlMinion);</span>
+<span class="fc" id="L99">        JSONArray spells = sendGet(urlSpell);</span>
+<span class="fc" id="L100">        JSONArray modules = sendGet(urlModule);</span>
+        
+<span class="fc" id="L102">        createMinions(minions);</span>
+<span class="fc" id="L103">        callback.update(0.33);</span>
+<span class="fc" id="L104">        createSpells(spells);</span>
+<span class="fc" id="L105">        callback.update(0.66);</span>
+<span class="fc" id="L106">        createModules(modules);</span>
+<span class="fc" id="L107">        callback.update(0.99);</span>
+<span class="fc" id="L108">    }</span>
+    
+    private JSONArray sendGet(String url) throws IOException, HTTPException
+    {
+        try{
+<span class="fc" id="L113">        URL obj = new URL(url);</span>
+<span class="fc" id="L114">        HttpURLConnection con = (HttpURLConnection) obj.openConnection();</span>
+<span class="fc" id="L115">        con.setRequestProperty(&quot;User-Agent&quot;, &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A&quot;); // Do as if you're using Chrome 41 on Windows 7.</span>
+<span class="fc" id="L116">        con.setRequestMethod(&quot;GET&quot;);</span>
+<span class="fc" id="L117">        con.setRequestProperty(&quot;X_AUTH_TOKEN&quot;, &quot;test&quot;); // API checks access based on x-auth-token header</span>
+        
+<span class="fc" id="L119">        int responseCode = con.getResponseCode();</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if(responseCode == HttpURLConnection.HTTP_OK)</span>
+        {
+<span class="fc" id="L122">            BufferedReader in = new BufferedReader(new InputStreamReader(</span>
+<span class="fc" id="L123">                    con.getInputStream()));</span>
+            String inputLine;
+<span class="fc" id="L125">            StringBuilder sb = new StringBuilder();</span>
+            String response;
+ 
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            while ((inputLine = in.readLine()) != null) {</span>
+<span class="fc" id="L129">                sb.append(inputLine + &quot;\n&quot;);</span>
+            }
+<span class="fc" id="L131">            in.close();</span>
+<span class="fc" id="L132">            response = sb.toString();</span>
+ 
+            // print result
+<span class="fc" id="L135">            return new JSONArray(response);</span>
+        }
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        else if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED)</span>
+        {
+<span class="nc" id="L139">            throw new HTTPException(responseCode);</span>
+        }
+        }
+<span class="nc" id="L142">        catch(HTTPException ex)</span>
+        {
+<span class="nc" id="L144">            System.out.print(&quot;HTTP ERROR: &quot; + ex.getStatusCode());</span>
+<span class="nc" id="L145">            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L147">        catch(IOException ex)</span>
+        {
+<span class="nc" id="L149">            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L150">        }</span>
+<span class="nc" id="L151">        return null;</span>
+    }
+    
+    private void createMinions(JSONArray minions) throws InvalidMinionTypeException
+    {
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        for(int i = 0; i &lt; minions.length(); i++)</span>
+        {
+<span class="fc" id="L158">            JSONObject obj = minions.getJSONObject(i);</span>
+            //System.out.print(obj.names());
+            
+<span class="fc" id="L161">            double damage = obj.getDouble(&quot;damage&quot;);</span>
+<span class="fc" id="L162">            double health = obj.getDouble(&quot;hitpoints&quot;);</span>
+<span class="fc" id="L163">            double speed = obj.getDouble(&quot;speed&quot;);</span>
+<span class="fc" id="L164">            int e = obj.getInt(&quot;encrypted&quot;);</span>
+<span class="fc" id="L165">            boolean encrypted = false;</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            if(e == 1)</span>
+            {
+<span class="nc" id="L168">                encrypted = true;</span>
+            }
+<span class="fc" id="L170">            double reward = obj.getDouble(&quot;reward&quot;);</span>
+            MinionType type;
+
+<span class="pc bpc" id="L173" title="8 of 26 branches missed.">            switch(obj.getString(&quot;name&quot;))</span>
+            {
+                case &quot;Byte&quot;:
+<span class="fc" id="L176">                    type = MinionType.b;</span>
+<span class="fc" id="L177">                    DEFAULT_BYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);</span>
+<span class="fc" id="L178">                    break;</span>
+                case &quot;KiloByte&quot;:
+<span class="fc" id="L180">                    type = MinionType.kb;</span>
+<span class="fc" id="L181">                    DEFAULT_KILOBYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);</span>
+<span class="fc" id="L182">                    break;</span>
+                case &quot;MegaByte&quot;:
+<span class="fc" id="L184">                    type = MinionType.mb;</span>
+<span class="fc" id="L185">                    DEFAULT_MEGABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);</span>
+<span class="fc" id="L186">                    break;</span>
+                case &quot;GigaByte&quot;:
+<span class="fc" id="L188">                    type = MinionType.gb;</span>
+<span class="fc" id="L189">                    DEFAULT_GIGABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);</span>
+<span class="fc" id="L190">                    break;</span>
+                case &quot;TeraByte&quot;:
+<span class="fc" id="L192">                    type = MinionType.tb;</span>
+<span class="fc" id="L193">                    DEFAULT_TERABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);</span>
+<span class="fc" id="L194">                    break;</span>
+                case &quot;PetaByte&quot;:
+<span class="fc" id="L196">                    type = MinionType.pb;</span>
+<span class="fc" id="L197">                    DEFAULT_PETABYTE = new MinionTemplate(type, health, speed, damage, encrypted, reward);</span>
+<span class="fc" id="L198">                    break;</span>
+                default:
+<span class="nc" id="L200">                    throw new InvalidMinionTypeException();</span>
+            }
+        }
+<span class="fc" id="L203">    }</span>
+    
+    private void createSpells(JSONArray spells) throws InvalidSpellNameException
+    {
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        for(int i = 0; i &lt; spells.length(); i++)</span>
+        {
+<span class="fc" id="L209">            JSONObject obj = spells.getJSONObject(i);</span>
+            
+<span class="fc" id="L211">            int cooldown = obj.getInt(&quot;cooldown&quot;);</span>
+<span class="fc" id="L212">            String name = obj.getString(&quot;name&quot;);</span>
+<span class="fc" id="L213">            int range = obj.getInt(&quot;defense_range&quot;);</span>
+<span class="fc" id="L214">            int requiredLevel = obj.getInt(&quot;requiredLevel&quot;);</span>
+<span class="fc" id="L215">            String typeString = obj.getString(&quot;type&quot;);</span>
+            SpellName spellName;
+            SpellType type;
+            
+<span class="pc bpc" id="L219" title="8 of 26 branches missed.">            switch(name)</span>
+            {
+                case &quot;Corrupt&quot;:
+<span class="fc" id="L222">                    spellName = SpellName.CORRUPT;</span>
+                    
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">                    if(typeString == &quot;attack&quot;)</span>
+                    {
+<span class="nc" id="L226">                        type = SpellType.ATTACK;</span>
+                    }
+                    else
+                    {
+<span class="fc" id="L230">                        type = SpellType.DEFENSE;</span>
+                    }
+<span class="fc" id="L232">                    DEFAULT_SPELL_CORRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);</span>
+<span class="fc" id="L233">                    break;</span>
+                case &quot;Encrypt&quot;:
+<span class="fc" id="L235">                    spellName = SpellName.ENCRYPT;</span>
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">                    if(typeString == &quot;attack&quot;)</span>
+                    {
+<span class="nc" id="L238">                        type = SpellType.ATTACK;</span>
+                    }
+                    else
+                    {
+<span class="fc" id="L242">                        type = SpellType.DEFENSE;</span>
+                    }
+<span class="fc" id="L244">                    DEFAULT_SPELL_ENCRYPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);</span>
+<span class="fc" id="L245">                    break;</span>
+                case &quot;Disrupt&quot;:
+<span class="fc" id="L247">                    spellName = SpellName.DISRUPT;</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">                    if(typeString == &quot;attack&quot;)</span>
+                    {
+<span class="nc" id="L250">                        type = SpellType.ATTACK;</span>
+                    }
+                    else
+                    {
+<span class="fc" id="L254">                        type = SpellType.DEFENSE;</span>
+                    }
+<span class="fc" id="L256">                    DEFAULT_SPELL_DISRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);</span>
+<span class="fc" id="L257">                    break;</span>
+                case &quot;Lock-down&quot;:
+<span class="fc" id="L259">                    spellName = SpellName.LOCKDOWN;</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">                    if(typeString == &quot;attack&quot;)</span>
+                    {
+<span class="nc" id="L262">                        type = SpellType.ATTACK;</span>
+                    }
+                    else
+                    {
+<span class="fc" id="L266">                        type = SpellType.DEFENSE;</span>
+                    }
+<span class="fc" id="L268">                    DEFAULT_SPELL_LOCKDOWN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);</span>
+<span class="fc" id="L269">                    break;</span>
+                case &quot;Firewall&quot;:
+<span class="fc" id="L271">                    spellName = SpellName.FIREWALL;</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">                    if(typeString == &quot;attack&quot;)</span>
+                    {
+<span class="nc" id="L274">                        type = SpellType.ATTACK;</span>
+                    }
+                    else
+                    {
+<span class="fc" id="L278">                        type = SpellType.DEFENSE;</span>
+                    }
+<span class="fc" id="L280">                    DEFAULT_SPELL_FIREWALL = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);</span>
+<span class="fc" id="L281">                    break;</span>
+                case &quot;Virus-scan&quot;:
+<span class="fc" id="L283">                    spellName = SpellName.VIRUSSCAN;</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">                    if(typeString == &quot;attack&quot;)</span>
+                    {
+<span class="nc" id="L286">                        type = SpellType.ATTACK;</span>
+                    }
+                    else
+                    {
+<span class="fc" id="L290">                        type = SpellType.DEFENSE;</span>
+                    }
+<span class="fc" id="L292">                    DEFAULT_SPELL_VIRUSSCAN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);</span>
+<span class="fc" id="L293">                    break;</span>
+                default:
+<span class="nc" id="L295">                    throw new InvalidSpellNameException();</span>
+            }
+            
+        }
+        
+<span class="fc" id="L300">    }</span>
+    
+    private void createModules(JSONArray modules) throws IOException, InvalidDefenseTypeException, InvalidEffectException
+    {
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        for(int i = 0; i &lt; modules.length(); i++)</span>
+        {
+<span class="fc" id="L306">            JSONObject obj = modules.getJSONObject(i);</span>
+            
+<span class="fc" id="L308">            String moduleClass= obj.getString(&quot;class&quot;);</span>
+<span class="fc" id="L309">            String description = obj.getString(&quot;description&quot;);</span>
+<span class="fc" id="L310">            int frequency = obj.getInt(&quot;frequency&quot;);</span>
+<span class="fc" id="L311">            double cost = obj.getDouble(&quot;price&quot;);</span>
+<span class="fc" id="L312">            int range = obj.getInt(&quot;range&quot;);</span>
+<span class="fc" id="L313">            int tier = obj.getInt(&quot;tier&quot;);</span>
+<span class="fc" id="L314">            String name = obj.getString(&quot;name&quot;);</span>
+            ModuleName moduleName;
+<span class="fc" id="L316">            double damage = obj.getDouble(&quot;damage&quot;);</span>
+<span class="fc" id="L317">            String type = obj.getString(&quot;type&quot;);</span>
+<span class="fc" id="L318">            String effectString = obj.getString(&quot;effect&quot;);</span>
+<span class="fc" id="L319">            String desc = obj.getString(&quot;description&quot;);</span>
+            DefenseType defenseType;
+            Effect effect;
+            
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">            if(cost &lt; 0)</span>
+<span class="nc" id="L324">                throw new IllegalArgumentException(&quot;Cost must be higher than 0&quot;);</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">            if(range &lt; 0)</span>
+<span class="nc" id="L326">                throw new IllegalArgumentException(&quot;Range must be higher than 0&quot;);</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">            if(damage &lt; 0)</span>
+<span class="nc" id="L328">                throw new IllegalArgumentException(&quot;Damage must be higher than 0&quot;);</span>
+            
+<span class="pc bpc" id="L330" title="9 of 30 branches missed.">            switch(name)</span>
+            {
+                case &quot;Bitcoin Miner&quot;:
+<span class="pc bpc" id="L333" title="1 of 4 branches missed.">                    switch(tier)</span>
+                    {
+                        case 1:
+<span class="fc" id="L336">                            moduleName = ModuleName.BITCOIN_MINER;</span>
+<span class="fc" id="L337">                            DEFAULT_MODULE_BITCOINMINER_1 = new BitCoinMinerTemplate(cost, tier, moduleName, frequency, desc);</span>
+<span class="fc" id="L338">                            break;</span>
+                        case 2:
+<span class="fc" id="L340">                            moduleName = ModuleName.BITCOIN_MINER;</span>
+<span class="fc" id="L341">                            DEFAULT_MODULE_BITCOINMINER_2 = new BitCoinMinerTemplate(cost, tier, moduleName, frequency, desc);</span>
+<span class="fc" id="L342">                            break;</span>
+                        case 3:
+<span class="fc" id="L344">                            moduleName = ModuleName.BITCOIN_MINER;</span>
+<span class="fc" id="L345">                            DEFAULT_MODULE_BITCOINMINER_3 = new BitCoinMinerTemplate(cost, tier, moduleName, frequency, desc);</span>
+<span class="fc" id="L346">                            break;</span>
+                        default:
+<span class="nc" id="L348">                            throw new IOException(&quot;Tier not recognized (Bitcoin Miner)&quot;);</span>
+                    }
+                    break;
+                case &quot;CPU Upgrade&quot;:
+<span class="pc bpc" id="L352" title="1 of 4 branches missed.">                    switch(tier)</span>
+                    {
+                        case 1:
+<span class="fc" id="L355">                            moduleName = ModuleName.CPU_UPGRADE;</span>
+<span class="fc" id="L356">                            DEFAULT_MODULE_CPUUPGRADE_1 = new CPUUpgradeTemplate(cost, tier, moduleName, frequency, desc);</span>
+<span class="fc" id="L357">                            break;</span>
+                        case 2:
+<span class="fc" id="L359">                            moduleName = ModuleName.CPU_UPGRADE;</span>
+<span class="fc" id="L360">                            DEFAULT_MODULE_CPUUPGRADE_2 = new CPUUpgradeTemplate(cost, tier, moduleName, frequency, desc);</span>
+<span class="fc" id="L361">                            break;</span>
+                        case 3:
+<span class="fc" id="L363">                            moduleName = ModuleName.CPU_UPGRADE;</span>
+<span class="fc" id="L364">                            DEFAULT_MODULE_CPUUPGRADE_3 = new CPUUpgradeTemplate(cost, tier, moduleName, frequency, desc);</span>
+<span class="fc" id="L365">                            break;</span>
+                        default:
+<span class="nc" id="L367">                            throw new IOException(&quot;Tier not recognized (CPU Upgrade)&quot;);</span>
+                    }
+                    break;
+                case &quot;Software Injector&quot;:
+<span class="pc bpc" id="L371" title="1 of 4 branches missed.">                    switch(tier)</span>
+                    {
+                        case 1:
+<span class="fc" id="L374">                            moduleName = ModuleName.SOFTWARE_INJECTOR;</span>
+<span class="fc" id="L375">                            DEFAULT_MODULE_SOFTWAREINJECTOR_1 = new SoftwareInjectorTemplate(cost, tier, moduleName, desc);</span>
+<span class="fc" id="L376">                            break;</span>
+                        case 2:
+<span class="fc" id="L378">                            moduleName = ModuleName.SOFTWARE_INJECTOR;</span>
+<span class="fc" id="L379">                            DEFAULT_MODULE_SOFTWAREINJECTOR_2 = new SoftwareInjectorTemplate(cost, tier, moduleName, desc);</span>
+<span class="fc" id="L380">                            break;</span>
+                        case 3:
+<span class="fc" id="L382">                            moduleName = ModuleName.SOFTWARE_INJECTOR;</span>
+<span class="fc" id="L383">                            DEFAULT_MODULE_SOFTWAREINJECTOR_3 = new SoftwareInjectorTemplate(cost, tier, moduleName, desc);</span>
+<span class="fc" id="L384">                            break;</span>
+                        default:
+<span class="nc" id="L386">                            throw new IOException(&quot;Tier not recognized (Software Injector)&quot;);</span>
+                    }
+                    break;
+                case &quot;Bottlecap Antivirus&quot;:
+<span class="pc bpc" id="L390" title="1 of 4 branches missed.">                    switch(tier)</span>
+                    {
+                        case 1:
+<span class="fc" id="L393">                            moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;</span>
+<span class="pc bpc" id="L394" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L397">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L398">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L400">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L401">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L403">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L404">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L406">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L407">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L409">                                    defenseType = null;</span>
+<span class="fc" id="L410">                                    break;</span>
+                                default:
+<span class="nc" id="L412">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L416" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L419">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L420">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L422">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L423">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L425">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L426">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L428">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L429">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L431">                                    effect = null;</span>
+<span class="fc" id="L432">                                    break;</span>
+                                default:
+<span class="nc" id="L434">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L436">                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L437">                            break;</span>
+                        case 2:
+<span class="fc" id="L439">                            moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;</span>
+<span class="pc bpc" id="L440" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L443">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L444">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L446">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L447">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L449">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L450">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L452">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L453">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L455">                                    defenseType = null;</span>
+<span class="fc" id="L456">                                    break;</span>
+                                default:
+<span class="nc" id="L458">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L462" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L465">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L466">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L468">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L469">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L471">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L472">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L474">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L475">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L477">                                    effect = null;</span>
+<span class="fc" id="L478">                                    break;</span>
+                                default:
+<span class="nc" id="L480">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L482">                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L483">                            break;</span>
+                        case 3:
+<span class="fc" id="L485">                            moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;</span>
+<span class="pc bpc" id="L486" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L489">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L490">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L492">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L493">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L495">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L496">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L498">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L499">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L501">                                    defenseType = null;</span>
+<span class="fc" id="L502">                                    break;</span>
+                                default:
+<span class="nc" id="L504">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L508" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L511">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L512">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L514">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L515">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L517">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L518">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L520">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L521">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L523">                                    effect = null;</span>
+<span class="fc" id="L524">                                    break;</span>
+                                default:
+<span class="nc" id="L526">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L528">                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L529">                            break;</span>
+                        default:
+<span class="nc" id="L531">                            throw new IOException(&quot;Tier not recognized (Bottlecap Antivirus)&quot;);</span>
+                    }
+                    break;
+                case &quot;Muscle Antivirus&quot;:
+<span class="pc bpc" id="L535" title="1 of 4 branches missed.">                    switch(tier)</span>
+                    {
+                        case 1:
+<span class="fc" id="L538">                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;</span>
+<span class="pc bpc" id="L539" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L542">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L543">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L545">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L546">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L548">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L549">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L551">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L552">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L554">                                    defenseType = null;</span>
+<span class="fc" id="L555">                                    break;</span>
+                                default:
+<span class="nc" id="L557">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L561" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L564">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L565">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L567">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L568">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L570">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L571">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L573">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L574">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L576">                                    effect = null;</span>
+<span class="fc" id="L577">                                    break;</span>
+                                default:
+<span class="nc" id="L579">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L581">                            DEFAULT_MODULE_DEFENSE_MUSCLE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L582">                            break;</span>
+                        case 2:
+<span class="fc" id="L584">                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;</span>
+<span class="pc bpc" id="L585" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L588">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L589">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L591">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L592">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L594">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L595">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L597">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L598">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L600">                                    defenseType = null;</span>
+<span class="fc" id="L601">                                    break;</span>
+                                default:
+<span class="nc" id="L603">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L607" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L610">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L611">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L613">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L614">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L616">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L617">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L619">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L620">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L622">                                    effect = null;</span>
+<span class="fc" id="L623">                                    break;</span>
+                                default:
+<span class="nc" id="L625">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L627">                            DEFAULT_MODULE_DEFENSE_MUSCLE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L628">                            break;</span>
+                        case 3:
+<span class="fc" id="L630">                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;</span>
+<span class="pc bpc" id="L631" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L634">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L635">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L637">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L638">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L640">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L641">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L643">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L644">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L646">                                    defenseType = null;</span>
+<span class="fc" id="L647">                                    break;</span>
+                                default:
+<span class="nc" id="L649">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L653" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L656">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L657">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L659">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L660">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L662">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L663">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L665">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L666">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L668">                                    effect = null;</span>
+<span class="fc" id="L669">                                    break;</span>
+                                default:
+<span class="nc" id="L671">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L673">                            DEFAULT_MODULE_DEFENSE_MUSCLE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L674">                            break;</span>
+                        default:
+<span class="nc" id="L676">                            throw new IOException(&quot;Tier not recognized (Muscle Antivirus)&quot;);</span>
+                    }
+                break;
+                case &quot;Scale Antivirus&quot;:
+<span class="pc bpc" id="L680" title="1 of 4 branches missed.">                    switch(tier)</span>
+                    {
+                        case 1:
+<span class="fc" id="L683">                            moduleName = ModuleName.SCALE_ANTIVIRUS;</span>
+<span class="pc bpc" id="L684" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L687">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L688">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L690">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L691">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L693">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L694">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L696">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L697">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L699">                                    defenseType = null;</span>
+<span class="fc" id="L700">                                    break;</span>
+                                default:
+<span class="nc" id="L702">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L706" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L709">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L710">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L712">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L713">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L715">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L716">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L718">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L719">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L721">                                    effect = null;</span>
+<span class="fc" id="L722">                                    break;</span>
+                                default:
+<span class="nc" id="L724">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L726">                            DEFAULT_MODULE_DEFENSE_SCALE_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L727">                            break;</span>
+                        case 2:
+<span class="fc" id="L729">                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;</span>
+<span class="pc bpc" id="L730" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L733">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L734">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L736">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L737">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L739">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L740">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L742">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L743">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L745">                                    defenseType = null;</span>
+<span class="fc" id="L746">                                    break;</span>
+                                default:
+<span class="nc" id="L748">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L752" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L755">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L756">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L758">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L759">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L761">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L762">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L764">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L765">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L767">                                    effect = null;</span>
+<span class="fc" id="L768">                                    break;</span>
+                                default:
+<span class="nc" id="L770">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L772">                            DEFAULT_MODULE_DEFENSE_SCALE_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L773">                            break;</span>
+                        case 3:
+<span class="fc" id="L775">                            moduleName = ModuleName.MUSCLE_ANTIVIRUS;</span>
+<span class="pc bpc" id="L776" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L779">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L780">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L782">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L783">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L785">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L786">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L788">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L789">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L791">                                    defenseType = null;</span>
+<span class="fc" id="L792">                                    break;</span>
+                                default:
+<span class="nc" id="L794">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L798" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L801">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L802">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L804">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L805">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L807">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L808">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L810">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L811">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L813">                                    effect = null;</span>
+<span class="fc" id="L814">                                    break;</span>
+                                default:
+<span class="nc" id="L816">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L818">                            DEFAULT_MODULE_DEFENSE_SCALE_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L819">                            break;</span>
+                        default:
+<span class="nc" id="L821">                            throw new IOException(&quot;Tier not recognized (Scale Antivirus)&quot;);                            </span>
+                    }
+                    break;
+                case &quot;Sniper Antivirus&quot;:
+<span class="pc bpc" id="L825" title="1 of 4 branches missed.">                    switch(tier)</span>
+                    {
+                        case 1:
+<span class="fc" id="L828">                            moduleName = ModuleName.SNIPER_ANTIVIRUS;</span>
+<span class="pc bpc" id="L829" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L832">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L833">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L835">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L836">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L838">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L839">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L841">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L842">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L844">                                    defenseType = null;</span>
+<span class="fc" id="L845">                                    break;</span>
+                                default:
+<span class="nc" id="L847">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L851" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L854">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L855">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L857">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L858">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L860">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L861">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L863">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L864">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L866">                                    effect = null;</span>
+<span class="fc" id="L867">                                    break;</span>
+                                default:
+<span class="nc" id="L869">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L871">                            DEFAULT_MODULE_DEFENSE_SNIPER_1 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L872">                            break;</span>
+                        case 2:
+<span class="fc" id="L874">                            moduleName = ModuleName.SNIPER_ANTIVIRUS;</span>
+<span class="pc bpc" id="L875" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L878">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L879">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L881">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L882">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L884">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L885">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L887">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L888">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L890">                                    defenseType = null;</span>
+<span class="fc" id="L891">                                    break;</span>
+                                default:
+<span class="nc" id="L893">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L897" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L900">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L901">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L903">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L904">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L906">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L907">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L909">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L910">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L912">                                    effect = null;</span>
+<span class="fc" id="L913">                                    break;</span>
+                                default:
+<span class="nc" id="L915">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L917">                            DEFAULT_MODULE_DEFENSE_SNIPER_2 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L918">                            break;</span>
+                        case 3:
+<span class="fc" id="L920">                            moduleName = ModuleName.SNIPER_ANTIVIRUS;</span>
+<span class="pc bpc" id="L921" title="19 of 22 branches missed.">                            switch(type)</span>
+                            {
+                                case &quot;CHEAP&quot;: 
+<span class="nc" id="L924">                                    defenseType = DefenseType.CHEAP;</span>
+<span class="nc" id="L925">                                    break;</span>
+                                case &quot;RANGE&quot;:
+<span class="nc" id="L927">                                    defenseType = DefenseType.RANGE;</span>
+<span class="nc" id="L928">                                    break;</span>
+                                case &quot;BALANCED&quot;:
+<span class="nc" id="L930">                                    defenseType = DefenseType.BALANCED;</span>
+<span class="nc" id="L931">                                    break;</span>
+                                case &quot;STRONG&quot;:
+<span class="nc" id="L933">                                    defenseType = DefenseType.STRONG;</span>
+<span class="nc" id="L934">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L936">                                    defenseType = null;</span>
+<span class="fc" id="L937">                                    break;</span>
+                                default:
+<span class="nc" id="L939">                                    throw new InvalidDefenseTypeException();</span>
+                                                                   
+                            }
+                            
+<span class="pc bpc" id="L943" title="19 of 22 branches missed.">                            switch(effectString)</span>
+                            {
+                                case &quot;SLOWED&quot;:
+<span class="nc" id="L946">                                    effect = Effect.SLOWED;</span>
+<span class="nc" id="L947">                                    break;</span>
+                                case &quot;POISENED&quot;:
+<span class="nc" id="L949">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L950">                                    break;</span>
+                                case &quot;SPASH&quot;:
+<span class="nc" id="L952">                                    effect = Effect.POISENED;</span>
+<span class="nc" id="L953">                                    break;</span>
+                                case &quot;DECRYPTED&quot;:
+<span class="nc" id="L955">                                    effect = Effect.DECRYPTED;</span>
+<span class="nc" id="L956">                                    break;</span>
+                                case &quot;&quot;:
+<span class="fc" id="L958">                                    effect = null;</span>
+<span class="fc" id="L959">                                    break;</span>
+                                default:
+<span class="nc" id="L961">                                    throw new InvalidEffectException();</span>
+                            }
+<span class="fc" id="L963">                            DEFAULT_MODULE_DEFENSE_SNIPER_3 = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);</span>
+<span class="fc" id="L964">                            break;</span>
+                        default:
+<span class="nc" id="L966">                            throw new IOException(&quot;Tier not recognized (Sniper Antivirus)&quot;);</span>
+                    }
+                    break;
+                default:
+<span class="nc" id="L970">                    throw new IOException(String.format(&quot;Module name %s not recognized.&quot;, name));</span>
+            }
+        }
+        
+<span class="fc" id="L974">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

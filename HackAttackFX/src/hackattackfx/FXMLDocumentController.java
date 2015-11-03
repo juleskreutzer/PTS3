@@ -46,8 +46,7 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gEngine = GraphicsEngine.getInstance();
-        
-        
+
     }    
     
     public void addNode(Node node){

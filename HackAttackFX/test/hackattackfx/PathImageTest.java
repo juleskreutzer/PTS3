@@ -6,12 +6,13 @@
 package hackattackfx;
 
 import java.awt.Point;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -24,11 +25,29 @@ public class PathImageTest {
     Path path4;
     Point start;
     
+      public static class AsNonApp extends Application {
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
+    
     public PathImageTest() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws InterruptedException {
+        // Initialise Java FX
+        System.out.printf("About to launch FX App\n");
+        Thread t = new Thread("JavaFX Init Thread") {
+            public void run() {
+                Application.launch(SpawnTargetImageTest.AsNonApp.class, new String[0]);
+            }
+        };
+        t.setDaemon(true);
+        t.start();
+        System.out.printf("FX App thread started\n");
+        Thread.sleep(500);
     }
     
     @AfterClass
@@ -37,6 +56,8 @@ public class PathImageTest {
     
     @Before
     public void setUp() {
+        start = new Point(100,100);
+        
         path1 = new Path(start, 10, Path.Direction.Right);
         path2 = new Path(start, 10, Path.Direction.Up);
         path3 = new Path(start, 10, Path.Direction.Left);

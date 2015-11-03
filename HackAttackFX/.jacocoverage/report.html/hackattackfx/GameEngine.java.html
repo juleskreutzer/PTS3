@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GameEngine.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">GameEngine.java</span></div><h1>GameEngine.java</h1><pre class="source lang-java linenums">package hackattackfx;
+
+import hackattackfx.GameEngine.OnExecuteTick;
+import hackattackfx.exceptions.InvalidModuleEnumException;
+import hackattackfx.enums.ModuleName;
+import java.awt.Point;
+import javafx.scene.input.*;
+import java.util.ArrayList;
+import hackattackfx.exceptions.*;
+import java.awt.event.MouseListener;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * This is the main engine that executes the ticks. Every object that wants to be notified when a tick occurs,
+ * should register to this object's {@link GameEngine.OnExecuteTick} interface.
+ * 
+ * @author juleskreutzer, Jasper Rouwhorst
+ */
+public class GameEngine extends Thread implements MouseListener {
+
+    /**
+     * This interface is used to notify every listening object when a tick has occured.
+     */
+    public interface OnExecuteTick{
+        /**
+         * Executed when a tick occured
+         * @param elapsedtime The elapsed time of the running game in milliseconds
+         */
+        void onTick(long elapsedtime);
+    }
+    
+    /**
+     * This interface is used to notify every listening object when a tick has been ended.
+     */
+    public interface OnCompleteTick{
+        void tickComplete(long elapsedtime);
+    }
+    
+    private static GameEngine instance;
+    
+    private GraphicsEngine graphicsEngine;
+    private Map map;
+    private ArrayList&lt;Wave&gt; waveList;
+    private Wave currentWave;
+    // The elapsed game time a wave has started
+    private long lastWaveStart;
+    // The elapsed game time a wave has ended
+    private long lastWaveEnd;
+    private int waveNumber;
+    private Player playerA;
+    private Player playerB;
+    private String playerAName;
+    private String playerBName;
+    
+    private boolean gameRunning;
+    private Spell selectedSpell;
+    private Module selectedModule;
+    
+    private List&lt;OnCompleteTick&gt; tickCompleteListeners;
+    private List&lt;OnCompleteTick&gt; unsubscribedCompleteListeners;
+    private List&lt;OnExecuteTick&gt; listeners;
+    private List&lt;OnExecuteTick&gt; unsubscribedListeners;
+    
+<span class="fc" id="L82">    private SpawnTargetImage st = null;</span>
+
+<span class="fc" id="L84">    private GameEngine(){</span>
+<span class="fc" id="L85">        instance = this;</span>
+        
+<span class="nc" id="L87">        initialize();</span>
+<span class="nc" id="L88">    }</span>
+    
+    public static GameEngine getInstance(){
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        return instance == null ? new GameEngine() : instance;</span>
+    }
+    
+    private void initialize(){
+        // This makes a daemon thread of the gameengine. This means that this thread will not prevent the JVM from shutting down. 
+        // This is implemented due previous bugs that kept the gameengine thread running while the game was closed.
+<span class="fc" id="L97">        setDaemon(true);</span>
+        
+<span class="nc" id="L99">        graphicsEngine = GraphicsEngine.getInstance();</span>
+<span class="nc" id="L100">        map = Map.getInstance();</span>
+<span class="nc" id="L101">        tickCompleteListeners = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L102">        unsubscribedCompleteListeners = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L103">        listeners = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L104">        unsubscribedListeners = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L105">        waveList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L106">        playerA = new Player(100, Data.playerAName, 100, new Point(0,50));</span>
+<span class="nc" id="L107">        playerB = new Player(100, Data.playerBName, 100, new Point(100,50));</span>
+<span class="nc" id="L108">        gameRunning = false;</span>
+<span class="nc" id="L109">        waveNumber = 0;</span>
+<span class="nc" id="L110">        lastWaveStart = GameTime.getElapsedTime();</span>
+<span class="nc" id="L111">        preStart();</span>
+<span class="nc" id="L112">        startGame();</span>
+<span class="nc" id="L113">    }</span>
+    
+    /**
+     * Mostly used to draw the initial components like the bases and roads
+     */
+    private void preStart(){
+<span class="nc" id="L119">        graphicsEngine.drawRoad(map.getRoad());</span>
+        
+        // Initialize all GUI buttons
+<span class="nc" id="L122">        ImageView sniperav = (ImageView)graphicsEngine.getNode(&quot;buildSniperAV&quot;,null);</span>
+<span class="nc" id="L123">        sniperav.setOnMouseClicked(new EventHandler&lt;MouseEvent&gt;(){</span>
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+<span class="nc" id="L127">                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SNIPER_ANTIVIRUS);</span>
+                
+<span class="nc" id="L129">                graphicsEngine.getScene().setOnMouseMoved(new EventHandler&lt;javafx.scene.input.MouseEvent&gt;(){</span>
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+<span class="nc" id="L133">                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));</span>
+<span class="nc" id="L134">                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));</span>
+<span class="nc" id="L135">                    }</span>
+                });
+                // Set a listener for a second click to occur
+<span class="nc" id="L138">                st.setOnMouseClicked(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        
+<span class="nc" id="L143">                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());</span>
+                        try {
+                            try {
+<span class="nc" id="L146">                                int x = (int)st.getX();</span>
+<span class="nc" id="L147">                                int y = (int)st.getY();</span>
+                                
+                                
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))</span>
+                                {   
+<span class="nc" id="L152">                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));</span>
+<span class="nc" id="L153">                                    graphicsEngine.spawn(defense);</span>
+<span class="nc" id="L154">                                    graphicsEngine.deSpawn(st);</span>
+<span class="nc" id="L155">                                    defense.activate();</span>
+<span class="nc" id="L156">                                }</span>
+                                else
+                                {
+<span class="nc" id="L159">                                    graphicsEngine.showError(&quot;You are not allowed to build here.&quot;);</span>
+                                }
+<span class="nc" id="L161">                            } catch (DuplicateSpawnException | InvalidObjectException ex) {</span>
+<span class="nc" id="L162">                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L163">                            } catch (NotEnoughBitcoinsException ex) {</span>
+<span class="nc" id="L164">                                graphicsEngine.showError(ex.getMessage());</span>
+<span class="nc" id="L165">                            } </span>
+<span class="nc" id="L166">                        } catch (InvalidModuleEnumException ex) {</span>
+<span class="nc" id="L167">                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L168">                        }</span>
+<span class="nc" id="L169">                    }</span>
+                });
+<span class="nc" id="L171">            }</span>
+            
+        });
+<span class="nc" id="L174">        sniperav.setOnMouseEntered(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+<span class="nc" id="L179">                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, null, 0,0);</span>
+<span class="nc" id="L180">                    graphicsEngine.showModuleStats(module);</span>
+<span class="nc" id="L181">                } catch (InvalidModuleEnumException ex) {</span>
+<span class="nc" id="L182">                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L183">                }</span>
+<span class="nc" id="L184">            }</span>
+        });
+        
+<span class="nc" id="L187">        ImageView scaleav = (ImageView)graphicsEngine.getNode(&quot;buildScaleAV&quot;,null);</span>
+<span class="nc" id="L188">        scaleav.setOnMouseClicked(new EventHandler&lt;javafx.scene.input.MouseEvent&gt;(){</span>
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+<span class="nc" id="L192">                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SCALE_ANTIVIRUS);</span>
+<span class="nc" id="L193">                graphicsEngine.getScene().setOnMouseMoved(new EventHandler&lt;javafx.scene.input.MouseEvent&gt;(){</span>
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+<span class="nc" id="L197">                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));</span>
+<span class="nc" id="L198">                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));</span>
+
+<span class="nc" id="L200">                    }</span>
+                });
+                // Set a listener for a second click to occur
+<span class="nc" id="L203">                st.setOnMouseClicked(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+                    @Override
+                    public void handle(MouseEvent event) {
+<span class="nc" id="L207">                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());</span>
+                        try {
+                            
+                            try {
+<span class="nc" id="L211">                                int x = (int)st.getX();</span>
+<span class="nc" id="L212">                                int y = (int)st.getY();</span>
+                                
+                                
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))</span>
+                                {
+<span class="nc" id="L217">                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50));</span>
+<span class="nc" id="L218">                                    graphicsEngine.spawn(defense);</span>
+<span class="nc" id="L219">                                    graphicsEngine.deSpawn(st);</span>
+<span class="nc" id="L220">                                    defense.activate();</span>
+<span class="nc" id="L221">                                }</span>
+                                else{
+<span class="nc" id="L223">                                    graphicsEngine.showError(&quot;You are not allowed to build here.&quot;);</span>
+                                }
+<span class="nc" id="L225">                            } catch (DuplicateSpawnException | InvalidObjectException ex) {</span>
+<span class="nc" id="L226">                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L227">                            } </span>
+                            
+                            
+<span class="nc" id="L230">                        } catch (InvalidModuleEnumException ex) {</span>
+<span class="nc" id="L231">                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L232">                        } catch (NotEnoughBitcoinsException ex) {</span>
+<span class="nc" id="L233">                            graphicsEngine.showError(ex.getMessage());</span>
+<span class="nc" id="L234">                        }</span>
+<span class="nc" id="L235">                    }</span>
+                
+                });
+<span class="nc" id="L238">            }</span>
+            
+        });
+<span class="nc" id="L241">        scaleav.setOnMouseEntered(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+<span class="nc" id="L246">                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, null, 0,0);</span>
+<span class="nc" id="L247">                    graphicsEngine.showModuleStats(module);</span>
+<span class="nc" id="L248">                } catch (InvalidModuleEnumException ex) {</span>
+<span class="nc" id="L249">                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L250">                }</span>
+<span class="nc" id="L251">            }</span>
+        });
+        
+<span class="nc" id="L254">        ImageView bottlecapav = (ImageView)graphicsEngine.getNode(&quot;buildBottlecapAV&quot;,null);</span>
+<span class="nc" id="L255">        bottlecapav.setOnMouseClicked(new EventHandler&lt;javafx.scene.input.MouseEvent&gt;(){</span>
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+<span class="nc" id="L259">                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.BOTTLECAP_ANTIVIRUS);</span>
+<span class="nc" id="L260">                graphicsEngine.getScene().setOnMouseMoved(new EventHandler&lt;javafx.scene.input.MouseEvent&gt;(){</span>
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+<span class="nc" id="L264">                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));</span>
+<span class="nc" id="L265">                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));</span>
+
+<span class="nc" id="L267">                    }</span>
+                });
+                // Set a listener for a second click to occur
+<span class="nc" id="L270">                st.setOnMouseClicked(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+                    @Override
+                    public void handle(MouseEvent event) {
+<span class="nc" id="L274">                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());</span>
+                        try {
+                            
+                            try {
+<span class="nc" id="L278">                                int x = (int)st.getX();</span>
+<span class="nc" id="L279">                                int y = (int)st.getY();</span>
+                                
+                                
+<span class="nc bnc" id="L282" title="All 2 branches missed.">                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))</span>
+                                {
+<span class="nc" id="L284">                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50));</span>
+<span class="nc" id="L285">                                    graphicsEngine.spawn(defense);</span>
+<span class="nc" id="L286">                                    graphicsEngine.deSpawn(st);</span>
+<span class="nc" id="L287">                                    defense.activate();</span>
+<span class="nc" id="L288">                                }</span>
+                                else
+                                {
+<span class="nc" id="L291">                                    graphicsEngine.showError(&quot;You are not allowed to build here.&quot;);</span>
+                                }
+<span class="nc" id="L293">                            } catch (DuplicateSpawnException | InvalidObjectException ex) {</span>
+<span class="nc" id="L294">                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L295">                            }</span>
+                            
+                            
+<span class="nc" id="L298">                        } catch (InvalidModuleEnumException ex) {</span>
+<span class="nc" id="L299">                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L300">                        } catch (NotEnoughBitcoinsException ex)</span>
+                        {
+<span class="nc" id="L302">                            graphicsEngine.showError(ex.getMessage());</span>
+<span class="nc" id="L303">                        }</span>
+<span class="nc" id="L304">                    }</span>
+                
+                });
+<span class="nc" id="L307">            }</span>
+            
+        });
+<span class="nc" id="L310">        bottlecapav.setOnMouseEntered(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+<span class="nc" id="L315">                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, null, 0,0);</span>
+<span class="nc" id="L316">                    graphicsEngine.showModuleStats(module);</span>
+<span class="nc" id="L317">                } catch (InvalidModuleEnumException ex) {</span>
+<span class="nc" id="L318">                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L319">                }</span>
+<span class="nc" id="L320">            }</span>
+        });
+        
+<span class="nc" id="L323">        ImageView muscleav = (ImageView)graphicsEngine.getNode(&quot;buildMuscleAV&quot;,null);</span>
+<span class="nc" id="L324">        muscleav.setOnMouseClicked(new EventHandler&lt;javafx.scene.input.MouseEvent&gt;(){</span>
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+<span class="nc" id="L328">                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.MUSCLE_ANTIVIRUS);</span>
+<span class="nc" id="L329">                graphicsEngine.getScene().setOnMouseMoved(new EventHandler&lt;javafx.scene.input.MouseEvent&gt;(){</span>
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+<span class="nc" id="L333">                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));</span>
+<span class="nc" id="L334">                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));</span>
+
+<span class="nc" id="L336">                    }</span>
+                });
+                // Set a listener for a second click to occur
+<span class="nc" id="L339">                st.setOnMouseClicked(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+                    @Override
+                    public void handle(MouseEvent event) {
+<span class="nc" id="L343">                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());</span>
+                        try {
+                            
+                            try {
+<span class="nc" id="L347">                                int x = (int)st.getX();</span>
+<span class="nc" id="L348">                                int y = (int)st.getY();</span>
+                                
+<span class="nc bnc" id="L350" title="All 2 branches missed.">                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))</span>
+                                {
+<span class="nc" id="L352">                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50));</span>
+<span class="nc" id="L353">                                    graphicsEngine.spawn(defense);</span>
+<span class="nc" id="L354">                                    graphicsEngine.deSpawn(st);</span>
+<span class="nc" id="L355">                                    defense.activate();</span>
+<span class="nc" id="L356">                                }</span>
+                                else
+                                {
+<span class="nc" id="L359">                                    graphicsEngine.showError(&quot;You are not allowed to build here.&quot;);</span>
+                                }
+<span class="nc" id="L361">                            } catch (DuplicateSpawnException | InvalidObjectException ex) {</span>
+<span class="nc" id="L362">                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L363">                            }</span>
+                            
+                            
+<span class="nc" id="L366">                        } catch (InvalidModuleEnumException ex) {</span>
+<span class="nc" id="L367">                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L368">                        } catch (NotEnoughBitcoinsException ex)</span>
+                        {
+<span class="nc" id="L370">                            graphicsEngine.showError(ex.getMessage());</span>
+<span class="nc" id="L371">                        }</span>
+<span class="nc" id="L372">                    }</span>
+                
+                });
+<span class="nc" id="L375">            }</span>
+            
+        });
+<span class="nc" id="L378">        muscleav.setOnMouseEntered(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+<span class="nc" id="L383">                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, null, 0,0);</span>
+<span class="nc" id="L384">                    graphicsEngine.showModuleStats(module);</span>
+<span class="nc" id="L385">                } catch (InvalidModuleEnumException ex) {</span>
+<span class="nc" id="L386">                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L387">                }</span>
+<span class="nc" id="L388">            }</span>
+        });
+<span class="nc" id="L390">    }</span>
+    
+    /**
+     * Starts the game. From this point, the initial wave will be created and the game will run from this point on.
+     */
+    private void startGame(){
+<span class="nc" id="L396">        gameRunning = true;        </span>
+        
+<span class="nc" id="L398">        Wave w = generateNextWave();</span>
+<span class="nc" id="L399">        waveList.add(w);</span>
+<span class="nc" id="L400">        currentWave = w;</span>
+<span class="nc" id="L401">        w.startWave();</span>
+        
+<span class="nc" id="L403">    }</span>
+    
+    @Override
+    public void run() {
+<span class="nc" id="L407">        Timer timer = new Timer();</span>
+<span class="nc" id="L408">        timer.schedule(new TimerTask() {</span>
+
+            @Override
+            public void run() {
+<span class="nc" id="L412">                tick();</span>
+<span class="nc" id="L413">                System.out.print(&quot;use javaFX thread (gameEngine line 157) (animationTimer)&quot;);</span>
+<span class="nc" id="L414">            }</span>
+        }, 0, 15);
+        
+<span class="nc" id="L417">    }</span>
+    
+    private void tick(){
+<span class="nc bnc" id="L420" title="All 2 branches missed.">        if(gameRunning)</span>
+        {
+<span class="nc bnc" id="L422" title="All 2 branches missed.">            if(playerA.getHealth() &lt;= 0)</span>
+            {
+<span class="nc" id="L424">               graphicsEngine.showEndGame(playerA.getName());</span>
+<span class="nc" id="L425">               gameRunning = false;</span>
+               
+            }
+
+<span class="nc bnc" id="L429" title="All 4 branches missed.">            if(!currentWave.waveActive() || GameTime.getElapsedTime() &gt;= (lastWaveStart + 30000)){</span>
+<span class="nc" id="L430">                Wave w = generateNextWave();</span>
+<span class="nc" id="L431">                lastWaveStart = GameTime.getElapsedTime();</span>
+<span class="nc" id="L432">                waveList.add(w);</span>
+<span class="nc" id="L433">                currentWave = w;</span>
+<span class="nc" id="L434">                w.startWave();</span>
+
+            }
+
+<span class="nc" id="L438">            processUnsubscribers();</span>
+<span class="nc" id="L439">            notifyListeners();</span>
+<span class="nc" id="L440">            fillLabels();</span>
+        }
+<span class="nc" id="L442">    }</span>
+    
+    public Wave getActiveWave(){
+<span class="fc" id="L445">        return currentWave;</span>
+    }
+    
+    public ArrayList&lt;Wave&gt; getActiveWaves() {
+<span class="nc" id="L449">        ArrayList&lt;Wave&gt; result = new ArrayList&lt;Wave&gt;();</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">        for (Wave w : this.waveList) {</span>
+<span class="nc bnc" id="L451" title="All 2 branches missed.">            if (w.waveActive()) result.add(w);</span>
+<span class="nc" id="L452">        }</span>
+<span class="nc" id="L453">        return result;</span>
+    }
+    
+    private Wave generateNextWave(){
+        // calculates how strong this wave should be and ups  waveNumber by one
+<span class="nc" id="L458">        int waveStrongness = 5 + (int)(0.5 * ++waveNumber * waveNumber);</span>
+<span class="nc" id="L459">        int bytes = 0;</span>
+<span class="nc" id="L460">        int kiloBytes = 0;</span>
+<span class="nc" id="L461">        int megaBytes = 0;</span>
+<span class="nc" id="L462">        int gigaBytes = 0;</span>
+<span class="nc" id="L463">        int teraBytes = 0;</span>
+<span class="nc" id="L464">        int petaBytes = 0;</span>
+<span class="nc" id="L465">        Random r = new Random();</span>
+<span class="nc bnc" id="L466" title="All 2 branches missed.">        while(waveStrongness  &gt; 100) {</span>
+<span class="nc bnc" id="L467" title="All 2 branches missed.">            if (r.nextDouble() &gt; 0.5) {</span>
+<span class="nc" id="L468">                ++petaBytes;</span>
+<span class="nc" id="L469">                waveStrongness -= 32;</span>
+            } else {
+<span class="nc" id="L471">                ++teraBytes;</span>
+<span class="nc" id="L472">                waveStrongness -= 16;</span>
+            }
+        }
+<span class="nc bnc" id="L475" title="All 2 branches missed.">        while(waveStrongness  &gt; 50) {</span>
+<span class="nc bnc" id="L476" title="All 2 branches missed.">            if (r.nextDouble() &gt; 0.5) {</span>
+<span class="nc" id="L477">                ++teraBytes;</span>
+<span class="nc" id="L478">                waveStrongness -= 16;</span>
+            } else {
+<span class="nc" id="L480">                ++gigaBytes;</span>
+<span class="nc" id="L481">                waveStrongness -= 8;</span>
+            }
+        }
+<span class="nc bnc" id="L484" title="All 2 branches missed.">        while(waveStrongness  &gt; 25) {</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">            if (r.nextDouble() &gt; 0.5) {</span>
+<span class="nc" id="L486">                ++gigaBytes;</span>
+<span class="nc" id="L487">                waveStrongness -= 8;</span>
+            } else {
+<span class="nc" id="L489">                ++megaBytes;</span>
+<span class="nc" id="L490">                waveStrongness -= 4;</span>
+            }
+        }
+<span class="nc bnc" id="L493" title="All 2 branches missed.">        while(waveStrongness  &gt; 10) {</span>
+<span class="nc bnc" id="L494" title="All 2 branches missed.">            if (r.nextDouble() &gt; 0.25) {</span>
+<span class="nc" id="L495">                ++megaBytes;</span>
+<span class="nc" id="L496">                waveStrongness -= 4;</span>
+            } else {
+<span class="nc" id="L498">                ++kiloBytes;</span>
+<span class="nc" id="L499">                waveStrongness -= 2;</span>
+            }
+        }
+<span class="nc bnc" id="L502" title="All 2 branches missed.">        while(waveStrongness  &gt; 5) {</span>
+<span class="nc" id="L503">                ++kiloBytes;</span>
+<span class="nc" id="L504">                waveStrongness -= 2;</span>
+        }
+<span class="nc bnc" id="L506" title="All 2 branches missed.">        while (waveStrongness &gt; 0) {</span>
+<span class="nc" id="L507">            ++bytes;</span>
+<span class="nc" id="L508">            waveStrongness -= 1;</span>
+        }
+<span class="nc" id="L510">        System.out.println(bytes + &quot; : &quot; + kiloBytes + &quot; : &quot; +megaBytes + &quot; : &quot; +gigaBytes + &quot; : &quot; + teraBytes + &quot; : &quot; + petaBytes); // for logging purpose</span>
+        
+<span class="nc" id="L512">        return new Wave(waveNumber,1 + 0.1*waveNumber,playerA,bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);</span>
+    }
+    
+    public void setOnTickListener(OnExecuteTick callback){
+<span class="nc" id="L516">        listeners.add(callback);</span>
+<span class="nc" id="L517">    }</span>
+    
+    public void setOnTickCompleteListener(OnCompleteTick callback){
+<span class="nc" id="L520">        tickCompleteListeners.add(callback);</span>
+<span class="nc" id="L521">    }</span>
+    /**
+     * Removes the unsubscribers from the listeners list.
+     * This method should not be called during a tick therefor only after a tick!
+     */
+    private void processUnsubscribers(){
+<span class="nc bnc" id="L527" title="All 2 branches missed.">        if(unsubscribedListeners.size() &gt; 0 ){</span>
+<span class="nc" id="L528">            listeners.removeAll(unsubscribedListeners);</span>
+<span class="nc" id="L529">            unsubscribedListeners.clear();</span>
+        }
+<span class="nc bnc" id="L531" title="All 2 branches missed.">        if(unsubscribedCompleteListeners.size() &gt; 0){</span>
+<span class="nc" id="L532">            tickCompleteListeners.removeAll(unsubscribedCompleteListeners);</span>
+<span class="nc" id="L533">            unsubscribedCompleteListeners.clear();</span>
+        }
+<span class="nc" id="L535">    }</span>
+    
+    public boolean unsubscribeListener(OnExecuteTick callback) throws UnsubscribeNonListenerException{
+<span class="nc bnc" id="L538" title="All 2 branches missed.">        if(!listeners.contains(callback)){</span>
+<span class="nc" id="L539">            throw new UnsubscribeNonListenerException(&quot;You try to unsubscribe a listener that is not subscribed as a listener&quot;);</span>
+        }
+<span class="nc" id="L541">        unsubscribedListeners.add(callback);</span>
+<span class="nc" id="L542">        return true;</span>
+    }
+    
+    public boolean unsubscribeListener(OnCompleteTick callback) throws UnsubscribeNonListenerException{
+<span class="nc bnc" id="L546" title="All 2 branches missed.">        if(!tickCompleteListeners.contains(callback)){</span>
+<span class="nc" id="L547">            throw new UnsubscribeNonListenerException(&quot;You try to unsubscribe a listener that is not subscribed as a listener&quot;);</span>
+        }
+<span class="nc" id="L549">        unsubscribedCompleteListeners.add(callback);</span>
+<span class="nc" id="L550">        return true;</span>
+    }
+    
+    /**
+     * Notifies every listening object that a tick occured.
+     */
+    private void notifyListeners(){
+<span class="nc" id="L557">        Iterator&lt;OnExecuteTick&gt; listit = listeners.iterator();</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">        while(listit.hasNext()){</span>
+<span class="nc" id="L559">            OnExecuteTick l = listit.next();</span>
+<span class="nc" id="L560">            l.onTick(GameTime.getElapsedTime());</span>
+<span class="nc" id="L561">        }</span>
+<span class="nc" id="L562">        Iterator&lt;OnCompleteTick&gt; compit = tickCompleteListeners.iterator();</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">        while(compit.hasNext()){</span>
+<span class="nc" id="L564">            OnCompleteTick cl = compit.next();</span>
+<span class="nc" id="L565">            cl.tickComplete(GameTime.getElapsedTime());</span>
+<span class="nc" id="L566">        }</span>
+<span class="nc" id="L567">    }</span>
+    
+    /**
+     * Adds the effect of the spell to every targeted minion in the range of this spell.
+     * @param spell The spell to perform.
+     */
+    public void executeSpell(Spell spell){
+        
+<span class="nc" id="L575">    }</span>
+    
+    private void fillLabels(){
+<span class="nc" id="L578">        String name = playerA.getName();</span>
+<span class="nc" id="L579">        double health = playerA.getHealth();</span>
+<span class="nc" id="L580">        double coins = playerA.getBitcoins();</span>
+<span class="nc" id="L581">        int wave = currentWave.getWaveNr();</span>
+<span class="nc" id="L582">        graphicsEngine.drawLabels(wave, name, health, coins);</span>
+<span class="nc" id="L583">    }</span>
+    
+    /**
+     * Calculates if there is an existing node in the given square
+     * @param x the x-location of the left upper corner
+     * @param y the y-location of the left upper corner
+     * @param width the width of the square
+     * @param height the height of the square
+     * @return whether or not the given square is overlapping an existing node
+     */
+    private boolean isPointInNode(int x, int y, int width, int height) {
+<span class="nc" id="L594">            ObservableList&lt;Node&gt; nodes = graphicsEngine.getNodes();</span>
+<span class="nc bnc" id="L595" title="All 2 branches missed.">            for(Node n : nodes)</span>
+            {
+<span class="nc bnc" id="L597" title="All 4 branches missed.">                if(n instanceof ModuleImage || n instanceof PathImage)</span>
+                {
+<span class="nc" id="L599">                    Point2D p1 = new Point2D(x, y); // left upper corner</span>
+<span class="nc" id="L600">                    Point2D p2 = new Point2D(x, y + height); // left bottom corner</span>
+<span class="nc" id="L601">                    Point2D p3 = new Point2D(x + width, y); // right upper corner</span>
+<span class="nc" id="L602">                    Point2D p4 = new Point2D(x + width, y + height); // right bottom corner</span>
+<span class="nc" id="L603">                    Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height); // the middle</span>
+<span class="nc bnc" id="L604" title="All 10 branches missed.">                    boolean b = n.contains(p1) || n.contains(p2) || n.contains(p3) || n.contains(p4) || n.contains(p5);</span>
+<span class="nc bnc" id="L605" title="All 2 branches missed.">                    if (b) return true;</span>
+                }
+<span class="nc" id="L607">            }</span>
+<span class="nc" id="L608">            return false;</span>
+    }
+    
+    @Override
+    public void mouseClicked(java.awt.event.MouseEvent e) {
+<span class="nc" id="L613">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+    @Override
+    public void mousePressed(java.awt.event.MouseEvent e) {
+<span class="nc" id="L618">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+    @Override
+    public void mouseReleased(java.awt.event.MouseEvent e) {
+<span class="nc" id="L623">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+    @Override
+    public void mouseEntered(java.awt.event.MouseEvent e) {
+<span class="nc" id="L628">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+    @Override
+    public void mouseExited(java.awt.event.MouseEvent e) {
+<span class="nc" id="L633">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

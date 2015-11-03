@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Spell.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">Spell.java</span></div><h1>Spell.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+import hackattackfx.enums.*;
+import hackattackfx.exceptions.*;
+import hackattackfx.templates.SpellTemplate;
+
+/**
+ *
+ * @author juleskreutzer
+ */
+public class Spell {
+    
+    private SpellName name;
+    private SpellType type;
+    private double range;
+    private int cooldown;
+    private int requiredLevel;
+    
+    /**
+     * Create a new Spell instance based on the template in the data class
+     * @param template Instance of the spell base on the template in the data class
+     */
+<span class="fc" id="L27">    public Spell(SpellTemplate template){</span>
+<span class="fc" id="L28">        this.name = template.getName();</span>
+<span class="fc" id="L29">        this.type = template.getType();</span>
+<span class="fc" id="L30">        this.range = template.getRange();</span>
+<span class="fc" id="L31">        this.cooldown = template.getCooldown();</span>
+<span class="fc" id="L32">        this.requiredLevel = template.getRequiredLevel();</span>
+<span class="fc" id="L33">    }</span>
+    
+    /**
+     * Get the name of the spell
+     * @return Returns the name of the spell based on the SpellName enum
+     */
+    public SpellName getName(){
+<span class="nc" id="L40">        return name;</span>
+    }
+    
+    /**
+     * Get the cooldown of the spell object
+     * @return Returns the cooldown in an int value
+     */
+    public int getCooldown(){
+<span class="nc" id="L48">        return cooldown;</span>
+    }
+    
+    /**
+     * Get the required level to use the spell
+     * @return Return the level required to use the spell (Int)
+     */
+    public int getRequiredLevel(){
+<span class="nc" id="L56">        return requiredLevel;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FXMLLoaderController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">FXMLLoaderController.java</span></div><h1>FXMLLoaderController.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import hackattackfx.exceptions.InvalidDefenseTypeException;
+import hackattackfx.exceptions.InvalidEffectException;
+import hackattackfx.exceptions.InvalidMinionTypeException;
+import hackattackfx.exceptions.InvalidSpellNameException;
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.stage.WindowEvent;
+
+/**
+ * FXML Controller class
+ *
+ * @author Jasper Rouwhorst
+ */
+public class FXMLLoaderController implements Initializable {
+
+    private ProgressBar progressBar;
+    private TextField txtPlayerName;
+    private Button btnPlayGame;
+    
+    @FXML
+    private Pane pane;
+    
+    @FXML
+    private Label errorlabel;
+    
+    @FXML
+    private Button playButton;
+    
+    @FXML
+    private TextField playerName;
+    
+    Data data;
+    
+    
+    public FXMLLoaderController() throws IOException, InvalidMinionTypeException, InvalidSpellNameException
+<span class="nc" id="L67">    {  </span>
+<span class="nc" id="L68">    }</span>
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+<span class="nc" id="L72">        ObservableList&lt;Node&gt; list = pane.getChildren();</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        for(Node node : list){</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if(node instanceof ProgressBar){</span>
+<span class="nc" id="L75">                progressBar = (ProgressBar)node;</span>
+            }
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            if(node instanceof Button)</span>
+            {
+<span class="nc" id="L79">                btnPlayGame = (Button)node;</span>
+<span class="nc" id="L80">                btnPlayGame.setOnMouseClicked(new EventHandler(){</span>
+
+                    @Override
+                    public void handle(Event event) {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                        if(txtPlayerName.getText().length() &gt; 0){</span>
+<span class="nc" id="L85">                            String name = txtPlayerName.getText();</span>
+<span class="nc" id="L86">                            Stage stage  = (Stage)pane.getScene().getWindow();</span>
+<span class="nc" id="L87">                            stage.close();</span>
+
+<span class="nc" id="L89">                            FXMLLoader gameloader = new FXMLLoader();</span>
+                            Parent mainroot;
+                            try {
+<span class="nc" id="L92">                                Data.playerAName = name;</span>
+<span class="nc" id="L93">                                mainroot = (Parent)gameloader.load(getClass().getResource(&quot;FXMLDocument.fxml&quot;).openStream());</span>
+<span class="nc" id="L94">                                Stage gamestage = new Stage();</span>
+<span class="nc" id="L95">                                Scene scene = new Scene(mainroot);</span>
+<span class="nc" id="L96">                                gamestage.setScene(scene);</span>
+<span class="nc" id="L97">                                gamestage.setTitle(&quot;Hack Attack&quot;);</span>
+<span class="nc" id="L98">                                gamestage.show();</span>
+
+<span class="nc" id="L100">                                GameEngine engine = GameEngine.getInstance();</span>
+<span class="nc" id="L101">                                engine.start();</span>
+                                
+<span class="nc" id="L103">                            } catch (IOException ex) {</span>
+<span class="nc" id="L104">                                Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L105">                            }</span>
+<span class="nc" id="L106">                        }</span>
+                        else
+                        {
+<span class="nc" id="L109">                            errorlabel.setVisible(true);</span>
+<span class="nc" id="L110">                            errorlabel.setText(&quot;Please enter a playername.&quot;);</span>
+                        }
+                        
+<span class="nc" id="L113">                    }</span>
+                    
+                });
+            }
+<span class="nc bnc" id="L117" title="All 2 branches missed.">            if(node instanceof TextField)</span>
+            {
+<span class="nc" id="L119">                txtPlayerName = (TextField)node;</span>
+            }
+<span class="nc" id="L121">        }</span>
+<span class="nc" id="L122">    }</span>
+    
+    public void initializeData(){
+        try {
+            try {
+<span class="nc" id="L127">                data = new Data(new Data.UpdateProgress() {</span>
+                    
+                    @Override
+                    public void update(double value) {
+<span class="nc" id="L131">                        progressBar.setProgress(value);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">                        if(value &gt;= 0.99){</span>
+<span class="nc" id="L133">                            btnPlayGame.setDisable(false);</span>
+                            //Stage stage  = (Stage)pane.getScene().getWindow();
+                            //stage.close();
+                        }
+<span class="nc" id="L137">                    }</span>
+                });
+<span class="nc" id="L139">            } catch (InvalidDefenseTypeException ex) {</span>
+<span class="nc" id="L140">                Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L141">            } catch (InvalidEffectException ex) {</span>
+<span class="nc" id="L142">                Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L143">            }</span>
+<span class="nc" id="L144">       } catch (UnknownHostException to)</span>
+       {
+//           Alert alert = new Alert(Alert.AlertType.ERROR, &quot;Oops.. we can't connect to our service. Is your internet connection OK?\n&quot; + to.toString());
+//           alert.initModality(Modality.APPLICATION_MODAL);
+//           alert.show();
+<span class="nc" id="L149">           errorlabel.setVisible(true);</span>
+<span class="nc" id="L150">           errorlabel.setText(&quot;Oops.. we can't connect to our service. is your internet connection OK? \n&quot; + to.toString());</span>
+           
+<span class="nc" id="L152">       } catch (IOException ex) {</span>
+<span class="nc" id="L153">           errorlabel.setVisible(true);</span>
+<span class="nc" id="L154">           errorlabel.setText(&quot;Oops.. Something went wrong.\n&quot; + ex.toString());</span>
+<span class="nc" id="L155">       } catch (InvalidMinionTypeException ex) {</span>
+<span class="nc" id="L156">           errorlabel.setVisible(true);</span>
+<span class="nc" id="L157">           errorlabel.setText(&quot;The miniontype is not recognized.&quot;);</span>
+<span class="nc" id="L158">       } catch (InvalidSpellNameException ex) {</span>
+<span class="nc" id="L159">           errorlabel.setVisible(true);</span>
+<span class="nc" id="L160">           errorlabel.setText(&quot;The spellname is not recognized.&quot;);</span>
+<span class="nc" id="L161">       }</span>
+<span class="nc" id="L162">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

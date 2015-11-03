@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Defense.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">Defense.java</span></div><h1>Defense.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import hackattackfx.GameEngine.OnExecuteTick;
+import hackattackfx.enums.DefenseType;
+import hackattackfx.enums.Effect;
+import hackattackfx.enums.ModuleName;
+import hackattackfx.exceptions.*;
+import java.awt.Point;
+import hackattackfx.templates.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * This is a module used for the defense of your base. 
+ * It fires {@link Bullet } at enemy minions.
+ * @author juleskreutzer, Jasper Rouwhorst
+ */
+public class Defense extends Module {
+    private double damage;
+    private int range;
+    // The amount of attacks per second
+    private int frequency;
+    private DefenseType type;
+    private Effect effect;
+    
+    private boolean reloading;
+    
+    private Minion target;
+    
+    // The last time this module performed an attack
+    private long lastAttack;
+    
+    // The tickListener is declared when this module is activated
+    private OnExecuteTick tickListener;
+    
+    /**
+     * Constructor for the Defense module based on the DefenseTemplate
+     * @param template instance of DefenseTemplate created in the data class
+     * @param position position of the module on the map
+     * @param width width of the module
+     * @param height height of the module
+     * @throws InvalidModuleEnumException when the
+     * 
+     * Because we have to check if the given ModuleName is correct, we create an array of ModuleName with all the possible values and check if the given ModuleName is correct
+     */
+    public Defense(DefenseTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    {
+<span class="fc" id="L56">        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());</span>
+<span class="fc" id="L57">        ModuleName ModuleNameList[] = new ModuleName[] {ModuleName.BOTTLECAP_ANTIVIRUS, ModuleName.MUSCLE_ANTIVIRUS, ModuleName.SCALE_ANTIVIRUS, ModuleName.SNIPER_ANTIVIRUS};</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if(!Arrays.asList(ModuleNameList).contains(template.getModuleName()))</span>
+        {
+<span class="nc" id="L60">            throw new InvalidModuleEnumException();</span>
+        }
+<span class="fc" id="L62">        this.type = template.getDefenseType();</span>
+<span class="fc" id="L63">        this.effect = template.getEffect();</span>
+<span class="fc" id="L64">        this.damage = template.getDamage();</span>
+<span class="fc" id="L65">        this.range = template.getRange();</span>
+<span class="fc" id="L66">        this.frequency = template.getFrequency();</span>
+<span class="fc" id="L67">        reloading = false;</span>
+        
+<span class="fc" id="L69">    }</span>
+    
+    // Activates the module to listen to the {@link GameEngine} ticks
+    public void activate(){
+<span class="fc" id="L73">        target = null;</span>
+<span class="fc" id="L74">        tickListener = new OnExecuteTick() {</span>
+
+            @Override
+            public void onTick(long elapsedtime) {
+<span class="nc bnc" id="L78" title="All 4 branches missed.">                if(elapsedtime &gt;= (lastAttack + (1000/frequency)) &amp;&amp; !reloading){</span>
+<span class="nc" id="L79">                    lastAttack = elapsedtime;</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">                    if(!hasTarget()){</span>
+<span class="nc" id="L81">                        target = findTarget();</span>
+                    }else{
+<span class="nc bnc" id="L83" title="All 2 branches missed.">                        if(targetInRange(target)){</span>
+<span class="nc" id="L84">                            fire(target);</span>
+                        }else{
+<span class="nc" id="L86">                            target = null;</span>
+                        }
+                    }
+                }
+<span class="nc" id="L90">            }</span>
+        };
+<span class="nc" id="L92">        GameEngine.getInstance().setOnTickListener(tickListener);</span>
+<span class="nc" id="L93">    }</span>
+    
+    public void deactivate(){
+        try {
+<span class="nc" id="L97">            GameEngine.getInstance().unsubscribeListener(tickListener);</span>
+<span class="nc" id="L98">        } catch (UnsubscribeNonListenerException ex) {</span>
+<span class="nc" id="L99">            Logger.getLogger(Defense.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L100">        }</span>
+<span class="nc" id="L101">    }</span>
+    
+    /**
+     * 
+     * @return Type of the object as String
+     */
+    public String getDefenceTypeString()
+    {
+        String result;
+        
+<span class="nc bnc" id="L111" title="All 5 branches missed.">        switch(type)</span>
+        {
+            case RANGE:
+<span class="nc" id="L114">                result = &quot;range&quot;;</span>
+<span class="nc" id="L115">                break;</span>
+            case CHEAP:
+<span class="nc" id="L117">                result = &quot;cheap&quot;;</span>
+<span class="nc" id="L118">                break;</span>
+            case BALANCED:
+<span class="nc" id="L120">                result = &quot;balanced&quot;;</span>
+<span class="nc" id="L121">                break;</span>
+            case STRONG:
+<span class="nc" id="L123">                result = &quot;strong&quot;;</span>
+<span class="nc" id="L124">                break;</span>
+            default:
+<span class="nc" id="L126">                result = &quot;&quot;;</span>
+        }
+<span class="nc" id="L128">        return result;</span>
+    }
+    
+    /**
+     * 
+     * @return return the effect as String
+     */
+    public String getEffectString()
+    {
+        String result;
+        
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if(effect == null){</span>
+<span class="nc" id="L140">            return &quot;&quot;;</span>
+        }
+<span class="nc bnc" id="L142" title="All 5 branches missed.">        switch(effect)</span>
+        {
+            case SLOWED:
+<span class="nc" id="L145">                result = &quot;slow&quot;;</span>
+<span class="nc" id="L146">                break;</span>
+            case POISENED:
+<span class="nc" id="L148">                result = &quot;poison&quot;;</span>
+<span class="nc" id="L149">                break;</span>
+            case SPLASH:
+<span class="nc" id="L151">                result = &quot;slash&quot;;</span>
+<span class="nc" id="L152">                break;</span>
+            case DECRYPTED:
+<span class="nc" id="L154">                result = &quot;decryptor&quot;;</span>
+<span class="nc" id="L155">                break;</span>
+            default:
+<span class="nc" id="L157">                result = &quot;&quot;;</span>
+        }
+<span class="nc" id="L159">        return result;</span>
+    }
+    
+    public DefenseType getDefenceType(){
+<span class="nc" id="L163">        return type;</span>
+    }
+    
+    public Effect getEffect(){
+<span class="nc" id="L167">        return effect;</span>
+    }
+    
+    public int getFrequecy(){
+<span class="nc" id="L171">        return frequency;</span>
+    }
+    
+    /**
+     * Sets the Defense modules effect.
+     * @param e
+     */
+    public void setEffect(Effect e){
+<span class="nc" id="L179">        effect = e;</span>
+<span class="nc" id="L180">    }</span>
+    
+    public double getDamage(){
+<span class="nc" id="L183">        return damage;</span>
+    }
+    
+    /**
+     * Sets the towers damage.
+     * @param d, must be above 0.
+     */
+    public void setDamage(double d){
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">        if (d &gt; 0)</span>
+        {
+<span class="fc" id="L193">            damage = d;</span>
+        }
+<span class="fc" id="L195">    }</span>
+    
+    public int getRange(){
+<span class="nc" id="L198">        return range;</span>
+    }
+    
+    /**
+     * Sets the towers RANGE.
+     * @param r, must be above 0.
+     */
+    public void setRange(int r){
+<span class="nc bnc" id="L206" title="All 2 branches missed.">        if (range &gt; 0)</span>
+        {
+<span class="nc" id="L208">            range = r;</span>
+        }
+<span class="nc" id="L210">    }</span>
+    
+    public void setTarget(Minion target){
+<span class="fc" id="L213">        this.target = target;</span>
+<span class="fc" id="L214">    }</span>
+    
+    public Minion getTarget(){
+<span class="nc" id="L217">        return target;</span>
+    }
+    
+    /**
+     * Sets the last time this module attacked
+     * @param lastAttack The time in milliseconds at the moment this module fired
+     */
+    public void setLastAttack(long lastAttack){
+<span class="nc" id="L225">        this.lastAttack = lastAttack;</span>
+<span class="nc" id="L226">    }</span>
+    
+    /**
+     * The last moment this module attacked in milliseconds
+     */
+    public long getLastAttack(){
+<span class="nc" id="L232">        return lastAttack;</span>
+    }
+    
+    /**
+     * Upgrades this module
+     * @return Whether the module was successfully upgraded.
+     */
+    public boolean upgrade() throws NoUpgradeAllowedException{
+        DefenseTemplate newDefense;
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        if(this.level == 1)</span>
+        {
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">            if(this.moduleName == ModuleName.BOTTLECAP_ANTIVIRUS)</span>
+            {
+<span class="fc" id="L245">                newDefense = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_2;</span>
+<span class="fc" id="L246">                this.type = newDefense.getDefenseType();</span>
+<span class="fc" id="L247">                super.setLevel(newDefense.getLevel());</span>
+<span class="fc" id="L248">                this.level = newDefense.getLevel();</span>
+<span class="fc" id="L249">                this.effect = newDefense.getEffect();</span>
+<span class="fc" id="L250">                this.damage = newDefense.getDamage();</span>
+<span class="fc" id="L251">                this.range = newDefense.getRange();</span>
+<span class="fc" id="L252">                this.frequency = newDefense.getFrequency();</span>
+                
+<span class="fc" id="L254">                return true;</span>
+            }
+<span class="nc bnc" id="L256" title="All 2 branches missed.">            else if(this.moduleName == ModuleName.MUSCLE_ANTIVIRUS)</span>
+            {
+<span class="nc" id="L258">                newDefense = Data.DEFAULT_MODULE_DEFENSE_MUSCLE_2;</span>
+<span class="nc" id="L259">                this.type = newDefense.getDefenseType();</span>
+<span class="nc" id="L260">                super.setLevel(newDefense.getLevel());</span>
+<span class="nc" id="L261">                this.level = newDefense.getLevel();</span>
+<span class="nc" id="L262">                this.effect = newDefense.getEffect();</span>
+<span class="nc" id="L263">                this.damage = newDefense.getDamage();</span>
+<span class="nc" id="L264">                this.range = newDefense.getRange();</span>
+<span class="nc" id="L265">                this.frequency = newDefense.getFrequency();</span>
+                
+<span class="nc" id="L267">                return true;</span>
+            }
+<span class="nc bnc" id="L269" title="All 2 branches missed.">            else if(this.moduleName == ModuleName.SCALE_ANTIVIRUS)</span>
+            {
+<span class="nc" id="L271">                newDefense = Data.DEFAULT_MODULE_DEFENSE_SCALE_2;</span>
+<span class="nc" id="L272">                this.type = newDefense.getDefenseType();</span>
+<span class="nc" id="L273">                super.setLevel(newDefense.getLevel());</span>
+<span class="nc" id="L274">                this.level = newDefense.getLevel();</span>
+<span class="nc" id="L275">                this.effect = newDefense.getEffect();</span>
+<span class="nc" id="L276">                this.damage = newDefense.getDamage();</span>
+<span class="nc" id="L277">                this.range = newDefense.getRange();</span>
+<span class="nc" id="L278">                this.frequency = newDefense.getFrequency();</span>
+                
+<span class="nc" id="L280">                return true;</span>
+            }
+<span class="nc bnc" id="L282" title="All 2 branches missed.">            else if(this.moduleName == ModuleName.SNIPER_ANTIVIRUS)</span>
+            {
+<span class="nc" id="L284">                newDefense = Data.DEFAULT_MODULE_DEFENSE_SNIPER_2;</span>
+<span class="nc" id="L285">                this.type = newDefense.getDefenseType();</span>
+<span class="nc" id="L286">                super.setLevel(newDefense.getLevel());</span>
+<span class="nc" id="L287">                this.level = newDefense.getLevel();</span>
+<span class="nc" id="L288">                this.effect = newDefense.getEffect();</span>
+<span class="nc" id="L289">                this.damage = newDefense.getDamage();</span>
+<span class="nc" id="L290">                this.range = newDefense.getRange();</span>
+<span class="nc" id="L291">                this.frequency = newDefense.getFrequency();</span>
+                
+<span class="nc" id="L293">                return true;</span>
+            }
+            else
+            {
+<span class="nc" id="L297">                return false;</span>
+            }
+            
+        }
+<span class="fc bfc" id="L301" title="All 2 branches covered.">        else if(this.level == 2)</span>
+        {
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">            if(this.moduleName == ModuleName.BOTTLECAP_ANTIVIRUS)</span>
+            {
+<span class="fc" id="L305">                newDefense = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_3;</span>
+<span class="fc" id="L306">                this.type = newDefense.getDefenseType();</span>
+<span class="fc" id="L307">                super.setLevel(newDefense.getLevel());</span>
+<span class="fc" id="L308">                this.level = newDefense.getLevel();</span>
+<span class="fc" id="L309">                this.effect = newDefense.getEffect();</span>
+<span class="fc" id="L310">                this.damage = newDefense.getDamage();</span>
+<span class="fc" id="L311">                this.range = newDefense.getRange();</span>
+<span class="fc" id="L312">                this.frequency = newDefense.getFrequency();</span>
+                
+<span class="fc" id="L314">                return true;</span>
+            }
+<span class="nc bnc" id="L316" title="All 2 branches missed.">            else if(this.moduleName == ModuleName.MUSCLE_ANTIVIRUS)</span>
+            {
+<span class="nc" id="L318">                newDefense = Data.DEFAULT_MODULE_DEFENSE_MUSCLE_3;</span>
+<span class="nc" id="L319">                this.type = newDefense.getDefenseType();</span>
+<span class="nc" id="L320">                super.setLevel(newDefense.getLevel());</span>
+<span class="nc" id="L321">                this.level = newDefense.getLevel();</span>
+<span class="nc" id="L322">                this.effect = newDefense.getEffect();</span>
+<span class="nc" id="L323">                this.damage = newDefense.getDamage();</span>
+<span class="nc" id="L324">                this.range = newDefense.getRange();</span>
+<span class="nc" id="L325">                this.frequency = newDefense.getFrequency();</span>
+                
+<span class="nc" id="L327">                return true;</span>
+            }
+<span class="nc bnc" id="L329" title="All 2 branches missed.">            else if(this.moduleName == ModuleName.SCALE_ANTIVIRUS)</span>
+            {
+<span class="nc" id="L331">                newDefense = Data.DEFAULT_MODULE_DEFENSE_SCALE_3;</span>
+<span class="nc" id="L332">                this.type = newDefense.getDefenseType();</span>
+<span class="nc" id="L333">                super.setLevel(newDefense.getLevel());</span>
+<span class="nc" id="L334">                this.level = newDefense.getLevel();</span>
+<span class="nc" id="L335">                this.effect = newDefense.getEffect();</span>
+<span class="nc" id="L336">                this.damage = newDefense.getDamage();</span>
+<span class="nc" id="L337">                this.range = newDefense.getRange();</span>
+<span class="nc" id="L338">                this.frequency = newDefense.getFrequency();</span>
+                
+<span class="nc" id="L340">                return true;</span>
+            }
+<span class="nc bnc" id="L342" title="All 2 branches missed.">            else if(this.moduleName == ModuleName.SNIPER_ANTIVIRUS)</span>
+            {
+<span class="nc" id="L344">                newDefense = Data.DEFAULT_MODULE_DEFENSE_SNIPER_3;</span>
+<span class="nc" id="L345">                this.type = newDefense.getDefenseType();</span>
+<span class="nc" id="L346">                super.setLevel(newDefense.getLevel());</span>
+<span class="nc" id="L347">                this.level = newDefense.getLevel();</span>
+<span class="nc" id="L348">                this.effect = newDefense.getEffect();</span>
+<span class="nc" id="L349">                this.damage = newDefense.getDamage();</span>
+<span class="nc" id="L350">                this.range = newDefense.getRange();</span>
+<span class="nc" id="L351">                this.frequency = newDefense.getFrequency();</span>
+                
+<span class="nc" id="L353">                return true;</span>
+            }
+            else
+            {
+<span class="nc" id="L357">                return false;</span>
+            }
+        }
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">        else if(this.level == 3)</span>
+        {
+<span class="fc" id="L362">           throw new NoUpgradeAllowedException(String.format(&quot;Your %s has already reached it's maximal level. You can't upgrade it anymore.&quot;, this.moduleName.toString()));</span>
+        }
+        else
+        {
+<span class="nc" id="L366">            throw new NoUpgradeAllowedException(&quot;Something went wrong. We can't upgrade your defense module at this time.&quot;);</span>
+        }
+    }
+    
+    /**
+     * Look for enemy minions within the RANGE of this module, then randomly select a target.
+     * @return The enemy minion that's targeted. If no minion is found, return null
+     */
+    public Minion findTarget(){
+<span class="nc" id="L375">        ArrayList&lt;Minion&gt; inrange = new ArrayList&lt;Minion&gt;();</span>
+<span class="nc" id="L376">        GameEngine engine = GameEngine.getInstance();</span>
+<span class="nc" id="L377">        ArrayList&lt;Wave&gt; waves = engine.getActiveWaves();</span>
+<span class="nc" id="L378">        ArrayList&lt;Minion&gt; minions = new ArrayList&lt;Minion&gt;();</span>
+        
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        for (Wave w : waves) {</span>
+<span class="nc" id="L381">            minions.addAll(w.minionsAsList());</span>
+<span class="nc" id="L382">        }</span>
+        
+<span class="nc bnc" id="L384" title="All 2 branches missed.">        for(Minion m : minions){</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">            if(targetInRange(m)){</span>
+<span class="nc" id="L386">                inrange.add(m);</span>
+            }
+<span class="nc" id="L388">        }</span>
+<span class="nc" id="L389">        Random random = new Random();</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">        if(inrange.size()&gt;0){</span>
+<span class="nc" id="L391">            Minion m = inrange.get(random.nextInt(inrange.size()));</span>
+<span class="nc" id="L392">            return m;</span>
+        }
+<span class="nc" id="L394">        return null;</span>
+    }
+    
+    /**
+     * Checks if the given minion is within the range of the module
+     * @param m The minion to check on
+     * @return True if the given minion is in range.
+     */
+    public boolean targetInRange(Minion m){
+        //return true if the square root of range is bigger than (minion and tower variables used) -&gt; Delta X^2 + Delta Y^2 (Pythagoras).
+<span class="fc" id="L404">        long distance = (long)Math.sqrt((position.x-m.getPosition().x)*(position.x-m.getPosition().x) + (position.y-m.getPosition().y)*(position.y-m.getPosition().y));</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">        return range &gt;= distance;</span>
+    }
+    
+    /**
+     * Checks if this module has an active target
+     * @return True is this module is targeting a minion
+     */
+    public boolean hasTarget(){
+<span class="fc bfc" id="L413" title="All 2 branches covered.">        return target != null;</span>
+    }
+    
+    /**
+     * Fire a {@link Bullet} at the module's target.
+     * @param minion The enemy minion target.
+     */
+    public void fire(Minion minion){
+        //System.out.println(this.toString() + &quot; is attacking &quot; + minion.toString());
+<span class="fc" id="L422">        minion.receiveDamage(damage);</span>
+<span class="nc bnc" id="L423" title="All 4 branches missed.">        if(!targetInRange(minion)||minion.getHealth() &lt;= 0){</span>
+<span class="nc" id="L424">            target = null;</span>
+        }
+<span class="nc" id="L426">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

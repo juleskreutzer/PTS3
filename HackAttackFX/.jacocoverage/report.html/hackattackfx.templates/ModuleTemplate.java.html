@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ModuleTemplate.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx.templates</a> &gt; <span class="el_source">ModuleTemplate.java</span></div><h1>ModuleTemplate.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx.templates;
+
+import hackattackfx.enums.*;
+import hackattackfx.exceptions.*;
+import java.awt.Point;
+/**
+ *
+ * @author juleskreutzer
+ */
+public abstract class ModuleTemplate {
+    protected double cost;
+    protected int level;
+    protected String displayName;
+<span class="fc" id="L19">    protected boolean allowBuild = false;</span>
+    protected ModuleName moduleName;
+    protected String desc;
+    
+    public ModuleTemplate(double cost, int level, ModuleName name, String desc)
+<span class="fc" id="L24">    {</span>
+<span class="fc" id="L25">        this.cost = cost;</span>
+<span class="fc" id="L26">        this.level = level;</span>
+<span class="fc" id="L27">        this.moduleName = name;</span>
+<span class="fc" id="L28">        this.desc = desc;</span>
+        
+<span class="fc" id="L30">    }</span>
+    
+    /**
+     * 
+     * @return the display name of the object
+     */
+    public String getDisplayName()
+    {
+<span class="fc" id="L38">        return this.displayName;</span>
+    }
+    
+    /**
+     * 
+     * @return the cost of the object
+     */
+    public double getCost()
+    {
+<span class="fc" id="L47">        return this.cost;</span>
+    }
+    
+    public int getLevel(){
+<span class="fc" id="L51">        return level;</span>
+    }
+    
+    /**
+     * Returns whether the module may be build
+     * @return true if module may be build, false if not
+     */
+    public boolean getAllowBuild()
+    {
+<span class="nc" id="L60">        return this.allowBuild;</span>
+    }
+    
+    /**
+     * Get the moduleName enum for this module
+     * @return the moduleName enum for the module
+     */
+    public ModuleName getModuleName()
+    {
+<span class="fc" id="L69">        return this.moduleName;</span>
+    }
+    /**
+     * 
+     * @return the name of the object as a String
+     */
+    protected void getName()
+    {        
+<span class="nc bnc" id="L77" title="All 8 branches missed.">        switch(moduleName)</span>
+        {
+            case BITCOIN_MINER:
+<span class="nc" id="L80">                this.displayName = &quot;Bitcoin Miner&quot;;</span>
+<span class="nc" id="L81">                break;</span>
+            case SOFTWARE_INJECTOR:
+<span class="nc" id="L83">                this.displayName = &quot;Software Injector&quot;;</span>
+<span class="nc" id="L84">                break;</span>
+            case CPU_UPGRADE:
+<span class="nc" id="L86">                this.displayName = &quot;CPU Upgrade&quot;;</span>
+<span class="nc" id="L87">                break;</span>
+            case SNIPER_ANTIVIRUS:
+<span class="nc" id="L89">                this.displayName = &quot;Sniper Antivirus&quot;;</span>
+<span class="nc" id="L90">                break;</span>
+            case BOTTLECAP_ANTIVIRUS:
+<span class="nc" id="L92">                this.displayName = &quot;Bottlecap Antivirus&quot;;</span>
+<span class="nc" id="L93">                break;</span>
+            case SCALE_ANTIVIRUS:
+<span class="nc" id="L95">                this.displayName = &quot;Scale Antivirus&quot;;</span>
+<span class="nc" id="L96">                break;</span>
+            case MUSCLE_ANTIVIRUS:
+<span class="nc" id="L98">                this.displayName = &quot;Muscle Antivirus&quot;;</span>
+<span class="nc" id="L99">                break;</span>
+            default:
+<span class="nc" id="L101">                throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L103">    }</span>
+    
+    /**
+     * Get the description of the module
+     * @return Description of the module
+     */
+    public String getDescription()
+    {
+<span class="fc" id="L111">        return this.desc;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

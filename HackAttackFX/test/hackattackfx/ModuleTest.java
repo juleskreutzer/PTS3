@@ -6,7 +6,19 @@
 package hackattackfx;
 
 import hackattackfx.enums.ModuleName;
+import hackattackfx.exceptions.InvalidDefenseTypeException;
+import hackattackfx.exceptions.InvalidEffectException;
+import hackattackfx.exceptions.InvalidMinionTypeException;
+import hackattackfx.exceptions.InvalidModuleEnumException;
+import hackattackfx.exceptions.InvalidSpellNameException;
+import hackattackfx.templates.BitCoinMinerTemplate;
+import hackattackfx.templates.CPUUpgradeTemplate;
+import hackattackfx.templates.DefenseTemplate;
+import hackattackfx.templates.SoftwareInjectorTemplate;
 import java.awt.Point;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,6 +31,36 @@ import static org.junit.Assert.*;
  * @author Bart van Keersop
  */
 public class ModuleTest {
+    Data data;
+    Player enemyPlayer;
+
+    Point point;
+    Point point2;
+    
+    Module module1;
+    Module module2;
+    Module module3;
+    Module module4;
+    Module module5;
+    Module module6;
+    Module module7;
+    
+    DefenseTemplate templateDfBc;
+    DefenseTemplate templateDfSc;
+    DefenseTemplate templateDfSn;
+    DefenseTemplate templateDfMu;
+    BitCoinMinerTemplate templateBcm;
+    SoftwareInjectorTemplate templateSwi;
+    CPUUpgradeTemplate templateCu;
+    
+    Defense defense1;
+    Defense defense2;
+    Defense defense3;
+    Defense defense4;
+    BitcoinMiner bc;
+    SoftwareInjector si;
+    CPUUpgrade cpu;
+
     
     public ModuleTest() {
     }
@@ -33,6 +75,44 @@ public class ModuleTest {
     
     @Before
     public void setUp() {
+        try {
+            data = new Data(new Data.UpdateProgress() {
+                @Override
+                public void update(double value) {
+                }
+            });
+            
+            point = new Point(100, 100);
+            point2 = new Point(200, 200);
+            
+            templateDfBc = Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1;
+            templateDfSc = Data.DEFAULT_MODULE_DEFENSE_SCALE_1;
+            templateDfSn = Data.DEFAULT_MODULE_DEFENSE_SNIPER_1;
+            templateDfMu = Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1;
+            templateBcm = Data.DEFAULT_MODULE_BITCOINMINER_1;
+            templateSwi = Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1;
+            templateCu = Data.DEFAULT_MODULE_CPUUPGRADE_1;
+            
+            defense1 = new Defense(templateDfBc, point, 50, 50);
+            defense2 = new Defense(templateDfSc, point, 50, 50);
+            defense3 = new Defense(templateDfSn, point, 50, 50);
+            defense4 = new Defense(templateDfMu, point, 50, 50);
+            bc = new BitcoinMiner(templateBcm, point, 50, 50);
+            si = new SoftwareInjector(templateSwi, point, 50, 50);
+            cpu = new CPUUpgrade(templateCu, point, 50, 50);
+            
+            module1 = (Module) defense1;
+            module2 = (Module) defense2;
+            module3 = (Module) defense3;
+            module4 = (Module) defense4;
+            module5 = (Module) bc;
+            module6 = (Module) si;
+            module7 = (Module) cpu;
+            
+        } catch (IOException | InvalidMinionTypeException | InvalidSpellNameException | InvalidDefenseTypeException | InvalidEffectException | InvalidModuleEnumException ex) {
+            Logger.getLogger(ModuleTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
     }
     
     @After
@@ -44,27 +124,24 @@ public class ModuleTest {
      */
     @Test
     public void testGetDisplayName() {
+        //This method is not implemented yet.
+        assertEquals(module1.getDisplayName(), "");
     }
 
     /**
      * Test of getPosition method, of class Module.
      */
     @Test
-    public void testGetPosition() {
+    public void testSetGetPosition() {
+        module1.setPosition(point2);
+        assertEquals(module1.getPosition(), point2);
     }
-
-    /**
-     * Test of setPosition method, of class Module.
-     */
-    @Test
-    public void testSetPosition() {
-    }
-
     /**
      * Test of getWidth method, of class Module.
      */
     @Test
     public void testGetWidth() {
+        assertEquals(module1.getWidth(), 50);
     }
 
     /**
@@ -72,6 +149,7 @@ public class ModuleTest {
      */
     @Test
     public void testGetHeight() {
+        assertEquals(module1.getHeight(), 50);
     }
 
     /**
@@ -79,34 +157,25 @@ public class ModuleTest {
      */
     @Test
     public void testGetCost() {
+        assertEquals(module1.getCost(), templateDfBc.getCost());
     }
 
     /**
      * Test of getLevel method, of class Module.
      */
     @Test
-    public void testGetLevel() {
-    }
-
-    /**
-     * Test of setLevel method, of class Module.
-     */
-    @Test
-    public void testSetLevel() {
+    public void testGetSetLevel() {
+        module1.setLevel(3);
+        assertEquals(module1.getLevel(), 3);
     }
 
     /**
      * Test of getAllowBuild method, of class Module.
      */
     @Test
-    public void testGetAllowBuild() {
-    }
-
-    /**
-     * Test of setAllowBuild method, of class Module.
-     */
-    @Test
-    public void testSetAllowBuild() {
+    public void testGetSetAllowBuild() {
+        module1.setAllowBuild(true);
+        assertTrue(module1.getAllowBuild());
     }
 
     /**
@@ -114,6 +183,7 @@ public class ModuleTest {
      */
     @Test
     public void testGetModuleName() {
+        assertEquals(module1.getModuleName(), templateDfBc.getModuleName());
     }
 
     /**
@@ -121,5 +191,12 @@ public class ModuleTest {
      */
     @Test
     public void testGetName() {
+        assertEquals(module1.getModuleName(), "Bottlecap Antivirus");
+        assertEquals(module2.getModuleName(), "Scale Antivirus");
+        assertEquals(module3.getModuleName(), "Sniper Antivirus");
+        assertEquals(module4.getModuleName(), "Muscle Antivirus");
+        assertEquals(bc.getModuleName(), "Bitcoin Miner");
+        assertEquals(si.getModuleName(), "Software Injector");
+        assertEquals(cpu.getModuleName(), "CPU Upgrade");
     }
 }

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BitcoinMiner.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">BitcoinMiner.java</span></div><h1>BitcoinMiner.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import hackattackfx.GameEngine.OnExecuteTick;
+import hackattackfx.enums.ModuleName;
+import java.awt.Point;
+import hackattackfx.exceptions.*;
+import hackattackfx.templates.*;
+import java.util.ArrayList;
+import java.util.List;
+/**
+ * BitcoinMiner is a module that generates bitcoins for the player.
+ * @author juleskreutzer, Jasper Rouwhorst
+ */
+
+public class BitcoinMiner extends Module {
+
+    /**
+     * This interface is used to let the listener know this module has mined some bitcoins.
+     * @param mineValue The amount that's mined.
+     */
+    public interface OnMineComplete{
+        void onMine(double mineValue);
+    }
+    
+    private double valuePerSecond;
+    private List&lt;OnMineComplete&gt; listeners;
+    private OnExecuteTick tick;
+    private long lastMine;
+    
+    /**
+     * Constructor for the BitcoinMiner based on the BitCoinMinerTemplate
+     * @param template Instance of BitCoinMinerTemplate created in data class
+     * @param position position of the module on the map
+     * @param width width of the module
+     * @param height height of the module
+     * @throws InvalidModuleEnumException 
+     */
+    public BitcoinMiner(BitCoinMinerTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    {
+<span class="fc" id="L45">        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if(template.getModuleName() != ModuleName.BITCOIN_MINER)</span>
+        {
+            // ModuleName is incorrect
+<span class="nc" id="L49">            throw new InvalidModuleEnumException();</span>
+        }
+<span class="fc" id="L51">        this.valuePerSecond = template.getValuePerSecond();</span>
+<span class="fc" id="L52">        listeners = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L53">        lastMine = 0;</span>
+<span class="fc" id="L54">        activate();</span>
+<span class="fc" id="L55">    }</span>
+    
+    public double getValuePerSecond(){
+<span class="nc" id="L58">        return valuePerSecond;</span>
+    }
+    /**
+     * Upgrades this module
+     * @return Whether the module was successfully upgraded.
+     */
+    public boolean upgrade() throws NoUpgradeAllowedException{
+        BitCoinMinerTemplate newBCM;
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if(this.level == 1)</span>
+        {
+<span class="fc" id="L69">            newBCM = Data.DEFAULT_MODULE_BITCOINMINER_2;</span>
+<span class="fc" id="L70">            this.level = newBCM.getLevel();</span>
+<span class="fc" id="L71">            super.setLevel(newBCM.getLevel());</span>
+<span class="fc" id="L72">            this.valuePerSecond = newBCM.getValuePerSecond();</span>
+<span class="fc" id="L73">            return true;</span>
+        }
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        else if(this.level == 2)</span>
+        {
+<span class="fc" id="L77">            newBCM = Data.DEFAULT_MODULE_BITCOINMINER_3;</span>
+<span class="fc" id="L78">            this.level = newBCM.getLevel();</span>
+<span class="fc" id="L79">            super.setLevel(newBCM.getLevel());</span>
+<span class="fc" id="L80">            this.valuePerSecond = newBCM.getValuePerSecond();</span>
+<span class="fc" id="L81">            return true;</span>
+        }
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        else if(this.level == 3)</span>
+        {
+<span class="nc" id="L85">            throw new NoUpgradeAllowedException(&quot;You already reached the maximum level for this Bitcoin Miner. Upgrade is not available.&quot;);</span>
+        }
+        else
+        {
+<span class="nc" id="L89">            throw new NoUpgradeAllowedException(&quot;Something went wrong, you can't upgrade the Bitcoin Miner at this time.&quot;);</span>
+        }
+    }
+    
+    /**
+     * Activate the bitcoin miner so the player gets their bitcoins
+     */
+    public void activate()
+    {
+<span class="fc" id="L98">        tick = new OnExecuteTick() {</span>
+
+            @Override
+            public void onTick(long elapsedtime) {
+<span class="nc bnc" id="L102" title="All 2 branches missed.">                if(elapsedtime &gt;= (lastMine + 3000))</span>
+                {
+<span class="nc" id="L104">                    lastMine = elapsedtime;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">                    for(OnMineComplete listener : listeners)</span>
+                    {
+<span class="nc" id="L107">                        listener.onMine(valuePerSecond);</span>
+<span class="nc" id="L108">                    }</span>
+                }
+                
+<span class="nc" id="L111">            }</span>
+        };
+<span class="fc" id="L113">    }</span>
+    
+    public void setOnMineListener(OnMineComplete callback) throws DuplicateListenerException
+    {
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if(!listeners.contains(callback))</span>
+        {
+<span class="fc" id="L119">        listeners.add(callback);</span>
+        }
+        else
+        {
+<span class="nc" id="L123">        throw new DuplicateListenerException();</span>
+        }
+<span class="fc" id="L125">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

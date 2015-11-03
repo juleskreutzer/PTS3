@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CPUUpgrade.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">CPUUpgrade.java</span></div><h1>CPUUpgrade.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import hackattackfx.exceptions.InvalidModuleEnumException;
+import hackattackfx.enums.ModuleName;
+import java.awt.Point;
+import hackattackfx.exceptions.*;
+import hackattackfx.templates.*;
+import java.util.Iterator;
+/**
+ * The CPUUpgrade is a module that's used to increase the minions hp and damage.
+ * The higher this module is upgraded, the higher the multiplier.
+ * @author juleskreutzer, Jasper Rouwhorst
+ */
+public class CPUUpgrade extends Module {
+    private double minionBonusMultiplier;
+    
+    /**
+     * Constructor for CPUUpgrade based on the CPUUpgradeTemplate
+     * @param template Instance of the CPUUpgradeTemplate that has been constructed in the data class
+     * @param position position of the module on the map
+     * @param width width of the module
+     * @param height height of the module
+     * @throws InvalidModuleEnumException when this is not a valid {@link ModuleName}
+     */
+    public CPUUpgrade(CPUUpgradeTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    {
+<span class="fc" id="L32">        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if(template.getModuleName() != ModuleName.CPU_UPGRADE)</span>
+        {
+<span class="nc" id="L35">            throw new InvalidModuleEnumException();</span>
+        }
+        
+<span class="fc" id="L38">    }</span>
+   
+    /**
+     * Upgrades this module
+     * @return Whether the module was successfully upgraded.
+     */
+    public boolean upgrade(Iterator&lt;Minion&gt; minions) throws NoUpgradeAllowedException{
+        CPUUpgradeTemplate newCPU;
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if(this.level == 1)</span>
+        {
+<span class="nc" id="L48">           newCPU = Data.DEFAULT_MODULE_CPUUPGRADE_2;</span>
+<span class="nc" id="L49">           this.level = newCPU.getLevel();</span>
+<span class="nc" id="L50">           super.setLevel(newCPU.getLevel());</span>
+<span class="nc" id="L51">           this.minionBonusMultiplier = newCPU.getMinionBonusMultiplier();</span>
+<span class="nc" id="L52">           return true;</span>
+        }
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        else if(this.level == 2)</span>
+        {
+<span class="nc" id="L56">            newCPU = Data.DEFAULT_MODULE_CPUUPGRADE_3;</span>
+<span class="nc" id="L57">            this.level = newCPU.getLevel();</span>
+<span class="nc" id="L58">            super.setLevel(newCPU.getLevel());</span>
+<span class="nc" id="L59">            this.minionBonusMultiplier = newCPU.getMinionBonusMultiplier();</span>
+<span class="nc" id="L60">            return true;</span>
+        }
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        else if(this.level == 3)</span>
+        {
+<span class="nc" id="L64">            throw new NoUpgradeAllowedException(&quot;This CPU Upgrade has already reached it's maximal level. An upgrade is not available.&quot;);</span>
+        }
+        else
+        {
+<span class="nc" id="L68">            throw new NoUpgradeAllowedException(&quot;Something is wrong, we can't upgrade your CPU Upgrade at this time.&quot;);</span>
+        }
+        
+    }
+    
+    public void operation()
+    {
+        
+<span class="nc" id="L76">    }</span>
+    
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

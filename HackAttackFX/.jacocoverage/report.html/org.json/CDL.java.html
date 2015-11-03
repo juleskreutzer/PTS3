@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CDL.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">org.json</a> &gt; <span class="el_source">CDL.java</span></div><h1>CDL.java</h1><pre class="source lang-java linenums">package org.json;
+
+/*
+Copyright (c) 2002 JSON.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+The Software shall be used for Good, not Evil.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+/**
+ * This provides static methods to convert comma delimited text into a
+ * JSONArray, and to convert a JSONArray into comma delimited text. Comma
+ * delimited text is a very popular format for data interchange. It is
+ * understood by most database, spreadsheet, and organizer programs.
+ * &lt;p&gt;
+ * Each row of text represents a row in a table or a data record. Each row
+ * ends with a NEWLINE character. Each row contains one or more values.
+ * Values are separated by commas. A value can contain any character except
+ * for comma, unless is is wrapped in single quotes or double quotes.
+ * &lt;p&gt;
+ * The first row usually contains the names of the columns.
+ * &lt;p&gt;
+ * A comma delimited list can be converted into a JSONArray of JSONObjects.
+ * The names for the elements in the JSONObjects can be taken from the names
+ * in the first row.
+ * @author JSON.org
+ * @version 2015-05-01
+ */
+<span class="nc" id="L46">public class CDL {</span>
+
+    /**
+     * Get the next value. The value can be wrapped in quotes. The value can
+     * be empty.
+     * @param x A JSONTokener of the source text.
+     * @return The value string, or null if empty.
+     * @throws JSONException if the quoted string is badly formed.
+     */
+    private static String getValue(JSONTokener x) throws JSONException {
+        char c;
+        char q;
+        StringBuffer sb;
+        do {
+<span class="nc" id="L60">            c = x.next();</span>
+<span class="nc bnc" id="L61" title="All 4 branches missed.">        } while (c == ' ' || c == '\t');</span>
+<span class="nc bnc" id="L62" title="All 4 branches missed.">        switch (c) {</span>
+        case 0:
+<span class="nc" id="L64">            return null;</span>
+        case '&quot;':
+        case '\'':
+<span class="nc" id="L67">            q = c;</span>
+<span class="nc" id="L68">            sb = new StringBuffer();</span>
+            for (;;) {
+<span class="nc" id="L70">                c = x.next();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                if (c == q) {</span>
+<span class="nc" id="L72">                    break;</span>
+                }
+<span class="nc bnc" id="L74" title="All 6 branches missed.">                if (c == 0 || c == '\n' || c == '\r') {</span>
+<span class="nc" id="L75">                    throw x.syntaxError(&quot;Missing close quote '&quot; + q + &quot;'.&quot;);</span>
+                }
+<span class="nc" id="L77">                sb.append(c);</span>
+            }
+<span class="nc" id="L79">            return sb.toString();</span>
+        case ',':
+<span class="nc" id="L81">            x.back();</span>
+<span class="nc" id="L82">            return &quot;&quot;;</span>
+        default:
+<span class="nc" id="L84">            x.back();</span>
+<span class="nc" id="L85">            return x.nextTo(',');</span>
+        }
+    }
+
+    /**
+     * Produce a JSONArray of strings from a row of comma delimited values.
+     * @param x A JSONTokener of the source text.
+     * @return A JSONArray of strings.
+     * @throws JSONException
+     */
+    public static JSONArray rowToJSONArray(JSONTokener x) throws JSONException {
+<span class="nc" id="L96">        JSONArray ja = new JSONArray();</span>
+        for (;;) {
+<span class="nc" id="L98">            String value = getValue(x);</span>
+<span class="nc" id="L99">            char c = x.next();</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (value == null ||</span>
+<span class="nc bnc" id="L101" title="All 6 branches missed.">                    (ja.length() == 0 &amp;&amp; value.length() == 0 &amp;&amp; c != ',')) {</span>
+<span class="nc" id="L102">                return null;</span>
+            }
+<span class="nc" id="L104">            ja.put(value);</span>
+            for (;;) {
+<span class="nc bnc" id="L106" title="All 2 branches missed.">                if (c == ',') {</span>
+<span class="nc" id="L107">                    break;</span>
+                }
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                if (c != ' ') {</span>
+<span class="nc bnc" id="L110" title="All 6 branches missed.">                    if (c == '\n' || c == '\r' || c == 0) {</span>
+<span class="nc" id="L111">                        return ja;</span>
+                    }
+<span class="nc" id="L113">                    throw x.syntaxError(&quot;Bad character '&quot; + c + &quot;' (&quot; +</span>
+                            (int)c + &quot;).&quot;);
+                }
+<span class="nc" id="L116">                c = x.next();</span>
+            }
+<span class="nc" id="L118">        }</span>
+    }
+
+    /**
+     * Produce a JSONObject from a row of comma delimited text, using a
+     * parallel JSONArray of strings to provides the names of the elements.
+     * @param names A JSONArray of names. This is commonly obtained from the
+     *  first row of a comma delimited text file using the rowToJSONArray
+     *  method.
+     * @param x A JSONTokener of the source text.
+     * @return A JSONObject combining the names and values.
+     * @throws JSONException
+     */
+    public static JSONObject rowToJSONObject(JSONArray names, JSONTokener x)
+            throws JSONException {
+<span class="nc" id="L133">        JSONArray ja = rowToJSONArray(x);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        return ja != null ? ja.toJSONObject(names) :  null;</span>
+    }
+
+    /**
+     * Produce a comma delimited text row from a JSONArray. Values containing
+     * the comma character will be quoted. Troublesome characters may be
+     * removed.
+     * @param ja A JSONArray of strings.
+     * @return A string ending in NEWLINE.
+     */
+    public static String rowToString(JSONArray ja) {
+<span class="nc" id="L145">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        for (int i = 0; i &lt; ja.length(); i += 1) {</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">            if (i &gt; 0) {</span>
+<span class="nc" id="L148">                sb.append(',');</span>
+            }
+<span class="nc" id="L150">            Object object = ja.opt(i);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            if (object != null) {</span>
+<span class="nc" id="L152">                String string = object.toString();</span>
+<span class="nc bnc" id="L153" title="All 4 branches missed.">                if (string.length() &gt; 0 &amp;&amp; (string.indexOf(',') &gt;= 0 ||</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">                        string.indexOf('\n') &gt;= 0 || string.indexOf('\r') &gt;= 0 ||</span>
+<span class="nc bnc" id="L155" title="All 4 branches missed.">                        string.indexOf(0) &gt;= 0 || string.charAt(0) == '&quot;')) {</span>
+<span class="nc" id="L156">                    sb.append('&quot;');</span>
+<span class="nc" id="L157">                    int length = string.length();</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                    for (int j = 0; j &lt; length; j += 1) {</span>
+<span class="nc" id="L159">                        char c = string.charAt(j);</span>
+<span class="nc bnc" id="L160" title="All 4 branches missed.">                        if (c &gt;= ' ' &amp;&amp; c != '&quot;') {</span>
+<span class="nc" id="L161">                            sb.append(c);</span>
+                        }
+                    }
+<span class="nc" id="L164">                    sb.append('&quot;');</span>
+<span class="nc" id="L165">                } else {</span>
+<span class="nc" id="L166">                    sb.append(string);</span>
+                }
+            }
+        }
+<span class="nc" id="L170">        sb.append('\n');</span>
+<span class="nc" id="L171">        return sb.toString();</span>
+    }
+
+    /**
+     * Produce a JSONArray of JSONObjects from a comma delimited text string,
+     * using the first row as a source of names.
+     * @param string The comma delimited text.
+     * @return A JSONArray of JSONObjects.
+     * @throws JSONException
+     */
+    public static JSONArray toJSONArray(String string) throws JSONException {
+<span class="nc" id="L182">        return toJSONArray(new JSONTokener(string));</span>
+    }
+
+    /**
+     * Produce a JSONArray of JSONObjects from a comma delimited text string,
+     * using the first row as a source of names.
+     * @param x The JSONTokener containing the comma delimited text.
+     * @return A JSONArray of JSONObjects.
+     * @throws JSONException
+     */
+    public static JSONArray toJSONArray(JSONTokener x) throws JSONException {
+<span class="nc" id="L193">        return toJSONArray(rowToJSONArray(x), x);</span>
+    }
+
+    /**
+     * Produce a JSONArray of JSONObjects from a comma delimited text string
+     * using a supplied JSONArray as the source of element names.
+     * @param names A JSONArray of strings.
+     * @param string The comma delimited text.
+     * @return A JSONArray of JSONObjects.
+     * @throws JSONException
+     */
+    public static JSONArray toJSONArray(JSONArray names, String string)
+            throws JSONException {
+<span class="nc" id="L206">        return toJSONArray(names, new JSONTokener(string));</span>
+    }
+
+    /**
+     * Produce a JSONArray of JSONObjects from a comma delimited text string
+     * using a supplied JSONArray as the source of element names.
+     * @param names A JSONArray of strings.
+     * @param x A JSONTokener of the source text.
+     * @return A JSONArray of JSONObjects.
+     * @throws JSONException
+     */
+    public static JSONArray toJSONArray(JSONArray names, JSONTokener x)
+            throws JSONException {
+<span class="nc bnc" id="L219" title="All 4 branches missed.">        if (names == null || names.length() == 0) {</span>
+<span class="nc" id="L220">            return null;</span>
+        }
+<span class="nc" id="L222">        JSONArray ja = new JSONArray();</span>
+        for (;;) {
+<span class="nc" id="L224">            JSONObject jo = rowToJSONObject(names, x);</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">            if (jo == null) {</span>
+<span class="nc" id="L226">                break;</span>
+            }
+<span class="nc" id="L228">            ja.put(jo);</span>
+<span class="nc" id="L229">        }</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (ja.length() == 0) {</span>
+<span class="nc" id="L231">            return null;</span>
+        }
+<span class="nc" id="L233">        return ja;</span>
+    }
+
+
+    /**
+     * Produce a comma delimited text from a JSONArray of JSONObjects. The
+     * first row will be a list of names obtained by inspecting the first
+     * JSONObject.
+     * @param ja A JSONArray of JSONObjects.
+     * @return A comma delimited text.
+     * @throws JSONException
+     */
+    public static String toString(JSONArray ja) throws JSONException {
+<span class="nc" id="L246">        JSONObject jo = ja.optJSONObject(0);</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">        if (jo != null) {</span>
+<span class="nc" id="L248">            JSONArray names = jo.names();</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">            if (names != null) {</span>
+<span class="nc" id="L250">                return rowToString(names) + toString(names, ja);</span>
+            }
+        }
+<span class="nc" id="L253">        return null;</span>
+    }
+
+    /**
+     * Produce a comma delimited text from a JSONArray of JSONObjects using
+     * a provided list of names. The list of names is not included in the
+     * output.
+     * @param names A JSONArray of strings.
+     * @param ja A JSONArray of JSONObjects.
+     * @return A comma delimited text.
+     * @throws JSONException
+     */
+    public static String toString(JSONArray names, JSONArray ja)
+            throws JSONException {
+<span class="nc bnc" id="L267" title="All 4 branches missed.">        if (names == null || names.length() == 0) {</span>
+<span class="nc" id="L268">            return null;</span>
+        }
+<span class="nc" id="L270">        StringBuffer sb = new StringBuffer();</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">        for (int i = 0; i &lt; ja.length(); i += 1) {</span>
+<span class="nc" id="L272">            JSONObject jo = ja.optJSONObject(i);</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">            if (jo != null) {</span>
+<span class="nc" id="L274">                sb.append(rowToString(jo.toJSONArray(names)));</span>
+            }
+        }
+<span class="nc" id="L277">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

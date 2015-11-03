@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FXMLDocumentController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">FXMLDocumentController.java</span></div><h1>FXMLDocumentController.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+
+/**
+ *
+ * @author Jasper Rouwhorst
+ */
+public class FXMLDocumentController implements Initializable {
+    
+    @FXML
+    private AnchorPane window;
+    
+    @FXML
+    private Label errorLabel;
+    
+    @FXML
+    private ImageView errorImage;
+    
+    private GraphicsEngine gEngine;
+    private static FXMLDocumentController instance;
+    
+    
+    // This constructor is public even this class represents a Singleton class.
+    // This is because the Scene Builder creates an instance of this class using the constructor.
+    // Besides that, this class should be considered as Singleton.
+<span class="fc" id="L42">    public FXMLDocumentController(){</span>
+<span class="fc" id="L43">        instance = this;</span>
+<span class="fc" id="L44">    }</span>
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+<span class="nc" id="L48">        gEngine = GraphicsEngine.getInstance();</span>
+
+<span class="nc" id="L50">    }    </span>
+    
+    public void addNode(Node node){
+<span class="fc" id="L53">        Platform.runLater(new Runnable(){</span>
+
+            @Override
+            public void run() {
+<span class="nc" id="L57">                window.getChildren().add(node);</span>
+<span class="nc" id="L58">            }</span>
+            
+        });
+<span class="fc" id="L61">    }</span>
+    
+    public void removeNode(Node node){
+<span class="fc" id="L64">        Platform.runLater(new Runnable(){</span>
+
+            @Override
+            public void run() {
+<span class="nc" id="L68">                window.getChildren().remove(node);</span>
+<span class="nc" id="L69">            }</span>
+            
+        });
+<span class="fc" id="L72">    }</span>
+    
+    public static FXMLDocumentController getInstance(){
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        return instance == null ? new FXMLDocumentController() : instance;</span>
+    }
+    
+    
+    /**
+     * This method is used to find a node in the scene. 
+     * @param id The id of the node that's given runtime or whithin the scene builder.
+     * @param parent The parent container the node will be searched in. If this is null, the main scene will be used as parent.
+     * @return The node with the corresponding id.
+     */
+    public Node getNode(String id, Pane parent){
+        ObservableList&lt;Node&gt; list;
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        if(parent == null){</span>
+<span class="nc" id="L88">            list = window.getChildren();</span>
+        }else{
+<span class="nc" id="L90">            list = parent.getChildren();</span>
+        }
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        for(Node n : list){</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if(n instanceof AnchorPane){</span>
+<span class="nc" id="L94">                AnchorPane p = (AnchorPane)n;</span>
+<span class="nc" id="L95">                Node node = getNode(id, p);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                if(node != null){</span>
+<span class="nc" id="L97">                    return node;</span>
+                }
+            }
+<span class="nc" id="L100">            String s = n.getId();</span>
+<span class="nc bnc" id="L101" title="All 4 branches missed.">            if (n.getId() != null &amp;&amp; s.equals(id)){</span>
+<span class="nc" id="L102">                return n;</span>
+            }
+<span class="nc" id="L104">        }</span>
+<span class="nc" id="L105">        return null;</span>
+    }
+    
+    public AnchorPane getScene(){
+<span class="nc" id="L109">        return window;</span>
+    }
+    
+    public ObservableList getAllNodes(){
+<span class="nc" id="L113">        return window.getChildren();</span>
+    }
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

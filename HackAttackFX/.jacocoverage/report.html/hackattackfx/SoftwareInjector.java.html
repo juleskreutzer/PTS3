@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SoftwareInjector.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">SoftwareInjector.java</span></div><h1>SoftwareInjector.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import hackattackfx.enums.ModuleName;
+import java.awt.Point;
+import java.util.List;
+import java.util.ArrayList;
+import hackattackfx.exceptions.*;
+import hackattackfx.templates.SoftwareInjectorTemplate;
+import hackattackfx.templates.SpellTemplate;
+
+/**
+ *
+ * @author juleskreutzer
+ */
+public class SoftwareInjector extends Module {
+    
+    private List&lt;Spell&gt; spells;
+    private ArrayList&lt;Spell&gt; spellList;
+    
+    /**
+     * Constructor for the SoftwareInjector based on the SoftwareInjectorTemplate
+     * @param softwareInjector SoftwareInjectorTemplate that has been created by the data class
+     * @param position Position on the map for the module
+     * @param width Width for the module
+     * @param height Height for the module
+     */
+    public SoftwareInjector(SoftwareInjectorTemplate softwareInjector, Point position, int width, int height) throws InvalidModuleEnumException
+    {
+<span class="fc" id="L34">        super(softwareInjector.getCost(), position, width, height, softwareInjector.getModuleName(), softwareInjector.getLevel(), softwareInjector.getDescription());</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if( softwareInjector.getModuleName() != ModuleName.SOFTWARE_INJECTOR)</span>
+        {
+<span class="nc" id="L37">            throw new InvalidModuleEnumException();</span>
+        }
+<span class="fc" id="L39">        spells = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L40">    }</span>
+    
+    /**
+     * Upgrade the current Software Injector to the next level and new Spells will become available. 
+     * Because we have a total of 6 spells, each upgrade will unlock 3 spells. These spells are created using the template for them in the Data class.
+     * The spells that become available are hard coded into the upgrade method. It can be changed.
+     * @return Returns true if upgrade is successfull, false if not
+     * @throws NoUpgradeAllowedException when the current Software Injector is level 3 or when something weird happened.
+     */
+    public boolean upgrade() throws NoUpgradeAllowedException{
+        SoftwareInjectorTemplate sit;
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if(this.level == 1)</span>
+        {
+<span class="fc" id="L53">            sit = Data.DEFAULT_MODULE_SOFTWAREINJECTOR_2;</span>
+<span class="fc" id="L54">            this.cost = sit.getCost();</span>
+<span class="fc" id="L55">            this.level = sit.getLevel();</span>
+<span class="fc" id="L56">            this.moduleName = sit.getModuleName();</span>
+            
+            // At the first upgrade, make 2 defense and 1 attack spell available
+           
+<span class="fc" id="L60">            spells.add(new Spell(Data.DEFAULT_SPELL_CORRUPT));</span>
+<span class="fc" id="L61">            spells.add(new Spell(Data.DEFAULT_SPELL_LOCKDOWN));</span>
+<span class="fc" id="L62">            spells.add(new Spell(Data.DEFAULT_SPELL_FIREWALL));</span>
+
+<span class="fc" id="L64">            return true;</span>
+        }
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        else if(this.level == 2)</span>
+        {
+<span class="nc" id="L68">            sit = Data.DEFAULT_MODULE_SOFTWAREINJECTOR_3;</span>
+<span class="nc" id="L69">            this.cost = sit.getCost();</span>
+<span class="nc" id="L70">            this.level = sit.getLevel();</span>
+<span class="nc" id="L71">            this.moduleName = sit.getModuleName();</span>
+            
+            // At the second upgrade, make the remaining spells available (1 defense &amp; 2 attack)
+<span class="nc" id="L74">            spells.add(new Spell(Data.DEFAULT_SPELL_DISRUPT));</span>
+<span class="nc" id="L75">            spells.add(new Spell(Data.DEFAULT_SPELL_ENCRYPT));</span>
+<span class="nc" id="L76">            spells.add(new Spell(Data.DEFAULT_SPELL_VIRUSSCAN));</span>
+            
+<span class="nc" id="L78">            return true;</span>
+        }
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        else if(this.level == 3)</span>
+        {
+<span class="nc" id="L82">            throw new NoUpgradeAllowedException(&quot;Your Software Injector already reached it's maximal level.&quot;);</span>
+        }
+        else
+        {
+<span class="nc" id="L86">            throw new NoUpgradeAllowedException(&quot;Something went wrong when trying to upgrade your Software Injector. Please try again.&quot;);</span>
+        }
+    }
+    
+    /**
+     * Get a list of all spells available at the current Software Injector level
+     * @return A list&lt;Spell&gt; of spells available at the current Software Injector level
+     */
+    public List&lt;Spell&gt; getSpells(){
+<span class="fc" id="L95">        return spells;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Road.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">Road.java</span></div><h1>Road.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import hackattackfx.exceptions.FloatingPathException;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author Jasper Rouwhorst
+ */
+public class Road {
+    
+    private List&lt;Path&gt; paths; //The collection of paths the road is made out of.
+    
+    /**
+     * Creates a new Road.
+     */
+<span class="fc" id="L24">    public Road(){</span>
+<span class="fc" id="L25">        paths = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L26">    }</span>
+    
+    /**
+     * Get the begin point of the road.
+     * @return, returns the starting point of the first path in paths List.
+     */
+    public Point getBegin(){
+<span class="fc" id="L33">        return paths.get(0).getStart();</span>
+    }
+    
+    /**
+     * Get the end point of the road.
+     * @return, returns the ending point of the last path in paths List.
+     */
+    public Point getEnd(){
+<span class="fc" id="L41">        Path end = paths.get(paths.size() - 1);</span>
+<span class="fc" id="L42">        return end.getEnd();</span>
+    }
+    
+    /**
+     * Returns the paths the Road is made of.
+     * @return, the paths List.
+     */
+    public List&lt;Path&gt; getPaths(){
+<span class="fc" id="L50">        return paths;</span>
+    }
+    
+    /**
+     * 
+     * @param p
+     * @throws FloatingPathException, throw this exception when 
+     */
+    public void addPath(Path p) throws FloatingPathException{
+        //TODO add comments.
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if(paths.size() &gt; 0){</span>
+<span class="fc" id="L61">                Point roadstart = getBegin();</span>
+<span class="fc" id="L62">                Point roadend = getEnd();</span>
+<span class="fc" id="L63">                Point pstart = p.getStart();</span>
+<span class="fc" id="L64">                Point pend = p.getEnd();</span>
+<span class="pc bpc" id="L65" title="1 of 4 branches missed.">                    if(pstart.x == roadend.x &amp;&amp; pstart.y == roadend.y){</span>
+<span class="fc" id="L66">                        paths.add(p);</span>
+<span class="pc bpc" id="L67" title="1 of 4 branches missed.">                    }else if(pend.x == roadstart.x &amp;&amp; pend.y == roadstart.y){</span>
+<span class="fc" id="L68">                        paths.add(0, p);</span>
+                    }else{
+<span class="fc" id="L70">                        throw new FloatingPathException(&quot;This path doesn't connect the roads start or end position!&quot;);</span>
+                    }
+<span class="fc" id="L72">            }else{</span>
+<span class="fc" id="L73">                paths.add(p);</span>
+            }
+<span class="fc" id="L75">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

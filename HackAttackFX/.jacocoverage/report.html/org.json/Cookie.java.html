@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Cookie.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">org.json</a> &gt; <span class="el_source">Cookie.java</span></div><h1>Cookie.java</h1><pre class="source lang-java linenums">package org.json;
+
+/*
+Copyright (c) 2002 JSON.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+The Software shall be used for Good, not Evil.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+/**
+ * Convert a web browser cookie specification to a JSONObject and back.
+ * JSON and Cookies are both notations for name/value pairs.
+ * @author JSON.org
+ * @version 2014-05-03
+ */
+<span class="nc" id="L33">public class Cookie {</span>
+
+    /**
+     * Produce a copy of a string in which the characters '+', '%', '=', ';'
+     * and control characters are replaced with &quot;%hh&quot;. This is a gentle form
+     * of URL encoding, attempting to cause as little distortion to the
+     * string as possible. The characters '=' and ';' are meta characters in
+     * cookies. By convention, they are escaped using the URL-encoding. This is
+     * only a convention, not a standard. Often, cookies are expected to have
+     * encoded values. We encode '=' and ';' because we must. We encode '%' and
+     * '+' because they are meta characters in URL encoding.
+     * @param string The source string.
+     * @return       The escaped result.
+     */
+    public static String escape(String string) {
+        char            c;
+<span class="nc" id="L49">        String          s = string.trim();</span>
+<span class="nc" id="L50">        int             length = s.length();</span>
+<span class="nc" id="L51">        StringBuilder   sb = new StringBuilder(length);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        for (int i = 0; i &lt; length; i += 1) {</span>
+<span class="nc" id="L53">            c = s.charAt(i);</span>
+<span class="nc bnc" id="L54" title="All 10 branches missed.">            if (c &lt; ' ' || c == '+' || c == '%' || c == '=' || c == ';') {</span>
+<span class="nc" id="L55">                sb.append('%');</span>
+<span class="nc" id="L56">                sb.append(Character.forDigit((char)((c &gt;&gt;&gt; 4) &amp; 0x0f), 16));</span>
+<span class="nc" id="L57">                sb.append(Character.forDigit((char)(c &amp; 0x0f), 16));</span>
+            } else {
+<span class="nc" id="L59">                sb.append(c);</span>
+            }
+        }
+<span class="nc" id="L62">        return sb.toString();</span>
+    }
+
+
+    /**
+     * Convert a cookie specification string into a JSONObject. The string
+     * will contain a name value pair separated by '='. The name and the value
+     * will be unescaped, possibly converting '+' and '%' sequences. The
+     * cookie properties may follow, separated by ';', also represented as
+     * name=value (except the secure property, which does not have a value).
+     * The name will be stored under the key &quot;name&quot;, and the value will be
+     * stored under the key &quot;value&quot;. This method does not do checking or
+     * validation of the parameters. It only converts the cookie string into
+     * a JSONObject.
+     * @param string The cookie specification string.
+     * @return A JSONObject containing &quot;name&quot;, &quot;value&quot;, and possibly other
+     *  members.
+     * @throws JSONException
+     */
+    public static JSONObject toJSONObject(String string) throws JSONException {
+        String         name;
+<span class="nc" id="L83">        JSONObject     jo = new JSONObject();</span>
+        Object         value;
+<span class="nc" id="L85">        JSONTokener x = new JSONTokener(string);</span>
+<span class="nc" id="L86">        jo.put(&quot;name&quot;, x.nextTo('='));</span>
+<span class="nc" id="L87">        x.next('=');</span>
+<span class="nc" id="L88">        jo.put(&quot;value&quot;, x.nextTo(';'));</span>
+<span class="nc" id="L89">        x.next();</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        while (x.more()) {</span>
+<span class="nc" id="L91">            name = unescape(x.nextTo(&quot;=;&quot;));</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (x.next() != '=') {</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">                if (name.equals(&quot;secure&quot;)) {</span>
+<span class="nc" id="L94">                    value = Boolean.TRUE;</span>
+                } else {
+<span class="nc" id="L96">                    throw x.syntaxError(&quot;Missing '=' in cookie parameter.&quot;);</span>
+                }
+            } else {
+<span class="nc" id="L99">                value = unescape(x.nextTo(';'));</span>
+<span class="nc" id="L100">                x.next();</span>
+            }
+<span class="nc" id="L102">            jo.put(name, value);</span>
+        }
+<span class="nc" id="L104">        return jo;</span>
+    }
+
+
+    /**
+     * Convert a JSONObject into a cookie specification string. The JSONObject
+     * must contain &quot;name&quot; and &quot;value&quot; members.
+     * If the JSONObject contains &quot;expires&quot;, &quot;domain&quot;, &quot;path&quot;, or &quot;secure&quot;
+     * members, they will be appended to the cookie specification string.
+     * All other members are ignored.
+     * @param jo A JSONObject
+     * @return A cookie specification string
+     * @throws JSONException
+     */
+    public static String toString(JSONObject jo) throws JSONException {
+<span class="nc" id="L119">        StringBuilder sb = new StringBuilder();</span>
+
+<span class="nc" id="L121">        sb.append(escape(jo.getString(&quot;name&quot;)));</span>
+<span class="nc" id="L122">        sb.append(&quot;=&quot;);</span>
+<span class="nc" id="L123">        sb.append(escape(jo.getString(&quot;value&quot;)));</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (jo.has(&quot;expires&quot;)) {</span>
+<span class="nc" id="L125">            sb.append(&quot;;expires=&quot;);</span>
+<span class="nc" id="L126">            sb.append(jo.getString(&quot;expires&quot;));</span>
+        }
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (jo.has(&quot;domain&quot;)) {</span>
+<span class="nc" id="L129">            sb.append(&quot;;domain=&quot;);</span>
+<span class="nc" id="L130">            sb.append(escape(jo.getString(&quot;domain&quot;)));</span>
+        }
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (jo.has(&quot;path&quot;)) {</span>
+<span class="nc" id="L133">            sb.append(&quot;;path=&quot;);</span>
+<span class="nc" id="L134">            sb.append(escape(jo.getString(&quot;path&quot;)));</span>
+        }
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (jo.optBoolean(&quot;secure&quot;)) {</span>
+<span class="nc" id="L137">            sb.append(&quot;;secure&quot;);</span>
+        }
+<span class="nc" id="L139">        return sb.toString();</span>
+    }
+
+    /**
+     * Convert &lt;code&gt;%&lt;/code&gt;&lt;i&gt;hh&lt;/i&gt; sequences to single characters, and
+     * convert plus to space.
+     * @param string A string that may contain
+     *      &lt;code&gt;+&lt;/code&gt;&amp;nbsp;&lt;small&gt;(plus)&lt;/small&gt; and
+     *      &lt;code&gt;%&lt;/code&gt;&lt;i&gt;hh&lt;/i&gt; sequences.
+     * @return The unescaped string.
+     */
+    public static String unescape(String string) {
+<span class="nc" id="L151">        int length = string.length();</span>
+<span class="nc" id="L152">        StringBuilder sb = new StringBuilder(length);</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        for (int i = 0; i &lt; length; ++i) {</span>
+<span class="nc" id="L154">            char c = string.charAt(i);</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            if (c == '+') {</span>
+<span class="nc" id="L156">                c = ' ';</span>
+<span class="nc bnc" id="L157" title="All 4 branches missed.">            } else if (c == '%' &amp;&amp; i + 2 &lt; length) {</span>
+<span class="nc" id="L158">                int d = JSONTokener.dehexchar(string.charAt(i + 1));</span>
+<span class="nc" id="L159">                int e = JSONTokener.dehexchar(string.charAt(i + 2));</span>
+<span class="nc bnc" id="L160" title="All 4 branches missed.">                if (d &gt;= 0 &amp;&amp; e &gt;= 0) {</span>
+<span class="nc" id="L161">                    c = (char)(d * 16 + e);</span>
+<span class="nc" id="L162">                    i += 2;</span>
+                }
+            }
+<span class="nc" id="L165">            sb.append(c);</span>
+        }
+<span class="nc" id="L167">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

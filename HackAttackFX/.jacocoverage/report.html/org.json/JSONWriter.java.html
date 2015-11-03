@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>JSONWriter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">org.json</a> &gt; <span class="el_source">JSONWriter.java</span></div><h1>JSONWriter.java</h1><pre class="source lang-java linenums">package org.json;
+
+import java.io.IOException;
+import java.io.Writer;
+
+/*
+Copyright (c) 2006 JSON.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+The Software shall be used for Good, not Evil.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+/**
+ * JSONWriter provides a quick and convenient way of producing JSON text.
+ * The texts produced strictly conform to JSON syntax rules. No whitespace is
+ * added, so the results are ready for transmission or storage. Each instance of
+ * JSONWriter can produce one JSON text.
+ * &lt;p&gt;
+ * A JSONWriter instance provides a &lt;code&gt;value&lt;/code&gt; method for appending
+ * values to the
+ * text, and a &lt;code&gt;key&lt;/code&gt;
+ * method for adding keys before values in objects. There are &lt;code&gt;array&lt;/code&gt;
+ * and &lt;code&gt;endArray&lt;/code&gt; methods that make and bound array values, and
+ * &lt;code&gt;object&lt;/code&gt; and &lt;code&gt;endObject&lt;/code&gt; methods which make and bound
+ * object values. All of these methods return the JSONWriter instance,
+ * permitting a cascade style. For example, &lt;pre&gt;
+ * new JSONWriter(myWriter)
+ *     .object()
+ *         .key(&quot;JSON&quot;)
+ *         .value(&quot;Hello, World!&quot;)
+ *     .endObject();&lt;/pre&gt; which writes &lt;pre&gt;
+ * {&quot;JSON&quot;:&quot;Hello, World!&quot;}&lt;/pre&gt;
+ * &lt;p&gt;
+ * The first method called must be &lt;code&gt;array&lt;/code&gt; or &lt;code&gt;object&lt;/code&gt;.
+ * There are no methods for adding commas or colons. JSONWriter adds them for
+ * you. Objects and arrays can be nested up to 20 levels deep.
+ * &lt;p&gt;
+ * This can sometimes be easier than using a JSONObject to build a string.
+ * @author JSON.org
+ * @version 2011-11-24
+ */
+public class JSONWriter {
+    private static final int maxdepth = 200;
+
+    /**
+     * The comma flag determines if a comma should be output before the next
+     * value.
+     */
+    private boolean comma;
+
+    /**
+     * The current mode. Values:
+     * 'a' (array),
+     * 'd' (done),
+     * 'i' (initial),
+     * 'k' (key),
+     * 'o' (object).
+     */
+    protected char mode;
+
+    /**
+     * The object/array stack.
+     */
+    private final JSONObject stack[];
+
+    /**
+     * The stack top index. A value of 0 indicates that the stack is empty.
+     */
+    private int top;
+
+    /**
+     * The writer that will receive the output.
+     */
+    protected Writer writer;
+
+    /**
+     * Make a fresh JSONWriter. It can be used to build one JSON text.
+     */
+<span class="nc" id="L96">    public JSONWriter(Writer w) {</span>
+<span class="nc" id="L97">        this.comma = false;</span>
+<span class="nc" id="L98">        this.mode = 'i';</span>
+<span class="nc" id="L99">        this.stack = new JSONObject[maxdepth];</span>
+<span class="nc" id="L100">        this.top = 0;</span>
+<span class="nc" id="L101">        this.writer = w;</span>
+<span class="nc" id="L102">    }</span>
+
+    /**
+     * Append a value.
+     * @param string A string value.
+     * @return this
+     * @throws JSONException If the value is out of sequence.
+     */
+    private JSONWriter append(String string) throws JSONException {
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (string == null) {</span>
+<span class="nc" id="L112">            throw new JSONException(&quot;Null pointer&quot;);</span>
+        }
+<span class="nc bnc" id="L114" title="All 4 branches missed.">        if (this.mode == 'o' || this.mode == 'a') {</span>
+            try {
+<span class="nc bnc" id="L116" title="All 4 branches missed.">                if (this.comma &amp;&amp; this.mode == 'a') {</span>
+<span class="nc" id="L117">                    this.writer.write(',');</span>
+                }
+<span class="nc" id="L119">                this.writer.write(string);</span>
+<span class="nc" id="L120">            } catch (IOException e) {</span>
+<span class="nc" id="L121">                throw new JSONException(e);</span>
+<span class="nc" id="L122">            }</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (this.mode == 'o') {</span>
+<span class="nc" id="L124">                this.mode = 'k';</span>
+            }
+<span class="nc" id="L126">            this.comma = true;</span>
+<span class="nc" id="L127">            return this;</span>
+        }
+<span class="nc" id="L129">        throw new JSONException(&quot;Value out of sequence.&quot;);</span>
+    }
+
+    /**
+     * Begin appending a new array. All values until the balancing
+     * &lt;code&gt;endArray&lt;/code&gt; will be appended to this array. The
+     * &lt;code&gt;endArray&lt;/code&gt; method must be called to mark the array's end.
+     * @return this
+     * @throws JSONException If the nesting is too deep, or if the object is
+     * started in the wrong place (for example as a key or after the end of the
+     * outermost array or object).
+     */
+    public JSONWriter array() throws JSONException {
+<span class="nc bnc" id="L142" title="All 6 branches missed.">        if (this.mode == 'i' || this.mode == 'o' || this.mode == 'a') {</span>
+<span class="nc" id="L143">            this.push(null);</span>
+<span class="nc" id="L144">            this.append(&quot;[&quot;);</span>
+<span class="nc" id="L145">            this.comma = false;</span>
+<span class="nc" id="L146">            return this;</span>
+        }
+<span class="nc" id="L148">        throw new JSONException(&quot;Misplaced array.&quot;);</span>
+    }
+
+    /**
+     * End something.
+     * @param mode Mode
+     * @param c Closing character
+     * @return this
+     * @throws JSONException If unbalanced.
+     */
+    private JSONWriter end(char mode, char c) throws JSONException {
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (this.mode != mode) {</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            throw new JSONException(mode == 'a'</span>
+                ? &quot;Misplaced endArray.&quot;
+                : &quot;Misplaced endObject.&quot;);
+        }
+<span class="nc" id="L164">        this.pop(mode);</span>
+        try {
+<span class="nc" id="L166">            this.writer.write(c);</span>
+<span class="nc" id="L167">        } catch (IOException e) {</span>
+<span class="nc" id="L168">            throw new JSONException(e);</span>
+<span class="nc" id="L169">        }</span>
+<span class="nc" id="L170">        this.comma = true;</span>
+<span class="nc" id="L171">        return this;</span>
+    }
+
+    /**
+     * End an array. This method most be called to balance calls to
+     * &lt;code&gt;array&lt;/code&gt;.
+     * @return this
+     * @throws JSONException If incorrectly nested.
+     */
+    public JSONWriter endArray() throws JSONException {
+<span class="nc" id="L181">        return this.end('a', ']');</span>
+    }
+
+    /**
+     * End an object. This method most be called to balance calls to
+     * &lt;code&gt;object&lt;/code&gt;.
+     * @return this
+     * @throws JSONException If incorrectly nested.
+     */
+    public JSONWriter endObject() throws JSONException {
+<span class="nc" id="L191">        return this.end('k', '}');</span>
+    }
+
+    /**
+     * Append a key. The key will be associated with the next value. In an
+     * object, every value must be preceded by a key.
+     * @param string A key string.
+     * @return this
+     * @throws JSONException If the key is out of place. For example, keys
+     *  do not belong in arrays or if the key is null.
+     */
+    public JSONWriter key(String string) throws JSONException {
+<span class="nc bnc" id="L203" title="All 2 branches missed.">        if (string == null) {</span>
+<span class="nc" id="L204">            throw new JSONException(&quot;Null key.&quot;);</span>
+        }
+<span class="nc bnc" id="L206" title="All 2 branches missed.">        if (this.mode == 'k') {</span>
+            try {
+<span class="nc" id="L208">                this.stack[this.top - 1].putOnce(string, Boolean.TRUE);</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">                if (this.comma) {</span>
+<span class="nc" id="L210">                    this.writer.write(',');</span>
+                }
+<span class="nc" id="L212">                this.writer.write(JSONObject.quote(string));</span>
+<span class="nc" id="L213">                this.writer.write(':');</span>
+<span class="nc" id="L214">                this.comma = false;</span>
+<span class="nc" id="L215">                this.mode = 'o';</span>
+<span class="nc" id="L216">                return this;</span>
+<span class="nc" id="L217">            } catch (IOException e) {</span>
+<span class="nc" id="L218">                throw new JSONException(e);</span>
+            }
+        }
+<span class="nc" id="L221">        throw new JSONException(&quot;Misplaced key.&quot;);</span>
+    }
+
+
+    /**
+     * Begin appending a new object. All keys and values until the balancing
+     * &lt;code&gt;endObject&lt;/code&gt; will be appended to this object. The
+     * &lt;code&gt;endObject&lt;/code&gt; method must be called to mark the object's end.
+     * @return this
+     * @throws JSONException If the nesting is too deep, or if the object is
+     * started in the wrong place (for example as a key or after the end of the
+     * outermost array or object).
+     */
+    public JSONWriter object() throws JSONException {
+<span class="nc bnc" id="L235" title="All 2 branches missed.">        if (this.mode == 'i') {</span>
+<span class="nc" id="L236">            this.mode = 'o';</span>
+        }
+<span class="nc bnc" id="L238" title="All 4 branches missed.">        if (this.mode == 'o' || this.mode == 'a') {</span>
+<span class="nc" id="L239">            this.append(&quot;{&quot;);</span>
+<span class="nc" id="L240">            this.push(new JSONObject());</span>
+<span class="nc" id="L241">            this.comma = false;</span>
+<span class="nc" id="L242">            return this;</span>
+        }
+<span class="nc" id="L244">        throw new JSONException(&quot;Misplaced object.&quot;);</span>
+
+    }
+
+
+    /**
+     * Pop an array or object scope.
+     * @param c The scope to close.
+     * @throws JSONException If nesting is wrong.
+     */
+    private void pop(char c) throws JSONException {
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (this.top &lt;= 0) {</span>
+<span class="nc" id="L256">            throw new JSONException(&quot;Nesting error.&quot;);</span>
+        }
+<span class="nc bnc" id="L258" title="All 2 branches missed.">        char m = this.stack[this.top - 1] == null ? 'a' : 'k';</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">        if (m != c) {</span>
+<span class="nc" id="L260">            throw new JSONException(&quot;Nesting error.&quot;);</span>
+        }
+<span class="nc" id="L262">        this.top -= 1;</span>
+<span class="nc bnc" id="L263" title="All 4 branches missed.">        this.mode = this.top == 0</span>
+            ? 'd'
+            : this.stack[this.top - 1] == null
+            ? 'a'
+            : 'k';
+<span class="nc" id="L268">    }</span>
+
+    /**
+     * Push an array or object scope.
+     * @param jo The scope to open.
+     * @throws JSONException If nesting is too deep.
+     */
+    private void push(JSONObject jo) throws JSONException {
+<span class="nc bnc" id="L276" title="All 2 branches missed.">        if (this.top &gt;= maxdepth) {</span>
+<span class="nc" id="L277">            throw new JSONException(&quot;Nesting too deep.&quot;);</span>
+        }
+<span class="nc" id="L279">        this.stack[this.top] = jo;</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        this.mode = jo == null ? 'a' : 'k';</span>
+<span class="nc" id="L281">        this.top += 1;</span>
+<span class="nc" id="L282">    }</span>
+
+
+    /**
+     * Append either the value &lt;code&gt;true&lt;/code&gt; or the value
+     * &lt;code&gt;false&lt;/code&gt;.
+     * @param b A boolean.
+     * @return this
+     * @throws JSONException
+     */
+    public JSONWriter value(boolean b) throws JSONException {
+<span class="nc bnc" id="L293" title="All 2 branches missed.">        return this.append(b ? &quot;true&quot; : &quot;false&quot;);</span>
+    }
+
+    /**
+     * Append a double value.
+     * @param d A double.
+     * @return this
+     * @throws JSONException If the number is not finite.
+     */
+    public JSONWriter value(double d) throws JSONException {
+<span class="nc" id="L303">        return this.value(new Double(d));</span>
+    }
+
+    /**
+     * Append a long value.
+     * @param l A long.
+     * @return this
+     * @throws JSONException
+     */
+    public JSONWriter value(long l) throws JSONException {
+<span class="nc" id="L313">        return this.append(Long.toString(l));</span>
+    }
+
+
+    /**
+     * Append an object value.
+     * @param object The object to append. It can be null, or a Boolean, Number,
+     *   String, JSONObject, or JSONArray, or an object that implements JSONString.
+     * @return this
+     * @throws JSONException If the value is out of sequence.
+     */
+    public JSONWriter value(Object object) throws JSONException {
+<span class="nc" id="L325">        return this.append(JSONObject.valueToString(object));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

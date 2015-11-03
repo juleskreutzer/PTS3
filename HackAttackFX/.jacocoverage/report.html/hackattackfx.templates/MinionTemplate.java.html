@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MinionTemplate.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx.templates</a> &gt; <span class="el_source">MinionTemplate.java</span></div><h1>MinionTemplate.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx.templates;
+
+import hackattackfx.enums.MinionType;
+import hackattackfx.exceptions.*;
+
+/**
+ *
+ * @author jaspe_000
+ */
+public class MinionTemplate {
+    private MinionType type;
+    private double health;
+    private double speed;
+    private double damage;
+    private boolean encrypted;
+    private double reward;
+    
+<span class="fc" id="L23">    public MinionTemplate(MinionType t, double h, double s, double d, boolean e, double r){</span>
+<span class="fc" id="L24">        type = t;</span>
+<span class="fc" id="L25">        health = h;</span>
+<span class="fc" id="L26">        speed = s;</span>
+<span class="fc" id="L27">        damage = d;</span>
+<span class="fc" id="L28">        encrypted = e;</span>
+<span class="fc" id="L29">        reward = r;</span>
+<span class="fc" id="L30">    }</span>
+    
+    public MinionType getMinionType(){
+<span class="fc" id="L33">        return type;</span>
+    }
+    
+    public double getHealth(){
+<span class="fc" id="L37">        return health;</span>
+    }
+    
+    public double getSpeed(){
+<span class="fc" id="L41">        return speed;</span>
+    }
+    
+    public double getDamage(){
+<span class="fc" id="L45">        return damage;</span>
+    }
+    
+    public boolean getEncrypted(){
+<span class="fc" id="L49">        return encrypted;</span>
+    }
+    
+    public double getReward(){
+<span class="fc" id="L53">        return reward;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

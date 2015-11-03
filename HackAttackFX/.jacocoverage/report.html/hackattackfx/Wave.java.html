@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Wave.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">Wave.java</span></div><h1>Wave.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import hackattackfx.GameEngine.OnCompleteTick;
+import hackattackfx.exceptions.DuplicateSpawnException;
+import hackattackfx.exceptions.InvalidObjectException;
+import hackattackfx.exceptions.UnsubscribeNonListenerException;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author Igor, Jasper Rouwhorst
+ */
+public class Wave {
+    private int waveNr; //The number of the wave.
+    private boolean waveActive; //If the wave is active or not.
+    private double waveMultiplier; //The multiplier of the wave.
+    
+    private ArrayList&lt;Minion&gt; minionList;
+    private static int spawnedMinions;
+    private ArrayList&lt;Minion&gt; killedMinions;
+    private Player enemyPlayer;
+    
+    // Initial -1000 is the compensation with the spawning interval so the minions will be spawned the first frame of the game
+<span class="fc" id="L33">    private long lastSpawn = -1000;</span>
+    
+    
+    //TODO Add a WaveTemplate
+    /**
+     * The constructor of the wave.
+     * @param wavenr, the number of the wave, must be above 0.
+     * @param multiplier, the multiplier number, must be above 1.
+     * @param enemyplayer, the enemy player, cannot be null.
+     * @param bamount, the amount of byte minions, must be a positive number or zero.
+     * @param kbamount, the amount of kilobyte minions, must be a positive number or zero.
+     * @param mbamount, the amount of megabyte minions, must be a positive number or zero.
+     * @param gbamount, the amount of gigabyte minions, must be a positive number or zero.
+     * @param tbamount, the amount of terabyte minions, must be a positive number or zero.
+     * @param pbamount , the amount of petabyte minions, must be a positive number or zero.
+     */
+    public Wave(int wavenr, double multiplier, Player enemyplayer, 
+<span class="fc" id="L50">            int bamount, int kbamount, int mbamount, int gbamount, int tbamount, int pbamount){</span>
+        
+        //Set fields and initialise.
+<span class="fc" id="L53">        waveNr = wavenr;</span>
+<span class="fc" id="L54">        waveActive = false;</span>
+<span class="fc" id="L55">        waveMultiplier = multiplier;</span>
+<span class="fc" id="L56">        minionList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L57">        killedMinions = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L58">        this.enemyPlayer = enemyplayer;</span>
+<span class="fc" id="L59">        Map map = Map.getInstance();</span>
+<span class="fc" id="L60">        Point base = map.getBaseLocationA();</span>
+        
+        //Create the minions for this wave.
+        //Bytes
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for(int i=0; i&lt;bamount; i++){</span>
+<span class="fc" id="L65">            Minion minion = new Minion(Data.DEFAULT_BYTE, multiplier, enemyPlayer);</span>
+<span class="fc" id="L66">            minion.setPosition(new Point(base.x, base.y));</span>
+<span class="fc" id="L67">            minionList.add(minion);</span>
+        }
+        //KiloBytes
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        for(int i=0; i&lt;kbamount; i++){</span>
+<span class="nc" id="L71">            Minion minion = new Minion(Data.DEFAULT_KILOBYTE, multiplier, enemyPlayer);</span>
+<span class="nc" id="L72">            minion.setPosition(new Point(base.x, base.y));</span>
+<span class="nc" id="L73">            minionList.add(minion);</span>
+        }
+        //MegaBytes
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        for(int i=0; i&lt;mbamount; i++){</span>
+<span class="nc" id="L77">           Minion minion = new Minion(Data.DEFAULT_MEGABYTE, multiplier, enemyPlayer);</span>
+<span class="nc" id="L78">            minion.setPosition(new Point(base.x, base.y));</span>
+<span class="nc" id="L79">            minionList.add(minion);</span>
+        }
+        //GigaBytes
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        for(int i=0; i&lt;gbamount; i++){</span>
+<span class="nc" id="L83">            Minion minion = new Minion(Data.DEFAULT_GIGABYTE, multiplier, enemyPlayer);</span>
+<span class="nc" id="L84">            minion.setPosition(new Point(base.x, base.y));</span>
+<span class="nc" id="L85">            minionList.add(minion);</span>
+        }
+        //TeraBytes
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        for(int i=0; i&lt;tbamount; i++){</span>
+<span class="nc" id="L89">            Minion minion = new Minion(Data.DEFAULT_TERABYTE, multiplier, enemyPlayer);</span>
+<span class="nc" id="L90">            minion.setPosition(new Point(base.x, base.y));</span>
+<span class="nc" id="L91">            minionList.add(minion);</span>
+        }
+        //PetaBytes
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        for(int i=0; i&lt;pbamount; i++){</span>
+<span class="nc" id="L95">            Minion minion = new Minion(Data.DEFAULT_PETABYTE, multiplier, enemyPlayer);</span>
+<span class="nc" id="L96">            minion.setPosition(new Point(base.x, base.y));</span>
+<span class="nc" id="L97">            minionList.add(minion);</span>
+        }
+        
+        
+<span class="fc" id="L101">    }</span>
+    
+    /**
+     * Start the actual wave and spawn the containing minions.
+     */
+    public void startWave(){
+        //Set to true so the wave becomes active.
+<span class="fc" id="L108">        waveActive = true;</span>
+<span class="fc" id="L109">        OnCompleteTick listener = new GameEngine.OnCompleteTick(){</span>
+            
+            @Override
+            public void tickComplete(long elapsedtime){
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                if(elapsedtime &gt;= (lastSpawn + 1000)){</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">                    if(spawnedMinions &lt; minionList.size()){</span>
+<span class="nc" id="L115">                        Minion m = minionList.get(spawnedMinions++);</span>
+                        try{
+<span class="nc" id="L117">                            GraphicsEngine.getInstance().spawn(m); //Get an instance of the graphics engine, and spawn the minion with it.</span>
+<span class="nc" id="L118">                            m.activate(new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.</span>
+
+                                @Override //Override this method, remove the passed minion from the current wave with removeMinion.
+                                public void onMinionDeath(Minion minion, Boolean reachedBase) {
+<span class="nc" id="L122">                                    removeMinion(minion, reachedBase);</span>
+<span class="nc" id="L123">                                }</span>
+
+                            });
+<span class="nc" id="L126">                            lastSpawn = elapsedtime;</span>
+                             //Exception Handling.
+<span class="nc" id="L128">                        }catch(DuplicateSpawnException e){</span>
+<span class="nc" id="L129">                            System.out.println(e.toString());</span>
+<span class="nc" id="L130">                        }catch(InvalidObjectException e){</span>
+<span class="nc" id="L131">                            System.out.println(e.toString());</span>
+<span class="nc" id="L132">                        }</span>
+<span class="nc" id="L133">                    }else{</span>
+                        try {
+<span class="nc" id="L135">                            GameEngine.getInstance().unsubscribeListener(this);</span>
+<span class="nc" id="L136">                        } catch (UnsubscribeNonListenerException e) {</span>
+<span class="nc" id="L137">                            System.out.println(e.toString());</span>
+<span class="nc" id="L138">                        }</span>
+                    }
+                }
+<span class="nc" id="L141">            }</span>
+            
+        };
+        
+<span class="nc" id="L145">        GameEngine.getInstance().setOnTickCompleteListener(listener);</span>
+<span class="nc" id="L146">    }</span>
+    
+    /**
+     * Returns an iterator of the minions in this wave.
+     * @return, returns the Iterator of the minionList.
+     */
+    public Iterator&lt;Minion&gt; minions(){
+<span class="nc" id="L153">        return minionList.iterator();</span>
+    }
+    
+    public int getWaveNr(){
+<span class="nc" id="L157">        return waveNr;</span>
+    }
+    
+    public ArrayList&lt;Minion&gt; minionsAsList(){
+<span class="fc" id="L161">        return minionList;</span>
+    }
+    
+    public boolean waveActive(){
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        return (minionList.size() &gt; 0);</span>
+    }
+    
+    /**
+     * If the given minion is in the current wave, it gets removed and true is returned.
+     * If the given minion isn't in the current wave, false is returned.
+     * @param minion, the minion
+     * @return, true if removed successfully, false if not.
+     */
+    private boolean removeMinion(Minion minion, Boolean reachedBase){
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (minionList.contains(minion)){</span>
+<span class="nc" id="L176">            killedMinions.add(minion);</span>
+<span class="nc" id="L177">            minionList.remove(minion);</span>
+<span class="nc" id="L178">            spawnedMinions--;</span>
+<span class="nc" id="L179">            minion.deactivate();</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">            if (reachedBase) {</span>
+<span class="nc" id="L181">                enemyPlayer.receiveDamage(minion.getDamage());</span>
+            }
+            else{
+<span class="nc" id="L184">            enemyPlayer.addBitcoins(minion.getReward());</span>
+        }
+<span class="nc" id="L186">            return true;</span>
+        } 
+        else{
+<span class="nc" id="L189">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

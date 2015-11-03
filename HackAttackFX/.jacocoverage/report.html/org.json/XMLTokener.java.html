@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>XMLTokener.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">org.json</a> &gt; <span class="el_source">XMLTokener.java</span></div><h1>XMLTokener.java</h1><pre class="source lang-java linenums">package org.json;
+
+/*
+Copyright (c) 2002 JSON.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+The Software shall be used for Good, not Evil.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+/**
+ * The XMLTokener extends the JSONTokener to provide additional methods
+ * for the parsing of XML texts.
+ * @author JSON.org
+ * @version 2014-05-03
+ */
+public class XMLTokener extends JSONTokener {
+
+
+   /** The table of entity values. It initially contains Character values for
+    * amp, apos, gt, lt, quot.
+    */
+   public static final java.util.HashMap&lt;String, Character&gt; entity;
+
+   static {
+<span class="nc" id="L42">       entity = new java.util.HashMap&lt;String, Character&gt;(8);</span>
+<span class="nc" id="L43">       entity.put(&quot;amp&quot;,  XML.AMP);</span>
+<span class="nc" id="L44">       entity.put(&quot;apos&quot;, XML.APOS);</span>
+<span class="nc" id="L45">       entity.put(&quot;gt&quot;,   XML.GT);</span>
+<span class="nc" id="L46">       entity.put(&quot;lt&quot;,   XML.LT);</span>
+<span class="nc" id="L47">       entity.put(&quot;quot&quot;, XML.QUOT);</span>
+<span class="nc" id="L48">   }</span>
+
+    /**
+     * Construct an XMLTokener from a string.
+     * @param s A source string.
+     */
+    public XMLTokener(String s) {
+<span class="nc" id="L55">        super(s);</span>
+<span class="nc" id="L56">    }</span>
+
+    /**
+     * Get the text in the CDATA block.
+     * @return The string up to the &lt;code&gt;]]&amp;gt;&lt;/code&gt;.
+     * @throws JSONException If the &lt;code&gt;]]&amp;gt;&lt;/code&gt; is not found.
+     */
+    public String nextCDATA() throws JSONException {
+        char         c;
+        int          i;
+<span class="nc" id="L66">        StringBuilder sb = new StringBuilder();</span>
+        for (;;) {
+<span class="nc" id="L68">            c = next();</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            if (end()) {</span>
+<span class="nc" id="L70">                throw syntaxError(&quot;Unclosed CDATA&quot;);</span>
+            }
+<span class="nc" id="L72">            sb.append(c);</span>
+<span class="nc" id="L73">            i = sb.length() - 3;</span>
+<span class="nc bnc" id="L74" title="All 4 branches missed.">            if (i &gt;= 0 &amp;&amp; sb.charAt(i) == ']' &amp;&amp;</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">                          sb.charAt(i + 1) == ']' &amp;&amp; sb.charAt(i + 2) == '&gt;') {</span>
+<span class="nc" id="L76">                sb.setLength(i);</span>
+<span class="nc" id="L77">                return sb.toString();</span>
+            }
+        }
+    }
+
+
+    /**
+     * Get the next XML outer token, trimming whitespace. There are two kinds
+     * of tokens: the '&lt;' character which begins a markup tag, and the content
+     * text between markup tags.
+     *
+     * @return  A string, or a '&lt;' Character, or null if there is no more
+     * source text.
+     * @throws JSONException
+     */
+    public Object nextContent() throws JSONException {
+        char         c;
+        StringBuilder sb;
+        do {
+<span class="nc" id="L96">            c = next();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        } while (Character.isWhitespace(c));</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (c == 0) {</span>
+<span class="nc" id="L99">            return null;</span>
+        }
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (c == '&lt;') {</span>
+<span class="nc" id="L102">            return XML.LT;</span>
+        }
+<span class="nc" id="L104">        sb = new StringBuilder();</span>
+        for (;;) {
+<span class="nc bnc" id="L106" title="All 4 branches missed.">            if (c == '&lt;' || c == 0) {</span>
+<span class="nc" id="L107">                back();</span>
+<span class="nc" id="L108">                return sb.toString().trim();</span>
+            }
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (c == '&amp;') {</span>
+<span class="nc" id="L111">                sb.append(nextEntity(c));</span>
+            } else {
+<span class="nc" id="L113">                sb.append(c);</span>
+            }
+<span class="nc" id="L115">            c = next();</span>
+        }
+    }
+
+
+    /**
+     * Return the next entity. These entities are translated to Characters:
+     *     &lt;code&gt;&amp;amp;  &amp;apos;  &amp;gt;  &amp;lt;  &amp;quot;&lt;/code&gt;.
+     * @param ampersand An ampersand character.
+     * @return  A Character or an entity String if the entity is not recognized.
+     * @throws JSONException If missing ';' in XML entity.
+     */
+    public Object nextEntity(char ampersand) throws JSONException {
+<span class="nc" id="L128">        StringBuilder sb = new StringBuilder();</span>
+        for (;;) {
+<span class="nc" id="L130">            char c = next();</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">            if (Character.isLetterOrDigit(c) || c == '#') {</span>
+<span class="nc" id="L132">                sb.append(Character.toLowerCase(c));</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            } else if (c == ';') {</span>
+<span class="nc" id="L134">                break;</span>
+            } else {
+<span class="nc" id="L136">                throw syntaxError(&quot;Missing ';' in XML entity: &amp;&quot; + sb);</span>
+            }
+<span class="nc" id="L138">        }</span>
+<span class="nc" id="L139">        String string = sb.toString();</span>
+<span class="nc" id="L140">        Object object = entity.get(string);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        return object != null ? object : ampersand + string + &quot;;&quot;;</span>
+    }
+
+
+    /**
+     * Returns the next XML meta token. This is used for skipping over &lt;!...&gt;
+     * and &lt;?...?&gt; structures.
+     * @return Syntax characters (&lt;code&gt;&lt; &gt; / = ! ?&lt;/code&gt;) are returned as
+     *  Character, and strings and names are returned as Boolean. We don't care
+     *  what the values actually are.
+     * @throws JSONException If a string is not properly closed or if the XML
+     *  is badly structured.
+     */
+    public Object nextMeta() throws JSONException {
+        char c;
+        char q;
+        do {
+<span class="nc" id="L158">            c = next();</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        } while (Character.isWhitespace(c));</span>
+<span class="nc bnc" id="L160" title="All 9 branches missed.">        switch (c) {</span>
+        case 0:
+<span class="nc" id="L162">            throw syntaxError(&quot;Misshaped meta tag&quot;);</span>
+        case '&lt;':
+<span class="nc" id="L164">            return XML.LT;</span>
+        case '&gt;':
+<span class="nc" id="L166">            return XML.GT;</span>
+        case '/':
+<span class="nc" id="L168">            return XML.SLASH;</span>
+        case '=':
+<span class="nc" id="L170">            return XML.EQ;</span>
+        case '!':
+<span class="nc" id="L172">            return XML.BANG;</span>
+        case '?':
+<span class="nc" id="L174">            return XML.QUEST;</span>
+        case '&quot;':
+        case '\'':
+<span class="nc" id="L177">            q = c;</span>
+            for (;;) {
+<span class="nc" id="L179">                c = next();</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                if (c == 0) {</span>
+<span class="nc" id="L181">                    throw syntaxError(&quot;Unterminated string&quot;);</span>
+                }
+<span class="nc bnc" id="L183" title="All 2 branches missed.">                if (c == q) {</span>
+<span class="nc" id="L184">                    return Boolean.TRUE;</span>
+                }
+            }
+        default:
+            for (;;) {
+<span class="nc" id="L189">                c = next();</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">                if (Character.isWhitespace(c)) {</span>
+<span class="nc" id="L191">                    return Boolean.TRUE;</span>
+                }
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                switch (c) {</span>
+                case 0:
+                case '&lt;':
+                case '&gt;':
+                case '/':
+                case '=':
+                case '!':
+                case '?':
+                case '&quot;':
+                case '\'':
+<span class="nc" id="L203">                    back();</span>
+<span class="nc" id="L204">                    return Boolean.TRUE;</span>
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Get the next XML Token. These tokens are found inside of angle
+     * brackets. It may be one of these characters: &lt;code&gt;/ &gt; = ! ?&lt;/code&gt; or it
+     * may be a string wrapped in single quotes or double quotes, or it may be a
+     * name.
+     * @return a String or a Character.
+     * @throws JSONException If the XML is not well formed.
+     */
+    public Object nextToken() throws JSONException {
+        char c;
+        char q;
+        StringBuilder sb;
+        do {
+<span class="nc" id="L224">            c = next();</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        } while (Character.isWhitespace(c));</span>
+<span class="nc bnc" id="L226" title="All 9 branches missed.">        switch (c) {</span>
+        case 0:
+<span class="nc" id="L228">            throw syntaxError(&quot;Misshaped element&quot;);</span>
+        case '&lt;':
+<span class="nc" id="L230">            throw syntaxError(&quot;Misplaced '&lt;'&quot;);</span>
+        case '&gt;':
+<span class="nc" id="L232">            return XML.GT;</span>
+        case '/':
+<span class="nc" id="L234">            return XML.SLASH;</span>
+        case '=':
+<span class="nc" id="L236">            return XML.EQ;</span>
+        case '!':
+<span class="nc" id="L238">            return XML.BANG;</span>
+        case '?':
+<span class="nc" id="L240">            return XML.QUEST;</span>
+
+// Quoted string
+
+        case '&quot;':
+        case '\'':
+<span class="nc" id="L246">            q = c;</span>
+<span class="nc" id="L247">            sb = new StringBuilder();</span>
+            for (;;) {
+<span class="nc" id="L249">                c = next();</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">                if (c == 0) {</span>
+<span class="nc" id="L251">                    throw syntaxError(&quot;Unterminated string&quot;);</span>
+                }
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                if (c == q) {</span>
+<span class="nc" id="L254">                    return sb.toString();</span>
+                }
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                if (c == '&amp;') {</span>
+<span class="nc" id="L257">                    sb.append(nextEntity(c));</span>
+                } else {
+<span class="nc" id="L259">                    sb.append(c);</span>
+                }
+            }
+        default:
+
+// Name
+
+<span class="nc" id="L266">            sb = new StringBuilder();</span>
+            for (;;) {
+<span class="nc" id="L268">                sb.append(c);</span>
+<span class="nc" id="L269">                c = next();</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">                if (Character.isWhitespace(c)) {</span>
+<span class="nc" id="L271">                    return sb.toString();</span>
+                }
+<span class="nc bnc" id="L273" title="All 4 branches missed.">                switch (c) {</span>
+                case 0:
+<span class="nc" id="L275">                    return sb.toString();</span>
+                case '&gt;':
+                case '/':
+                case '=':
+                case '!':
+                case '?':
+                case '[':
+                case ']':
+<span class="nc" id="L283">                    back();</span>
+<span class="nc" id="L284">                    return sb.toString();</span>
+                case '&lt;':
+                case '&quot;':
+                case '\'':
+<span class="nc" id="L288">                    throw syntaxError(&quot;Bad character in a name&quot;);</span>
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Skip characters until past the requested string.
+     * If it is not found, we are left at the end of the source with a result of false.
+     * @param to A string to skip past.
+     * @throws JSONException
+     */
+    public boolean skipPast(String to) throws JSONException {
+        boolean b;
+        char c;
+        int i;
+        int j;
+<span class="nc" id="L306">        int offset = 0;</span>
+<span class="nc" id="L307">        int length = to.length();</span>
+<span class="nc" id="L308">        char[] circle = new char[length];</span>
+
+        /*
+         * First fill the circle buffer with as many characters as are in the
+         * to string. If we reach an early end, bail.
+         */
+
+<span class="nc bnc" id="L315" title="All 2 branches missed.">        for (i = 0; i &lt; length; i += 1) {</span>
+<span class="nc" id="L316">            c = next();</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">            if (c == 0) {</span>
+<span class="nc" id="L318">                return false;</span>
+            }
+<span class="nc" id="L320">            circle[i] = c;</span>
+        }
+
+        /* We will loop, possibly for all of the remaining characters. */
+
+        for (;;) {
+<span class="nc" id="L326">            j = offset;</span>
+<span class="nc" id="L327">            b = true;</span>
+
+            /* Compare the circle buffer with the to string. */
+
+<span class="nc bnc" id="L331" title="All 2 branches missed.">            for (i = 0; i &lt; length; i += 1) {</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">                if (circle[j] != to.charAt(i)) {</span>
+<span class="nc" id="L333">                    b = false;</span>
+<span class="nc" id="L334">                    break;</span>
+                }
+<span class="nc" id="L336">                j += 1;</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">                if (j &gt;= length) {</span>
+<span class="nc" id="L338">                    j -= length;</span>
+                }
+            }
+
+            /* If we exit the loop with b intact, then victory is ours. */
+
+<span class="nc bnc" id="L344" title="All 2 branches missed.">            if (b) {</span>
+<span class="nc" id="L345">                return true;</span>
+            }
+
+            /* Get the next character. If there isn't one, then defeat is ours. */
+
+<span class="nc" id="L350">            c = next();</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">            if (c == 0) {</span>
+<span class="nc" id="L352">                return false;</span>
+            }
+            /*
+             * Shove the character in the circle buffer and advance the
+             * circle offset. The offset is mod n.
+             */
+<span class="nc" id="L358">            circle[offset] = c;</span>
+<span class="nc" id="L359">            offset += 1;</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">            if (offset &gt;= length) {</span>
+<span class="nc" id="L361">                offset -= length;</span>
+            }
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

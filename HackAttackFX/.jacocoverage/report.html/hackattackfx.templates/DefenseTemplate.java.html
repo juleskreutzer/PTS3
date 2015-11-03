@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DefenseTemplate.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx.templates</a> &gt; <span class="el_source">DefenseTemplate.java</span></div><h1>DefenseTemplate.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx.templates;
+
+import hackattackfx.enums.*;
+
+/**
+ *
+ * @author juleskreutzer
+ */
+public class DefenseTemplate extends ModuleTemplate {
+    private double damage;
+    private int range;
+    private DefenseType defenseType;
+    private Effect effect;
+    private int frequency;
+    
+    
+    public DefenseTemplate(double cost, int level, ModuleName moduleName, double damage, int range, DefenseType type, Effect effect, int frequency, String desc) {
+<span class="fc" id="L23">        super(cost, level, moduleName, desc);</span>
+<span class="fc" id="L24">        this.damage = damage;</span>
+<span class="fc" id="L25">        this.range = range;</span>
+<span class="fc" id="L26">        this.defenseType = type;</span>
+<span class="fc" id="L27">        this.effect = effect;</span>
+<span class="fc" id="L28">        this.frequency = frequency;</span>
+<span class="fc" id="L29">    }</span>
+    
+    public double getDamage()
+    {
+<span class="fc" id="L33">        return this.damage;</span>
+    }
+    
+    public int getRange()
+    {
+<span class="fc" id="L38">        return this.range;</span>
+    }
+    
+    public DefenseType getDefenseType()
+    {
+<span class="fc" id="L43">        return this.defenseType;</span>
+    }
+    
+    public Effect getEffect()
+    {
+<span class="fc" id="L48">        return this.effect;</span>
+    }
+    
+    public int getFrequency()
+    {
+<span class="fc" id="L53">        return this.frequency;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

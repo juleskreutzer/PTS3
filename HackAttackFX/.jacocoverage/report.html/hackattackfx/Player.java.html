@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package hackattackfx;
+
+import hackattackfx.exceptions.*;
+import hackattackfx.BitcoinMiner.OnMineComplete;
+import hackattackfx.enums.Effect;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author Igor
+ */
+public class Player {
+    
+    //Fields
+    private double health; //amount of player's health
+    private String name; //the player's name
+    private double bitcoins; //amount of player's currency in bitcoins
+    private Point baseLocation;
+    private List&lt;Module&gt; modules;
+    
+<span class="fc" id="L32">    public Player(){}</span>
+    /**
+     * Constructor for the player
+     * @param h health value for the player
+     * @param n name for the player
+     * @param b bitcoins value for the player
+     * @param l baselocation for the player
+     */
+<span class="fc" id="L40">    public Player(double h, String n, double b, Point l) {</span>
+<span class="fc" id="L41">        health = h;</span>
+<span class="fc" id="L42">        name = n;</span>
+<span class="fc" id="L43">        bitcoins = b;</span>
+<span class="fc" id="L44">        baseLocation = l;</span>
+<span class="fc" id="L45">        modules = new ArrayList&lt;Module&gt;();</span>
+<span class="fc" id="L46">    }</span>
+    
+    //Methods
+    
+    /**
+     * Check if the player can build or upgrade the desired module
+     * @param cost cost of the module to build or upgrade it
+     * @return returns true if the player can build or upgrade, false if not
+     */
+    private boolean CheckCostToBuildOrUpgrade(double cost)
+    {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        return cost &lt;= this.bitcoins;</span>
+    }
+    
+    /**
+    * Initialize a SoftwareInjector object, add the object to the modules field, lower the player bitcoins and return a list of spells that became available
+    * @return The newly created {@link SoftwareInjector}
+    */  
+    public SoftwareInjector buildSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException{
+<span class="fc" id="L65">        this.removeBitcoins(injector.getCost());</span>
+<span class="fc" id="L66">        modules.add(injector);</span>
+<span class="fc" id="L67">        return injector;</span>
+    }
+    
+    /**
+     * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
+     * @return
+     */
+    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException
+    {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if(injector.getCost() &lt;= this.getBitcoins())</span>
+        {
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">            if(injector.upgrade()) </span>
+            { 
+<span class="fc" id="L80">                this.removeBitcoins(injector.getCost());</span>
+<span class="fc" id="L81">                return true; </span>
+            }
+        }
+<span class="fc" id="L84">        return false;</span>
+    }
+    
+    public List&lt;Spell&gt; getSpells(){        
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (Module module : modules)</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            if(module instanceof SoftwareInjector)</span>
+<span class="fc" id="L90">                return ((SoftwareInjector)module).getSpells();</span>
+<span class="fc" id="L91">        return null;</span>
+    }
+    
+    /**
+     * Initialize a BitcoinMiner object, lower the player bitcoins and add the object to the modules field
+     * @return The newly created {@link BitcoinMiner}
+     */
+    public BitcoinMiner buildBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException{
+        try{
+<span class="fc" id="L100">            miner.setOnMineListener(new OnMineComplete() {</span>
+
+                @Override
+                public void onMine(double mineValue) {
+
+<span class="nc" id="L105">                    addBitcoins(mineValue);</span>
+
+<span class="nc" id="L107">                }</span>
+            });
+<span class="fc" id="L109">            this.removeBitcoins(miner.getCost());</span>
+<span class="fc" id="L110">            modules.add(miner);</span>
+        }
+<span class="nc" id="L112">        catch(DuplicateListenerException ex)</span>
+        {
+<span class="nc" id="L114">            System.out.print(ex.toString());</span>
+<span class="fc" id="L115">        }</span>
+        
+<span class="fc" id="L117">        return miner;</span>
+    }
+    
+    /**
+     * Retrieve a BitcoinMiner object from the modules field, lower the player bitcoins and call the Upgrade method from inside the class
+     * @return boolean if the upgrade was successfully executed 
+     */
+
+    public boolean upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException{
+        try {
+<span class="fc" id="L127">            this.removeBitcoins(miner.getCost());</span>
+<span class="fc" id="L128">            return miner.upgrade();</span>
+<span class="nc" id="L129">        } catch (NoUpgradeAllowedException ex) {</span>
+<span class="nc" id="L130">            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L132">        return false;</span>
+    }
+    
+    /**
+     * Initialize a CpuUpgrade object and add the object to the modules field
+     */
+    public CPUUpgrade buildCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException{
+<span class="fc" id="L139">        this.removeBitcoins(cpu.getCost());</span>
+<span class="fc" id="L140">        modules.add(cpu);</span>
+<span class="fc" id="L141">        return cpu;</span>
+    }
+    
+    public boolean upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException{
+        try {
+            // First get a list of all minions
+<span class="nc" id="L147">            Iterator&lt;Minion&gt; minions = GameEngine.getInstance().getActiveWave().minions();</span>
+<span class="nc" id="L148">            this.removeBitcoins(cpu.getCost());</span>
+<span class="nc" id="L149">            return cpu.upgrade(minions);</span>
+<span class="nc" id="L150">        } catch (NoUpgradeAllowedException ex) {</span>
+<span class="nc" id="L151">            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L153">        return false;</span>
+	}
+    
+    public Defense buildDefense(Defense defense) throws NotEnoughBitcoinsException{
+<span class="nc" id="L157">        this.removeBitcoins(defense.getCost());</span>
+<span class="nc" id="L158">        modules.add(defense);</span>
+<span class="nc" id="L159">        return defense;</span>
+    }
+    
+    /**
+     * Retrieve the player's private health field
+     * @return double from the private health field
+     */
+    public double getHealth(){
+<span class="fc" id="L167">        return health;</span>
+    }
+    
+    /**
+     * Set the player's private health field from the Health parameter
+     * @param Health
+     */
+    public void setHealth(double Health){
+<span class="fc" id="L175">        health = Health;</span>
+<span class="fc" id="L176">    }</span>
+    
+    /**
+     * Retrieve the player's private name field
+     * @return double from the private name field
+     */
+    public String getName(){
+<span class="fc" id="L183">        return name;</span>
+    }
+    
+    /**
+     * Set the player's private name field from the Name parameter
+     * @param Name
+     */
+    public void setName(String Name){
+<span class="fc" id="L191">        name = Name;</span>
+<span class="fc" id="L192">    }</span>
+    
+    /**
+     * Retrieve the player's private bitcoins field
+     * @return double from the private bitcoins field
+     */
+    public double getBitcoins(){
+<span class="fc" id="L199">        return bitcoins;</span>
+    }
+
+    /**
+     * Set the player's private bitcoin field from the Bitcoin parameter
+     * @param Bitcoins
+     */
+    public void setBitcoins(double Bitcoins){
+<span class="fc" id="L207">        bitcoins = Bitcoins;</span>
+<span class="fc" id="L208">    }</span>
+    
+    
+    /**
+     * Subtract the damage parameter from the health field
+     * @param damage
+    */
+    public void receiveDamage(double damage) {
+<span class="fc" id="L216">        health = health - damage;</span>
+<span class="fc" id="L217">    }</span>
+    
+    /**
+     * Retrieve the player's private modules field
+     * @return List of Module from the private modules field
+     */
+    public List&lt;Module&gt; getModules(){
+<span class="fc" id="L224">        return modules;</span>
+    }
+    
+    /**
+     * Increase the amount of bitcoins for the player with the given amount value
+     * @param amount The amout of bitcoins that will be increased.
+     */
+    public void addBitcoins(double amount){
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        if(amount &lt; 0) throw new IllegalArgumentException(&quot;Amount may not be less than 0&quot;);</span>
+<span class="nc" id="L233">        bitcoins += amount;</span>
+<span class="nc" id="L234">    }</span>
+    
+    /**
+     * Remove the amount from the player's bitcoins.
+     * First check if the amount &gt; 0, than check if the amount is not greater than the amount of bitcoins the player has.
+     * @param amount The amount that the players bitcoins will be lowered with
+     * @throws NotEnoughBitcoinsException Throws when the amount &gt; bitcoins of the player.
+     */
+    public void removeBitcoins(double amount) throws NotEnoughBitcoinsException{
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        if (amount &lt; 0) throw new IllegalArgumentException(&quot;Amount may not be less than 0&quot;);</span>
+        
+
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        if (!this.CheckCostToBuildOrUpgrade(amount)) throw new NotEnoughBitcoinsException(&quot;You do not have enough Bitcoins to build this module.&quot;);</span>
+
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">        if (amount &gt; this.getBitcoins())</span>
+        {
+<span class="nc" id="L250">            throw new NotEnoughBitcoinsException (&quot;Not enough bitcoins&quot;);</span>
+        } 
+
+        
+<span class="fc" id="L254">        this.bitcoins -= amount;</span>
+<span class="fc" id="L255">    }</span>
+    
+
+    public boolean upgradeDefense(Defense defense, Effect effect) throws NotEnoughBitcoinsException{
+        try {
+<span class="nc bnc" id="L260" title="All 2 branches missed.">            if(defense.upgrade())</span>
+            {
+<span class="nc" id="L262">                defense.setEffect(effect);</span>
+<span class="nc" id="L263">                this.removeBitcoins(defense.getCost());</span>
+<span class="nc" id="L264">                return true;</span>
+            }
+            else
+            {
+<span class="nc" id="L268">                return false;</span>
+            }
+<span class="nc" id="L270">        } catch (NoUpgradeAllowedException ex) {</span>
+<span class="nc" id="L271">            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L272">	} catch (NotEnoughBitcoinsException ex) {</span>
+<span class="nc" id="L273">            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex.getMessage());</span>
+<span class="nc" id="L274">        }</span>
+        
+<span class="nc" id="L276">        return false;</span>
+    }		
+    
+    public Point getBaseLocation(){
+<span class="fc" id="L280">        return baseLocation;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

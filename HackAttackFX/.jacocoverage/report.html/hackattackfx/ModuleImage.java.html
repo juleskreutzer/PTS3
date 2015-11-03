@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ModuleImage.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;HackAttackFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">hackattackfx</a> &gt; <span class="el_source">ModuleImage.java</span></div><h1>ModuleImage.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hackattackfx;
+
+import java.io.File;
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
+
+/**
+ *
+ * @author juleskreutzer
+ */
+public class ModuleImage extends ObjectImage {
+
+    private Module module;
+    private boolean showRange;
+    
+    public ModuleImage(Module m){
+<span class="fc" id="L25">        super(m);</span>
+<span class="fc" id="L26">        module = m;</span>
+        
+<span class="fc" id="L28">        File file = null;</span>
+<span class="pc bpc" id="L29" title="7 of 8 branches missed.">        switch(module.getModuleName()){</span>
+            case BITCOIN_MINER:
+<span class="nc" id="L31">                file = new File(&quot;src/hackattackfx/resources/sniper_av.png&quot;);</span>
+<span class="nc" id="L32">                break;</span>
+            case SOFTWARE_INJECTOR:
+<span class="nc" id="L34">                file = new File(&quot;src/hackattackfx/resources/sniper_av.png&quot;);</span>
+<span class="nc" id="L35">                break;</span>
+            case CPU_UPGRADE:
+<span class="nc" id="L37">                file = new File(&quot;src/hackattackfx/resources/sniper_av.png&quot;);</span>
+<span class="nc" id="L38">                break;</span>
+            case SNIPER_ANTIVIRUS:
+<span class="nc" id="L40">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/sniper_module.png&quot;);</span>
+<span class="nc" id="L41">                break;</span>
+            case BOTTLECAP_ANTIVIRUS:
+<span class="fc" id="L43">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/bottlecap_module.png&quot;);</span>
+<span class="fc" id="L44">                break;</span>
+            case SCALE_ANTIVIRUS:
+<span class="nc" id="L46">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/scale_module.png&quot;);</span>
+<span class="nc" id="L47">                break;</span>
+            case MUSCLE_ANTIVIRUS:
+<span class="nc" id="L49">                file = new File(&quot;src/hackattackfx/resources/interface/module/40x40/muscle_module.png&quot;);</span>
+                break;
+        }
+        
+<span class="nc" id="L53">        Image image = new Image(file.toURI().toString());</span>
+<span class="nc" id="L54">        setX(module.getPosition().x - (image.getHeight()/2));</span>
+<span class="nc" id="L55">        setY(module.getPosition().y - (image.getWidth()/2));</span>
+<span class="nc" id="L56">        this.setImage(image);</span>
+        
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if(module instanceof Defense){</span>
+<span class="nc" id="L59">            Defense defense = (Defense)module;</span>
+<span class="nc" id="L60">            this.setOnMouseEntered(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+                @Override
+                public void handle(MouseEvent event) {
+                    
+<span class="nc" id="L65">                    showRange = true;</span>
+                    
+<span class="nc" id="L67">                }</span>
+            
+            });
+<span class="nc" id="L70">            this.setOnMouseExited(new EventHandler&lt;MouseEvent&gt;(){</span>
+
+                @Override
+                public void handle(MouseEvent event) {
+                    
+<span class="nc" id="L75">                    showRange = false;</span>
+                    
+<span class="nc" id="L77">                }</span>
+                
+            });
+        }
+<span class="nc" id="L81">    }</span>
+    
+    /**
+     * Checks if this module should show its range
+     * @return
+     */
+    public boolean showRange(){
+<span class="nc" id="L88">            return showRange;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
