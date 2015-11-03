@@ -266,7 +266,6 @@ public class Minion implements IMoveable {
         health -= damage;
         //System.out.println(String.format("Dealing damage: %f, remaining health: %f", damage, health));
         if(health <= 0){
-            heartbeat.onMinionDeath(this, false);
             if (heartbeat != null) {
                 //System.out.println();
                 heartbeat.onMinionDeath(this, false);
