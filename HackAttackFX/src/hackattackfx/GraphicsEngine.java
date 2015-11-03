@@ -212,7 +212,7 @@ public class GraphicsEngine{
                     }else if(n instanceof ModuleImage){
                         ModuleImage mi = (ModuleImage)n;
                         
-                        if(mi.showRange()){
+                        if(mi.hovered()){
                             if(moduleRange == null){
                                 drawModuleRange((Module)mi.getReference());
                             }
@@ -242,23 +242,44 @@ public class GraphicsEngine{
         });
     }
     
-    public void showModuleStats(Module m){
-        lblStatsName.setText(String.format("Name: %s",m.getName()));
-        lblStatsDescription.setText(String.format("Description: %s","No description available"));
-        lblStatsLevel.setText(String.format("Level: %d",m.getLevel()));
-        /*if(GameEngine.getInstance().getPlayer().getBitcoins() < m.getCost()){
-            lblStatsCosts.setStyle("-fx-text-fill: #ff0000;-fx-font-weight: bold");
+    /**
+     * Updates the module stats with the right values given by the parameter.
+     * @param m The module the stats should be shown of. Can be null. If null empty values will be shown.
+     */
+    public void drawModuleStats(Module m){
+        if(m != null){
+            lblStatsName.setText(String.format("Name: %s",m.getName()));
+            lblStatsDescription.setText(String.format("Description: %s","No description available"));
+            lblStatsLevel.setText(String.format("Level: %d",m.getLevel()));
+            /*if(GameEngine.getInstance().getPlayer().getBitcoins() < m.getCost()){
+                lblStatsCosts.setStyle("-fx-text-fill: #ff0000;-fx-font-weight: bold");
+            }else{
+                lblStatsCosts.setStyle("-fx-color: black");
+            }*/
+            lblStatsCosts.setText(String.format("Costs: %d",Math.round(m.getCost())));
+            if(m instanceof Defense){
+                Defense d = (Defense)m;
+                lblStatsROF.setText(String.format("Rate of fire: %d",d.getFrequecy()));
+                lblStatsEffect.setText(String.format("Effect: %s",d.getEffectString()));
+                lblStatsRange.setText(String.format("Range: %d",d.getRange()));
+                lblStatsDamage.setText(String.format("Damage: %d",Math.round(d.getDamage())));
+            }
         }else{
-            lblStatsCosts.setStyle("-fx-color: black");
-        }*/
-        lblStatsCosts.setText(String.format("Costs: %d",Math.round(m.getCost())));
-        if(m instanceof Defense){
-            Defense d = (Defense)m;
-            lblStatsROF.setText(String.format("Rate of fire: %d",d.getFrequecy()));
-            lblStatsEffect.setText(String.format("Effect: %s",d.getEffectString()));
-            lblStatsRange.setText(String.format("Range: %d",d.getRange()));
-            lblStatsDamage.setText(String.format("Damage: %d",Math.round(d.getDamage())));
+            lblStatsName.setText("Name:");
+            lblStatsDescription.setText("Description:");
+            lblStatsLevel.setText("Level");
+            /*if(GameEngine.getInstance().getPlayer().getBitcoins() < m.getCost()){
+                lblStatsCosts.setStyle("-fx-text-fill: #ff0000;-fx-font-weight: bold");
+            }else{
+                lblStatsCosts.setStyle("-fx-color: black");
+            }*/
+            lblStatsCosts.setText("Costs:");
+            lblStatsROF.setText("Rate of fire:");
+            lblStatsEffect.setText("Effect:");
+            lblStatsRange.setText("Range:");
+            lblStatsDamage.setText("Damage:");
         }
+        
     }
     
     public void drawRoad(Road road){

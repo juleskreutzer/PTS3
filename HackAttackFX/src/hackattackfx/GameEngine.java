@@ -177,10 +177,17 @@ public class GameEngine extends Thread implements MouseListener {
             public void handle(MouseEvent event) {
                 try {
                     Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, null, 0,0);
-                    graphicsEngine.showModuleStats(module);
+                    graphicsEngine.drawModuleStats(module);
                 } catch (InvalidModuleEnumException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+        });
+        sniperav.setOnMouseExited(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                graphicsEngine.drawModuleStats(null);
             }
         });
         
@@ -244,10 +251,17 @@ public class GameEngine extends Thread implements MouseListener {
             public void handle(MouseEvent event) {
                 try {
                     Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, null, 0,0);
-                    graphicsEngine.showModuleStats(module);
+                    graphicsEngine.drawModuleStats(module);
                 } catch (InvalidModuleEnumException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+        });
+        scaleav.setOnMouseExited(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                graphicsEngine.drawModuleStats(null);
             }
         });
         
@@ -313,10 +327,17 @@ public class GameEngine extends Thread implements MouseListener {
             public void handle(MouseEvent event) {
                 try {
                     Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, null, 0,0);
-                    graphicsEngine.showModuleStats(module);
+                    graphicsEngine.drawModuleStats(module);
                 } catch (InvalidModuleEnumException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+        });
+        bottlecapav.setOnMouseExited(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                graphicsEngine.drawModuleStats(null);
             }
         });
         
@@ -381,10 +402,17 @@ public class GameEngine extends Thread implements MouseListener {
             public void handle(MouseEvent event) {
                 try {
                     Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, null, 0,0);
-                    graphicsEngine.showModuleStats(module);
+                    graphicsEngine.drawModuleStats(module);
                 } catch (InvalidModuleEnumException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+        });
+        muscleav.setOnMouseExited(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                graphicsEngine.drawModuleStats(null);
             }
         });
         
