@@ -311,6 +311,7 @@ public class DataTest {
             String effectString = obj.getString("effect");
             DefenseType defenseType;
             Effect effect;
+            String desc = obj.getString("description");
             
             if(cost < 0)
                 throw new IllegalArgumentException("Cost must be higher than 0");
@@ -326,15 +327,15 @@ public class DataTest {
                     {
                         case 1:
                             moduleName = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_1_TEST = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_BITCOINMINER_1_TEST = new BitCoinMinerTemplate(cost, tier, moduleName, frequency, desc);
                             break;
                         case 2:
                             moduleName = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_2_TEST = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_BITCOINMINER_2_TEST = new BitCoinMinerTemplate(cost, tier, moduleName, frequency, desc);
                             break;
                         case 3:
                             moduleName = ModuleName.BITCOIN_MINER;
-                            DEFAULT_MODULE_BITCOINMINER_3_TEST = new BitCoinMinerTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_BITCOINMINER_3_TEST = new BitCoinMinerTemplate(cost, tier, moduleName, frequency, desc);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Bitcoin Miner)");
@@ -345,15 +346,15 @@ public class DataTest {
                     {
                         case 1:
                             moduleName = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_1_TEST = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_CPUUPGRADE_1_TEST = new CPUUpgradeTemplate(cost, tier, moduleName, frequency, desc);
                             break;
                         case 2:
                             moduleName = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_2_TEST = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_CPUUPGRADE_2_TEST = new CPUUpgradeTemplate(cost, tier, moduleName, frequency, desc);
                             break;
                         case 3:
                             moduleName = ModuleName.CPU_UPGRADE;
-                            DEFAULT_MODULE_CPUUPGRADE_3_TEST = new CPUUpgradeTemplate(cost, tier, moduleName, frequency);
+                            DEFAULT_MODULE_CPUUPGRADE_3_TEST = new CPUUpgradeTemplate(cost, tier, moduleName, frequency, desc);
                             break;
                         default:
                             throw new IOException("Tier not recognized (CPU Upgrade)");
@@ -364,15 +365,15 @@ public class DataTest {
                     {
                         case 1:
                             moduleName = ModuleName.SOFTWARE_INJECTOR;
-                            DEFAULT_MODULE_SOFTWAREINJECTOR_1_TEST = new SoftwareInjectorTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_1_TEST = new SoftwareInjectorTemplate(cost, tier, moduleName, desc);
                             break;
                         case 2:
                             moduleName = ModuleName.SOFTWARE_INJECTOR;
-                            DEFAULT_MODULE_SOFTWAREINJECTOR_2_TEST = new SoftwareInjectorTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_2_TEST = new SoftwareInjectorTemplate(cost, tier, moduleName, desc);
                             break;
                         case 3:
                             moduleName = ModuleName.SOFTWARE_INJECTOR;
-                            DEFAULT_MODULE_SOFTWAREINJECTOR_3_TEST = new SoftwareInjectorTemplate(cost, tier, moduleName);
+                            DEFAULT_MODULE_SOFTWAREINJECTOR_3_TEST = new SoftwareInjectorTemplate(cost, tier, moduleName, desc);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Software Injector)");
@@ -425,7 +426,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         case 2:
                             moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;
@@ -471,7 +472,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         case 3:
                             moduleName = ModuleName.BOTTLECAP_ANTIVIRUS;
@@ -517,7 +518,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_BOTTLECAP_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Bottlecap Antivirus)");
@@ -570,7 +571,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         case 2:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -616,7 +617,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         case 3:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -662,7 +663,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_MUSCLE_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_MUSCLE_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Muscle Antivirus)");
@@ -715,7 +716,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SCALE_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SCALE_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         case 2:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -761,7 +762,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SCALE_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SCALE_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         case 3:
                             moduleName = ModuleName.MUSCLE_ANTIVIRUS;
@@ -807,7 +808,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SCALE_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SCALE_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Scale Antivirus)");                            
@@ -860,7 +861,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SNIPER_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SNIPER_1_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         case 2:
                             moduleName = ModuleName.SNIPER_ANTIVIRUS;
@@ -906,7 +907,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SNIPER_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SNIPER_2_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         case 3:
                             moduleName = ModuleName.SNIPER_ANTIVIRUS;
@@ -952,7 +953,7 @@ public class DataTest {
                                 default:
                                     throw new InvalidEffectException();
                             }
-                            DEFAULT_MODULE_DEFENSE_SNIPER_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency);
+                            DEFAULT_MODULE_DEFENSE_SNIPER_3_TEST = new DefenseTemplate(cost, tier, moduleName, damage, range, defenseType, effect, frequency, desc);
                             break;
                         default:
                             throw new IOException("Tier not recognized (Sniper Antivirus)");
