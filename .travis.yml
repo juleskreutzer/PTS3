@@ -1,4 +1,5 @@
 language: java
+install: ant deps
 
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec
