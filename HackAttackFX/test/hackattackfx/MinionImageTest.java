@@ -56,6 +56,7 @@ public class MinionImageTest {
         // Initialise Java FX
         System.out.printf("About to launch FX App\n");
         Thread t = new Thread("JavaFX Init Thread") {
+            @Override
             public void run() {
                 Application.launch(SpawnTargetImageTest.AsNonApp.class, new String[0]);
             }
@@ -91,6 +92,7 @@ public class MinionImageTest {
         pb = Data.DEFAULT_PETABYTE;
         
         minTest = new Minion(b, 1, p);
+        minTest.setPosition(point1);
         miTest = new MinionImage(minTest);
     }
     
@@ -106,6 +108,13 @@ public class MinionImageTest {
         Minion m4= new Minion(gb, 1, p);
         Minion m5= new Minion(tb, 1, p);
         Minion m6= new Minion(pb, 1, p);
+        
+        m1.setPosition(point1);
+        m2.setPosition(point1);
+        m3.setPosition(point1);
+        m4.setPosition(point1);
+        m5.setPosition(point1);
+        m6.setPosition(point1);
        
         MinionImage mi1 = new MinionImage(m1);
         MinionImage mi2 = new MinionImage(m2);

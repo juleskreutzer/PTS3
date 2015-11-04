@@ -50,6 +50,7 @@ public class ModuleImageTest {
         public void start(Stage primaryStage) throws Exception {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
+    }
     
     @BeforeClass
     public static void setUpClass() throws InterruptedException {
@@ -65,7 +66,6 @@ public class ModuleImageTest {
         System.out.printf("FX App thread started\n");
         Thread.sleep(500);
         }
-    }
     
     @AfterClass
     public static void tearDownClass() {
