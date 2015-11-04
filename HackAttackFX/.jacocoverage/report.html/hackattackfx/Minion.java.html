@@ -102,35 +102,35 @@ public class Minion implements IMoveable {
     //TODO Doesn't Use elapsedTime yet.
     @Override
     public void move(double elapsedtime) {
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if(targetPosition == null){</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if(targetPosition == null){</span>
 <span class="fc" id="L106">            targetPosition = Map.getInstance().getRoad().getBegin();</span>
         }
         
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if(position.x &lt; targetPosition.x){</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if(position.x &lt; targetPosition.x){</span>
 <span class="fc" id="L110">            position.x += (speed);</span>
             // Correct the position if the minions new position is over the targetposition
 <span class="pc bpc" id="L112" title="1 of 2 branches missed.">            if(position.x &gt;= targetPosition.x){</span>
 <span class="nc" id="L113">                position.x = targetPosition.x;</span>
             }
         }
-<span class="nc bnc" id="L116" title="All 2 branches missed.">        else if(position.x &gt; targetPosition.x){</span>
-<span class="nc" id="L117">            position.x -= (speed);</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        else if(position.x &gt; targetPosition.x){</span>
+<span class="fc" id="L117">            position.x -= (speed);</span>
             // Correct the position if the minions new position is over the targetposition
-<span class="nc bnc" id="L119" title="All 2 branches missed.">            if(position.x &lt;= targetPosition.x){</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">            if(position.x &lt;= targetPosition.x){</span>
 <span class="nc" id="L120">                position.x = targetPosition.x;</span>
             }
         }
-<span class="nc bnc" id="L123" title="All 2 branches missed.">        else if(position.y &lt; targetPosition.y){</span>
-<span class="nc" id="L124">            position.y += (speed);</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        else if(position.y &lt; targetPosition.y){</span>
+<span class="fc" id="L124">            position.y += (speed);</span>
             // Correct the position if the minions new position is over the targetposition
-<span class="nc bnc" id="L126" title="All 2 branches missed.">            if(position.y &gt;= targetPosition.y){</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">            if(position.y &gt;= targetPosition.y){</span>
 <span class="nc" id="L127">                position.y = targetPosition.y;</span>
             }
         }
-<span class="nc bnc" id="L130" title="All 2 branches missed.">        else if(position.y &gt; targetPosition.y){</span>
-<span class="nc" id="L131">            position.y -= (speed);</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        else if(position.y &gt; targetPosition.y){</span>
+<span class="fc" id="L131">            position.y -= (speed);</span>
             // Correct the position if the minions new position is over the targetposition
-<span class="nc bnc" id="L133" title="All 2 branches missed.">            if(position.y &lt;= targetPosition.y){</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">            if(position.y &lt;= targetPosition.y){</span>
 <span class="nc" id="L134">                position.y = targetPosition.y;</span>
             }
         }

@@ -69,7 +69,7 @@ public class MinionTest {
     }
 
     public void testContructor() {
-        
+        Minion minionTest = new Minion(minionTemplate.getMinionType());
     }
     
     /**
@@ -247,5 +247,22 @@ public class MinionTest {
     public void testReceiveDamage() {
         //Can't implement because of callback.
     }
-    
+
+    /**
+     * Test of getHealthInPercentage method, of class Minion.
+     */
+    @Test
+    public void testGetHealthInPercentage() {
+        double iniHealth = minion1.getHealth();
+        minion1.setHealth(1);
+        assertEquals(minion1.getHealthInPercentage(), ((minion1.getHealth() / iniHealth) * 100), 0);
+    }
+
+    /**
+     * Test of getCollision method, of class Minion.
+     */
+    @Test
+    public void testGetCollision() {
+        minion1.getCollision();
+    }
 }
