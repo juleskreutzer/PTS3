@@ -140,31 +140,41 @@ public class GameEngine extends Thread implements MouseListener {
                     @Override
                     public void handle(MouseEvent event) {
                         
-                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
-                        try {
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                             try {
-                                int x = (int)st.getX();
-                                int y = (int)st.getY();
-                                
-                                
-                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
-                                {   
-                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
-                                    graphicsEngine.spawn(defense);
-                                    graphicsEngine.deSpawn(st);
-                                    defense.activate();
-                                }
-                                else
-                                {
-                                    graphicsEngine.showError("You are not allowed to build here.");
-                                }
-                            } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                try {
+                                    int x = (int)st.getX();
+                                    int y = (int)st.getY();
+
+
+                                    if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                    {   
+                                        Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
+                                        graphicsEngine.spawn(defense);
+                                        graphicsEngine.deSpawn(st);
+                                        defense.activate();
+                                    }
+                                    else
+                                    {
+                                        graphicsEngine.showError("You are not allowed to build here.");
+                                    }
+                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (NotEnoughBitcoinsException ex) {
+                                    graphicsEngine.showError(ex.getMessage());
+                                } 
+                            } catch (InvalidModuleEnumException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (NotEnoughBitcoinsException ex) {
-                                graphicsEngine.showError(ex.getMessage());
-                            } 
-                        } catch (InvalidModuleEnumException ex) {
-                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            System.out.println("dd");
+                            try {
+                                graphicsEngine.deSpawn(st);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 });
@@ -211,33 +221,43 @@ public class GameEngine extends Thread implements MouseListener {
 
                     @Override
                     public void handle(MouseEvent event) {
-                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
-                        try {
-                            
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                             try {
-                                int x = (int)st.getX();
-                                int y = (int)st.getY();
-                                
-                                
-                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
-                                {
-                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50));
-                                    graphicsEngine.spawn(defense);
-                                    graphicsEngine.deSpawn(st);
-                                    defense.activate();
-                                }
-                                else{
-                                    graphicsEngine.showError("You are not allowed to build here.");
-                                }
-                            } catch (DuplicateSpawnException | InvalidObjectException ex) {
+
+                                try {
+                                    int x = (int)st.getX();
+                                    int y = (int)st.getY();
+
+
+                                    if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                    {
+                                        Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50));
+                                        graphicsEngine.spawn(defense);
+                                        graphicsEngine.deSpawn(st);
+                                        defense.activate();
+                                    }
+                                    else{
+                                        graphicsEngine.showError("You are not allowed to build here.");
+                                    }
+                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                                } 
+
+
+                            } catch (InvalidModuleEnumException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            } 
-                            
-                            
-                        } catch (InvalidModuleEnumException ex) {
-                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (NotEnoughBitcoinsException ex) {
-                            graphicsEngine.showError(ex.getMessage());
+                            } catch (NotEnoughBitcoinsException ex) {
+                                graphicsEngine.showError(ex.getMessage());
+                            }
+                        } else {
+                            System.out.println("dd");
+                            try {
+                                graphicsEngine.deSpawn(st);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 
@@ -285,35 +305,45 @@ public class GameEngine extends Thread implements MouseListener {
 
                     @Override
                     public void handle(MouseEvent event) {
-                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
-                        try {
-                            
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                             try {
-                                int x = (int)st.getX();
-                                int y = (int)st.getY();
-                                
-                                
-                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
-                                {
-                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50));
-                                    graphicsEngine.spawn(defense);
-                                    graphicsEngine.deSpawn(st);
-                                    defense.activate();
+
+                                try {
+                                    int x = (int)st.getX();
+                                    int y = (int)st.getY();
+
+
+                                    if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                    {
+                                        Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50));
+                                        graphicsEngine.spawn(defense);
+                                        graphicsEngine.deSpawn(st);
+                                        defense.activate();
+                                    }
+                                    else
+                                    {
+                                        graphicsEngine.showError("You are not allowed to build here.");
+                                    }
+                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                                else
-                                {
-                                    graphicsEngine.showError("You are not allowed to build here.");
-                                }
-                            } catch (DuplicateSpawnException | InvalidObjectException ex) {
+
+
+                            } catch (InvalidModuleEnumException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (NotEnoughBitcoinsException ex)
+                            {
+                                graphicsEngine.showError(ex.getMessage());
+                            }
+                        } else {
+                            System.out.println("dd");
+                            try {
+                                graphicsEngine.deSpawn(st);
+                            } catch (InvalidObjectException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            
-                            
-                        } catch (InvalidModuleEnumException ex) {
-                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (NotEnoughBitcoinsException ex)
-                        {
-                            graphicsEngine.showError(ex.getMessage());
                         }
                     }
                 
@@ -361,34 +391,44 @@ public class GameEngine extends Thread implements MouseListener {
 
                     @Override
                     public void handle(MouseEvent event) {
-                        Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
-                        try {
-                            
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
                             try {
-                                int x = (int)st.getX();
-                                int y = (int)st.getY();
-                                
-                                if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
-                                {
-                                    Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50));
-                                    graphicsEngine.spawn(defense);
-                                    graphicsEngine.deSpawn(st);
-                                    defense.activate();
+
+                                try {
+                                    int x = (int)st.getX();
+                                    int y = (int)st.getY();
+
+                                    if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                    {
+                                        Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50));
+                                        graphicsEngine.spawn(defense);
+                                        graphicsEngine.deSpawn(st);
+                                        defense.activate();
+                                    }
+                                    else
+                                    {
+                                        graphicsEngine.showError("You are not allowed to build here.");
+                                    }
+                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                                else
-                                {
-                                    graphicsEngine.showError("You are not allowed to build here.");
-                                }
-                            } catch (DuplicateSpawnException | InvalidObjectException ex) {
+
+
+                            } catch (InvalidModuleEnumException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (NotEnoughBitcoinsException ex)
+                            {
+                                graphicsEngine.showError(ex.getMessage());
+                            }
+                        } else {
+                            System.out.println("dd");
+                            try {
+                                graphicsEngine.deSpawn(st);
+                            } catch (InvalidObjectException ex) {
                                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            
-                            
-                        } catch (InvalidModuleEnumException ex) {
-                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (NotEnoughBitcoinsException ex)
-                        {
-                            graphicsEngine.showError(ex.getMessage());
                         }
                     }
                 
@@ -449,7 +489,7 @@ public class GameEngine extends Thread implements MouseListener {
             @Override
             public void run() {
                 tick();
-                System.out.print("use javaFX thread (gameEngine line 157) (animationTimer)");
+                //System.out.print("use javaFX thread (gameEngine line 157) (animationTimer)");
             }
         }, 0, 15);
         
