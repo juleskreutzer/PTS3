@@ -5,7 +5,6 @@
  */
 package hackattackfx;
 
-import hackattackfx.enums.ModuleName;
 import hackattackfx.exceptions.InvalidDefenseTypeException;
 import hackattackfx.exceptions.InvalidEffectException;
 import hackattackfx.exceptions.InvalidMinionTypeException;
@@ -125,7 +124,7 @@ public class ModuleTest {
     @Test
     public void testGetDisplayName() {
         //This method is not implemented yet.
-        assertEquals(module1.getDisplayName(), "");
+        assertEquals(module1.getDisplayName(), null);
     }
 
     /**
@@ -157,7 +156,7 @@ public class ModuleTest {
      */
     @Test
     public void testGetCost() {
-        assertEquals(module1.getCost(), templateDfBc.getCost());
+        assertEquals(module1.getCost(), templateDfBc.getCost(), 0);
     }
 
     /**
@@ -191,12 +190,12 @@ public class ModuleTest {
      */
     @Test
     public void testGetName() {
-        assertEquals(module1.getModuleName(), "Bottlecap Antivirus");
-        assertEquals(module2.getModuleName(), "Scale Antivirus");
-        assertEquals(module3.getModuleName(), "Sniper Antivirus");
-        assertEquals(module4.getModuleName(), "Muscle Antivirus");
-        assertEquals(bc.getModuleName(), "Bitcoin Miner");
-        assertEquals(si.getModuleName(), "Software Injector");
-        assertEquals(cpu.getModuleName(), "CPU Upgrade");
+        assertEquals(module1.getName(), "Bottlecap Antivirus");
+        assertEquals(module2.getName(), "Scale Antivirus");
+        assertEquals(module3.getName(), "Sniper Antivirus");
+        assertEquals(module4.getName(), "Muscle Antivirus");
+        assertEquals(bc.getName(), "Bitcoin Miner");
+        assertEquals(si.getName(), "Software Injector");
+        assertEquals(cpu.getName(), "CPU Upgrade");
     }
 }

@@ -14,7 +14,9 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Application;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,13 +39,31 @@ public class MinionImageTest {
     MinionTemplate mb;
     MinionTemplate gb;
     MinionTemplate tb;
-    MinionTemplate pb; 
+    MinionTemplate pb;
+    
+       public static class AsNonApp extends Application {
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
     
     public MinionImageTest() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws InterruptedException {
+        // Initialise Java FX
+        System.out.printf("About to launch FX App\n");
+        Thread t = new Thread("JavaFX Init Thread") {
+            public void run() {
+                Application.launch(SpawnTargetImageTest.AsNonApp.class, new String[0]);
+            }
+        };
+        t.setDaemon(true);
+        t.start();
+        System.out.printf("FX App thread started\n");
+        Thread.sleep(500);
     }
     
     @AfterClass

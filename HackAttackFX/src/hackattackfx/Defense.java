@@ -148,7 +148,7 @@ public class Defense extends Module {
                 result = "poison";
                 break;
             case SPLASH:
-                result = "slash";
+                result = "splash";
                 break;
             case DECRYPTED:
                 result = "decryptor";

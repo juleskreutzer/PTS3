@@ -18,6 +18,8 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -43,11 +45,26 @@ public class ModuleImageTest {
     Module module;
     ModuleImage moduleImage;
     
-    public ModuleImageTest() {
-    }
+    public static class AsNonApp extends Application {
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws InterruptedException {
+         // Initialise Java FX
+        System.out.printf("About to launch FX App\n");
+        Thread t = new Thread("JavaFX Init Thread") {
+            public void run() {
+                Application.launch(SpawnTargetImageTest.AsNonApp.class, new String[0]);
+            }
+        };
+        t.setDaemon(true);
+        t.start();
+        System.out.printf("FX App thread started\n");
+        Thread.sleep(500);
+        }
     }
     
     @AfterClass
@@ -74,13 +91,14 @@ public class ModuleImageTest {
     templateDfSn = Data.DEFAULT_MODULE_DEFENSE_SNIPER_1;
     templateDfMu = Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1;
     defense = new Defense(templateDfBc, point1, 50, 50);
-    moduleImage = new ModuleImage(defense); 
+    moduleImage = new ModuleImage(defense);
     }
     
     @After
     public void tearDown() {
     }
 
+    @Test
     public void testContructor() throws InvalidModuleEnumException{
         Defense defense1 = new Defense(templateDfBc, point1, 50, 50);
         Defense defense2 = new Defense(templateDfSc, point1, 50, 50);
@@ -98,11 +116,12 @@ public class ModuleImageTest {
         ModuleImage m6 = new ModuleImage(si);
         ModuleImage m7 = new ModuleImage(cpu);
     }
+
     /**
-     * Test of showRange method, of class ModuleImage.
+     * Test of hovered method, of class ModuleImage.
      */
     @Test
-    public void testShowRange() {
-        assertEquals(moduleImage.showRange(), defense.getRange());
+    public void testHovered() {
+       assertFalse(moduleImage.hovered());
     }
 }
