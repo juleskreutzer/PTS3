@@ -368,6 +368,33 @@ public class GraphicsEngine{
         
     }
     
+    /**
+     * Draws the module of the given {@link ModuleName} and sets the corresponding enabled or disabled image.
+     * @param name
+     * @param enabled 
+     */
+    public void drawBaseModule(ModuleName name, boolean enabled){
+        switch(name){
+            case BITCOIN_MINER:
+                File file;
+                if(enabled){
+                    file = new File("src/hackattackfx/resources/interface/Icons/Base/dark/Bitcoin.png");
+                }else{
+                    file = new File("src/hackattackfx/resources/interface/Icons/Base/light/Bitcoin.png");
+                }
+                ImageView miner = (ImageView)parent.getNode("buildBitcoinMiner",null);
+                Image image = new Image(file.toURI().toString());
+                miner.setImage(image);
+                break;
+            case CPU_UPGRADE:
+                
+                break;
+            case SOFTWARE_INJECTOR:
+                
+                break;
+        }
+    }
+    
     public void drawLabels(int wavenr, String name, double health, double bitcoins){
         Platform.runLater(new Runnable(){
 

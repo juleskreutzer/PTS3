@@ -19,8 +19,8 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -113,7 +113,7 @@ public class GameEngine extends Thread implements MouseListener {
     }
     
     /**
-     * Mostly used to draw the initial components like the bases and roads and event handlers
+     * Mostly used to draw the initial components like the bases, roads and event handlers
      */
     private void preStart(){
         graphicsEngine.drawRoad(map.getRoad());
@@ -449,6 +449,46 @@ public class GameEngine extends Thread implements MouseListener {
             }
         });
         muscleav.setOnMouseExited(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                graphicsEngine.drawModuleStats(null);
+            }
+        });
+        
+        ImageView bitcoinminer = (ImageView)graphicsEngine.getNode("buildBitcoinMiner",null);
+        bitcoinminer.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                Image i = bitcoinminer.getImage();
+                Point p = new Point((int)bitcoinminer.getX(),(int)bitcoinminer.getY());
+                try {
+                    BitcoinMiner miner = new BitcoinMiner(Data.DEFAULT_MODULE_BITCOINMINER_1,p,(int)i.getWidth(),(int)i.getHeight());
+                    playerA.buildBitcoinMiner(miner);
+                    graphicsEngine.drawBaseModule(ModuleName.BITCOIN_MINER, true);
+                    miner.activate();
+                } catch (NotEnoughBitcoinsException ex) {
+                    graphicsEngine.showError("Not enough bitcoins!");
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        });
+        bitcoinminer.setOnMouseEntered(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    BitcoinMiner module = new BitcoinMiner(Data.DEFAULT_MODULE_BITCOINMINER_1,null,0,0);
+                    graphicsEngine.drawModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        bitcoinminer.setOnMouseExited(new EventHandler<MouseEvent>(){
 
             @Override
             public void handle(MouseEvent event) {

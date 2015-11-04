@@ -47,7 +47,6 @@ public class CPUUpgrade extends Module {
         {
            newCPU = Data.DEFAULT_MODULE_CPUUPGRADE_2;
            this.level = newCPU.getLevel();
-           super.setLevel(newCPU.getLevel());
            this.minionBonusMultiplier = newCPU.getMinionBonusMultiplier();
            return true;
         }
@@ -55,7 +54,6 @@ public class CPUUpgrade extends Module {
         {
             newCPU = Data.DEFAULT_MODULE_CPUUPGRADE_3;
             this.level = newCPU.getLevel();
-            super.setLevel(newCPU.getLevel());
             this.minionBonusMultiplier = newCPU.getMinionBonusMultiplier();
             return true;
         }

@@ -110,6 +110,7 @@ public class BitcoinMiner extends Module {
                 
             }
         };
+        GameEngine.getInstance().setOnTickListener(tick);
     }
     
     public void setOnMineListener(OnMineComplete callback) throws DuplicateListenerException
