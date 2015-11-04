@@ -143,6 +143,27 @@ public class MinionTest {
         minion1.move(1);
         Point minionAfterMove = minion1.getPosition();
         assertFalse(minionStart == minionAfterMove);
+        
+       Point pointXBigger = new Point(150, 0);
+       minion1.setPosition(pointXBigger);
+       minionStart = minion1.getPosition();
+       minion1.move(1);
+       minionAfterMove = minion1.getPosition();
+       assertFalse(minionStart == minionAfterMove);
+       
+       Point pointYSmaller = new Point(135, 300);
+       minion1.setPosition(pointYSmaller);
+       minionStart = minion1.getPosition();
+       minion1.move(1);
+       minionAfterMove = minion1.getPosition();
+       assertFalse(minionStart == minionAfterMove);
+       
+       Point pointYBigger = new Point(135, 400);
+       minion1.setPosition(pointYBigger);
+       minionStart = minion1.getPosition();
+       minion1.move(1);
+       minionAfterMove = minion1.getPosition();
+       assertFalse(minionStart == minionAfterMove);
     }
 
     /**
