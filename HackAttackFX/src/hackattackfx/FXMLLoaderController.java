@@ -34,6 +34,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.WindowEvent;
 
@@ -50,16 +51,12 @@ public class FXMLLoaderController implements Initializable {
     
     @FXML
     private Pane pane;
-    
-    @FXML
     private Label errorlabel;
-    
-    @FXML
     private Button playButton;
-    
-    @FXML
+    private Button btnRegister;
     private TextField playerName;
-    
+    private Label lblPassword;
+    private PasswordField txtPassword;
     Data data;
     
     
@@ -113,6 +110,26 @@ public class FXMLLoaderController implements Initializable {
                     }
                     
                 });
+                btnRegister = (Button)node;
+                btnRegister.setOnMouseClicked(new EventHandler(){
+
+                    @Override
+                    public void handle(Event event) {
+                        Parent mainroot;
+                        FXMLLoader registrationLoader = new FXMLLoader();
+                        try{
+                            mainroot = (Parent)registrationLoader.load(getClass().getResource("FXMLRegistration.fxml").openStream());                            
+                            Stage registrationStage = new Stage();
+                            Scene scene = new Scene(mainroot);
+                            registrationStage.setScene(scene);
+                            registrationStage.setTitle("Register your Hack Attack account");
+                            registrationStage.show();
+                        } catch(IOException ex)
+                        {
+                            Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
             }
             if(node instanceof TextField)
             {
@@ -130,6 +147,7 @@ public class FXMLLoaderController implements Initializable {
                     public void update(double value) {
                         progressBar.setProgress(value);
                         if(value >= 0.99){
+                            progressBar.setProgress(1);
                             btnPlayGame.setDisable(false);
                             //Stage stage  = (Stage)pane.getScene().getWindow();
                             //stage.close();

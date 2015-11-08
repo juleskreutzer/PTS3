@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hackattackfx.FXMLRegistrationController">
+   <children>
+      <Label fx:id="lblError" layoutX="179.0" layoutY="89.0" text="Register your own Hack Attack account" />
+      <Label id="label" layoutX="162.0" layoutY="37.0" text="Hack Attack" textFill="#386db2">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
+      <TextField layoutX="300.0" layoutY="147.0" prefHeight="27.0" prefWidth="276.0" />
+      <TextField layoutX="300.0" layoutY="200.0" prefHeight="27.0" prefWidth="276.0" />
+      <TextField layoutX="300.0" layoutY="262.0" prefHeight="27.0" prefWidth="276.0" />
+      <Label layoutX="301.0" layoutY="130.0" text="Username" />
+      <Label layoutX="300.0" layoutY="183.0" text="Email" />
+      <Label layoutX="298.0" layoutY="306.0" text="Password" />
+      <Line endX="176.0" layoutX="400.0" layoutY="296.0" startX="-100.0" />
+      <PasswordField layoutX="298.0" layoutY="323.0" prefHeight="27.0" prefWidth="276.0" />
+      <Label layoutX="298.0" layoutY="361.0" text="Confirm Password" />
+      <PasswordField layoutX="298.0" layoutY="378.0" prefHeight="27.0" prefWidth="276.0" />
+      <Line endX="176.0" layoutX="400.0" layoutY="234.0" startX="-100.0" />
+      <Label layoutX="300.0" layoutY="243.0" text="Display Name" />
+      <Button defaultButton="true" layoutX="298.0" layoutY="422.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="276.0" text="Register" />
+      <Line endX="176.0" layoutX="398.0" layoutY="412.0" startX="-100.0" />
+      <Line endY="325.0" layoutX="284.0" layoutY="131.0" />
+      <TextFlow layoutX="14.0" layoutY="127.0" prefHeight="217.0" prefWidth="253.0" />
+      <Label layoutX="14.0" layoutY="383.0" text="Already have an account?" />
+      <Button defaultButton="true" layoutX="14.0" layoutY="422.0" mnemonicParsing="false" onMouseClicked="#Login" prefHeight="27.0" prefWidth="113.0" text="Login" />
+   </children>
+</AnchorPane>
