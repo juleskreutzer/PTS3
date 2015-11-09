@@ -10,9 +10,11 @@ import hackattackfx.exceptions.InvalidEffectException;
 import hackattackfx.exceptions.InvalidMinionTypeException;
 import hackattackfx.exceptions.InvalidSpellNameException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -126,7 +128,7 @@ public class FXMLLoaderController implements Initializable {
                             registrationStage.show();
                         } catch(IOException ex)
                         {
-                            Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.print(ex.getMessage());
                         }
                     }
                 });
