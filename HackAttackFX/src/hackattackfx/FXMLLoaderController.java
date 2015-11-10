@@ -118,9 +118,10 @@ public class FXMLLoaderController implements Initializable {
                     @Override
                     public void handle(Event event) {
                         Parent mainroot;
-                        FXMLLoader registrationLoader = new FXMLLoader();
+                        
                         try{
-                            mainroot = (Parent)registrationLoader.load(getClass().getResource("FXMLRegistration.fxml").openStream());                            
+                            FXMLLoader registrationLoader = new FXMLLoader(getClass().getResource("FXMLRegistration.fxml"));
+                            mainroot = (Parent)registrationLoader.load();                            
                             Stage registrationStage = new Stage();
                             Scene scene = new Scene(mainroot);
                             registrationStage.setScene(scene);
