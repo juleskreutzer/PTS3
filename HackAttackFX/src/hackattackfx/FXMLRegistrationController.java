@@ -5,36 +5,23 @@
  */
 package hackattackfx;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import hackattackfx.exceptions.*;
+import java.security.Key;
 import javafx.scene.paint.Color;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import org.apache.commons.codec.binary.Base64;
-
+import sun.misc.BASE64Encoder;
+import org.json.*;
 /**
  *
  * @author juleskreutzer
@@ -60,8 +47,8 @@ public class FXMLRegistrationController implements Initializable {
     @FXML 
     private Label errorLabel;
     
-    private static String encryptionKey = "ba278855787efa5173a90c6ac8721e14";
-//    private static String IV = "AAAAAAAAAAAAAAAA";
+    private static final String algorithm = "AES";
+    private static final byte[] keyValue = new byte[] { 'T', 'h', 'e', 'B', 'e', 's', 't', 'S', 'e', 'c', 'r','e', 't', 'K', 'e', 'y' }; 
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -85,26 +72,19 @@ public class FXMLRegistrationController implements Initializable {
      * @param secretKey Key that will be used for encryption
      * @return Returns plaintext encrypted in a byte array
      */
-    private static String symmetricEncrypt(String text, String secretKey) {
-        byte[] raw;
-        String encryptedString;
-        SecretKeySpec skeySpec;
-        byte[] encryptText = text.getBytes();
-        Cipher cipher;
-        try {
-            raw = Base64.decodeBase64(secretKey);
-            skeySpec = new SecretKeySpec(raw, "AES");
-            cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-            encryptedString = Base64.encodeBase64String(cipher.doFinal(encryptText));
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-            return "Error";
-        }
-        
-        return encryptedString;
+    public static String encrypt(String Data) throws Exception {
+        Key key = generateKey();
+        Cipher c = Cipher.getInstance(algorithm);
+        c.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encVal = c.doFinal(Data.getBytes());
+        String encryptedValue = new BASE64Encoder().encode(encVal);
+        return encryptedValue;
     }
+    
+    private static Key generateKey() throws Exception {
+        Key key = new SecretKeySpec(keyValue, algorithm);
+        return key;
+}
     
     public void Register()
     {
@@ -128,7 +108,7 @@ public class FXMLRegistrationController implements Initializable {
             if(!password.equals(passwordConfirm))
                 throw new IncorrectPasswordException("Both passwords do not match.");
             else
-                encryptedPassword = this.symmetricEncrypt(password, encryptionKey);
+                encryptedPassword = this.encrypt(password);
             
             /**
              * At this point, we have all values we need to create a new account.
@@ -136,9 +116,9 @@ public class FXMLRegistrationController implements Initializable {
              * [POST]/register/{username}/{password}/{displayname}/{email}
              */
             
-            System.out.print(encryptedPassword);
-            String url = String.format("https://{0}", "test");
-            System.out.print(url);
+            String url = String.format("https://api.nujules.nl/register/%s/%s/%s/%s", username, encryptedPassword, displayName, email);
+            JSONArray result = Data.sendPost(url);
+            finishRegistration(result);
         } 
         catch(RegistrationFailedException | IncorrectPasswordException ex)
         {
@@ -152,6 +132,40 @@ public class FXMLRegistrationController implements Initializable {
             System.out.print(ex.toString());
         }
         
+    }
+    
+    private void finishRegistration(JSONArray data)
+    {
+        for(int i = 0; i < data.length(); i++)
+        {
+            JSONObject obj = data.getJSONObject(i);
+            
+            String type = "";
+            try{
+                // Something went wrong with the registration.
+                // The Error key contains the error message we need to display.
+                type = obj.getString("Error");
+                errorLabel.setText(type);
+                errorLabel.setTextFill(Color.RED);
+                
+            }
+            catch(Exception ex)
+            {
+                System.out.print(ex.toString());
+            }
+            
+            try{
+                // The registration should be successfull when we arrive at this point.
+                // The Success key contains the message we need to display.
+                type = obj.getString("Success");
+                errorLabel.setText(type);
+                errorLabel.setTextFill(Color.GREEN);
+            }
+            catch(Exception ex)
+            {
+                System.out.print(ex.toString());
+            }
+        }
     }
     
 }
