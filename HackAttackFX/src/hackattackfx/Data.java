@@ -9,12 +9,14 @@ import hackattackfx.templates.*;
 import hackattackfx.enums.*;
 import hackattackfx.exceptions.*;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.HttpsURLConnection;
 import javax.xml.ws.http.HTTPException;
 import org.json.*;
 
@@ -107,12 +109,61 @@ public class Data {
         callback.update(0.99);
     }
     
+    public static JSONArray sendPost(String url) throws IOException, HTTPException
+    {
+        try{
+            URL obj = new URL(url);
+            HttpsURLConnection conn = (HttpsURLConnection)obj.openConnection();
+            
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A");
+            conn.setRequestProperty("X_AUTH_TOKEN", "test");
+            
+            conn.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+		wr.flush();
+		wr.close();
+                
+            int responseCode = conn.getResponseCode();
+            if(responseCode == HttpsURLConnection.HTTP_OK)
+            {
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String inputLine;
+                StringBuilder sb = new StringBuilder();
+                String response;
+
+                while ((inputLine = in.readLine()) != null) {
+                    sb.append(inputLine + "\n");
+                }
+                in.close();
+                response = sb.toString();
+
+                // print result
+                return new JSONArray(response);
+            }
+            else if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED)
+            {
+                throw new HTTPException(responseCode);
+            }
+        }
+        catch(HTTPException ex)
+        {
+            System.out.print("HTTP ERROR: " + ex.getStatusCode());
+            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     private JSONArray sendGet(String url) throws IOException, HTTPException
     {
         try{
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A"); // Do as if you're using Chrome 41 on Windows 7.
+        con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A");
         con.setRequestMethod("GET");
         con.setRequestProperty("X_AUTH_TOKEN", "test"); // API checks access based on x-auth-token header
         

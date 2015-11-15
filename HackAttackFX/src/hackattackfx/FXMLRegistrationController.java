@@ -31,6 +31,9 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import hackattackfx.exceptions.*;
 import javafx.scene.paint.Color;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  *
@@ -51,29 +54,18 @@ public class FXMLRegistrationController implements Initializable {
     @FXML
     private PasswordField txtPasswordConfirm;
     @FXML
-    private TextFlow txtInfoBox;
-    @FXML
     private Button btnRegister;
     @FXML
     private Button btnLogin;
     @FXML 
     private Label errorLabel;
     
-    private String encryptionKey = "HAckATtaCKenCRypTIonKeY!@#%$";
-    private String IV = "AAAAAAAAAAAAAAAA";
+    private static String encryptionKey = "ba278855787efa5173a90c6ac8721e14";
+//    private static String IV = "AAAAAAAAAAAAAAAA";
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<Node> nodes = pane.getChildren();
-        for(Node n : nodes)
-        {
-           if(n instanceof TextFlow)
-           {
-               txtInfoBox = (TextFlow)n;
-               Text text = new Text("Create your own Hack Attack account and start playing. Your username and email will not be visible for other players. Your displayname will be shown ingame");
-               txtInfoBox = new TextFlow(text);
-           }
-        }
+        
     }
     
     /**
@@ -89,23 +81,29 @@ public class FXMLRegistrationController implements Initializable {
     /**
      * Encrypt a value using the ecryptionKey.
      * https://gist.github.com/bricef/2436364
-     * @param plainText Text that will be encrypted
-     * @param encryptionKey Key that will be used for encryption
+     * @param text Text that will be encrypted
+     * @param secretKey Key that will be used for encryption
      * @return Returns plaintext encrypted in a byte array
      */
-    private byte[] encrypt(String plainText, String encryptionKey)
-    {
-        try{
-            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
-            SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
-            return cipher.doFinal(plainText.getBytes("UTF-8"));
-            
-        } catch(NoSuchAlgorithmException | NoSuchProviderException | NoSuchPaddingException | UnsupportedEncodingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException ex)
-        {
-            System.out.print(ex.toString());
+    private static String symmetricEncrypt(String text, String secretKey) {
+        byte[] raw;
+        String encryptedString;
+        SecretKeySpec skeySpec;
+        byte[] encryptText = text.getBytes();
+        Cipher cipher;
+        try {
+            raw = Base64.decodeBase64(secretKey);
+            skeySpec = new SecretKeySpec(raw, "AES");
+            cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+            encryptedString = Base64.encodeBase64String(cipher.doFinal(encryptText));
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            return "Error";
         }
-        return null;
+        
+        return encryptedString;
     }
     
     public void Register()
@@ -116,7 +114,13 @@ public class FXMLRegistrationController implements Initializable {
             String passwordConfirm = txtPasswordConfirm.getText();
             String displayName = txtDisplayName.getText();
             String email = txtEmail.getText();
-            byte[] encryptedPassword;
+            String encryptedPassword;
+            
+            // Check for empty fields
+            if(username.equals("") || password.equals("") || passwordConfirm.equals("") || displayName.equals("") || email.equals(""))
+            {
+                throw new RegistrationFailedException("Please fill in all fields");
+            }
             
             /**
              * Check if password and passwordConfirm are the same, if not, throw an error, else encrypt the password
@@ -124,18 +128,28 @@ public class FXMLRegistrationController implements Initializable {
             if(!password.equals(passwordConfirm))
                 throw new IncorrectPasswordException("Both passwords do not match.");
             else
-                encryptedPassword = this.encrypt(password, encryptionKey);
+                encryptedPassword = this.symmetricEncrypt(password, encryptionKey);
             
-            String pass = new String(encryptedPassword);
+            /**
+             * At this point, we have all values we need to create a new account.
+             * We can construct the URL that we will send to the server. The URL should use the following scheme:
+             * [POST]/register/{username}/{password}/{displayname}/{email}
+             */
+            
+            System.out.print(encryptedPassword);
+            String url = String.format("https://{0}", "test");
+            System.out.print(url);
         } 
-        catch(IncorrectPasswordException ex)
+        catch(RegistrationFailedException | IncorrectPasswordException ex)
         {
             errorLabel.setTextFill(Color.RED);
             errorLabel.setText(ex.getMessage());
         }
         catch(Exception ex)
         {
-            System.out.print(ex.getMessage());
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setText("Something went wrong, please try again");
+            System.out.print(ex.toString());
         }
         
     }
