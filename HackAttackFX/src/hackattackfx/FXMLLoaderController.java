@@ -182,8 +182,6 @@ public class FXMLLoaderController implements Initializable {
         * [POST]/login/{username}/{password}
         */
         String url = String.format("https://api.nujules.nl/login/%s/%s", username, password);
-        System.out.print("Username is: " + username + "\n Password is: " + password);
-        System.out.print(url);
         JSONArray result = Data.sendPost(url);
         
         for(int i = 0; i < result.length(); i++)
