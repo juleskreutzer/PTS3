@@ -1,4 +1,6 @@
 *.class
+HackAttackFX/build/*
+HackAttackFX/dist/*
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
