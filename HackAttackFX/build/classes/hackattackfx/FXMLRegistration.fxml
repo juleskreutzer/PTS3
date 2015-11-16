@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="621.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hackattackfx.FXMLRegistrationController">
    <children>
-      <Label fx:id="errorLabel" layoutX="179.0" layoutY="89.0" text="Register your own Hack Attack account" />
+      <Label fx:id="errorLabel" alignment="CENTER" layoutY="89.0" prefHeight="17.0" prefWidth="621.0" text="Register your own Hack Attack account" textAlignment="CENTER" />
       <Label id="label" layoutX="162.0" layoutY="37.0" text="Hack Attack" textFill="#386db2">
          <font>
             <Font size="48.0" />

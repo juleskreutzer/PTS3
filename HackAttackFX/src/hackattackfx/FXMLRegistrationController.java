@@ -67,9 +67,7 @@ public class FXMLRegistrationController implements Initializable {
     
     /**
      * Encrypt a value using the ecryptionKey.
-     * https://gist.github.com/bricef/2436364
-     * @param text Text that will be encrypted
-     * @param secretKey Key that will be used for encryption
+     * @param Data Text that will be encrypted
      * @return Returns plaintext encrypted in a byte array
      */
     public static String encrypt(String Data) throws Exception {
@@ -84,7 +82,7 @@ public class FXMLRegistrationController implements Initializable {
     private static Key generateKey() throws Exception {
         Key key = new SecretKeySpec(keyValue, algorithm);
         return key;
-}
+    }
     
     public void Register()
     {
@@ -116,6 +114,7 @@ public class FXMLRegistrationController implements Initializable {
              * [POST]/register/{username}/{password}/{displayname}/{email}
              */
             
+            System.out.print(encryptedPassword);
             String url = String.format("https://api.nujules.nl/register/%s/%s/%s/%s", username, encryptedPassword, displayName, email);
             JSONArray result = Data.sendPost(url);
             finishRegistration(result);
