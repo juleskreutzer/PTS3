@@ -31,7 +31,7 @@
     </AnchorPane>
     <AnchorPane id="guiControls" layoutX="0.0" layoutY="597.0" prefHeight="100.0" prefWidth="1366.0" style="-fx-border-color: #e2e2e2;&#10;-fx-border-width: 2 0 0 0;">
       <children>
-        <ImageView id="buildScaleAV" fitHeight="40.0" fitWidth="40.0" layoutX="50.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildScaleAV" fitHeight="40.0" fitWidth="40.0" layoutX="60.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
             <Image url="hackattackfx/resources/interface/module/40x40/scale_module.png" backgroundLoading="false" />
           </image>
@@ -41,12 +41,12 @@
             <Image url="hackattackfx/resources/interface/module/40x40/bottlecap_module.png" backgroundLoading="false" />
           </image>
         </ImageView>
-        <ImageView id="buildMuscleAV" fitHeight="40.0" fitWidth="40.0" layoutX="90.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildMuscleAV" fitHeight="40.0" fitWidth="40.0" layoutX="110.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
             <Image url="hackattackfx/resources/interface/module/40x40/muscle_module.png" backgroundLoading="false" />
           </image>
         </ImageView>
-        <ImageView id="buildSniperAV" fitHeight="40.0" fitWidth="40.0" layoutX="130.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="buildSniperAV" fitHeight="40.0" fitWidth="40.0" layoutX="160.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="hackattackfx/resources/interface/module/40x40/sniper_module.png" backgroundLoading="false" />
           </image>
@@ -63,13 +63,43 @@
             <Label id="lblStatsDamage" layoutX="14.0" layoutY="46.0" text="Damage:" />
           </children>
         </AnchorPane>
+        <ImageView id="buildScaleAV" fitHeight="40.0" fitWidth="40.0" layoutX="816.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+          <image>
+            <Image url="hackattackfx/resources/interface/Spells/40x40/firewall.png" backgroundLoading="true" />
+          </image>
+        </ImageView>
+        <ImageView id="buildMuscleAV" fitHeight="40.0" fitWidth="40.0" layoutX="866.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+          <image>
+            <Image url="hackattackfx/resources/interface/Spells/40x40/lockdown.png" backgroundLoading="true" />
+          </image>
+        </ImageView>
+        <ImageView id="buildSniperAV" fitHeight="40.0" fitWidth="40.0" layoutX="916.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="hackattackfx/resources/interface/Spells/40x40/virusscan.png" backgroundLoading="true" />
+          </image>
+        </ImageView>
+        <ImageView id="buildScaleAV" fitHeight="40.0" fitWidth="40.0" layoutX="816.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+          <image>
+            <Image url="hackattackfx/resources/interface/Spells/40x40/corrupt.png" backgroundLoading="true" />
+          </image>
+        </ImageView>
+        <ImageView id="buildMuscleAV" fitHeight="40.0" fitWidth="40.0" layoutX="866.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+          <image>
+            <Image url="hackattackfx/resources/interface/Spells/40x40/disrupt.png" backgroundLoading="true" />
+          </image>
+        </ImageView>
+        <ImageView id="buildSniperAV" fitHeight="40.0" fitWidth="40.0" layoutX="916.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="hackattackfx/resources/interface/Spells/40x40/encrypt.png" backgroundLoading="true" />
+          </image>
+        </ImageView>
       </children>
     </AnchorPane>
     <AnchorPane id="window" layoutX="0.0" layoutY="70.0" prefHeight="527.0" prefWidth="1366.0" style="-fx-background-image: url(&quot;hackattackfx/resources/Background.png&quot;);">
       <children>
         <ImageView fx:id="buildBitcoinMiner" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="244.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="hackattackfx/resources/interface/Icons/Base/light/Bitcoin.png" backgroundLoading="true" />
+            <Image url="hackattackfx/resources/interface/Icons/Base/light/Bitcoin.png" backgroundLoading="false" />
           </image>
         </ImageView>
       </children>
