@@ -1,8 +1,14 @@
-/Hack Attack/nbproject/private/
-/Opdrachten week 4/nbproject/private/
-/Opdrachten week 4/build/
-/Hack Attack/build/
-/HackAttackFX/nbproject/private/
-/HackAttackFX/build/
-/HackAttackFX/dist/
-/AEXBanner/nbproject/private/
+*.class
+HackAttackFX/build/
+HackAttackFX/dist/
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*

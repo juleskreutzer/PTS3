@@ -9,10 +9,15 @@ import hackattackfx.exceptions.InvalidDefenseTypeException;
 import hackattackfx.exceptions.InvalidEffectException;
 import hackattackfx.exceptions.InvalidMinionTypeException;
 import hackattackfx.exceptions.InvalidSpellNameException;
+import hackattackfx.exceptions.LoginFailedException;
+import java.awt.Color;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.file.Paths;
+import java.security.Key;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,8 +39,13 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.WindowEvent;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import sun.misc.BASE64Encoder;
+import org.json.*;
 
 /**
  * FXML Controller class
@@ -45,23 +55,27 @@ import javafx.stage.WindowEvent;
 public class FXMLLoaderController implements Initializable {
 
     private ProgressBar progressBar;
-    private TextField txtPlayerName;
     private Button btnPlayGame;
     
     @FXML
     private Pane pane;
-    
     @FXML
     private Label errorlabel;
-    
     @FXML
     private Button playButton;
-    
     @FXML
-    private TextField playerName;
+    private Button btnRegister;
+    @FXML
+    private TextField txtPlayerName;
+    @FXML
+    private Label lblPassword;
+    @FXML
+    private PasswordField txtPassword;
     
     Data data;
     
+    private static final String algorithm = "AES";
+    private static final byte[] keyValue = new byte[] { 'T', 'h', 'e', 'B', 'e', 's', 't', 'S', 'e', 'c', 'r','e', 't', 'K', 'e', 'y' }; 
     
     public FXMLLoaderController() throws IOException, InvalidMinionTypeException, InvalidSpellNameException
     {  
@@ -76,47 +90,27 @@ public class FXMLLoaderController implements Initializable {
             }
             if(node instanceof Button)
             {
-                btnPlayGame = (Button)node;
-                btnPlayGame.setOnMouseClicked(new EventHandler(){
+                btnRegister = (Button)node;
+                btnRegister.setOnMouseClicked(new EventHandler(){
 
                     @Override
                     public void handle(Event event) {
-                        if(txtPlayerName.getText().length() > 0){
-                            String name = txtPlayerName.getText();
-                            Stage stage  = (Stage)pane.getScene().getWindow();
-                            stage.close();
-
-                            FXMLLoader gameloader = new FXMLLoader();
-                            Parent mainroot;
-                            try {
-                                Data.playerAName = name;
-                                mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
-                                Stage gamestage = new Stage();
-                                Scene scene = new Scene(mainroot);
-                                gamestage.setScene(scene);
-                                gamestage.setTitle("Hack Attack");
-                                gamestage.show();
-
-                                GameEngine engine = GameEngine.getInstance();
-                                engine.start();
-                                
-                            } catch (IOException ex) {
-                                Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                        else
-                        {
-                            errorlabel.setVisible(true);
-                            errorlabel.setText("Please enter a playername.");
-                        }
+                        Parent mainroot;
                         
+                        try{
+                            FXMLLoader registrationLoader = new FXMLLoader(getClass().getResource("FXMLRegistration.fxml"));
+                            mainroot = (Parent)registrationLoader.load();                            
+                            Stage registrationStage = new Stage();
+                            Scene scene = new Scene(mainroot);
+                            registrationStage.setScene(scene);
+                            registrationStage.setTitle("Register your Hack Attack account");
+                            registrationStage.show();
+                        } catch(IOException ex)
+                        {
+                            System.out.print(ex.getMessage());
+                        }
                     }
-                    
                 });
-            }
-            if(node instanceof TextField)
-            {
-                txtPlayerName = (TextField)node;
             }
         }
     }
@@ -130,7 +124,7 @@ public class FXMLLoaderController implements Initializable {
                     public void update(double value) {
                         progressBar.setProgress(value);
                         if(value >= 0.99){
-                            btnPlayGame.setDisable(false);
+                            progressBar.setProgress(1);
                             //Stage stage  = (Stage)pane.getScene().getWindow();
                             //stage.close();
                         }
@@ -161,4 +155,97 @@ public class FXMLLoaderController implements Initializable {
        }
     }
     
+    /**
+     * Encrypt a value using the ecryptionKey.
+     * @param Data Text that will be encrypted
+     * @return Returns plaintext encrypted in a byte array
+     */
+    public static String encrypt(String Data) throws Exception {
+        Key key = generateKey();
+        Cipher c = Cipher.getInstance(algorithm);
+        c.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encVal = c.doFinal(Data.getBytes());
+        String encryptedValue = new BASE64Encoder().encode(encVal);
+        return encryptedValue;
+    }
+    
+    private static Key generateKey() throws Exception {
+        Key key = new SecretKeySpec(keyValue, algorithm);
+        return key;
+    }
+    
+    private Object[] handleLogin(String username, String password) throws IOException
+    {
+        /**
+        * At this point, we have all values we need so we can verify the data with the server.
+        * We can construct the URL that we will send to the server. The URL should use the following scheme:
+        * [POST]/login/{username}/{password}
+        */
+        String url = String.format("https://api.nujules.nl/login/%s/%s", username, password);
+        JSONArray result = Data.sendPost(url);
+        
+        for(int i = 0; i < result.length(); i++)
+        {
+            JSONObject obj = result.getJSONObject(i);
+            
+            String status = "";
+            try{
+                status = obj.getString("status");
+                if(status.equals("1"))
+                {
+                    int id = obj.getInt("id");
+                    String displayName = obj.getString("displayName");
+                    int score = obj.getInt("score");
+                    String uName = obj.getString("username");
+                    
+                    Object[] array = {id, displayName, score, uName};
+                    return array;
+                }
+                else
+                    throw new LoginFailedException("Username or password is incorrect.");
+            }
+            catch(Exception ex)
+            {
+                errorlabel.setText("Something went wrong.\n" + ex.getMessage());
+                System.out.print(ex.toString());
+            }
+        }
+        return null;
+    }
+    
+    public void playButtonClicked()
+    {
+        String username = txtPlayerName.getText();
+        String password = txtPassword.getText();
+        Stage stage  = (Stage)pane.getScene().getWindow();
+        stage.close();
+
+        FXMLLoader gameloader = new FXMLLoader();
+        Parent mainroot;
+        try {
+            // First we send the username and password to our API to check if it is correct.
+            String encryptedPassword = encrypt(password);
+            Object[] result = handleLogin(username, encryptedPassword);
+            int id = (int)result[0];
+            String displayName = (String)result[1];
+            int score = (int)result[2];
+            String uName = (String)result[3];
+
+            Data.playerAName = displayName;
+            mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
+            Stage gamestage = new Stage();
+            Scene scene = new Scene(mainroot);
+            gamestage.setScene(scene);
+            gamestage.setTitle("Hack Attack");
+            gamestage.show();
+
+            GameEngine engine = GameEngine.getInstance();
+            engine.start();
+
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
