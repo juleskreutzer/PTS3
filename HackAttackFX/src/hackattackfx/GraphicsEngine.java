@@ -8,6 +8,7 @@ package hackattackfx;
 import hackattackfx.enums.ModuleName;
 import java.util.List;
 import hackattackfx.exceptions.*;
+import java.awt.Point;
 import java.io.File;
 import java.util.Iterator;
 import java.util.Timer;
@@ -18,12 +19,19 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
+import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
@@ -86,6 +94,11 @@ public class GraphicsEngine{
         errorImage.setImage(image);
         errorImage.setVisible(false);
         errorLabel.setVisible(false);
+        
+        createEffect(lblCurrentWave);
+        createEffect(lblPlayerName);
+        createEffect(lblPlayerHealth);
+        createEffect(lblPlayerBitcoins);
         
         initialize();
         
@@ -171,6 +184,21 @@ public class GraphicsEngine{
     public void deSpawn(Node n) throws InvalidObjectException{
         if(!parent.getAllNodes().contains(n)){
             throw new InvalidObjectException("The despawned object does not exist");
+        }
+        
+        boolean isMinion = false;
+        Point position;
+        double reward;
+        double damage;
+        if(n instanceof MinionImage)
+        {
+            Minion m = ((MinionImage)n).getMinion();
+            isMinion = true;
+            position = m.getPosition();
+            reward = m.getReward();
+            damage = m.getDamage();
+            
+            drawEffect(isMinion, position, reward, damage);
         }
         parent.removeNode(n);
     }
@@ -409,6 +437,54 @@ public class GraphicsEngine{
         
     }
     
+    public void drawEffect(boolean isMinion, Point position, double reward, double damage)
+    {
+        
+        Platform.runLater(new Runnable(){
+            
+            Label label;
+            
+            @Override
+            public void run() {
+                if(isMinion)
+                {
+                    List<Path> paths = Map.getInstance().getRoad().getPaths();
+                    Path p = paths.get(paths.size() - 1);
+                    
+                    if(p.getEnd().getX() == position.getX() && p.getEnd().getY() == position.getY())
+                    {
+                        // The player has received damage
+                        label = new Label();
+                        label.setLayoutX(position.getX());
+                        label.setLayoutY(position.getY());
+                        label.setTextFill(Color.RED);
+                        label.setText(String.format("- %s HP", damage));
+                        parent.addNode(label);
+                    }else
+                    {
+                        // A minion has been killed
+                        label = new Label();
+                        label.setLayoutX(position.getX());
+                        label.setLayoutY(position.getY());
+                        label.setTextFill(Color.GREEN);
+                        label.setText(String.format("+ %s ฿", reward));
+                        parent.addNode(label);
+                    }
+                Timer timer = new Timer();
+                    
+                timer.scheduleAtFixedRate(new TimerTask(){
+                    @Override
+                        public void run() {
+                            parent.removeNode(label);
+                        }
+                    }, 0 , 5000);
+                    timer.cancel();
+                }
+                
+            }
+        });
+    }
+    
     public void showEndGame(String name)
     {
         Platform.runLater(new Runnable(){
@@ -467,5 +543,20 @@ public class GraphicsEngine{
             }
             
         }, 0 , 5000);
+        
+        timer.cancel();
+    }
+    
+    /**
+     * Create a text effect for the labels.
+     */
+    private void createEffect(Label text)
+    {
+      text.setTextFill(Color.web("#386db2"));
+      text.setBlendMode(BlendMode.HARD_LIGHT);
+      text.setFont(Font.font(java.awt.Font.DIALOG_INPUT, FontWeight.BOLD, 13));
+      final Reflection reflection = new Reflection();
+      reflection.setFraction(1.0);
+      text.setEffect(reflection);
     }
 }
