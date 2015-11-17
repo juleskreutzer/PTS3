@@ -17,6 +17,8 @@ public class Spell {
     private SpellName name;
     private SpellType type;
     private double range;
+    // Duration in milliseconds
+    private int effectDuration;
     private int cooldown;
     private int requiredLevel;
     
@@ -62,5 +64,13 @@ public class Spell {
     
     public SpellType getSpellType(){
         return type;
+    }
+    
+    /**
+     * 
+     * @return Duration in milliseconds 
+     */
+    public int getEffectDuration(){
+        return effectDuration;
     }
 }
