@@ -16,14 +16,16 @@ public class SpellTemplate {
     private SpellType type;
     private int cooldown;
     private int requiredLevel;
+    private int duration;
     
-    public SpellTemplate(SpellName name, double range, SpellType type, int cooldown, int requiredLevel)
+    public SpellTemplate(SpellName name, double range, SpellType type, int cooldown, int requiredLevel, int duration)
     {
         this.name = name;
         this.range = range;
         this.type = type;
         this.cooldown = cooldown;
         this.requiredLevel = requiredLevel;
+        this.duration = duration;
     }
     
     public SpellName getName()
@@ -49,5 +51,10 @@ public class SpellTemplate {
     public int getRequiredLevel()
     {
         return this.requiredLevel;
+    }
+    
+    public int getDuration()
+    {
+        return this.duration;
     }
 }
