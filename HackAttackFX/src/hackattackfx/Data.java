@@ -264,6 +264,7 @@ public class Data {
             int range = obj.getInt("defense_range");
             int requiredLevel = obj.getInt("requiredLevel");
             String typeString = obj.getString("type");
+            int duration = obj.getInt("duration");
             SpellName spellName;
             SpellType type;
             
@@ -280,7 +281,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_CORRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_CORRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel, duration);
                     break;
                 case "Encrypt":
                     spellName = SpellName.ENCRYPT;
@@ -292,7 +293,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_ENCRYPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_ENCRYPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel, duration);
                     break;
                 case "Disrupt":
                     spellName = SpellName.DISRUPT;
@@ -304,7 +305,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_DISRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_DISRUPT = new SpellTemplate(spellName, range, type, cooldown, requiredLevel, duration);
                     break;
                 case "Lock-down":
                     spellName = SpellName.LOCKDOWN;
@@ -316,7 +317,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_LOCKDOWN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_LOCKDOWN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel, duration);
                     break;
                 case "Firewall":
                     spellName = SpellName.FIREWALL;
@@ -328,7 +329,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_FIREWALL = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_FIREWALL = new SpellTemplate(spellName, range, type, cooldown, requiredLevel, duration);
                     break;
                 case "Virus-scan":
                     spellName = SpellName.VIRUSSCAN;
@@ -340,7 +341,7 @@ public class Data {
                     {
                         type = SpellType.DEFENSE;
                     }
-                    DEFAULT_SPELL_VIRUSSCAN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel);
+                    DEFAULT_SPELL_VIRUSSCAN = new SpellTemplate(spellName, range, type, cooldown, requiredLevel, duration);
                     break;
                 default:
                     throw new InvalidSpellNameException();
