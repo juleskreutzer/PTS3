@@ -1,6 +1,8 @@
 package hackattackfx;
 
 import hackattackfx.GameEngine.OnExecuteTick;
+import hackattackfx.MinionEffect.OnEffectExpired;
+
 import hackattackfx.enums.Effect;
 import hackattackfx.templates.MinionTemplate;
 import hackattackfx.enums.MinionType;
@@ -152,6 +154,13 @@ public class Minion implements IMoveable, ITargetable {
                 // minion has reached the end of the path
                 this.health = 0;
                 heartbeat.onMinionDeath(this, true);
+                MinionEffect me = new MinionEffect(new OnEffectExpired(){
+
+                    @Override
+                    public void onExpired() {
+                    }
+                    
+                }, Effect.DIE, this);
             }
         }
         
@@ -270,6 +279,13 @@ public class Minion implements IMoveable, ITargetable {
             if (heartbeat != null) {
                 //System.out.println();
                 heartbeat.onMinionDeath(this, false);
+                MinionEffect me = new MinionEffect(new OnEffectExpired(){
+
+                    @Override
+                    public void onExpired() {
+                    }
+                    
+                }, Effect.REACHED_BASE, this);
             }
         }
     }

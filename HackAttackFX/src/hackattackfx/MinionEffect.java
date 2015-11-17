@@ -27,6 +27,7 @@ public class MinionEffect {
     private Effect type; //The effects type, this will determine the consequences that it inflicts upon a minion.
     
     
+
     public MinionEffect(Effect type, int duration, OnEffectExpired callback)
     {
         this.type = type;
@@ -46,5 +47,5 @@ public class MinionEffect {
     public Effect getEffectType(){
         return type;
     }
-    
+
 }
