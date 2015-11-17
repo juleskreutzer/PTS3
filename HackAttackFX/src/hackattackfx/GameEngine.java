@@ -765,6 +765,7 @@ public class GameEngine extends Thread implements MouseListener {
                         
                     });
                     m.applyEffect(effect);
+                    graphicsEngine.drawEffect(Effect.SLOWED, m);
                 }
                 break;
             case LOCKDOWN:
