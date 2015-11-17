@@ -55,4 +55,8 @@ public class Spell {
     public int getRequiredLevel(){
         return requiredLevel;
     }
+    
+    public double getRange(){
+        return range;
+    }
 }

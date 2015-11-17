@@ -392,8 +392,15 @@ public class GraphicsEngine{
         return rangecircle;
     }
     
-    public void drawSpellRange(Spell spell){
-        
+    public Ellipse drawSpellRange(Spell spell){
+        Ellipse rangecircle = new Ellipse(spell.getRange(),spell.getRange());
+        rangecircle.setStroke(Color.BLUEVIOLET);
+        rangecircle.setStrokeWidth(3);
+        rangecircle.setFill(Color.BLUE);
+        rangecircle.setOpacity(0.7);
+        rangecircle.setId("SpellRange");
+        parent.addNode(rangecircle);
+        return rangecircle;
     }
     
     /**

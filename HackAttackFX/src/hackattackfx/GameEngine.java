@@ -21,6 +21,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Ellipse;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -506,6 +507,49 @@ public class GameEngine extends Thread implements MouseListener {
             }
         
         });
+        
+        ImageView firewall = (ImageView)graphicsEngine.getNode("spellFirewall",null);
+        firewall.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                Spell spell = new Spell(Data.DEFAULT_SPELL_FIREWALL);
+                Ellipse range = graphicsEngine.drawSpellRange(spell);
+                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        range.setCenterX(event.getSceneX());
+                        range.setCenterY(event.getSceneY());
+                    }
+                
+                });
+                range.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    }
+                    
+                });
+            }
+            
+        });
+        
+        ImageView lockdown = (ImageView)graphicsEngine.getNode("spellLockdown",null);
+        
+        
+        ImageView virusscan = (ImageView)graphicsEngine.getNode("spellVirusscan",null);
+        
+        
+        ImageView spellCorrup = (ImageView)graphicsEngine.getNode("spellCorrupt",null);
+        
+        
+        ImageView spellDisrupt = (ImageView)graphicsEngine.getNode("spellDisrupt",null);
+        
+        
+        ImageView spellEncrypt = (ImageView)graphicsEngine.getNode("spellEncrypt",null);
+        
     }
     
     /**
