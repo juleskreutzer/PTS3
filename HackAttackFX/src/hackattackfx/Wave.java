@@ -6,6 +6,8 @@
 package hackattackfx;
 
 import hackattackfx.GameEngine.OnCompleteTick;
+import hackattackfx.MinionEffect.OnEffectExpired;
+import hackattackfx.enums.Effect;
 import hackattackfx.exceptions.DuplicateSpawnException;
 import hackattackfx.exceptions.InvalidObjectException;
 import hackattackfx.exceptions.UnsubscribeNonListenerException;
@@ -120,6 +122,29 @@ public class Wave {
                                 @Override //Override this method, remove the passed minion from the current wave with removeMinion.
                                 public void onMinionDeath(Minion minion, Boolean reachedBase) {
                                     removeMinion(minion, reachedBase);
+                                    
+                                    if(reachedBase)
+                                    {
+                                        MinionEffect effect = new MinionEffect(Effect.REACHED_BASE, 0, new OnEffectExpired(){
+
+                                            @Override
+                                            public void onExpired() {
+                                            }
+                                            
+                                        });
+                                        m.applyEffect(effect);
+                                    }
+                                    else
+                                    {
+                                        MinionEffect effect = new MinionEffect(Effect.DIE, 0, new OnEffectExpired(){
+
+                                            @Override
+                                            public void onExpired() {
+                                            }
+                                            
+                                        });
+                                        m.applyEffect(effect);
+                                    }
                                 }
 
                             });
