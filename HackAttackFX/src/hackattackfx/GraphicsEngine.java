@@ -15,6 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -33,6 +34,7 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 /**
  *
@@ -198,7 +200,7 @@ public class GraphicsEngine{
             reward = m.getReward();
             damage = m.getDamage();
             
-            drawEffect(isMinion, position, reward, damage);
+            //drawEffect(isMinion, position, reward, damage);
         }
         parent.removeNode(n);
     }
@@ -447,31 +449,37 @@ public class GraphicsEngine{
     public void drawEffect(boolean isMinion, Point position, double reward, double damage)
     {
         Label label;
+        
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(3000));
+        
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        fadeOut.setCycleCount(1);
+        fadeOut.setAutoReverse(false);
 
         if(isMinion)
         {
-            List<Path> paths = Map.getInstance().getRoad().getPaths();
-            Path p = paths.get(paths.size() - 1);
-
-            if(p.getEnd().getX() == position.getX() && p.getEnd().getY() == position.getY())
-            {
-                // The player has received damage
-                label = new Label();
-                label.setLayoutX(position.getX());
-                label.setLayoutY(position.getY());
-                label.setTextFill(Color.RED);
-                label.setText(String.format("- %s HP", damage));
-                parent.addNode(label);
-            }else
-            {
-                // A minion has been killed
-                label = new Label();
-                label.setLayoutX(position.getX());
-                label.setLayoutY(position.getY());
-                label.setTextFill(Color.GREEN);
-                label.setText(String.format("+ %s ฿", reward));
-                parent.addNode(label);
-            }
+            // A minion has been killed
+            label = new Label();
+            label.setLayoutX(position.getX());
+            label.setLayoutY(position.getY());
+            label.setTextFill(Color.GREEN);
+            label.setText(String.format("+ %s ฿", reward));
+            parent.addNode(label);
+            fadeOut.setNode(label);
+            fadeOut.playFromStart();
+        }
+        else
+        {
+            // The player has received damage
+            label = new Label();
+            label.setLayoutX(position.getX());
+            label.setLayoutY(position.getY());
+            label.setTextFill(Color.RED);
+            label.setText(String.format("- %s HP", damage));
+            parent.addNode(label);
+            fadeOut.setNode(label);
+            fadeOut.playFromStart();
         }
     }
     

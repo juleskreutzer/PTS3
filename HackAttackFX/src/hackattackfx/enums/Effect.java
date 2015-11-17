@@ -13,6 +13,8 @@ public enum Effect {
     SLOWED,
     POISENED,
     SPLASH,
-    DECRYPTED
+    DECRYPTED,
+    DIE,
+    REACHED_BASE
     
 }

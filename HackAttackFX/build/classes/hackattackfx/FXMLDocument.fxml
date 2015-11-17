@@ -10,7 +10,7 @@
 
 <AnchorPane id="" fx:id="window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" style="" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hackattackfx.FXMLDocumentController">
   <children>
-    <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="70.0" prefWidth="1366.0">
+    <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="70.0" prefWidth="1366.0" style="-fx-background-color: #d9d9d9; -fx-border-color: #e2e2e2; -fx-border-width: 2 0 0 0;">
       <children>
         <ImageView fx:id="errorImage" fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
           <image>
@@ -29,7 +29,7 @@
         </ImageView>
       </children>
     </AnchorPane>
-    <AnchorPane id="guiControls" layoutX="0.0" layoutY="597.0" prefHeight="100.0" prefWidth="1366.0" style="-fx-border-color: #e2e2e2;&#10;-fx-border-width: 2 0 0 0;">
+    <AnchorPane id="guiControls" layoutX="0.0" layoutY="597.0" prefHeight="100.0" prefWidth="1366.0" style="-fx-border-color: #e2e2e2; -fx-border-width: 2 0 0 0; -fx-background-color: #d9d9d9;">
       <children>
         <ImageView id="buildScaleAV" fitHeight="40.0" fitWidth="40.0" layoutX="60.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
