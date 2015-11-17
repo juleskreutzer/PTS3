@@ -444,7 +444,7 @@ public class GraphicsEngine{
         
     }
     
-    public void drawEffect(boolean isMinion, Point position, double reward, double damage)
+    public void drawEffect(Effect effect, Point position, double reward, double damage)
     {
         Label label;
 
