@@ -6,8 +6,8 @@
 package hackattackfx;
 
 import hackattackfx.enums.Effect;
-import java.util.Date;
-import hackattackfx.exceptions.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -22,13 +22,29 @@ public class MinionEffect {
         void onExpired();
     }
     
-    private Date endTime; //The time at which the minions effect will expire.
+    private OnEffectExpired callback;
+    private int duration; //The duration in milliseconds
     private Effect type; //The effects type, this will determine the consequences that it inflicts upon a minion.
     
     
-    public MinionEffect(OnEffectExpired callback)
+    public MinionEffect(Effect type, int duration, OnEffectExpired callback)
     {
+        this.type = type;
+        this.duration = duration;
+        this.callback = callback;
         
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                callback.onExpired();
+            }
+        }, 0, duration);
+    }
+    
+    public Effect getEffectType(){
+        return type;
     }
     
 }

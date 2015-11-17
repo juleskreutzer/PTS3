@@ -1,12 +1,15 @@
 package hackattackfx;
 
 import hackattackfx.GameEngine.OnExecuteTick;
+import hackattackfx.MinionEffect.OnEffectExpired;
+import hackattackfx.enums.Effect;
 import hackattackfx.exceptions.InvalidModuleEnumException;
 import hackattackfx.enums.ModuleName;
 import java.awt.Point;
 import javafx.scene.input.*;
 import java.util.ArrayList;
 import hackattackfx.exceptions.*;
+import hackattackfx.interfaces.ITargetable;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.List;
@@ -508,8 +511,8 @@ public class GameEngine extends Thread implements MouseListener {
         
         });
         
-        ImageView firewall = (ImageView)graphicsEngine.getNode("spellFirewall",null);
-        firewall.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        ImageView spellFirewall = (ImageView)graphicsEngine.getNode("spellFirewall",null);
+        spellFirewall.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
             @Override
             public void handle(MouseEvent event) {
@@ -528,7 +531,13 @@ public class GameEngine extends Thread implements MouseListener {
 
                     @Override
                     public void handle(MouseEvent event) {
-                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                        for(Minion m : currentWave.minionsAsList()){
+                            if(targetInRange(range.getCenterX(), range.getCenterY(), spell.getRange(),m)){
+                                targets.add(m);
+                            }
+                        }
+                        executeSpell(spell, targets);
                     }
                     
                 });
@@ -536,10 +545,10 @@ public class GameEngine extends Thread implements MouseListener {
             
         });
         
-        ImageView lockdown = (ImageView)graphicsEngine.getNode("spellLockdown",null);
+        ImageView spellLockdown = (ImageView)graphicsEngine.getNode("spellLockdown",null);
         
         
-        ImageView virusscan = (ImageView)graphicsEngine.getNode("spellVirusscan",null);
+        ImageView spellVirusscan = (ImageView)graphicsEngine.getNode("spellVirusscan",null);
         
         
         ImageView spellCorrup = (ImageView)graphicsEngine.getNode("spellCorrupt",null);
@@ -740,9 +749,39 @@ public class GameEngine extends Thread implements MouseListener {
     /**
      * Adds the effect of the spell to every targeted minion in the range of this spell.
      * @param spell The spell to perform.
+     * @param targets The targets the spell should execute on.. Most likely minions or defense modules.
      */
-    public void executeSpell(Spell spell){
-        
+    public void executeSpell(Spell spell, ArrayList<ITargetable> targets){
+        switch(spell.getName()){
+            case FIREWALL:
+                for(ITargetable t : targets){
+                    Minion m = (Minion)t;
+                    MinionEffect effect = new MinionEffect(Effect.SLOWED, spell.getRange(), new OnEffectExpired(){
+
+                        @Override
+                        public void onExpired() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+                        
+                    });
+                }
+                break;
+            case LOCKDOWN:
+                
+                break;
+            case VIRUSSCAN: 
+                
+                break;
+            case CORRUPT:
+                
+                break;
+            case DISRUPT: 
+                
+                break;
+            case ENCRYPT:
+                
+                break;
+        }
     }
     
     private void fillLabels(){
@@ -777,6 +816,20 @@ public class GameEngine extends Thread implements MouseListener {
                 }
             }
             return false;
+    }
+    
+    /**
+     * Checks if the given ITargetable is within the range of the module
+     * @param sourcex The x position of the source to measure from
+     * @param sourcey The y position of the source to measure from
+     * @param range The range is the 
+     * @param t An ITargetable object where the position will be checked
+     * @return True if the given ITargetable is in range.
+     */
+    public boolean targetInRange(int sourcex, int sourcey, int range, ITargetable t){
+        //return true if the square root of range is bigger than (minion and tower variables used) -> Delta X^2 + Delta Y^2 (Pythagoras).
+        long distance = (long)Math.sqrt((sourcex-t.getPosition().x)*(sourcex-t.getPosition().x) + (sourcey-t.getPosition().y)*(sourcey-t.getPosition().y));
+        return range >= distance;
     }
     
     public boolean gameRunning(){

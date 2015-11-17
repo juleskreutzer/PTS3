@@ -59,4 +59,8 @@ public class Spell {
     public double getRange(){
         return range;
     }
+    
+    public SpellType getSpellType(){
+        return type;
+    }
 }

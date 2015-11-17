@@ -1,16 +1,16 @@
 package hackattackfx;
 
 import hackattackfx.GameEngine.OnExecuteTick;
+import hackattackfx.enums.Effect;
 import hackattackfx.templates.MinionTemplate;
 import hackattackfx.enums.MinionType;
-import hackattackfx.exceptions.InvalidObjectException;
 import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import hackattackfx.interfaces.IMoveable;
+import hackattackfx.interfaces.ITargetable;
 import java.awt.Point;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.Node;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,7 +22,7 @@ import javafx.scene.Node;
  *
  * @author Jules Kreutzer, Jasper Rouwhorst
  */
-public class Minion implements IMoveable {
+public class Minion implements IMoveable, ITargetable {
 
     public interface MinionHeartbeat{
     //TODO Check if (hp <= 0)
@@ -44,6 +44,7 @@ public class Minion implements IMoveable {
     
     private OnExecuteTick tickListener;
     private MinionHeartbeat heartbeat;
+    private MinionEffect activeEffect;
     
     // Constructor
     /**
@@ -270,6 +271,24 @@ public class Minion implements IMoveable {
                 //System.out.println();
                 heartbeat.onMinionDeath(this, false);
             }
+        }
+    }
+    
+    public void applyEffect(MinionEffect effect){
+        activeEffect = effect;
+        switch(effect.getEffectType()){
+            case SLOWED:
+                
+                break;
+            case POISENED:
+                
+                break;
+            case SPLASH:
+                
+                break;
+            case DECRYPTED: 
+                
+                break;
         }
     }
     

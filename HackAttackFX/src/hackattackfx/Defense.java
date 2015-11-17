@@ -10,6 +10,7 @@ import hackattackfx.enums.DefenseType;
 import hackattackfx.enums.Effect;
 import hackattackfx.enums.ModuleName;
 import hackattackfx.exceptions.*;
+import hackattackfx.interfaces.ITargetable;
 import java.awt.Point;
 import hackattackfx.templates.*;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
  * It fires {@link Bullet } at enemy minions.
  * @author juleskreutzer, Jasper Rouwhorst
  */
-public class Defense extends Module {
+public class Defense extends Module implements ITargetable {
     private double damage;
     private int range;
     // The amount of attacks per second
