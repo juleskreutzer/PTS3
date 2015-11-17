@@ -26,9 +26,17 @@ public class MinionEffect {
     private Effect type; //The effects type, this will determine the consequences that it inflicts upon a minion.
     
     
-    public MinionEffect(OnEffectExpired callback)
+    public MinionEffect(OnEffectExpired callback, Effect type, Minion m)
     {
-        
+        if(type == Effect.DIE)
+        {
+            // 
+            GraphicsEngine.getInstance().drawEffect(false, m.getPosition(), m.getReward(), m.getDamage());
+        }
+        else if(type == Effect.REACHED_BASE)
+        {
+            GraphicsEngine.getInstance().drawEffect(true, m.getPosition(), m.getReward(), m.getDamage());
+        }
     }
     
 }
