@@ -9,6 +9,7 @@ import hackattackfx.enums.Effect;
 import hackattackfx.enums.ModuleName;
 import java.util.List;
 import hackattackfx.exceptions.*;
+import hackattackfx.interfaces.ITargetable;
 import java.awt.Point;
 import java.io.File;
 import java.util.Iterator;
@@ -458,7 +459,7 @@ public class GraphicsEngine{
      * @param reward Used when a minion is killed to show it's reward in bitcoins.
      * @param damage Used when a player is attacked to show the amount of damage the minion did to the player
      */
-    public void drawEffect(Effect effect, Point position, double reward, double damage)
+    public void drawEffect(Effect effect, ITargetable target)
     {
         Label label;
         
@@ -468,130 +469,138 @@ public class GraphicsEngine{
         fadeOut.setCycleCount(1);
         fadeOut.setAutoReverse(false);
         
-        switch(effect)
+        if(target instanceof Minion)
         {
-            case DIE:
-                // A minion has been killed
-                label = new Label();
-                label.setLayoutX(position.getX());
-                label.setLayoutY(position.getY());
-                label.setTextFill(Color.GREEN);
-                label.setText(String.format("+ %s ฿", reward));
-                parent.addNode(label);
-                fadeOut.setNode(label);
-                fadeOut.playFromStart();
+            Minion m = (Minion)target;
+            Point position = m.getPosition();
+            double reward = m.getReward();
+            double damage = m.getDamage();
+            
+            switch(effect)
+            {
+                case DIE:
+                    // A minion has been killed
+                    label = new Label();
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    label.setTextFill(Color.GREEN);
+                    label.setText(String.format("+ %s ฿", reward));
+                    parent.addNode(label);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
 
-                fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
 
-                    @Override
-                    public void handle(ActionEvent event) {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            parent.removeNode(label);
+                        }
+
+
+                    });
+                    break;
+                case REACHED_BASE:
+                    // The player has received damage
+                    label = new Label();
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    label.setTextFill(Color.RED);
+                    label.setText(String.format("- %s HP", damage));
+                    parent.addNode(label);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            parent.removeNode(label);
+                        }
+
+
+                    });
+                    break;
+                case SLOWED:
+                    label = new Label();
+                    label.setText("SLOWED");
+                    label.setTextFill(Color.GREEN);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
                         parent.removeNode(label);
                     }
 
+                    });
 
-                });
-                break;
-            case REACHED_BASE:
-                // The player has received damage
-                label = new Label();
-                label.setLayoutX(position.getX());
-                label.setLayoutY(position.getY());
-                label.setTextFill(Color.RED);
-                label.setText(String.format("- %s HP", damage));
-                parent.addNode(label);
-                fadeOut.setNode(label);
-                fadeOut.playFromStart();
+                    break;
+                case POISENED:
+                    label = new Label();
+                    label.setText("POISENED");
+                    label.setTextFill(Color.RED);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
 
-                fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
 
-                    @Override
-                    public void handle(ActionEvent event) {
+                        @Override
+                        public void handle(ActionEvent event) {
                         parent.removeNode(label);
                     }
 
+                    });
 
-                });
-                break;
-            case SLOWED:
-                label = new Label();
-                label.setText("SLOWED");
-                label.setTextFill(Color.GREEN);
-                label.setLayoutX(position.getX());
-                label.setLayoutY(position.getY());
-                parent.addNode(label);
-                fadeOut.setNode(label);
-                fadeOut.playFromStart();
-                
-                fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+                    break;
+                case SPLASH:
+                    label = new Label();
+                    label.setText("SPLASHED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
 
-                    @Override
-                    public void handle(ActionEvent event) {
-                    parent.removeNode(label);
-                }
-                    
-                });
-                
-                break;
-            case POISENED:
-                label = new Label();
-                label.setText("POISENED");
-                label.setTextFill(Color.RED);
-                label.setLayoutX(position.getX());
-                label.setLayoutY(position.getY());
-                parent.addNode(label);
-                fadeOut.setNode(label);
-                fadeOut.playFromStart();
-                
-                fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
 
-                    @Override
-                    public void handle(ActionEvent event) {
-                    parent.removeNode(label);
-                }
-                    
-                });
-                
-                break;
-            case SPLASH:
-                label = new Label();
-                label.setText("SPLASHED");
-                label.setTextFill(Color.PURPLE);
-                label.setLayoutX(position.getX());
-                label.setLayoutY(position.getY());
-                parent.addNode(label);
-                fadeOut.setNode(label);
-                fadeOut.playFromStart();
-                
-                fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label);
+                    }
 
-                    @Override
-                    public void handle(ActionEvent event) {
-                    parent.removeNode(label);
-                }
-                    
-                });
-                
-                break;
-            case DECRYPTED:
-                label = new Label();
-                label.setText("DECRYPTED");
-                label.setTextFill(Color.PURPLE);
-                label.setLayoutX(position.getX());
-                label.setLayoutY(position.getY());
-                parent.addNode(label);
-                fadeOut.setNode(label);
-                fadeOut.playFromStart();
-                
-                fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+                    });
 
-                    @Override
-                    public void handle(ActionEvent event) {
-                    parent.removeNode(label);
-                }
-                    
-                });
-                
-                break;
+                    break;
+                case DECRYPTED:
+                    label = new Label();
+                    label.setText("DECRYPTED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label);
+                    }
+
+                    });
+
+                    break;
+            }
         }
     }
     
