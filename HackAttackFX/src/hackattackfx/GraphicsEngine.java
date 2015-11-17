@@ -446,50 +446,33 @@ public class GraphicsEngine{
     
     public void drawEffect(boolean isMinion, Point position, double reward, double damage)
     {
-        
-        Platform.runLater(new Runnable(){
-            
-            Label label;
-            
-            @Override
-            public void run() {
-                if(isMinion)
-                {
-                    List<Path> paths = Map.getInstance().getRoad().getPaths();
-                    Path p = paths.get(paths.size() - 1);
-                    
-                    if(p.getEnd().getX() == position.getX() && p.getEnd().getY() == position.getY())
-                    {
-                        // The player has received damage
-                        label = new Label();
-                        label.setLayoutX(position.getX());
-                        label.setLayoutY(position.getY());
-                        label.setTextFill(Color.RED);
-                        label.setText(String.format("- %s HP", damage));
-                        parent.addNode(label);
-                    }else
-                    {
-                        // A minion has been killed
-                        label = new Label();
-                        label.setLayoutX(position.getX());
-                        label.setLayoutY(position.getY());
-                        label.setTextFill(Color.GREEN);
-                        label.setText(String.format("+ %s ฿", reward));
-                        parent.addNode(label);
-                    }
-                Timer timer = new Timer();
-                    
-                timer.scheduleAtFixedRate(new TimerTask(){
-                    @Override
-                        public void run() {
-                            parent.removeNode(label);
-                        }
-                    }, 0 , 5000);
-                    timer.cancel();
-                }
-                
+        Label label;
+
+        if(isMinion)
+        {
+            List<Path> paths = Map.getInstance().getRoad().getPaths();
+            Path p = paths.get(paths.size() - 1);
+
+            if(p.getEnd().getX() == position.getX() && p.getEnd().getY() == position.getY())
+            {
+                // The player has received damage
+                label = new Label();
+                label.setLayoutX(position.getX());
+                label.setLayoutY(position.getY());
+                label.setTextFill(Color.RED);
+                label.setText(String.format("- %s HP", damage));
+                parent.addNode(label);
+            }else
+            {
+                // A minion has been killed
+                label = new Label();
+                label.setLayoutX(position.getX());
+                label.setLayoutY(position.getY());
+                label.setTextFill(Color.GREEN);
+                label.setText(String.format("+ %s ฿", reward));
+                parent.addNode(label);
             }
-        });
+        }
     }
     
     public void showEndGame(String name)
