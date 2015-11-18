@@ -42,7 +42,7 @@ public class MinionEffect {
                 public void run() {
                     callback.onExpired();
                 }
-            }, 0, duration);
+            }, duration);
         }else{
             System.out.println("Duration of spell is smaller then 0");
         }
