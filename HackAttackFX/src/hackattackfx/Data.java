@@ -261,7 +261,7 @@ public class Data {
             
             int cooldown = obj.getInt("cooldown");
             String name = obj.getString("name");
-            int range = obj.getInt("defense_range");
+            double range = obj.getDouble("defense_range");
             int requiredLevel = obj.getInt("requiredLevel");
             String typeString = obj.getString("type");
             int duration = obj.getInt("duration");

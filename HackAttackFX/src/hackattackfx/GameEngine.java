@@ -5,11 +5,14 @@ import hackattackfx.MinionEffect.OnEffectExpired;
 import hackattackfx.enums.Effect;
 import hackattackfx.exceptions.InvalidModuleEnumException;
 import hackattackfx.enums.ModuleName;
+import hackattackfx.enums.SpellName;
+import hackattackfx.enums.SpellType;
 import java.awt.Point;
 import javafx.scene.input.*;
 import java.util.ArrayList;
 import hackattackfx.exceptions.*;
 import hackattackfx.interfaces.ITargetable;
+import hackattackfx.templates.SpellTemplate;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.List;
@@ -828,7 +831,7 @@ public class GameEngine extends Thread implements MouseListener {
      * @param t An ITargetable object where the position will be checked
      * @return True if the given ITargetable is in range.
      */
-    public boolean targetInRange(int sourcex, int sourcey, int range, ITargetable t){
+    public boolean targetInRange(double sourcex, double sourcey, double range, ITargetable t){
         //return true if the square root of range is bigger than (minion and tower variables used) -> Delta X^2 + Delta Y^2 (Pythagoras).
         long distance = (long)Math.sqrt((sourcex-t.getPosition().x)*(sourcex-t.getPosition().x) + (sourcey-t.getPosition().y)*(sourcey-t.getPosition().y));
         return range >= distance;
