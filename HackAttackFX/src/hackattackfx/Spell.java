@@ -32,6 +32,7 @@ public class Spell {
         this.range = template.getRange();
         this.cooldown = template.getCooldown();
         this.requiredLevel = template.getRequiredLevel();
+        this.effectDuration = template.getDuration();
     }
     
     /**
