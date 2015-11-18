@@ -67,6 +67,8 @@ public class GraphicsEngine{
     private Label lblStatsRange;
     private Label lblStatsCosts;
     
+    private Rectangle highlight;
+    
     private ImageView errorImage;
     
     private GraphicsEngine(){
@@ -556,5 +558,21 @@ public class GraphicsEngine{
       final Reflection reflection = new Reflection();
       reflection.setFraction(1.0);
       text.setEffect(reflection);
+    }
+    
+    public void moduleClicked(Module module){
+        //Create a highlight rectangle
+        createHighlight(module);
+        //Update the status fields and update upgrade button
+    }
+    
+    public void createHighlight(Module module){
+        highlight = new Rectangle(module.getPosition().x, module.getPosition().y, module.getHeight(), module.getWidth());
+        highlight.setStroke(Color.BLUE);
+        highlight.setFill(Color.BLUE);
+        highlight.setOpacity(50);
+        highlight.setStrokeWidth(1);
+        highlight.setId("highlight");
+        parent.addNode(highlight);
     }
 }

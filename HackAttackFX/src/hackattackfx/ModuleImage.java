@@ -75,7 +75,14 @@ public class ModuleImage extends ObjectImage {
                     hovered = false;
                     GraphicsEngine.getInstance().drawModuleStats(null);
                 }
-                
+            });
+            this.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                @Override
+                public void handle(MouseEvent event) {
+                    //Highlight selected module
+                    GraphicsEngine.getInstance().moduleClicked((Module)getReference());
+                }
             });
         }
     }
