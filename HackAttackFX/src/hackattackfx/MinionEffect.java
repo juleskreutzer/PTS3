@@ -34,14 +34,18 @@ public class MinionEffect {
         this.duration = duration;
         this.callback = callback;
         
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        if(duration > 0){
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
 
-            @Override
-            public void run() {
-                callback.onExpired();
-            }
-        }, 0, duration);
+                @Override
+                public void run() {
+                    callback.onExpired();
+                }
+            }, 0, duration);
+        }else{
+            System.out.println("Duration of spell is smaller then 0");
+        }
     }
     
     public Effect getEffectType(){
