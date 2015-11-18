@@ -47,5 +47,9 @@ public class MinionEffect {
     public Effect getEffectType(){
         return type;
     }
+    
+    public int getDuration(){
+        return duration;
+    }
 
 }

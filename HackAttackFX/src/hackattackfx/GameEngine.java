@@ -756,14 +756,16 @@ public class GameEngine extends Thread implements MouseListener {
             case FIREWALL:
                 for(ITargetable t : targets){
                     Minion m = (Minion)t;
-                    MinionEffect effect = new MinionEffect(Effect.SLOWED, spell.getRange(), new OnEffectExpired(){
+                    MinionEffect effect = new MinionEffect(Effect.SLOWED, spell.getEffectDuration(), new OnEffectExpired(){
 
                         @Override
                         public void onExpired() {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            m.removeEffect();
                         }
                         
                     });
+                    m.applyEffect(effect);
+                    graphicsEngine.drawEffect(Effect.SLOWED, m);
                 }
                 break;
             case LOCKDOWN:

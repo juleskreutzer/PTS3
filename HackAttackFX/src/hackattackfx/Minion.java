@@ -154,13 +154,6 @@ public class Minion implements IMoveable, ITargetable {
                 // minion has reached the end of the path
                 this.health = 0;
                 heartbeat.onMinionDeath(this, true);
-                MinionEffect me = new MinionEffect(new OnEffectExpired(){
-
-                    @Override
-                    public void onExpired() {
-                    }
-                    
-                }, Effect.DIE, this);
             }
         }
         
@@ -279,13 +272,6 @@ public class Minion implements IMoveable, ITargetable {
             if (heartbeat != null) {
                 //System.out.println();
                 heartbeat.onMinionDeath(this, false);
-                MinionEffect me = new MinionEffect(new OnEffectExpired(){
-
-                    @Override
-                    public void onExpired() {
-                    }
-                    
-                }, Effect.REACHED_BASE, this);
             }
         }
     }
@@ -294,7 +280,7 @@ public class Minion implements IMoveable, ITargetable {
         activeEffect = effect;
         switch(effect.getEffectType()){
             case SLOWED:
-                
+                speed /= 2;
                 break;
             case POISENED:
                 
@@ -305,7 +291,37 @@ public class Minion implements IMoveable, ITargetable {
             case DECRYPTED: 
                 
                 break;
+            case DIE:
+                
+                break;
+            case REACHED_BASE:
+                
+                break;
         }
+    }
+    
+    public void removeEffect(){
+        switch(activeEffect.getEffectType()){
+            case SLOWED:
+                speed *= 2;
+                break;
+            case POISENED:
+                
+                break;
+            case SPLASH:
+                
+                break;
+            case DECRYPTED: 
+                
+                break;
+            case DIE:
+                
+                break;
+            case REACHED_BASE:
+                
+                break;
+        }
+        activeEffect = null;
     }
     
 }
