@@ -39,6 +39,7 @@ public class Minion implements IMoveable, ITargetable {
     private double speed; //The rate at which the minion moves towards the targetPosition.
     private Point.Double position; //The current position of the minion.
     private double damage; //The damage the minion will deal upon reching enemyPlayer.
+    private boolean reachedBase; //Whether this minion reached the enemy base. Should be false initially
     
     private Point targetPosition; // The position this minion is currently moving to. Can change.
     private boolean encrypted; //Is true when the minion is encrypted.
@@ -153,7 +154,8 @@ public class Minion implements IMoveable, ITargetable {
             if (position.x == targetPosition.x && position.y == targetPosition.y) {
                 // minion has reached the end of the path
                 this.health = 0;
-                heartbeat.onMinionDeath(this, true);
+                reachedBase = true;
+                heartbeat.onMinionDeath(this, reachedBase);
             }
         }
         
@@ -252,6 +254,10 @@ public class Minion implements IMoveable, ITargetable {
         this.reward = reward;
     }
     
+    public boolean reachedBase(){
+        return reachedBase;
+    }
+    
     /**
      * Attack the opposite player 
      * @param player the object of the player you want to attack
@@ -277,7 +283,7 @@ public class Minion implements IMoveable, ITargetable {
     }
     
     public void applyEffect(MinionEffect effect){
-        activeEffect = effect;
+        activeEffect = effect.getEffectType() != Effect.DIE && effect.getEffectType() != Effect.REACHED_BASE ? effect : null;
         switch(effect.getEffectType()){
             case SLOWED:
                 speed /= 2;

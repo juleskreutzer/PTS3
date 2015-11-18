@@ -195,19 +195,14 @@ public class GraphicsEngine{
             throw new InvalidObjectException("The despawned object does not exist");
         }
         
-        boolean isMinion = false;
-        Point position;
-        double reward;
-        double damage;
         if(n instanceof MinionImage)
         {
             Minion m = ((MinionImage)n).getMinion();
-            isMinion = true;
-            position = m.getPosition();
-            reward = m.getReward();
-            damage = m.getDamage();
-            
-            //drawEffect(isMinion, position, reward, damage);
+            if(m.reachedBase()){
+                drawEffect(Effect.REACHED_BASE, m);
+            }else{
+                drawEffect(Effect.DIE, m);
+            }
         }
         parent.removeNode(n);
     }
