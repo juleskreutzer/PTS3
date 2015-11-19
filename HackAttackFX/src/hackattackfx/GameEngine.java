@@ -534,13 +534,26 @@ public class GameEngine extends Thread implements MouseListener {
 
                     @Override
                     public void handle(MouseEvent event) {
-                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        for(Minion m : currentWave.minionsAsList()){
-                            if(targetInRange(range.getCenterX(), range.getCenterY(), spell.getRange(),m)){
-                                targets.add(m);
+                        if(event.getButton() == MouseButton.PRIMARY){
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            for(Minion m : currentWave.minionsAsList()){
+                                if(targetInRange(range.getCenterX(), range.getCenterY(), spell.getRange(),m)){
+                                    targets.add(m);
+                                }
+                            }
+                            executeSpell(spell, targets);
+                            try {
+                                graphicsEngine.deSpawn(range);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }else{
+                            try {
+                                graphicsEngine.deSpawn(range);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
-                        executeSpell(spell, targets);
                     }
                     
                 });
@@ -554,7 +567,7 @@ public class GameEngine extends Thread implements MouseListener {
         ImageView spellVirusscan = (ImageView)graphicsEngine.getNode("spellVirusscan",null);
         
         
-        ImageView spellCorrup = (ImageView)graphicsEngine.getNode("spellCorrupt",null);
+        ImageView spellCorrupt = (ImageView)graphicsEngine.getNode("spellCorrupt",null);
         
         
         ImageView spellDisrupt = (ImageView)graphicsEngine.getNode("spellDisrupt",null);
