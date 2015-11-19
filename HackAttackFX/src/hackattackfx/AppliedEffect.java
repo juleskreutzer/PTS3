@@ -13,7 +13,7 @@ import java.util.TimerTask;
  *
  * @author juleskreutzer
  */
-public class MinionEffect {
+public class AppliedEffect {
     
     /**
      * 
@@ -28,7 +28,7 @@ public class MinionEffect {
     
     
 
-    public MinionEffect(Effect type, int duration, OnEffectExpired callback)
+    public AppliedEffect(Effect type, int duration, OnEffectExpired callback)
     {
         this.type = type;
         this.duration = duration;
@@ -45,7 +45,7 @@ public class MinionEffect {
             }, duration);
         }else{
             callback.onExpired();
-            System.out.println("Duration of spell is smaller then 0");
+            System.out.println("Duration of effect is less then 0");
         }
     }
     

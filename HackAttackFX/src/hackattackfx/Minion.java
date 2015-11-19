@@ -1,7 +1,7 @@
 package hackattackfx;
 
 import hackattackfx.GameEngine.OnExecuteTick;
-import hackattackfx.MinionEffect.OnEffectExpired;
+import hackattackfx.AppliedEffect.OnEffectExpired;
 
 import hackattackfx.enums.Effect;
 import hackattackfx.templates.MinionTemplate;
@@ -47,7 +47,7 @@ public class Minion implements IMoveable, ITargetable {
     
     private OnExecuteTick tickListener;
     private MinionHeartbeat heartbeat;
-    private MinionEffect activeEffect;
+    private AppliedEffect activeEffect;
     
     // Constructor
     /**
@@ -282,7 +282,7 @@ public class Minion implements IMoveable, ITargetable {
         }
     }
     
-    public void applyEffect(MinionEffect effect){
+    public void applyEffect(AppliedEffect effect){
         activeEffect = effect.getEffectType() != Effect.DIE && effect.getEffectType() != Effect.REACHED_BASE ? effect : null;
         switch(effect.getEffectType()){
             case SLOWED:

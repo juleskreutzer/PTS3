@@ -1,7 +1,7 @@
 package hackattackfx;
 
 import hackattackfx.GameEngine.OnExecuteTick;
-import hackattackfx.MinionEffect.OnEffectExpired;
+import hackattackfx.AppliedEffect.OnEffectExpired;
 import hackattackfx.enums.Effect;
 import hackattackfx.exceptions.InvalidModuleEnumException;
 import hackattackfx.enums.ModuleName;
@@ -562,9 +562,65 @@ public class GameEngine extends Thread implements MouseListener {
         });
         
         ImageView spellLockdown = (ImageView)graphicsEngine.getNode("spellLockdown",null);
+        spellLockdown.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                
+            }
+        
+        });
         
         
         ImageView spellVirusscan = (ImageView)graphicsEngine.getNode("spellVirusscan",null);
+        spellVirusscan.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                Spell spell = new Spell(Data.DEFAULT_SPELL_VIRUSSCAN);
+                Ellipse range = graphicsEngine.drawSpellRange(spell);
+                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        range.setCenterX(event.getSceneX());
+                        range.setCenterY(event.getSceneY());
+                    }
+                
+                });
+                range.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if(event.getButton() == MouseButton.PRIMARY){
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            for(Module m : playerA.getModules()){
+                                if(m instanceof Defense){
+                                    Defense d = (Defense)m;
+                                    if(targetInRange(range.getCenterX(), range.getCenterY(), spell.getRange(),d)){
+                                        targets.add(d);
+                                    }
+                                }
+                            }
+                            executeSpell(spell, targets);
+                            try {
+                                graphicsEngine.deSpawn(range);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }else{
+                            try {
+                                graphicsEngine.deSpawn(range);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    
+                });
+            }
+            
+        });
         
         
         ImageView spellCorrupt = (ImageView)graphicsEngine.getNode("spellCorrupt",null);
@@ -772,7 +828,7 @@ public class GameEngine extends Thread implements MouseListener {
             case FIREWALL:
                 for(ITargetable t : targets){
                     Minion m = (Minion)t;
-                    MinionEffect effect = new MinionEffect(Effect.SLOWED, spell.getEffectDuration(), new OnEffectExpired(){
+                    AppliedEffect effect = new AppliedEffect(Effect.SLOWED, spell.getEffectDuration(), new OnEffectExpired(){
 
                         @Override
                         public void onExpired() {
@@ -788,7 +844,17 @@ public class GameEngine extends Thread implements MouseListener {
                 
                 break;
             case VIRUSSCAN: 
-                
+                for(ITargetable t : targets){
+                    Defense d = (Defense)t;
+                    AppliedEffect effect = new AppliedEffect(Effect.STATS_INCREASED, spell.getEffectDuration(), new OnEffectExpired(){
+
+                        @Override
+                        public void onExpired() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+                        
+                    });
+                }
                 break;
             case CORRUPT:
                 

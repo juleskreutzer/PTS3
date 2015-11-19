@@ -15,6 +15,7 @@ public enum Effect {
     SPLASH,
     DECRYPTED,
     DIE,
-    REACHED_BASE
+    REACHED_BASE,
+    STATS_INCREASED
     
 }
