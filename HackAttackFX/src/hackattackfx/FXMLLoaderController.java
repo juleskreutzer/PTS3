@@ -88,30 +88,6 @@ public class FXMLLoaderController implements Initializable {
             if(node instanceof ProgressBar){
                 progressBar = (ProgressBar)node;
             }
-            if(node instanceof Button)
-            {
-                btnRegister = (Button)node;
-                btnRegister.setOnMouseClicked(new EventHandler(){
-
-                    @Override
-                    public void handle(Event event) {
-                        Parent mainroot;
-                        
-                        try{
-                            FXMLLoader registrationLoader = new FXMLLoader(getClass().getResource("FXMLRegistration.fxml"));
-                            mainroot = (Parent)registrationLoader.load();                            
-                            Stage registrationStage = new Stage();
-                            Scene scene = new Scene(mainroot);
-                            registrationStage.setScene(scene);
-                            registrationStage.setTitle("Register your Hack Attack account");
-                            registrationStage.show();
-                        } catch(IOException ex)
-                        {
-                            System.out.print(ex.getMessage());
-                        }
-                    }
-                });
-            }
         }
     }
     
@@ -174,7 +150,7 @@ public class FXMLLoaderController implements Initializable {
         return key;
     }
     
-    private Object[] handleLogin(String username, String password) throws IOException
+    private Object[] handleLogin(String username, String password) throws IOException, LoginFailedException
     {
         /**
         * At this point, we have all values we need so we can verify the data with the server.
@@ -189,7 +165,7 @@ public class FXMLLoaderController implements Initializable {
             JSONObject obj = result.getJSONObject(i);
             
             String status = "";
-            try{
+            
                 status = obj.getString("status");
                 if(status.equals("1"))
                 {
@@ -202,13 +178,10 @@ public class FXMLLoaderController implements Initializable {
                     return array;
                 }
                 else
+                {
                     throw new LoginFailedException("Username or password is incorrect.");
-            }
-            catch(Exception ex)
-            {
-                errorlabel.setText("Something went wrong.\n" + ex.getMessage());
-                System.out.print(ex.toString());
-            }
+                }
+            
         }
         return null;
     }
@@ -217,8 +190,6 @@ public class FXMLLoaderController implements Initializable {
     {
         String username = txtPlayerName.getText();
         String password = txtPassword.getText();
-        Stage stage  = (Stage)pane.getScene().getWindow();
-        stage.close();
 
         FXMLLoader gameloader = new FXMLLoader();
         Parent mainroot;
@@ -233,6 +204,8 @@ public class FXMLLoaderController implements Initializable {
 
             Data.playerAName = displayName;
             mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
+            Stage stage  = (Stage)pane.getScene().getWindow();
+            stage.close();
             Stage gamestage = new Stage();
             Scene scene = new Scene(mainroot);
             gamestage.setScene(scene);
@@ -244,8 +217,29 @@ public class FXMLLoaderController implements Initializable {
 
         } catch (IOException ex) {
             Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
+        } catch(LoginFailedException ex) {
+            errorlabel.setText("Username or password is incorrect.");
+            errorlabel.setVisible(true);
+        }
+        catch (Exception ex) {
             Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void registrationButtonClicked()
+    {
+        try{
+                            FXMLLoader registrationLoader = new FXMLLoader(getClass().getResource("FXMLRegistration.fxml"));
+                            Parent mainroot = (Parent)registrationLoader.load();                            
+                            Stage registrationStage = new Stage();
+                            Scene scene = new Scene(mainroot);
+                            registrationStage.setScene(scene);
+                            registrationStage.setTitle("Register your Hack Attack account");
+                            registrationStage.show();
+                        } catch(IOException ex)
+                        {
+                            System.out.print(ex.getMessage());
+                        }
+        
     }
 }
