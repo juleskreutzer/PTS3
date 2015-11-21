@@ -82,6 +82,12 @@ public class Data {
     
     public static String playerAName;
     public static String playerBName;
+    public static int userIDPlayerA;
+    public static int userIDPlayerB;
+    public static String displayNameA;
+    public static String displayNameB;
+    public static int scorePlayerA;
+    public static int scorePlayerB;
     
     /**
      * MODULE TEMPLATES - END
