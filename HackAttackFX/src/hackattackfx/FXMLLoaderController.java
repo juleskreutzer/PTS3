@@ -11,8 +11,11 @@ import hackattackfx.exceptions.InvalidMinionTypeException;
 import hackattackfx.exceptions.InvalidSpellNameException;
 import hackattackfx.exceptions.LoginFailedException;
 import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -186,7 +189,7 @@ public class FXMLLoaderController implements Initializable {
         return null;
     }
     
-    public void playButtonClicked()
+    public void playButtonClicked() throws FileNotFoundException
     {
         String username = txtPlayerName.getText();
         String password = txtPassword.getText();
@@ -202,21 +205,23 @@ public class FXMLLoaderController implements Initializable {
             int score = (int)result[2];
             String uName = (String)result[3];
 
-            Data.playerAName = displayName;
-            mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
+            Data.userIDPlayerA = id;
+            Data.playerAName = username;
+            Data.displayNameA = displayName;
+            Data.scorePlayerA = score;
+            
+            mainroot = (Parent)gameloader.load(getClass().getResource("FXMLLobby.fxml").openStream());
             Stage stage  = (Stage)pane.getScene().getWindow();
             stage.close();
             Stage gamestage = new Stage();
             Scene scene = new Scene(mainroot);
             gamestage.setScene(scene);
-            gamestage.setTitle("Hack Attack");
+            gamestage.setTitle("Hack Attack - Lobby");
             gamestage.show();
-
-            GameEngine engine = GameEngine.getInstance();
-            engine.start();
 
         } catch (IOException ex) {
             Logger.getLogger(FXMLLoaderController.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch(LoginFailedException ex) {
             errorlabel.setText("Username or password is incorrect.");
             errorlabel.setVisible(true);
@@ -229,17 +234,16 @@ public class FXMLLoaderController implements Initializable {
     public void registrationButtonClicked()
     {
         try{
-                            FXMLLoader registrationLoader = new FXMLLoader(getClass().getResource("FXMLRegistration.fxml"));
-                            Parent mainroot = (Parent)registrationLoader.load();                            
-                            Stage registrationStage = new Stage();
-                            Scene scene = new Scene(mainroot);
-                            registrationStage.setScene(scene);
-                            registrationStage.setTitle("Register your Hack Attack account");
-                            registrationStage.show();
-                        } catch(IOException ex)
-                        {
-                            System.out.print(ex.getMessage());
-                        }
-        
+            FXMLLoader registrationLoader = new FXMLLoader(getClass().getResource("FXMLRegistration.fxml"));
+            Parent mainroot = (Parent)registrationLoader.load();                            
+            Stage registrationStage = new Stage();
+            Scene scene = new Scene(mainroot);
+            registrationStage.setScene(scene);
+            registrationStage.setTitle("Register your Hack Attack account");
+            registrationStage.show();
+        } catch(IOException ex)
+        {
+            System.out.print(ex.getMessage());
+        }
     }
 }
