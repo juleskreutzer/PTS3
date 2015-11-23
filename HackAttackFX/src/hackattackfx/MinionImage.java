@@ -7,7 +7,9 @@ package hackattackfx;
 
 import javafx.scene.image.Image;
 import java.io.File;
+import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -19,6 +21,8 @@ public class MinionImage extends ObjectImage {
 
     private Minion minion;
     private Rectangle healthBar;
+    private Module module;
+    private boolean hovered;
     
     public MinionImage(Minion m){
         super(m);
@@ -58,6 +62,37 @@ public class MinionImage extends ObjectImage {
         healthBar.setX(this.getX());
         healthBar.setY(this.getY() + this.getImage().getHeight());
         healthBar.setFill(Color.RED);
+        
+        if(module instanceof Defense){
+            Defense defense = (Defense)module;
+            this.setOnMouseEntered(new EventHandler<MouseEvent>(){
+
+                @Override
+                public void handle(MouseEvent event) {
+                    
+                    hovered = true;
+                    GraphicsEngine.getInstance().drawModuleStats(module);
+                }
+            
+            });
+            this.setOnMouseExited(new EventHandler<MouseEvent>(){
+
+                @Override
+                public void handle(MouseEvent event) {
+                    
+                    hovered = false;
+                    GraphicsEngine.getInstance().drawModuleStats(null);
+                }
+            });
+            this.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                @Override
+                public void handle(MouseEvent event) {
+                    //Highlight selected module
+                    GraphicsEngine.getInstance().moduleClicked((Module)getReference());
+                }
+            });
+        }
         
     }
     
