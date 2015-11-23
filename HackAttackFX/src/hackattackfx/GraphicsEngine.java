@@ -75,6 +75,7 @@ public class GraphicsEngine{
     private Rectangle highlight;
     
     private ImageView errorImage;
+    private ImageView imageViewUpgrade;
     
     private GraphicsEngine(){
         instance = this;
@@ -680,6 +681,7 @@ public class GraphicsEngine{
         //Create a highlight rectangle
         createHighlight(module);
         //Update the status fields and update upgrade button
+        createUpgradeButtons(module);
     }
     
     public void createHighlight(Module module){
@@ -691,5 +693,50 @@ public class GraphicsEngine{
         highlight.setStrokeWidth(1);
         highlight.setId("highlight");
         parent.addNode(highlight);
+    }
+    
+    public void createUpgradeButtons(Module module){
+    parent.removeNode(imageViewUpgrade);
+    imageViewUpgrade = new ImageView();
+    if (module.level < 3) {
+    File file = new File("src/hackattackfx/resources/interface/module/40x40/Upgrade-Module.png");
+    Image image = new Image(file.toURI().toString());
+    imageViewUpgrade.setImage(image);
+    imageViewUpgrade.setId("upgrade");
+    imageViewUpgrade.setX(module.getPosition().x - (module.getWidth()));
+    imageViewUpgrade.setY(module.getPosition().y - (module.getHeight()));
+    parent.addNode(imageViewUpgrade);
+    GameEngine.getInstance().addUpgradeClickEvent(imageViewUpgrade, module);}
+    }
+    
+    public void drawUpgraded(){
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(3000));
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        fadeOut.setCycleCount(1);
+        fadeOut.setAutoReverse(false);
+        Label label = new Label();
+        label.setLayoutX(highlight.getX() - 15);
+        label.setLayoutY(highlight.getY() - 15);
+        label.setTextFill(Color.BLUE);
+        label.setText(String.format("Upgrade complete!"));
+        parent.addNode(label);
+        fadeOut.setNode(label);
+        fadeOut.playFromStart();
+        
+        removeSelected();
+        
+        fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+            @Override
+            public void handle(ActionEvent event) {
+                parent.removeNode(label);
+            }
+        });
+    }
+    
+    public void removeSelected(){
+        parent.removeNode(highlight);
+        parent.removeNode(imageViewUpgrade);
     }
 }

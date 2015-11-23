@@ -127,6 +127,16 @@ public class GameEngine extends Thread implements MouseListener {
         
         // Initialize all GUI buttons
         ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV",null);
+        graphicsEngine.getScene().setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                MouseButton m = event.getButton();
+                if (m != MouseButton.PRIMARY)
+                {
+                    graphicsEngine.removeSelected();
+                }
+            }});
+            
         sniperav.setOnMouseClicked(new EventHandler<MouseEvent>(){
  
             @Override
@@ -821,6 +831,27 @@ public class GameEngine extends Thread implements MouseListener {
                 }
             }
             return false;
+    }
+    
+    /**
+     * This method adds an event that upgrades the given module.
+     * @param imageView
+     * @param module 
+     */
+    public void addUpgradeClickEvent(ImageView imageView, Module module){
+         imageView.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                //Logic to upgrade button
+               Defense def = (Defense) module;
+                try {
+                    def.upgrade();
+                    graphicsEngine.drawUpgraded();
+                } catch (NoUpgradeAllowedException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
     
     /**

@@ -32,7 +32,6 @@ abstract public class Module {
         this.position = position;
         this.moduleName = name;
         this.level = level;
-        
     }
     
     /**
@@ -168,8 +167,7 @@ abstract public class Module {
      * Get the description of the module
      * @return description of the module
      */
-    public String getDescription()
-        {
+    public String getDescription(){
             return this.desc;
-        }
+    }    
 }
