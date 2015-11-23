@@ -683,10 +683,11 @@ public class GraphicsEngine{
     }
     
     public void createHighlight(Module module){
-        highlight = new Rectangle(module.getPosition().x, module.getPosition().y, module.getHeight(), module.getWidth());
+        parent.removeNode(highlight);
+        highlight = new Rectangle(module.getPosition().x - (module.getWidth()/2), module.getPosition().y - (module.getHeight()/2), module.getHeight(), module.getWidth());
         highlight.setStroke(Color.BLUE);
         highlight.setFill(Color.BLUE);
-        highlight.setOpacity(50);
+        highlight.setOpacity(0.50f);
         highlight.setStrokeWidth(1);
         highlight.setId("highlight");
         parent.addNode(highlight);
