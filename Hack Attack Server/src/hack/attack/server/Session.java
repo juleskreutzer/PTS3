@@ -19,28 +19,10 @@ public class Session {
     private Account playerB;
     private GameEngine engine;
     
-    public Session(String key, IClientCreate create, IClientUpdate update, IClientDelete delete)
+    public Session(String key, Object[] interfaces)
     {
         this.sessionKey = key;
         engine = GameEngine.getInstance();
-        
-        if(create == null)
-        {
-            Log log = new Log(LogState.ERROR, "IClientCreate not provided!");
-        }
-        
-        if(update == null)
-        {
-            Log log = new Log(LogState.ERROR, "IClientUpdate not provided!");
-        }
-        
-        if(delete == null)
-        {
-            Log log = new Log(LogState.ERROR, "IClientDelete not provided!");
-        }
-        
-        // Create an object array to send to startGame
-        Object[] interfaces = {create, update, delete};
         
         engine.startGame(interfaces);
         
@@ -49,5 +31,30 @@ public class Session {
     public GameEngine getEngine()
     {
         return engine;
+    }
+    
+    public Account getPlayerA()
+    {
+        return this.playerA;
+    }
+    
+    public void setPlayerA(Account playerA)
+    {
+        this.playerA = playerA;
+    }
+    
+    public Account getPlayerB()
+    {
+        return this.playerB;
+    }
+    
+    public void setPlayerB(Account playerB)
+    {
+        this.playerB = playerB;
+    }
+    
+    public String getSessionKey()
+    {
+        return this.sessionKey;
     }
 }

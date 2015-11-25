@@ -14,11 +14,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.Key;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
 import javax.xml.ws.http.HTTPException;
 import org.json.*;
+import sun.misc.BASE64Encoder;
 
 
 /**
@@ -92,6 +96,11 @@ public class Data {
     /**
      * MODULE TEMPLATES - END
      */
+    
+    // Fields for encryption
+    private static final String algorithm = "AES";
+    private static final byte[] keyValue = new byte[] { 'T', 'h', 'e', 'B', 'e', 's', 't', 'S', 'e', 'c', 'r','e', 't', 'K', 'e', 'y' }; 
+    
     
     private static String urlMinion = "https://api.nujules.nl/minion";
     private static String urlSpell = "https://api.nujules.nl/spell";
@@ -1029,5 +1038,19 @@ public class Data {
             }
         }
         
+    }
+    
+    public static String encrypt(String Data) throws Exception {
+        Key key = generateKey();
+        Cipher c = Cipher.getInstance(algorithm);
+        c.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encVal = c.doFinal(Data.getBytes());
+        String encryptedValue = new BASE64Encoder().encode(encVal);
+        return encryptedValue;
+    }
+    
+    private static Key generateKey() throws Exception {
+        Key key = new SecretKeySpec(keyValue, algorithm);
+        return key;
     }
 }
