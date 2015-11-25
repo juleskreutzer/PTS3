@@ -3,6 +3,7 @@ package hack.attack.server;
 import hack.attack.server.GameEngine.OnExecuteTick;
 import hack.attack.server.MinionEffect.OnEffectExpired;
 import hack.attack.server.enums.Effect;
+import hack.attack.server.enums.LogState;
 import hack.attack.server.exceptions.InvalidModuleEnumException;
 import hack.attack.server.enums.ModuleName;
 import hack.attack.server.enums.SpellName;
@@ -28,6 +29,8 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Ellipse;
+import hack.attack.server.interfaces.*;
+import hack.attack.server.logger.Log;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -85,6 +88,11 @@ public class GameEngine extends Thread implements MouseListener {
     private List<OnCompleteTick> unsubscribedCompleteListeners;
     private List<OnExecuteTick> listeners;
     private List<OnExecuteTick> unsubscribedListeners;
+    
+    // Available interfaces to communicate with client
+    private IClientCreate create;
+    private IClientUpdate update;
+    private IClientDelete delete;
     
     private SpawnTargetImage st = null;
 
@@ -567,7 +575,34 @@ public class GameEngine extends Thread implements MouseListener {
     /**
      * Starts the game. From this point, the initial wave will be created and the game will run from this point on.
      */
-    private void startGame(){
+    public void startGame(Object[] interfaces){
+        try{
+            if(interfaces[0] instanceof IClientCreate)
+            {
+                this.create = (IClientCreate)interfaces[0];
+            }
+            else
+                throw new IncorrectInterfaceProvidedException("First object in array should be IClientCreate!");
+            
+            if(interfaces[1] instanceof IClientUpdate)
+            {
+                this.update = (IClientUpdate)interfaces[1];
+            }
+            else
+                throw new IncorrectInterfaceProvidedException("Second object in array should be IClientUpdate!");
+            
+            if(interfaces[2] instanceof IClientDelete)
+            {
+                this.delete = (IClientDelete)interfaces[2];
+            }
+            else
+                throw new IncorrectInterfaceProvidedException("Third object in array should be ICLientDelete!");
+        }
+        catch (IncorrectInterfaceProvidedException ex)
+        {
+            Log log = new Log(LogState.ERROR, ex.getMessage());
+        }
+        
         gameRunning = true;        
         
         Wave w = generateNextWave();

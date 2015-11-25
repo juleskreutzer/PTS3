@@ -9,6 +9,6 @@ package hack.attack.server.interfaces;
  *
  * @author juleskreutzer
  */
-public interface IClientUpgrade {
+public interface IClientUpdate {
     
 }
