@@ -51,5 +51,5 @@ public interface IServerConnect {
      * @return Returns a hashMap<String, IServerUpdate> The string will be the sessionKey and IServerUpdate will be an interface the client 
      * can use to communicate with the server while in-game
      */
-    public HashMap<String, IServerUpdate> findMatch(Object[] interfaces);
+    public HashMap<String, IServerUpdate> findMatch(Account account, Object[] interfaces);
 }

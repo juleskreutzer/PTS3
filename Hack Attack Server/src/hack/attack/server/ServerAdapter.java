@@ -113,8 +113,73 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     }
 
     @Override
-    public HashMap<String, IServerUpdate> findMatch(Object[] interfaces) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public HashMap<String, IServerUpdate> findMatch(Account account, Object[] interfaces) {
+        int modulo = automaticGameUsers.size() % 2;
+        
+        if(modulo == 1)
+        {
+            // We have enough players to start a automatic game
+            int score = account.getUserScore();
+            Account a = automaticGameUsers.get(0);
+            int aScore = a.getUserScore();
+            int distance = Math.abs(aScore - score);
+            int idx = 0;
+            for(int i = 0; i < automaticGameUsers.size(); i++)
+            {
+                Account tempAccount = (Account) automaticGameUsers.get(i);
+                int tempScore = tempAccount.getUserScore();
+                int cdistance = Math.abs(tempScore - score);
+                if(cdistance < distance){
+                    idx = i;
+                    distance = cdistance;
+                }
+            }
+            
+            Account secondPlayer = (Account) automaticGameUsers.get(idx);
+            for(Session session : sessions)
+            {
+                if(session.getPlayerA().getUsername().equals(secondPlayer.getUsername()))
+                {
+                    session.setPlayerB(account);
+                    HashMap hashMap = new HashMap<>();
+                    hashMap.put(session.getSessionKey(), IServerUpdate.class);
+                    return hashMap;
+                }
+            }
+        }
+        else
+        {
+            // No player(s) are available, create a new session
+            automaticGameUsers.add(account);
+            
+            String key = "";
+            String sessionKey = "";
+            try{
+                Date date = new Date();
+                key = "HackAttackServer" + date.toString();
+                sessionKey = Data.encrypt(key);
+            } catch (Exception ex) {
+                Log log = new Log(LogState.ERROR, ex.getMessage());
+            }
+            
+            if(account == null)
+            {
+                Log log = new Log(LogState.ERROR, "Account object is null");
+            }
+        
+            if(interfaces == null || interfaces.length != 3)
+            {
+                Log log = new Log(LogState.ERROR, "No or not enough interfaces provided!");
+            }
+            
+            Session session = new Session(sessionKey, interfaces);
+            sessions.add(session);
+            
+            HashMap hashMap = new HashMap<>();
+            hashMap.put(session.getSessionKey(), IServerUpdate.class);
+            return hashMap;
+        }
+        return null;
     }
 
     @Override
