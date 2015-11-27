@@ -5,10 +5,9 @@
  */
 package hack.attack.server;
 
-import hack.attack.server.enums.LogState;
-import hack.attack.server.exceptions.NoHostAvailableException;
-import hack.attack.server.interfaces.IServerConnect;
-import hack.attack.server.interfaces.IServerUpdate;
+import hack.attack.server.enums.*;
+import hack.attack.server.exceptions.*;
+import hack.attack.server.interfaces.*;
 import hack.attack.server.logger.Log;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -17,8 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -182,18 +179,283 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
         return null;
     }
 
+    /**
+     * Build a new module for the player that calls the remote method.
+     * 
+     * First we check if the given sessionKey belongs to a session stored on the server.
+     * When the session is not null, we loop over the ModuleName enum of the module to see what type of module it should be.
+     * 
+     * When we know that module, for example, is a bitcoin miner, we check if module is an instance of BitcoinMiner.
+     * 
+     * If all those checks pass, we request the gameEngine from the session, request the player from the gameEngine and than call
+     * the build method for the specific module.
+     * @param sessionKey Unique key to identify the session on the server
+     * @param uID Unique identifier for the user
+     * @param module Module that player would like to build
+     */
     @Override
     public void buildModule(String sessionKey, int uID, Module module) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            Session session = null;
+        
+            for(Session s : sessions)
+            {
+                if(s.getSessionKey().equals(sessionKey))
+                {
+                    session = s;
+                }
+            }
+        
+        
+            if(session == null)
+            {
+                throw new InvalidSessionKeyException("Provided sessionKey not found on server");
+            }
+            
+            // At this point, we have the session that we need. Now we have to check which module the player
+            // would like to build.
+            switch(module.getModuleName())
+            {
+                case BITCOIN_MINER:
+                    if(module instanceof BitcoinMiner)
+                    {
+                        session.getEngine().getPlayer().buildBitcoinMiner((BitcoinMiner) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("provided object is not a BitcoinMiner object");
+                    }
+                    break;
+                case SOFTWARE_INJECTOR:
+                    if(module instanceof SoftwareInjector)
+                    {
+                        session.getEngine().getPlayer().buildSoftwareInjector((SoftwareInjector) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Provided object is not a SoftwareInjector object");
+                    }
+                    break;
+                case CPU_UPGRADE:
+                    if(module instanceof CPUUpgrade)
+                    {
+                        session.getEngine().getPlayer().buildCPUUpgrade((CPUUpgrade) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Provided object is not a CPUUpgrade object");
+                    }
+                    break;
+                case SNIPER_ANTIVIRUS:
+                    if(module instanceof Defense)
+                    {
+                        session.getEngine().getPlayer().buildDefense((Defense) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Provided object is not a Defense object");
+                    }
+                    break;
+                case BOTTLECAP_ANTIVIRUS:
+                    if(module instanceof Defense)
+                    {
+                        session.getEngine().getPlayer().buildDefense((Defense) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Provided object is not a Defense object");
+                    }
+                    break;
+                case SCALE_ANTIVIRUS:
+                    if(module instanceof Defense)
+                    {
+                        session.getEngine().getPlayer().buildDefense((Defense) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Provided object is not a Defense object");
+                    }
+                    break;
+                case MUSCLE_ANTIVIRUS:
+                    if(module instanceof Defense)
+                    {
+                        session.getEngine().getPlayer().buildDefense((Defense) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Provided object is not a Defense object");
+                    }
+                    break;
+                default:
+                    // The given module type is not found
+                    throw new InvalidModuleEnumException("ModuleName not recognized");
+                    
+                
+            }
+        }
+        catch(InvalidSessionKeyException | InvalidModuleEnumException | InvalidObjectException ex)
+        {
+            Log log = new Log(LogState.ERROR, ex.getMessage());
+        }
+        catch(NotEnoughBitcoinsException ex)
+        {
+            Log log = new Log(LogState.WARNING, ex.getMessage());
+        }
     }
 
+    
     @Override
     public void executeSpell(String sessionKey, int uID, Spell spell) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            Session session = null;
+            for(Session s : sessions)
+            {
+                if(s.getSessionKey().equals(sessionKey))
+                {
+                    session = s;
+                }
+            }
+            
+            if(session == null)
+            {
+                throw new InvalidSessionKeyException("The provided sessionKey doesn't belong to any session on the server.");
+            }
+            
+            if(spell == null)
+            {
+                throw new InvalidObjectException("Spell object cannot be null");
+            }
+            
+            switch(spell.getName())
+            {
+                case CORRUPT:
+                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                case ENCRYPT:
+                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                case DISRUPT:
+                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                case FIREWALL:
+                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                case LOCKDOWN:
+                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                case VIRUSSCAN:
+                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                default:
+                    throw new InvalidObjectException("SpellName not recognized.");
+            }
+                
+            
+        }
+        catch(InvalidSessionKeyException | InvalidObjectException ex)
+        {
+            Log log = new Log(LogState.ERROR, ex.getMessage());
+        }
+        catch(IllegalArgumentException ex)
+        {
+            Log log = new Log(LogState.WARNING, ex.getMessage());
+        }
     }
 
     @Override
     public void upgradeModule(String sessionKey, int uID, Module module) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            Session session = null;
+            for(Session s : sessions)
+            {
+                if(s.getSessionKey().equals(sessionKey))
+                {
+                    session = s;
+                }
+            }
+            
+            if(session == null)
+            {
+                throw new InvalidSessionKeyException("Provided session key not found on the server");
+            }
+            
+            switch(module.getModuleName())
+            {
+                case BITCOIN_MINER:
+                    if(module instanceof BitcoinMiner)
+                    {
+                        session.getEngine().getPlayer().upgradeBitcoinMiner((BitcoinMiner) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Gived module is not an instance of BitcoinMiner");
+                    }
+                    break;
+                case CPU_UPGRADE:
+                    if(module instanceof CPUUpgrade)
+                    {
+                        session.getEngine().getPlayer().upgradeCPUUpgrade((CPUUpgrade) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Given module is not an instance of CPUUpgrade");
+                    }
+                    break;
+                case SOFTWARE_INJECTOR:
+                    if(module instanceof SoftwareInjector)
+                    {
+                        session.getEngine().getPlayer().upgradeSoftwareInjector((SoftwareInjector) module);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Given module is not an instance of SoftwareInjector");
+                    }
+                    break;
+                case SNIPER_ANTIVIRUS:
+                    if(module instanceof Defense)
+                    {
+                        session.getEngine().getPlayer().upgradeDefense((Defense) module, null);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Given module is not an instance of Defense");
+                    }
+                    break;
+                case SCALE_ANTIVIRUS:
+                    if(module instanceof Defense)
+                    {
+                        session.getEngine().getPlayer().upgradeDefense((Defense) module, null);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Given module is not an instance of Defense");
+                    }
+                    break;
+                case MUSCLE_ANTIVIRUS:
+                    if(module instanceof Defense)
+                    {
+                        session.getEngine().getPlayer().upgradeDefense((Defense) module, null);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Given module is not an instance of Defense");
+                    }
+                    break;
+                case BOTTLECAP_ANTIVIRUS:
+                    if(module instanceof Defense)
+                    {
+                        session.getEngine().getPlayer().upgradeDefense((Defense) module, null);
+                    }
+                    else
+                    {
+                        throw new InvalidObjectException("Given module is not an instance of Defense");
+                    }
+                    break;
+                default:
+                    throw new InvalidObjectException("ModuleName not recognized");
+            }
+        }
+        catch(InvalidSessionKeyException | InvalidObjectException ex)
+        {
+            Log log = new Log(LogState.ERROR, ex.getMessage());
+        }
+        catch(NotEnoughBitcoinsException | NoUpgradeAllowedException ex)
+        {
+            Log log = new Log(LogState.WARNING, ex.getMessage());
+        }
     }
 }
