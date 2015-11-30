@@ -12,10 +12,13 @@ import hackattackfx.exceptions.DuplicateSpawnException;
 import hackattackfx.exceptions.InvalidObjectException;
 import hackattackfx.exceptions.UnsubscribeNonListenerException;
 import java.awt.Point;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -122,6 +125,9 @@ public class Wave {
                                 @Override //Override this method, remove the passed minion from the current wave with removeMinion.
                                 public void onMinionDeath(Minion minion, Boolean reachedBase) {
                                     removeMinion(minion, reachedBase);
+                                    
+                                    //Plays minionDeathMusic
+                                    SoundEngine.getInstance().playMinionDeath();
                                     
                                     if(reachedBase)
                                     {

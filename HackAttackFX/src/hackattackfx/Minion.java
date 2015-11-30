@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 public class Minion implements IMoveable, ITargetable {
 
     public interface MinionHeartbeat{
-    //TODO Check if (hp <= 0)
         void onMinionDeath(Minion minion, Boolean reachedBase);
     }
     

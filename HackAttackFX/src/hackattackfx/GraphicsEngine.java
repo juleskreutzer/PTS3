@@ -10,6 +10,7 @@ import hackattackfx.enums.ModuleName;
 import java.util.List;
 import hackattackfx.exceptions.*;
 import hackattackfx.interfaces.ITargetable;
+import java.awt.GradientPaint;
 import java.awt.Point;
 import java.io.File;
 import java.util.Iterator;
@@ -806,5 +807,23 @@ public class GraphicsEngine{
                     }
             }
         }
+    }
+    
+    public void drawAttackLine(Defense defense, Minion minion){
+        Line lineGreen = new Line(defense.getPosition().x, defense.getPosition().y, minion.getPosition().x, minion.getPosition().y);
+        
+        lineGreen.setStroke(Color.GREEN);
+        lineGreen.setStrokeLineCap(StrokeLineCap.ROUND);
+        lineGreen.setOpacity(0.5);
+        lineGreen.setStrokeWidth(3);
+        parent.addNode(lineGreen);
+        
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+        parent.removeNode(lineGreen);
+        }
+        },200);
     }
 }
