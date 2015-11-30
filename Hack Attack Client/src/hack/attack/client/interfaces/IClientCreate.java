@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author juleskreutzer
  */
-public interface IClientCreate {
+public interface IClientCreate extends IClient {
     
     /**
      * This method is called by the server and is used to display new modules on the client.

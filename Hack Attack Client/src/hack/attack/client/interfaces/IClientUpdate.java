@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author juleskreutzer
  */
-public interface IClientUpdate {
+public interface IClientUpdate extends IClient {
     
     /**
      * 

@@ -21,13 +21,10 @@ public class Session {
     private Account playerB;
     private GameEngine engine;
     
-    public Session(String key, HashMap<String, Remote> interfaces)
+    public Session(String key, HashMap<String, Remote> interfaces, Account PlayerA)
     {
         this.sessionKey = key;
-        engine = GameEngine.getInstance();
-        
-        engine.startGame(interfaces);
-        
+        this.playerA = PlayerA;
     }
     
     public GameEngine getEngine()
@@ -40,19 +37,14 @@ public class Session {
         return this.playerA;
     }
     
-    public void setPlayerA(Account playerA)
-    {
-        this.playerA = playerA;
-    }
-    
     public Account getPlayerB()
     {
         return this.playerB;
     }
     
-    public void setPlayerB(Account playerB)
+    public void joinSession(Account account, HashMap<String, Remote> interfaces)
     {
-        this.playerB = playerB;
+        this.playerB = account;
     }
     
     public String getSessionKey()

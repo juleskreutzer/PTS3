@@ -27,6 +27,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     private List<Account> customGameUsers;
     private List<Account> automaticGameUsers;
     private List<Session> sessions;
+    private IServerUpdate update;
     
     public ServerAdapter() throws RemoteException
     {
@@ -54,18 +55,16 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             Log log = new Log(LogState.ERROR, "Account object is null");
         }
         
-        if(interfaces == null || interfaces.length != 3)
+        if(interfaces == null || interfaces.size() != 3)
         {
             Log log = new Log(LogState.ERROR, "No or not enough interfaces provided!");
         }
         
-        Session session = new Session(sessionKey, interfaces);
-        session.setPlayerA(account);
+        Session session = new Session(sessionKey, interfaces, account);
         sessions.add(session);
         
         
         HashMap hashMap = new HashMap<>();
-        
         hashMap.put(sessionKey, IServerUpdate.class);
         
         return hashMap;
@@ -95,7 +94,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             {
                 if(s.getPlayerA().getUsername().equals(targetUsername))
                 {
-                    s.setPlayerB(account);
+                    s.joinSession(account, interfaces);
                     HashMap hashMap = new HashMap<>();
         
                     hashMap.put(s.getSessionKey(), IServerUpdate.class);
@@ -138,7 +137,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             {
                 if(session.getPlayerA().getUsername().equals(secondPlayer.getUsername()))
                 {
-                    session.setPlayerB(account);
+                    session.joinSession(account, interfaces);
                     HashMap hashMap = new HashMap<>();
                     hashMap.put(session.getSessionKey(), IServerUpdate.class);
                     return hashMap;
@@ -165,12 +164,12 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 Log log = new Log(LogState.ERROR, "Account object is null");
             }
         
-            if(interfaces == null || interfaces.length != 3)
+            if(interfaces == null || interfaces.size() != 3)
             {
                 Log log = new Log(LogState.ERROR, "No or not enough interfaces provided!");
             }
             
-            Session session = new Session(sessionKey, interfaces);
+            Session session = new Session(sessionKey, interfaces, account);
             sessions.add(session);
             
             HashMap hashMap = new HashMap<>();

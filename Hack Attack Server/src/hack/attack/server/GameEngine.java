@@ -31,6 +31,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Ellipse;
 import hack.attack.server.interfaces.*;
 import hack.attack.server.logger.Log;
+import java.rmi.Remote;
+import java.util.HashMap;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -80,6 +82,10 @@ public class GameEngine extends Thread implements MouseListener {
     private String playerAName;
     private String playerBName;
     
+    // Available interfaces to communicate with client
+    private HashMap<String, IClient> interfacesA;
+    private HashMap<String, IClient> interfacesB;
+    
     private boolean gameRunning;
     private Spell selectedSpell;
     private Module selectedModule;
@@ -89,24 +95,16 @@ public class GameEngine extends Thread implements MouseListener {
     private List<OnExecuteTick> listeners;
     private List<OnExecuteTick> unsubscribedListeners;
     
-    // Available interfaces to communicate with client
-    private IClientCreate create;
-    private IClientUpdate update;
-    private IClientDelete delete;
-    
     private SpawnTargetImage st = null;
 
-    private GameEngine(){
-        instance = this;
-        
-        initialize();
+    public GameEngine(Session session, HashMap<String, IClient> interfacesA, HashMap<String, IClient> interfacesB)
+    {
+        this.interfacesA = interfacesA;
+        this.interfacesB = interfacesB;
+        initialize(session.getPlayerA().getDisplayName(), session.getPlayerB().getDisplayName());
     }
     
-    public static GameEngine getInstance(){
-        return instance == null ? new GameEngine() : instance;
-    }
-    
-    private void initialize(){
+    private void initialize(String playerNameA, String playerNameB){
         // This makes a daemon thread of the gameengine. This means that this thread will not prevent the JVM from shutting down. 
         // This is implemented due previous bugs that kept the gameengine thread running while the game was closed.
         setDaemon(true);
@@ -118,8 +116,8 @@ public class GameEngine extends Thread implements MouseListener {
         listeners = new ArrayList<>();
         unsubscribedListeners = new ArrayList<>();
         waveList = new ArrayList<>();
-        playerA = new Player(100, Data.playerAName, 100, new Point(0,50));
-        playerB = new Player(100, Data.playerBName, 100, new Point(100,50));
+        playerA = new Player(100, playerNameA, 100, new Point(0,50));
+        playerB = new Player(100, playerNameB, 100, new Point(100,50));
         gameRunning = false;
         waveNumber = 0;
         lastWaveStart = GameTime.getElapsedTime();

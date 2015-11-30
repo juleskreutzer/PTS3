@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.server.interfaces;
+package hack.attack.client.interfaces;
 
 /**
  *
  * @author juleskreutzer
  */
-public interface IClientCreate extends IClient {
+public interface IClient {
     
 }

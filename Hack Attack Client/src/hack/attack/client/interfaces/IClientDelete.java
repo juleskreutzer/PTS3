@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author juleskreutzer
  */
-public interface IClientDelete {
+public interface IClientDelete extends IClient {
     
     /**
      * The server will call this method to delete modules a client has drawn.
