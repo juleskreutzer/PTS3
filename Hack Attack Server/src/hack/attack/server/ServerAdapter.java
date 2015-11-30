@@ -9,14 +9,21 @@ import hack.attack.server.enums.*;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.interfaces.*;
 import hack.attack.server.logger.Log;
+import java.lang.reflect.AccessibleObject;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,13 +34,13 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     private List<Account> customGameUsers;
     private List<Account> automaticGameUsers;
     private List<Session> sessions;
-    private IServerUpdate update;
     
     public ServerAdapter() throws RemoteException
     {
         customGameUsers = new ArrayList<>();
         automaticGameUsers = new ArrayList<>();
         sessions = new ArrayList<>();
+            
     }
 
     @Override

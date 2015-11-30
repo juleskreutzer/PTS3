@@ -13,7 +13,7 @@ import java.util.HashMap;
  *
  * @author juleskreutzer
  */
-public interface IServerConnect {
+public interface IServerConnect extends Remote {
     
     /**
      * When a user wants to host a custom match, this interface method will be called. 

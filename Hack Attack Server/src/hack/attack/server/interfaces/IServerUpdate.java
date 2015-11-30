@@ -6,12 +6,13 @@
 package hack.attack.server.interfaces;
 
 import hack.attack.server.*;
+import java.rmi.Remote;
 
 /**
  *
  * @author juleskreutzer
  */
-public interface IServerUpdate {
+public interface IServerUpdate extends Remote {
     
     /**
      * The client can call this method to create a new module.
