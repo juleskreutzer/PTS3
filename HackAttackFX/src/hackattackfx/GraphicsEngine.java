@@ -787,4 +787,24 @@ public class GraphicsEngine{
         parent.removeNode(imageViewUpgrade);
         parent.removeNode(imageViewSell);
     }
+    
+    public void removeModule(Module mod){
+        ObservableList<Node> nodeListOb = this.getNodes();
+        for(Node nod: nodeListOb)
+        {
+            if(nod instanceof ObjectImage)
+            {
+                ObjectImage ob = (ObjectImage) nod;
+                
+                    if(ob.getReference() == mod)
+                    {
+                    try {
+                        this.deSpawn(nod);
+                    } catch (InvalidObjectException ex) {
+                        Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    }
+            }
+        }
+    }
 }

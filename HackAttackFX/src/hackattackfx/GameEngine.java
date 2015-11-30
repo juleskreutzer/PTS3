@@ -860,8 +860,16 @@ public class GameEngine extends Thread implements MouseListener {
             public void handle(MouseEvent event) {
                 //Logic to upgrade button
                Defense def = (Defense) module;
-               playerA.addBitcoins(module.getCost() * (3/4));
-               //Implement logic
+               
+               //Deactivate module
+               def.deactivate();
+               //Add bitcoins
+               playerA.addBitcoins(module.getCost() * (0.75));
+               //Remove module from players list
+               playerA.removeModule(module);
+               //Remove module from screen
+               graphicsEngine.removeModule(module);
+               //Show that the module is sold
                graphicsEngine.drawSold();
             }
         });
