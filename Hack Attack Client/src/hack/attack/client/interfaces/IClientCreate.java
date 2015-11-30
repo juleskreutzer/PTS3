@@ -14,10 +14,40 @@ import java.util.List;
  */
 public interface IClientCreate {
     
+    /**
+     * This method is called by the server and is used to display new modules on the client.
+     * 
+     * When the client sends a request to the server to build a module, the server will create it and will call this method
+     * to notify the client to draw the new modules.
+     * 
+     * When implementing this method on the client, we don't have to check if the player can build a module, because this has already
+     * been done by the server.
+     * 
+     * The server should only call this method when the module-list isn't null, but for some extra safety we could check
+     * the module list on the server to see if it is null.
+     * @param modules List of modules the client needs to draw
+     */
     public void drawNewModules(List<Module> modules);
     
+    /**
+     * This method is called by the server and is used to display new minions on the client.
+     * 
+     * When the server generates a new wave of minions, this method will be called to draw the minions on the client.
+     * 
+     * The server shouldn't call this method when the list of minions is null, but we can check it for our client safety.
+     * @param minions List of minions the client needs to draw
+     */
     public void drawNewMinions(List<Minion> minions);
     
+    /**
+     * This method is called by the server and is used to display the spells a player has executed on the client.
+     * 
+     * When a player wants to cast a spell, a request is send to the server. We don't have to check if it is possible for 
+     * a player to cast a spell, because that will be done on the server.
+     * 
+     * The server shouldn't call this method when the spell-list is null, but we can check if the list is null for our client safety.
+     * @param spells List of spells the client needs to draw
+     */
     public void drawNewSpells(List<Spell> spells);
     
 }
