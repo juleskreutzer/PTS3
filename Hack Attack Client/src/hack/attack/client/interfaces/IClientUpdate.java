@@ -14,11 +14,40 @@ import java.util.List;
  */
 public interface IClientUpdate {
     
+    /**
+     * 
+     * @param modules 
+     */
     public void redrawCurrentModules(List<Module> modules);
     
+    /**
+     * 
+     * @param minions 
+     */
     public void redrawCurrentMinions(List<Minion> minions);
     
+    /**
+     * 
+     * @param minions 
+     */
     public void redrawCurrentSpells(List<Spell> minions);
     
-    public void updateLabels(Player playerA, Player playerB);
+    /**
+     * This method should be called when an event occurs at the server that has influence on the player's health or bitcoins.
+     * 
+     * This method is used to update the labels in the top of the screen on the client. These labels are:
+     * <ul>
+     *  <li>Wave number</li>
+     *  <li>Player name</li>
+     *  <li>Player health</li>
+     *  <li>Player bitcoins amount</li>
+     * </ul>
+     * 
+     * The wave number is the same for both players, so we send that only once. For the other labels, we send a player object so we can
+     * update each player instance and update the labels from these instances.
+     * @param playerA Instance of player class with fields like displayname, health, bitcoins
+     * @param playerB Instance of player class with fields like displayname, health, bitcoins
+     * @param waveNumber Number indicating the current wave
+     */
+    public void updateLabels(Player playerA, Player playerB, int waveNumber);
 }
