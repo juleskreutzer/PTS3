@@ -80,7 +80,7 @@ public class ModuleImage extends ObjectImage {
 
                 @Override
                 public void handle(MouseEvent event) {
-                    //Highlight selected module
+                    //The module is clicked.
                     GraphicsEngine.getInstance().moduleClicked((Module)getReference());
                 }
             });

@@ -76,6 +76,7 @@ public class GraphicsEngine{
     
     private ImageView errorImage;
     private ImageView imageViewUpgrade;
+    private ImageView imageViewSell;
     
     private GraphicsEngine(){
         instance = this;
@@ -680,8 +681,12 @@ public class GraphicsEngine{
     public void moduleClicked(Module module){
         //Create a highlight rectangle
         createHighlight(module);
-        //Update the status fields and update upgrade button
-        createUpgradeButtons(module);
+        try {
+            //Update the status fields and update upgrade button
+            createUpgradeButtons(module);
+        } catch (InvalidObjectException ex) {
+            Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void createHighlight(Module module){
@@ -695,18 +700,32 @@ public class GraphicsEngine{
         parent.addNode(highlight);
     }
     
-    public void createUpgradeButtons(Module module){
-    parent.removeNode(imageViewUpgrade);
-    imageViewUpgrade = new ImageView();
-    if (module.level < 3) {
-    File file = new File("src/hackattackfx/resources/interface/module/40x40/Upgrade-Module.png");
-    Image image = new Image(file.toURI().toString());
-    imageViewUpgrade.setImage(image);
-    imageViewUpgrade.setId("upgrade");
-    imageViewUpgrade.setX(module.getPosition().x - (module.getWidth()));
-    imageViewUpgrade.setY(module.getPosition().y - (module.getHeight()));
-    parent.addNode(imageViewUpgrade);
-    GameEngine.getInstance().addUpgradeClickEvent(imageViewUpgrade, module);}
+    public void createUpgradeButtons(Module module) throws InvalidObjectException{
+        parent.removeNode(imageViewUpgrade);
+        parent.removeNode(imageViewSell);
+
+        imageViewUpgrade = new ImageView();
+        imageViewSell = new ImageView();
+
+        if (module.level < 3) {
+        File file = new File("src/hackattackfx/resources/interface/module/40x40/Upgrade-Module.png");
+        Image image = new Image(file.toURI().toString());
+        imageViewUpgrade.setImage(image);
+        imageViewUpgrade.setId("upgrade");
+        imageViewUpgrade.setX(module.getPosition().x - (module.getWidth()));
+        imageViewUpgrade.setY(module.getPosition().y - (module.getHeight()));
+        parent.addNode(imageViewUpgrade);
+        GameEngine.getInstance().addUpgradeClickEvent(imageViewUpgrade, module);
+        }
+
+        File file2 = new File("src/hackattackfx/resources/interface/module/40x40/Sell-Module.png");
+        Image imageSell = new Image(file2.toURI().toString());
+        imageViewSell.setImage(imageSell);
+        imageViewSell.setId("sell");
+        imageViewSell.setX(module.getPosition().x - (module.getWidth()));
+        imageViewSell.setY(module.getPosition().y - (module.getHeight()) + 40);
+        parent.addNode(imageViewSell);
+        GameEngine.getInstance().addSellClickEvent(imageViewSell, module);
     }
     
     public void drawUpgraded(){
@@ -735,8 +754,37 @@ public class GraphicsEngine{
         });
     }
     
+    public void drawSold(){
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(3000));
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        fadeOut.setCycleCount(1);
+        fadeOut.setAutoReverse(false);
+        Label label = new Label();
+        label.setLayoutX(highlight.getX() - 15);
+        label.setLayoutY(highlight.getY() - 15);
+        label.setTextFill(Color.BLUE);
+        label.setText(String.format("Module sold!"));
+        parent.addNode(label);
+        fadeOut.setNode(label);
+        fadeOut.playFromStart();
+        
+        removeSelected();
+        
+        
+        
+        fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+            @Override
+            public void handle(ActionEvent event) {
+                parent.removeNode(label);
+            }
+        });
+    }
+    
     public void removeSelected(){
         parent.removeNode(highlight);
         parent.removeNode(imageViewUpgrade);
+        parent.removeNode(imageViewSell);
     }
 }

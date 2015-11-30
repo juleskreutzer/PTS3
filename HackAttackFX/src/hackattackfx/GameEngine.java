@@ -854,6 +854,19 @@ public class GameEngine extends Thread implements MouseListener {
         });
     }
     
+    public void addSellClickEvent(ImageView imageView, Module module){
+         imageView.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                //Logic to upgrade button
+               Defense def = (Defense) module;
+               playerA.addBitcoins(module.getCost() * (3/4));
+               //Implement logic
+               graphicsEngine.drawSold();
+            }
+        });
+    }
+    
     /**
      * Checks if the given ITargetable is within the range of the module
      * @param sourcex The x position of the source to measure from

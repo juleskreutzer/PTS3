@@ -57,6 +57,10 @@ public class Player {
         return cost <= this.bitcoins;
     }
     
+    public void removeModule(Module module){
+        modules.remove(module);
+    }
+    
     /**
     * Initialize a SoftwareInjector object, add the object to the modules field, lower the player bitcoins and return a list of spells that became available
     * @return The newly created {@link SoftwareInjector}
