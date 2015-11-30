@@ -5,9 +5,22 @@
  */
 package hack.attack.client;
 
+import hack.attack.client.interfaces.IClient;
+import hack.attack.client.interfaces.IClientCreate;
+import hack.attack.client.interfaces.IClientDelete;
+import hack.attack.client.interfaces.IClientUpdate;
+import hack.attack.client.interfaces.IServerConnect;
+import hack.attack.client.interfaces.IServerUpdate;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,49 +54,51 @@ public class FXMLLobbyController implements Initializable {
     @FXML
     private AnchorPane pane;
     
-    private int userID;
-    private String username;
-    private String displayName;
-    private int score;
+    Account account;
+    IServerConnect connect;
     
     public FXMLLobbyController()
     {
-//        this.userID = userID;
-//        this.username = username;
-//        this.displayName = displayName;
-//        this.score = score;
-//        
-//        lblUsername.setText(String.format("Username: %s", this.username));
-//        lblDisplayName.setText(String.format("Display name: %s", this.displayName));
-//        lblScore.setText(String.format("Score: %s", this.score));
     }
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.userID = Data.userIDPlayerA;
-        this.username = Data.playerAName;
-        this.displayName = Data.displayNameA;
-        this.score = Data.scorePlayerA;
+        try {
+            account = new Account(Data.userIDPlayerA, Data.playerAName, Data.displayNameA, Data.scorePlayerA);
         
-        Platform.runLater(new Runnable() { 
+            Platform.runLater(new Runnable() { 
 
-            @Override
-            public void run() {
-                lblUsername.setText(String.format("Username: %s", username));
-                lblDisplayName.setText(String.format("Display name: %s", displayName));
-                lblScore.setText(String.format("Score: %s", score));
-            }
+                @Override
+                public void run() {
+                    lblUsername.setText(String.format("Username: %s", account.getUsername()));
+                    lblDisplayName.setText(String.format("Display name: %s", account.getDisplayName()));
+                    lblScore.setText(String.format("Score: %s", account.getUserScore()));
+                }
+            });
+        
             
-        });
+            connect = (IServerConnect)Naming.lookup("rmi://localhost:7611/HackAttackServerConnect");
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            Logger.getLogger(FXMLLobbyController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void customMatch() throws IOException
     {
-        automaticMatch();
+       
     }
     
     public void automaticMatch() throws IOException
     {
+        ClientAdapter adapter = ClientAdapter.getInstance();
+        HashMap<String, IServerUpdate> result = connect.findMatch(account, adapter.getInterfaces());
+        
+        for(String key : result.keySet())
+        {
+            adapter.setSessionKey(key);
+            adapter.setIServerUpdate((IServerUpdate)result.get(key));
+        }
+        
         FXMLLoader gameloader = new FXMLLoader();
         Parent mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
         Stage stage  = (Stage)pane.getScene().getWindow();
@@ -94,8 +109,7 @@ public class FXMLLobbyController implements Initializable {
         gamestage.setTitle("Hack Attack");
         gamestage.show();
 
-        GameEngine engine = GameEngine.getInstance();
-        engine.start();
+        //GameEngine engine = GameEngine.getInstance();
+        //engine.start();
     }
-    
 }
