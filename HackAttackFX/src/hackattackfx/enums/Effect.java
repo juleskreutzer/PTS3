@@ -16,6 +16,6 @@ public enum Effect {
     DECRYPTED,
     DIE,
     REACHED_BASE,
-    STATS_INCREASED
+    BUFFED
     
 }

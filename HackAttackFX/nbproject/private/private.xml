@@ -3,19 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/enums/MinionType.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/FXMLLoaderController.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/Path.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/Wave.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/Data.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/enums/Effect.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/MinionEffect.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/GameEngine.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/interfaces/ITargetable.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/MinionImage.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/FXMLLobbyController.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/Minion.java</file>
-            <file>file:/Users/juleskreutzer/Documents/github/PTS3/HackAttackFX/src/hackattackfx/GraphicsEngine.java</file>
+            <file>file:/C:/Users/jaspe_000/Documents/GitHub/PTS3/HackAttackFX/src/hackattackfx/AppliedEffect.java</file>
+            <file>file:/C:/Users/jaspe_000/Documents/GitHub/PTS3/HackAttackFX/src/hackattackfx/GameEngine.java</file>
+            <file>file:/C:/Users/jaspe_000/Documents/GitHub/PTS3/HackAttackFX/src/hackattackfx/Minion.java</file>
+            <file>file:/C:/Users/jaspe_000/Documents/GitHub/PTS3/HackAttackFX/src/hackattackfx/Defense.java</file>
         </group>
     </open-files>
 </project-private>

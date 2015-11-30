@@ -42,6 +42,9 @@ public class Defense extends Module implements ITargetable {
     // The tickListener is declared when this module is activated
     private OnExecuteTick tickListener;
     
+    // The effect currently aplied to this module
+    private AppliedEffect activeEffect;
+    
     /**
      * Constructor for the Defense module based on the DefenseTemplate
      * @param template instance of DefenseTemplate created in the data class
@@ -424,6 +427,62 @@ public class Defense extends Module implements ITargetable {
         if(!targetInRange(minion)||minion.getHealth() <= 0){
             target = null;
         }
+    }
+    
+    public void applyEffect(AppliedEffect effect){
+        activeEffect = effect.getEffectType() != Effect.DIE && effect.getEffectType() != Effect.REACHED_BASE ? effect : null;
+        switch(effect.getEffectType()){
+            case SLOWED:
+
+                break;
+            case POISENED:
+                
+                break;
+            case SPLASH:
+                
+                break;
+            case DECRYPTED: 
+                
+                break;
+            case DIE:
+                
+                break;
+            case REACHED_BASE:
+                
+                break;
+            case BUFFED:
+                damage *= 2;
+                range *= 0.5;
+                break;
+        }
+    }
+    
+    public void removeEffect(){
+        switch(activeEffect.getEffectType()){
+            case SLOWED:
+
+                break;
+            case POISENED:
+                
+                break;
+            case SPLASH:
+                
+                break;
+            case DECRYPTED: 
+                
+                break;
+            case DIE:
+                
+                break;
+            case REACHED_BASE:
+                
+                break;
+            case BUFFED:
+                damage /= 2;
+                range /= 0.5;
+                break;
+        }
+        activeEffect = null;
     }
     
 }

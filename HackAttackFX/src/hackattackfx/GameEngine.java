@@ -846,14 +846,16 @@ public class GameEngine extends Thread implements MouseListener {
             case VIRUSSCAN: 
                 for(ITargetable t : targets){
                     Defense d = (Defense)t;
-                    AppliedEffect effect = new AppliedEffect(Effect.STATS_INCREASED, spell.getEffectDuration(), new OnEffectExpired(){
+                    AppliedEffect effect = new AppliedEffect(Effect.BUFFED, spell.getEffectDuration(), new OnEffectExpired(){
 
                         @Override
                         public void onExpired() {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            d.removeEffect();
                         }
                         
                     });
+                    d.applyEffect(effect);
+                    graphicsEngine.drawEffect(Effect.BUFFED, d);
                 }
                 break;
             case CORRUPT:
