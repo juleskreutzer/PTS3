@@ -9,6 +9,7 @@ import hack.attack.server.enums.*;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.interfaces.*;
 import hack.attack.server.logger.Log;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     }
 
     @Override
-    public HashMap<String, IServerUpdate> hostCustomGame(Account account, Object[] interfaces) {
+    public HashMap<String, IServerUpdate> hostCustomGame(Account account, HashMap<String, Remote> interfaces) {
         customGameUsers.add(account);
         
         String key = "";
@@ -72,7 +73,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     }
 
     @Override
-    public HashMap<String, IServerUpdate> joinCustomGame(Account account, String targetUsername, Object[] interfaces) {
+    public HashMap<String, IServerUpdate> joinCustomGame(Account account, String targetUsername, HashMap<String, Remote> interfaces) {
         int count = 0;
         
         try{
@@ -110,7 +111,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     }
 
     @Override
-    public HashMap<String, IServerUpdate> findMatch(Account account, Object[] interfaces) {
+    public HashMap<String, IServerUpdate> findMatch(Account account, HashMap<String, Remote> interfaces) {
         int modulo = automaticGameUsers.size() % 2;
         
         if(modulo == 1)

@@ -8,6 +8,8 @@ package hack.attack.server;
 import hack.attack.server.enums.LogState;
 import hack.attack.server.interfaces.*;
 import hack.attack.server.logger.Log;
+import java.rmi.Remote;
+import java.util.HashMap;
 
 /**
  *
@@ -19,7 +21,7 @@ public class Session {
     private Account playerB;
     private GameEngine engine;
     
-    public Session(String key, Object[] interfaces)
+    public Session(String key, HashMap<String, Remote> interfaces)
     {
         this.sessionKey = key;
         engine = GameEngine.getInstance();
