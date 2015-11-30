@@ -76,6 +76,8 @@ public class GraphicsEngine{
     
     private ImageView errorImage;
     
+    private ClientAdapter adapter;
+    
     private GraphicsEngine(){
         instance = this;
         parent = FXMLDocumentController.getInstance();
@@ -108,6 +110,8 @@ public class GraphicsEngine{
         createEffect(lblPlayerName);
         createEffect(lblPlayerHealth);
         createEffect(lblPlayerBitcoins);
+        
+        adapter = ClientAdapter.getInstance();
         
         initialize();
         

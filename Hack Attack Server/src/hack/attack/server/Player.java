@@ -9,6 +9,7 @@ package hack.attack.server;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.BitcoinMiner.OnMineComplete;
 import hack.attack.server.enums.Effect;
+import hack.attack.server.templates.*;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -61,7 +62,7 @@ public class Player {
     * Initialize a SoftwareInjector object, add the object to the modules field, lower the player bitcoins and return a list of spells that became available
     * @return The newly created {@link SoftwareInjector}
     */  
-    public SoftwareInjector buildSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException{
+    public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate injector) throws NotEnoughBitcoinsException{
         this.removeBitcoins(injector.getCost());
         modules.add(injector);
         return injector;

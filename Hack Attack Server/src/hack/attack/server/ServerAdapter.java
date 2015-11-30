@@ -72,7 +72,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
         
         
         HashMap hashMap = new HashMap<>();
-        hashMap.put(sessionKey, IServerUpdate.class);
+        hashMap.put(sessionKey, this);
         
         return hashMap;
         
@@ -104,7 +104,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     s.joinSession(account, interfaces);
                     HashMap hashMap = new HashMap<>();
         
-                    hashMap.put(s.getSessionKey(), IServerUpdate.class);
+                    hashMap.put(s.getSessionKey(), this);
         
                     return hashMap;
                 }
@@ -146,7 +146,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 {
                     session.joinSession(account, interfaces);
                     HashMap hashMap = new HashMap<>();
-                    hashMap.put(session.getSessionKey(), IServerUpdate.class);
+                    hashMap.put(session.getSessionKey(), this);
                     return hashMap;
                 }
             }
@@ -180,7 +180,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             sessions.add(session);
             
             HashMap hashMap = new HashMap<>();
-            hashMap.put(session.getSessionKey(), IServerUpdate.class);
+            hashMap.put(session.getSessionKey(), this);
             return hashMap;
         }
         return null;

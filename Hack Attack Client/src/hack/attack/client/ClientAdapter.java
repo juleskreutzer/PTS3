@@ -5,8 +5,21 @@
  */
 package hack.attack.client;
 
+import hack.attack.client.enums.Effect;
+import hack.attack.client.exceptions.DuplicateListenerException;
+import hack.attack.client.exceptions.NoUpgradeAllowedException;
+import hack.attack.client.exceptions.NotEnoughBitcoinsException;
 import hack.attack.client.interfaces.*;
+import hack.attack.client.templates.*;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,12 +30,50 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     private String sessionKey;
     private IServerUpdate update;
     private GraphicsEngine engine;
+    private final IClientCreate clientCreate;
+    private final IClientUpdate clientUpdate;
+    private final IClientDelete clientDelete;
     
-    public ClientAdapter(IServerUpdate update, String sessionKey)
+    private Account account;
+    
+    private static ClientAdapter instance;
+    
+    private ClientAdapter()
+    {
+        this.engine = GraphicsEngine.getInstance();
+        this.clientCreate = this;
+        this.clientDelete = this;
+        this.clientUpdate = this;
+    }
+    
+    public static ClientAdapter getInstance()
+    {
+        return instance == null ? new ClientAdapter() : instance;
+    }
+    
+    public void setSessionKey(String sessionKey)
+    {
+        this.sessionKey = sessionKey;
+    }
+    
+    public void setIServerUpdate(IServerUpdate update)
     {
         this.update = update;
-        this.sessionKey = sessionKey;
-        this.engine = GraphicsEngine.getInstance();
+    }
+    
+    public void setAccount(Account account)
+    {
+        this.account = account;
+    }
+    
+    public HashMap<String, IClient> getInterfaces()
+    {
+        HashMap<String, IClient> interfaces = new HashMap<>();
+        interfaces.put("create", this.clientCreate);
+        interfaces.put("update", this.clientUpdate);
+        interfaces.put("delete", this.clientDelete);
+        
+        return interfaces;
     }
 
     @Override
@@ -56,11 +107,6 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     }
 
     @Override
-    public void updateLabels(Player playerA, Player playerB) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void deleteCurrentModules(List<Module> modules) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -74,5 +120,67 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     public void deleteCurrentSpells(List<Spell> spells) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void updateLabels(Player playerA, Player playerB, int waveNumber) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    /**
+    * Initialize a SoftwareInjector object, add the object to the modules field, lower the player bitcoins and return a list of spells that became available
+    * @return The newly created {@link SoftwareInjector}
+    */  
+    public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate injector) throws NotEnoughBitcoinsException{
+        update.buildModule(sessionKey, uID, injector);
+    }
+    
+    /**
+     * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
+     * @return
+     */
+    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException
+    {
+        
+    }
+    
+    public List<Spell> getSpells(){        
+        
+    }
+    
+    /**
+     * Initialize a BitcoinMiner object, lower the player bitcoins and add the object to the modules field
+     * @return The newly created {@link BitcoinMiner}
+     */
+    public BitcoinMiner buildBitcoinMiner(BitcoinMinerTemplate miner) throws NotEnoughBitcoinsException{
+        
+    }
+    
+    /**
+     * Retrieve a BitcoinMiner object from the modules field, lower the player bitcoins and call the Upgrade method from inside the class
+     * @return boolean if the upgrade was successfully executed 
+     */
+
+    public boolean upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException{
+        
+    }
+    
+    /**
+     * Initialize a CpuUpgrade object and add the object to the modules field
+     */
+    public CPUUpgrade buildCPUUpgrade(CPUUpgradeTemplate cpu) throws NotEnoughBitcoinsException{
+       
+    }
+    
+    public boolean upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException{
+    
+    }
+    
+    public Defense buildDefense(DefenseTemplate defense) throws NotEnoughBitcoinsException{
+        
+    }
+    
+    public boolean upgradeDefense(Defense defense, Effect effect) throws NotEnoughBitcoinsException{
+      
+    }	
     
 }
