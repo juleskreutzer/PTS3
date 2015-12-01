@@ -51,21 +51,42 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
         return instance == null ? new ClientAdapter() : instance;
     }
     
+    /**
+     * This method sets the sessionKey than is needed to communicate with the server
+     * @param sessionKey encrypted sessionKey string
+     */
     public void setSessionKey(String sessionKey)
     {
         this.sessionKey = sessionKey;
     }
     
+    /**
+     * This method sets the IServerUpdate interface instance for the client so it can communicate with the server
+     * @param update IServerUpdate instance
+     */
     public void setIServerUpdate(IServerUpdate update)
     {
         this.update = update;
     }
     
+    /**
+     * This method sets the account that is needed to build, cast or upgrade modules
+     * @param account Instance of an account class for the current player
+     */
     public void setAccount(Account account)
     {
         this.account = account;
     }
     
+    /**
+     * This method will return a HashMap that is needed to call the IServerConnect methods
+     * @return HashMap<String, IClient> containing the following interfaces:
+     * <ul>
+     *  <li>Key: <b>create</b> -> <b>IClientCreate</b></li>
+     *  <li>Key: <b>upgrade</b> -> <b>IClientUpgrade</b></li>
+     *  <li>Key: <b>delete</b> -> <b>IClientDelete</b></li>
+     * </ul>
+     */
     public HashMap<String, IClient> getInterfaces()
     {
         HashMap<String, IClient> interfaces = new HashMap<>();
