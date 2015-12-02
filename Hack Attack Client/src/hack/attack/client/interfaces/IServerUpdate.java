@@ -6,6 +6,7 @@
 package hack.attack.client.interfaces;
 
 import hack.attack.client.*;
+import hack.attack.client.templates.ModuleTemplate;
 import java.rmi.Remote;
 
 /**
@@ -29,7 +30,7 @@ public interface IServerUpdate extends Remote {
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param module The module that the client wants to build
      */
-    public void buildModule(String sessionKey, int uID, Module module);
+    public void buildModule(String sessionKey, int uID, ModuleTemplate module);
     
     /**
      * The client can call this method to execute a spell.

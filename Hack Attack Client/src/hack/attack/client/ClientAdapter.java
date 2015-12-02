@@ -149,59 +149,90 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     
     /**
     * Initialize a SoftwareInjector object, add the object to the modules field, lower the player bitcoins and return a list of spells that became available
-    * @return The newly created {@link SoftwareInjector}
+     * @param injector The object the player want's to build
+    * @return The object that the player has build
+     * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to build the module
     */  
     public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate injector) throws NotEnoughBitcoinsException{
-        update.buildModule(sessionKey, uID, injector);
+        update.buildModule(sessionKey, account.getUID(), injector);
+        
     }
     
     /**
      * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
-     * @return
+     * @param injector The object the player want's to upgrade
+     * @return A Boolean indicating if the upgrade was successful. True: Success, False: Not success
+     * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to upgrade the object
+     * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
     public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException
     {
-        
-    }
-    
-    public List<Spell> getSpells(){        
+        update.upgradeModule(sessionKey, account.getUID(), injector);
         
     }
     
     /**
      * Initialize a BitcoinMiner object, lower the player bitcoins and add the object to the modules field
-     * @return The newly created {@link BitcoinMiner}
+     * @param miner The object the client want's to build
+     * @return an BitcoinMiner object that the player has build.
+     * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to build the BitcoinMiner
      */
-    public BitcoinMiner buildBitcoinMiner(BitcoinMinerTemplate miner) throws NotEnoughBitcoinsException{
-        
+    public BitcoinMiner buildBitcoinMiner(BitCoinMinerTemplate miner) throws NotEnoughBitcoinsException{
+        update.buildModule(sessionKey, account.getUID(), miner);
     }
     
     /**
      * Retrieve a BitcoinMiner object from the modules field, lower the player bitcoins and call the Upgrade method from inside the class
-     * @return boolean if the upgrade was successfully executed 
+     * @param miner The object the client want's to upgrade
+     * @return Boolean indicating if the upgrade was successful. True: Success, False: Not success
+     * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to upgrade the object
+     * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
-
-    public boolean upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException{
-        
+    public boolean upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
+        update.upgradeModule(sessionKey, account.getUID(), miner);
     }
     
     /**
      * Initialize a CpuUpgrade object and add the object to the modules field
+     * @param cpu The object the client want's to build
+     * @return an CPUUpgrade object that the player has build.
+     * @throws NotEnoughBitcoinsException when the player hasn't enough bitcoins to build the CPUUpgrade object
      */
     public CPUUpgrade buildCPUUpgrade(CPUUpgradeTemplate cpu) throws NotEnoughBitcoinsException{
-       
+       update.buildModule(sessionKey, account.getUID(), cpu);
     }
     
-    public boolean upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException{
-    
+    /**
+     * Upgrade the CPUUpgrade instance to a higher level.
+     * @param cpu The object the client want's to upgrade
+     * @return A boolean indicating if the upgrade was successful. True : Succes, False : Not succes
+     * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to upgrade the module
+     * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
+     */
+    public boolean upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
+        update.upgradeModule(sessionKey, account.getUID(), cpu);
     }
     
+    /**
+     * Build a new Defense module
+     * @param defense The module the client want's to build
+     * @return An defense object that the player has build.
+     * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to build the module
+     */
     public Defense buildDefense(DefenseTemplate defense) throws NotEnoughBitcoinsException{
-        
+       update.buildModule(sessionKey, account.getUID(), defense);
     }
     
-    public boolean upgradeDefense(Defense defense, Effect effect) throws NotEnoughBitcoinsException{
-      
+    /**
+     * Upgrade the Defense instance to a higher level
+     * @param defense The Defence object the client want's to upgrade
+     * @param effect An effect the player want's to give to the module when it's been upgraded.
+     * @return A boolean indicating if the upgrade was successful. True: Succes, False: Not success.
+     * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to upgrade the defense object
+     * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
+     */
+    public boolean upgradeDefense(Defense defense, Effect effect) throws NotEnoughBitcoinsException, NoUpgradeAllowedException{
+        update.upgradeModule(sessionKey, account.getUID(), defense);
     }	
     
 }
