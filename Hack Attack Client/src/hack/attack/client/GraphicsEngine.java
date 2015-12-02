@@ -138,11 +138,6 @@ public class GraphicsEngine{
         return n;
     }
     
-    public ObservableList getNodes()
-    {
-        return parent.getAllNodes();
-    }
-    
     /**
      * From the moment an object is spawned, it will be updated every tick.
      * This is the entry point for an object to be updated every tick.
@@ -154,9 +149,9 @@ public class GraphicsEngine{
         // Checks if the object doesn't exists already
         
         int currentID = ClientAdapter.getInstance().getCurrentUserID();
-        boolean currentUser = uID == currentID;
+        FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
         
-        List<Node> list = parent.getAllNodes();
+        List<Node> list = parent.getAllNodes(window);
         for(Node node : list){
             if(node instanceof ObjectImage){
                 ObjectImage image = (ObjectImage)node;
@@ -169,13 +164,13 @@ public class GraphicsEngine{
         if(object instanceof Minion){
             Minion m = (Minion)object;
             MinionImage mi = new MinionImage(m);
-            parent.addNode(mi, currentUser);
-            parent.addNode(mi.getHealthBar(), currentUser);
+            parent.addNode(mi, window);
+            parent.addNode(mi.getHealthBar(), window);
         }else if(object instanceof Module){
             Module m = (Module) object;
-            parent.addNode(new ModuleImage((Module)object), currentUser);
+            parent.addNode(new ModuleImage((Module)object), window);
         }else if(object instanceof Spell){
-            parent.addNode(new SpellImage((Spell)object), currentUser);
+            parent.addNode(new SpellImage((Spell)object), window);
         }else{
             throw new InvalidObjectException("The object you tried to spawn doesn't have a corresponding ObjectImage implementation");
         }
@@ -188,9 +183,9 @@ public class GraphicsEngine{
     public void deSpawn(Object object, int uID) throws InvalidObjectException{
         
         int currentID = ClientAdapter.getInstance().getCurrentUserID();
-        boolean isCurrentUser = currentID == uID;
+        FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
         
-        ObservableList<Node> nodes = parent.getAllNodes();
+        ObservableList<Node> nodes = parent.getAllNodes(window);
         for(Node n : nodes)
         {
             if(object instanceof Minion)
@@ -199,11 +194,11 @@ public class GraphicsEngine{
                 Minion m = ((MinionImage)n).getMinion();
                 if(minion == m){
                     if(m.reachedBase()){
-                        drawEffect(Effect.REACHED_BASE, m, isCurrentUser);
+                        drawEffect(Effect.REACHED_BASE, m, window);
                     }else{
-                        drawEffect(Effect.DIE, m, isCurrentUser);
+                        drawEffect(Effect.DIE, m, window);
                     }
-                    parent.removeNode(n, isCurrentUser);
+                    parent.removeNode(n, window);
                 }
             }
             if(object instanceof Module)
@@ -212,7 +207,7 @@ public class GraphicsEngine{
                 Module m = ((ModuleImage)n).getModule();
                 if(module == m)
                 {
-                    parent.removeNode(n, isCurrentUser);
+                    parent.removeNode(n, window);
                 }
             }
         }
@@ -220,16 +215,18 @@ public class GraphicsEngine{
     
     
     
-    public double update(){
-        draw();
+    public double update(int uID){
+        int currentID = ClientAdapter.getInstance().getCurrentUserID();
+        FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
+        draw(window);
         return 0;
     }
     
-    private void draw(){
+    private void draw(FXMLDocumentController.Window window){
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                List<Node> nodes = parent.getAllNodes();
+                List<Node> nodes = parent.getAllNodes(window);
                 
                 for(Node n : nodes){
                     if(n instanceof MinionImage){
@@ -256,12 +253,12 @@ public class GraphicsEngine{
                             }
                         }else{
                             // loops through all nodes, if it is an ModuleRange node, remove it.
-                            Iterator i = parent.getAllNodes().iterator();
+                            Iterator i = parent.getAllNodes(window).iterator();
                             while (i.hasNext())
                             {
                                 Node node = (Node)i.next();
                                 if ("ModuleRange".equals(node.getId())) {
-                                    parent.removeNode(node, true);
+                                    parent.removeNode(node, FXMLDocumentController.Window.DOWN);
                                 }
                             }
                             moduleRange = null;
@@ -319,12 +316,12 @@ public class GraphicsEngine{
     public void drawRoad(Road roadA, Road roadB){
         for(Path p : roadA.getPaths()){
             PathImage image = new PathImage(p);
-            parent.addNode(image, true);
+            parent.addNode(image, FXMLDocumentController.Window.DOWN);
         }
         
         for(Path p : roadB.getPaths()){
             PathImage image = new PathImage(p);
-            parent.addNode(image, false);
+            parent.addNode(image, FXMLDocumentController.Window.TOP);
         }
     }
     
@@ -381,7 +378,7 @@ public class GraphicsEngine{
         Image targetimage = new Image(file.toURI().toString());
         spawnTarget.setImage(targetimage);
         spawnTarget.setOpacity(0.5);
-        parent.addNode(spawnTarget, true);
+        parent.addNode(spawnTarget, FXMLDocumentController.Window.DOWN);
         
         return spawnTarget;
     }
@@ -399,7 +396,7 @@ public class GraphicsEngine{
         rangecircle.setStrokeWidth(3);
         rangecircle.setId("ModuleRange");
         moduleRange = rangecircle;
-        parent.addNode(rangecircle, true);
+        parent.addNode(rangecircle, FXMLDocumentController.Window.DOWN);
         return rangecircle;
     }
     
@@ -410,7 +407,7 @@ public class GraphicsEngine{
         rangecircle.setFill(Color.BLUE);
         rangecircle.setOpacity(0.7);
         rangecircle.setId("SpellRange");
-        parent.addNode(rangecircle, true);
+        parent.addNode(rangecircle, FXMLDocumentController.Window.DOWN);
         return rangecircle;
     }
     
@@ -463,7 +460,7 @@ public class GraphicsEngine{
      * @param reward Used when a minion is killed to show it's reward in bitcoins.
      * @param damage Used when a player is attacked to show the amount of damage the minion did to the player
      */
-    public void drawEffect(Effect effect, ITargetable target, boolean isCurrentUser)
+    public void drawEffect(Effect effect, ITargetable target, FXMLDocumentController.Window window)
     {
         Label label;
         
@@ -489,7 +486,7 @@ public class GraphicsEngine{
                     label.setLayoutY(position.getY());
                     label.setTextFill(Color.GREEN);
                     label.setText(String.format("+ %s ฿", reward));
-                    parent.addNode(label, false);
+                    parent.addNode(label, window);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -497,7 +494,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                            parent.removeNode(label, isCurrentUser);
+                            parent.removeNode(label, window);
                         }
 
 
@@ -510,7 +507,7 @@ public class GraphicsEngine{
                     label.setLayoutY(position.getY());
                     label.setTextFill(Color.RED);
                     label.setText(String.format("- %s HP", damage));
-                    parent.addNode(label, isCurrentUser);
+                    parent.addNode(label, window);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -518,7 +515,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                            parent.removeNode(label, isCurrentUser);
+                            parent.removeNode(label, window);
                         }
 
 
@@ -530,7 +527,7 @@ public class GraphicsEngine{
                     label.setTextFill(Color.GREEN);
                     label.setLayoutX(position.getX());
                     label.setLayoutY(position.getY());
-                    parent.addNode(label, isCurrentUser);
+                    parent.addNode(label, window);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -538,7 +535,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                        parent.removeNode(label, isCurrentUser);
+                        parent.removeNode(label, window);
                     }
 
                     });
@@ -550,7 +547,7 @@ public class GraphicsEngine{
                     label.setTextFill(Color.RED);
                     label.setLayoutX(position.getX());
                     label.setLayoutY(position.getY());
-                    parent.addNode(label, isCurrentUser);
+                    parent.addNode(label, window);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -558,7 +555,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                        parent.removeNode(label, isCurrentUser);
+                        parent.removeNode(label, window);
                     }
 
                     });
@@ -570,7 +567,7 @@ public class GraphicsEngine{
                     label.setTextFill(Color.PURPLE);
                     label.setLayoutX(position.getX());
                     label.setLayoutY(position.getY());
-                    parent.addNode(label, isCurrentUser);
+                    parent.addNode(label, window);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -578,7 +575,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                        parent.removeNode(label, isCurrentUser);
+                        parent.removeNode(label, window);
                     }
 
                     });
@@ -590,7 +587,7 @@ public class GraphicsEngine{
                     label.setTextFill(Color.PURPLE);
                     label.setLayoutX(position.getX());
                     label.setLayoutY(position.getY());
-                    parent.addNode(label, isCurrentUser);
+                    parent.addNode(label, window);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -598,7 +595,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                        parent.removeNode(label, isCurrentUser);
+                        parent.removeNode(label, window);
                     }
 
                     });
@@ -626,7 +623,7 @@ public class GraphicsEngine{
                 text.setLayoutX(width/2);
                 text.setLayoutY(height/2);
                 
-                parent.addNode(text);
+                parent.addNode(text, FXMLDocumentController.Window.MAIN);
             }            
         });
     }
@@ -697,7 +694,7 @@ public class GraphicsEngine{
         highlight.setStrokeWidth(1);
         highlight.setId("highlight");
         System.out.print("Can we change this in GraphicsEngine (CreateHighLight)?");
-        parent.addNode(highlight, true);
+        parent.addNode(highlight, FXMLDocumentController.Window.DOWN);
     }
     
      /**
@@ -709,7 +706,7 @@ public class GraphicsEngine{
      * @return whether or not the given square is overlapping an existing node
      */
     public boolean isPointInNode(int x, int y, int width, int height) {
-            ObservableList<Node> nodes = parent.getAllNodes();
+            ObservableList<Node> nodes = parent.getAllNodes(FXMLDocumentController.Window.DOWN);
             for(Node n : nodes)
             {
                 if(n instanceof ModuleImage || n instanceof PathImage)

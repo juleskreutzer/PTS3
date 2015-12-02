@@ -5,7 +5,6 @@
  */
 package hack.attack.client;
 
-import hackattackfx.GameEngine.OnExecuteTick;
 import hack.attack.client.enums.ModuleName;
 import java.awt.Point;
 import hack.attack.client.exceptions.*;
@@ -29,7 +28,6 @@ public class BitcoinMiner extends Module {
     
     private double valuePerSecond;
     private List<OnMineComplete> listeners;
-    private OnExecuteTick tick;
     private long lastMine;
     
     /**
@@ -51,7 +49,6 @@ public class BitcoinMiner extends Module {
         this.valuePerSecond = template.getValuePerSecond();
         listeners = new ArrayList<>();
         lastMine = 0;
-        activate();
     }
     
     public double getValuePerSecond(){
@@ -89,40 +86,4 @@ public class BitcoinMiner extends Module {
             throw new NoUpgradeAllowedException("Something went wrong, you can't upgrade the Bitcoin Miner at this time.");
         }
     }
-    
-    /**
-     * Activate the bitcoin miner so the player gets their bitcoins
-     */
-    public void activate()
-    {
-        tick = new OnExecuteTick() {
-
-            @Override
-            public void onTick(long elapsedtime) {
-                if(elapsedtime >= (lastMine + 3000))
-                {
-                    lastMine = elapsedtime;
-                    for(OnMineComplete listener : listeners)
-                    {
-                        listener.onMine(valuePerSecond);
-                    }
-                }
-                
-            }
-        };
-        GameEngine.getInstance().setOnTickListener(tick);
-    }
-    
-    public void setOnMineListener(OnMineComplete callback) throws DuplicateListenerException
-    {
-        if(!listeners.contains(callback))
-        {
-        listeners.add(callback);
-        }
-        else
-        {
-        throw new DuplicateListenerException();
-        }
-    }
-    
 }

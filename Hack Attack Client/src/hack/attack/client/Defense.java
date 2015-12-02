@@ -5,7 +5,6 @@
  */
 package hack.attack.client;
 
-import hack.attack.client.GameEngine.OnExecuteTick;
 import hack.attack.client.enums.DefenseType;
 import hack.attack.client.enums.Effect;
 import hack.attack.client.enums.ModuleName;
@@ -39,8 +38,6 @@ public class Defense extends Module implements ITargetable {
     // The last time this module performed an attack
     private long lastAttack;
     
-    // The tickListener is declared when this module is activated
-    private OnExecuteTick tickListener;
     
     /**
      * Constructor for the Defense module based on the DefenseTemplate
@@ -67,38 +64,6 @@ public class Defense extends Module implements ITargetable {
         this.frequency = template.getFrequency();
         reloading = false;
         
-    }
-    
-    // Activates the module to listen to the {@link GameEngine} ticks
-    public void activate(){
-        target = null;
-        tickListener = new OnExecuteTick() {
-
-            @Override
-            public void onTick(long elapsedtime) {
-                if(elapsedtime >= (lastAttack + (1000/frequency)) && !reloading){
-                    lastAttack = elapsedtime;
-                    if(!hasTarget()){
-                        target = findTarget();
-                    }else{
-                        if(targetInRange(target)){
-                            fire(target);
-                        }else{
-                            target = null;
-                        }
-                    }
-                }
-            }
-        };
-        GameEngine.getInstance().setOnTickListener(tickListener);
-    }
-    
-    public void deactivate(){
-        try {
-            GameEngine.getInstance().unsubscribeListener(tickListener);
-        } catch (UnsubscribeNonListenerException ex) {
-            Logger.getLogger(Defense.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     /**
@@ -369,33 +334,6 @@ public class Defense extends Module implements ITargetable {
     }
     
     /**
-     * Look for enemy minions within the RANGE of this module, then randomly select a target.
-     * @return The enemy minion that's targeted. If no minion is found, return null
-     */
-    public Minion findTarget(){
-        ArrayList<Minion> inrange = new ArrayList<Minion>();
-        GameEngine engine = GameEngine.getInstance();
-        ArrayList<Wave> waves = engine.getActiveWaves();
-        ArrayList<Minion> minions = new ArrayList<Minion>();
-        
-        for (Wave w : waves) {
-            minions.addAll(w.minionsAsList());
-        }
-        
-        for(Minion m : minions){
-            if(targetInRange(m)){
-                inrange.add(m);
-            }
-        }
-        Random random = new Random();
-        if(inrange.size()>0){
-            Minion m = inrange.get(random.nextInt(inrange.size()));
-            return m;
-        }
-        return null;
-    }
-    
-    /**
      * Checks if the given minion is within the range of the module
      * @param m The minion to check on
      * @return True if the given minion is in range.
@@ -405,25 +343,4 @@ public class Defense extends Module implements ITargetable {
         long distance = (long)Math.sqrt((position.x-m.getPosition().x)*(position.x-m.getPosition().x) + (position.y-m.getPosition().y)*(position.y-m.getPosition().y));
         return range >= distance;
     }
-    
-    /**
-     * Checks if this module has an active target
-     * @return True is this module is targeting a minion
-     */
-    public boolean hasTarget(){
-        return target != null;
-    }
-    
-    /**
-     * Fire a {@link Bullet} at the module's target.
-     * @param minion The enemy minion target.
-     */
-    public void fire(Minion minion){
-        //System.out.println(this.toString() + " is attacking " + minion.toString());
-        minion.receiveDamage(damage);
-        if(!targetInRange(minion)||minion.getHealth() <= 0){
-            target = null;
-        }
-    }
-    
 }

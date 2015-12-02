@@ -8,11 +8,12 @@ package hack.attack.client.templates;
 import hack.attack.client.enums.*;
 import hack.attack.client.exceptions.*;
 import java.awt.Point;
+import java.io.Serializable;
 /**
  *
  * @author juleskreutzer
  */
-public abstract class ModuleTemplate {
+public abstract class ModuleTemplate implements Serializable{
     protected double cost;
     protected int level;
     protected String displayName;

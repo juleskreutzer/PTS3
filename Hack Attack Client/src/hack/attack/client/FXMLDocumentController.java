@@ -21,10 +21,24 @@ import javafx.scene.layout.Pane;
  *
  * @author Jasper Rouwhorst
  */
+
+
 public class FXMLDocumentController implements Initializable {
     
+    public enum Window {
+        TOP,
+        DOWN,
+        MAIN
+    }
+    
     @FXML
-    private AnchorPane window;
+    private AnchorPane windowMain;
+    
+    @FXML
+    private AnchorPane windowTop;
+    
+    @FXML
+    private AnchorPane windowDown;
     
     @FXML
     private Label errorLabel;
@@ -49,23 +63,45 @@ public class FXMLDocumentController implements Initializable {
 
     }    
     
-    public void addNode(Node node, boolean isCurrentUser){
+    public void addNode(Node node, Window type){
         Platform.runLater(new Runnable(){
 
             @Override
             public void run() {
-                window.getChildren().add(node);
+                switch(type)
+                {
+                    case TOP:
+                        windowTop.getChildren().add(node);
+                        break;
+                    case DOWN:
+                        windowDown.getChildren().add(node);
+                        break;
+                    case MAIN:
+                        windowMain.getChildren().add(node);
+                        break;
+                }
             }
             
         });
     }
     
-    public void removeNode(Node node, boolean isCurrentUser){
+    public void removeNode(Node node, Window type){
         Platform.runLater(new Runnable(){
 
             @Override
             public void run() {
-                window.getChildren().remove(node);
+               switch(type)
+                {
+                    case TOP:
+                        windowTop.getChildren().add(node);
+                        break;
+                    case DOWN:
+                        windowDown.getChildren().add(node);
+                        break;
+                    case MAIN:
+                        windowMain.getChildren().add(node);
+                        break;
+                }
             }
             
         });
@@ -85,7 +121,7 @@ public class FXMLDocumentController implements Initializable {
     public Node getNode(String id, Pane parent){
         ObservableList<Node> list;
         if(parent == null){
-            list = window.getChildren();
+            list = windowMain.getChildren();
         }else{
             list = parent.getChildren();
         }
@@ -106,12 +142,19 @@ public class FXMLDocumentController implements Initializable {
     }
     
     public AnchorPane getScene(){
-        return window;
+        return windowMain;
     }
     
-    public ObservableList getAllNodes(){
-        return window.getChildren();
+    public ObservableList getAllNodes(Window type){
+        switch(type)
+        {
+            case MAIN:
+                return windowMain.getChildren();
+            case TOP:
+                return windowTop.getChildren();
+            case DOWN:
+                return windowDown.getChildren();
+        }
+        return null;
     }
-    
-    
 }

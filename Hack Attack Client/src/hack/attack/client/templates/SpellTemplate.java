@@ -5,12 +5,13 @@
  */
 package hack.attack.client.templates;
 import hack.attack.client.enums.*;
+import java.io.Serializable;
 
 /**
  *
  * @author juleskreutzer
  */
-public class SpellTemplate {
+public class SpellTemplate implements Serializable {
     private SpellName name;
     private double range;
     private SpellType type;
