@@ -19,8 +19,9 @@ public interface IClientDelete extends IClient {
      * The server will send a list of module instances that will have a reference to the instances of a module class
      * on the client. We have to check for each item in the list if it is available on the client for extra safety.
      * @param modules List of modules that need to be deleted from the client
+     * @param uID
      */
-    public void deleteCurrentModules(List<Module> modules);
+    public void deleteCurrentModules(List<Module> modules, int uID);
     
     /**
      * The server will call this method to delete minions a client has drawn.
@@ -28,8 +29,9 @@ public interface IClientDelete extends IClient {
      * Normally the server will call this method with a list of minions that have died. We have to check each item in the list
      * to make sure it is available on the client and if not we have to handle the the exception so the user doesn't lose any experience.
      * @param minions List of minions that need to be deleted from the client
+     * @param uID
      */
-    public void deleteCurrentMinions(List<Minion> minions);
+    public void deleteCurrentMinions(List<Minion> minions, int uID);
     
     /**
      * The server will call this method to delete spells a client has drawn.
@@ -37,7 +39,8 @@ public interface IClientDelete extends IClient {
      * This method will usually be called when a spell is over. We still have to check if the spell object exists on the client and
      * handle the exception that could be thrown so the user doesn't lose any experience in player Hack Attack.
      * @param spells List of spells the need to be deleted from the client
+     * @param uID
      */
-    public void deleteCurrentSpells(List<Spell> spells);
+    public void deleteCurrentSpells(List<Spell> spells, int uID);
     
 }

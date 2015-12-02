@@ -27,9 +27,9 @@ public class CPUUpgrade extends Module {
      * @param height height of the module
      * @throws InvalidModuleEnumException when this is not a valid {@link ModuleName}
      */
-    public CPUUpgrade(CPUUpgradeTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    public CPUUpgrade(GameEngine engine, CPUUpgradeTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
     {
-        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
+        super(engine, template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
         if(template.getModuleName() != ModuleName.CPU_UPGRADE)
         {
             throw new InvalidModuleEnumException();

@@ -9,9 +9,10 @@ package hack.attack.server;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.BitcoinMiner.OnMineComplete;
 import hack.attack.server.enums.Effect;
+import hack.attack.server.enums.LogState;
+import hack.attack.server.logger.Log;
 import hack.attack.server.templates.*;
 import java.awt.Point;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,9 +23,11 @@ import java.util.logging.Logger;
  *
  * @author Igor
  */
-public class Player implements Serializable {
+public class Player {
     
     //Fields
+    private GameEngine engine;
+    
     private double health; //amount of player's health
     private String name; //the player's name
     private double bitcoins; //amount of player's currency in bitcoins
@@ -39,7 +42,8 @@ public class Player implements Serializable {
      * @param b bitcoins value for the player
      * @param l baselocation for the player
      */
-    public Player(double h, String n, double b, Point l) {
+    public Player(GameEngine engine, double h, String n, double b, Point l) {
+        this.engine = engine;
         health = h;
         name = n;
         bitcoins = b;
@@ -63,24 +67,38 @@ public class Player implements Serializable {
     * Initialize a SoftwareInjector object, add the object to the modules field, lower the player bitcoins and return a list of spells that became available
     * @return The newly created {@link SoftwareInjector}
     */  
-    public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate injector) throws NotEnoughBitcoinsException{
-        this.removeBitcoins(injector.getCost());
-        modules.add(injector);
-        return injector;
+    public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate template, Point position, int width, int height){
+        try {
+            SoftwareInjector injector;
+                injector = new SoftwareInjector(engine, template, position, width, height);
+            this.removeBitcoins(injector.getCost());
+            modules.add(injector);
+            return injector;
+        } catch (NotEnoughBitcoinsException | InvalidModuleEnumException ex) {
+            new Log(LogState.ERROR, ex.getMessage());
+        }
+        return null;
     }
     
     /**
      * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
+     * @param injector
      * @return
      */
-    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException
-    {
+    public boolean upgradeSoftwareInjector(SoftwareInjector injector) {
         if(injector.getCost() <= this.getBitcoins())
         {
-            if(injector.upgrade()) 
-            { 
-                this.removeBitcoins(injector.getCost());
-                return true; 
+            try {
+                if(injector.upgrade()) 
+                { 
+
+                    this.removeBitcoins(injector.getCost()); 
+                    return true;
+
+                }
+            }
+            catch (NotEnoughBitcoinsException | NoUpgradeAllowedException ex) {
+                new Log(LogState.ERROR, ex.getMessage());
             }
         }
         return false;
@@ -146,7 +164,7 @@ public class Player implements Serializable {
     public boolean upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException{
         try {
             // First get a list of all minions
-            Iterator<Minion> minions = GameEngine.getInstance().getActiveWave().minions();
+            Iterator<Minion> minions = engine.getActiveWave().minions();
             this.removeBitcoins(cpu.getCost());
             return cpu.upgrade(minions);
         } catch (NoUpgradeAllowedException ex) {

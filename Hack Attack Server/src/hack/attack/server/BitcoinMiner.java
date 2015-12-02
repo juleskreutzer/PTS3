@@ -40,9 +40,10 @@ public class BitcoinMiner extends Module {
      * @param height height of the module
      * @throws InvalidModuleEnumException 
      */
-    public BitcoinMiner(BitCoinMinerTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    public BitcoinMiner(GameEngine engine, BitCoinMinerTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
     {
-        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
+        super(engine, template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
+        
         if(template.getModuleName() != ModuleName.BITCOIN_MINER)
         {
             // ModuleName is incorrect
@@ -110,7 +111,7 @@ public class BitcoinMiner extends Module {
                 
             }
         };
-        GameEngine.getInstance().setOnTickListener(tick);
+        engine.setOnTickListener(tick);
     }
     
     public void setOnMineListener(OnMineComplete callback) throws DuplicateListenerException

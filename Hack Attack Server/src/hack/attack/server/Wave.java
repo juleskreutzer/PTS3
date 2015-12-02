@@ -22,6 +22,8 @@ import java.util.logging.Logger;
  * @author Igor, Jasper Rouwhorst
  */
 public class Wave {
+    
+    private GameEngine engine;
     private int waveNr; //The number of the wave.
     private boolean waveActive; //If the wave is active or not.
     private double waveMultiplier; //The multiplier of the wave.
@@ -48,10 +50,11 @@ public class Wave {
      * @param tbamount, the amount of terabyte minions, must be a positive number or zero.
      * @param pbamount , the amount of petabyte minions, must be a positive number or zero.
      */
-    public Wave(int wavenr, double multiplier, Player enemyplayer, 
+    public Wave(GameEngine engine, int wavenr, double multiplier, Player enemyplayer, 
             int bamount, int kbamount, int mbamount, int gbamount, int tbamount, int pbamount){
         
         //Set fields and initialise.
+        this.engine = engine;
         waveNr = wavenr;
         waveActive = false;
         waveMultiplier = multiplier;
@@ -64,37 +67,37 @@ public class Wave {
         //Create the minions for this wave.
         //Bytes
         for(int i=0; i<bamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_BYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(engine, Data.DEFAULT_BYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //KiloBytes
         for(int i=0; i<kbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_KILOBYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(engine, Data.DEFAULT_KILOBYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //MegaBytes
         for(int i=0; i<mbamount; i++){
-           Minion minion = new Minion(Data.DEFAULT_MEGABYTE, multiplier, enemyPlayer);
+           Minion minion = new Minion(engine, Data.DEFAULT_MEGABYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //GigaBytes
         for(int i=0; i<gbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_GIGABYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(engine, Data.DEFAULT_GIGABYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //TeraBytes
         for(int i=0; i<tbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_TERABYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(engine, Data.DEFAULT_TERABYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //PetaBytes
         for(int i=0; i<pbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_PETABYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(engine, Data.DEFAULT_PETABYTE, multiplier, enemyPlayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
@@ -115,59 +118,51 @@ public class Wave {
                 if(elapsedtime >= (lastSpawn + 1000)){
                     if(spawnedMinions < minionList.size()){
                         Minion m = minionList.get(spawnedMinions++);
-                        try{
-                            GraphicsEngine.getInstance().spawn(m); //Get an instance of the graphics engine, and spawn the minion with it.
-                            m.activate(new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
+                        m.activate(new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
 
-                                @Override //Override this method, remove the passed minion from the current wave with removeMinion.
-                                public void onMinionDeath(Minion minion, Boolean reachedBase) {
-                                    removeMinion(minion, reachedBase);
-                                    
-                                    if(reachedBase)
-                                    {
-                                        MinionEffect effect = new MinionEffect(Effect.REACHED_BASE, 0, new OnEffectExpired(){
+                            @Override //Override this method, remove the passed minion from the current wave with removeMinion.
+                            public void onMinionDeath(Minion minion, Boolean reachedBase) {
+                                removeMinion(minion, reachedBase);
 
-                                            @Override
-                                            public void onExpired() {
-                                            }
-                                            
-                                        });
-                                        m.applyEffect(effect);
-                                    }
-                                    else
-                                    {
-                                        MinionEffect effect = new MinionEffect(Effect.DIE, 0, new OnEffectExpired(){
+                                if(reachedBase)
+                                {
+                                    MinionEffect effect = new MinionEffect(Effect.REACHED_BASE, 0, new OnEffectExpired(){
 
-                                            @Override
-                                            public void onExpired() {
-                                            }
-                                            
-                                        });
-                                        m.applyEffect(effect);
-                                    }
+                                        @Override
+                                        public void onExpired() {
+                                        }
+
+                                    });
+                                    m.applyEffect(effect);
                                 }
+                                else
+                                {
+                                    MinionEffect effect = new MinionEffect(Effect.DIE, 0, new OnEffectExpired(){
 
-                            });
-                            lastSpawn = elapsedtime;
-                             //Exception Handling.
-                        }catch(DuplicateSpawnException e){
-                            System.out.println(e.toString());
-                        }catch(InvalidObjectException e){
-                            System.out.println(e.toString());
-                        }
-                    }else{
-                        try {
-                            GameEngine.getInstance().unsubscribeListener(this);
-                        } catch (UnsubscribeNonListenerException e) {
-                            System.out.println(e.toString());
-                        }
+                                        @Override
+                                        public void onExpired() {
+                                        }
+
+                                    });
+                                    m.applyEffect(effect);
+                                }
+                            }
+
+                        });
+                        lastSpawn = elapsedtime;
+                         //Exception Handling.
+                    }
+                }else{
+                    try {
+                        engine.unsubscribeListener(this);
+                    } catch (UnsubscribeNonListenerException e) {
+                        System.out.println(e.toString());
                     }
                 }
             }
-            
         };
         
-        GameEngine.getInstance().setOnTickCompleteListener(listener);
+        engine.setOnTickCompleteListener(listener);
     }
     
     /**

@@ -52,9 +52,9 @@ public class Defense extends Module implements ITargetable {
      * 
      * Because we have to check if the given ModuleName is correct, we create an array of ModuleName with all the possible values and check if the given ModuleName is correct
      */
-    public Defense(DefenseTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    public Defense(GameEngine engine, DefenseTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
     {
-        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
+        super(engine, template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
         ModuleName ModuleNameList[] = new ModuleName[] {ModuleName.BOTTLECAP_ANTIVIRUS, ModuleName.MUSCLE_ANTIVIRUS, ModuleName.SCALE_ANTIVIRUS, ModuleName.SNIPER_ANTIVIRUS};
         if(!Arrays.asList(ModuleNameList).contains(template.getModuleName()))
         {
@@ -90,12 +90,12 @@ public class Defense extends Module implements ITargetable {
                 }
             }
         };
-        GameEngine.getInstance().setOnTickListener(tickListener);
+        engine.setOnTickListener(tickListener);
     }
     
     public void deactivate(){
         try {
-            GameEngine.getInstance().unsubscribeListener(tickListener);
+            engine.unsubscribeListener(tickListener);
         } catch (UnsubscribeNonListenerException ex) {
             Logger.getLogger(Defense.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -374,7 +374,6 @@ public class Defense extends Module implements ITargetable {
      */
     public Minion findTarget(){
         ArrayList<Minion> inrange = new ArrayList<Minion>();
-        GameEngine engine = GameEngine.getInstance();
         ArrayList<Wave> waves = engine.getActiveWaves();
         ArrayList<Minion> minions = new ArrayList<Minion>();
         

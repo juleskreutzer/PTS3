@@ -14,6 +14,9 @@ import hack.attack.server.exceptions.*;
  * @author juleskreutzer
  */
 abstract public class Module {
+    
+    protected GameEngine engine;
+    
     protected Point position;
     protected int width;
     protected int height;
@@ -24,8 +27,9 @@ abstract public class Module {
     protected ModuleName moduleName;
     protected String desc;
     
-    public Module(double cost, Point position, int width, int height, ModuleName name, int level, String desc)
+    public Module(GameEngine engine, double cost, Point position, int width, int height, ModuleName name, int level, String desc)
     {
+        this.engine = engine;
         this.width = width;
         this.height = height;
         this.cost = cost;

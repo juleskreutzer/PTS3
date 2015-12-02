@@ -29,9 +29,9 @@ public class SoftwareInjector extends Module {
      * @param width Width for the module
      * @param height Height for the module
      */
-    public SoftwareInjector(SoftwareInjectorTemplate softwareInjector, Point position, int width, int height) throws InvalidModuleEnumException
+    public SoftwareInjector(GameEngine engine, SoftwareInjectorTemplate softwareInjector, Point position, int width, int height) throws InvalidModuleEnumException
     {
-        super(softwareInjector.getCost(), position, width, height, softwareInjector.getModuleName(), softwareInjector.getLevel(), softwareInjector.getDescription());
+        super(engine, softwareInjector.getCost(), position, width, height, softwareInjector.getModuleName(), softwareInjector.getLevel(), softwareInjector.getDescription());
         if( softwareInjector.getModuleName() != ModuleName.SOFTWARE_INJECTOR)
         {
             throw new InvalidModuleEnumException();

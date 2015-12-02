@@ -295,7 +295,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     }
 
     @Override
-    public void updateLabels(Player playerA, Player playerB, int waveNumber) {
+    public void updateLabels(int waveNumber, String playernamea, String healthplayera, String bitcoinsplayera, String playernameb, String healthplayerb) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
@@ -423,7 +423,6 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                         Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50);
                                         engine.spawn(defense, account.getUID());
                                         engine.deSpawn(st, account.getUID());
-                                        defense.activate();
                                     }
                                     else
                                     {
@@ -496,7 +495,6 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                         Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50);
                                         engine.spawn(defense, account.getUID());
                                         engine.deSpawn(st, account.getUID());
-                                        defense.activate();
                                     }
                                     else{
                                         engine.showError("You are not allowed to build here.");
@@ -568,7 +566,6 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                         Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50);
                                         engine.spawn(defense, account.getUID());
                                         engine.deSpawn(st, account.getUID());
-                                        defense.activate();
                                     }
                                     else
                                     {
@@ -642,7 +639,6 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                         Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50);
                                         engine.spawn(defense, account.getUID());
                                         engine.deSpawn(st, account.getUID());
-                                        defense.activate();
                                     }
                                     else
                                     {
@@ -697,7 +693,6 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                     BitcoinMiner miner = buildBitcoinMiner(Data.DEFAULT_MODULE_BITCOINMINER_1,p,(int)i.getWidth(),(int)i.getHeight());
                     if(miner != null){
                         engine.drawBaseModule(ModuleName.BITCOIN_MINER, true);
-                        miner.activate();
                     }
                 } catch (NotEnoughBitcoinsException ex) {
                     engine.showError("Not enough bitcoins!");
@@ -741,7 +736,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                     @Override
                     public void handle(MouseEvent event) {
                         ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        
+                        update.executeSpell(sessionKey, account.getUID(), spell);
                         
                         for(Minion m : currentWave.minionsAsList()){
                             if(targetInRange(range.getCenterX(), range.getCenterY(), spell.getRange(),m)){

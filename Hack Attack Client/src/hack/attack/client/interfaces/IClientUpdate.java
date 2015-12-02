@@ -52,5 +52,5 @@ public interface IClientUpdate extends IClient {
      * @param playerB Instance of player class with fields like displayname, health, bitcoins
      * @param waveNumber Number indicating the current wave
      */
-    public void updateLabels(Player playerA, Player playerB, int waveNumber);
+    public void updateLabels(int waveNumber, String playernamea, String healthplayera, String bitcoinsplayera, String playernameb, String healthplayerb);
 }

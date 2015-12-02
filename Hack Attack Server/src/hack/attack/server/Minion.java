@@ -31,6 +31,8 @@ public class Minion implements IMoveable, ITargetable {
         void onMinionDeath(Minion minion, Boolean reachedBase);
     }
     
+    protected GameEngine engine;
+    
     //Fields
     private MinionType minionType; //The MinionType of the minion
     private Player enemyPlayer; //The player the minions are supposed to attack.
@@ -66,8 +68,9 @@ public class Minion implements IMoveable, ITargetable {
      * @param minion, the template of minion that is loaded from the database.
      * @param multiplier, the multiplier that is used to increase certain values.
      */
-    public Minion(MinionTemplate minion, double multiplier, Player enemyPlayer)
+    public Minion(GameEngine engine, MinionTemplate minion, double multiplier, Player enemyPlayer)
     {
+        this.engine = engine;
         health = (minion.getHealth() * multiplier);
         initialHealth = health;
         speed = (minion.getSpeed());
@@ -92,12 +95,12 @@ public class Minion implements IMoveable, ITargetable {
             }
             
         };
-        GameEngine.getInstance().setOnTickListener(tickListener);
+        engine.setOnTickListener(tickListener);
     }
     
     public void deactivate(){
         try {
-            GameEngine.getInstance().unsubscribeListener(tickListener);
+            engine.unsubscribeListener(tickListener);
         } catch (UnsubscribeNonListenerException ex) {
             Logger.getLogger(Minion.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -6,6 +6,9 @@
 package hack.attack.server.interfaces;
 
 import hack.attack.server.*;
+import hack.attack.server.templates.ModuleTemplate;
+import hack.attack.server.templates.SpellTemplate;
+import java.awt.Point;
 import java.rmi.Remote;
 
 /**
@@ -29,7 +32,7 @@ public interface IServerUpdate extends Remote {
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param module The module that the client wants to build
      */
-    public Module buildModule(String sessionKey, int uID, Module module);
+    public Module buildModule(String sessionKey, int uID, ModuleTemplate module, Point position, int width, int height);
     
     /**
      * The client can call this method to execute a spell.
@@ -46,7 +49,7 @@ public interface IServerUpdate extends Remote {
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param spell The spell that the client wants to execute
      */
-    public Spell executeSpell(String sessionKey, int uID, Spell spell);
+    public Spell executeSpell(String sessionKey, int uID, SpellTemplate spell);
     
     /**
      * The client can call this method to upgrade a module.
