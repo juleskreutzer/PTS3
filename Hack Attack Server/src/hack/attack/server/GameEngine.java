@@ -3,35 +3,20 @@ package hack.attack.server;
 import hack.attack.server.GameEngine.OnExecuteTick;
 import hack.attack.server.MinionEffect.OnEffectExpired;
 import hack.attack.server.enums.Effect;
-import hack.attack.server.enums.LogState;
-import hack.attack.server.exceptions.InvalidModuleEnumException;
-import hack.attack.server.enums.ModuleName;
-import hack.attack.server.enums.SpellName;
-import hack.attack.server.enums.SpellType;
 import java.awt.Point;
-import javafx.scene.input.*;
 import java.util.ArrayList;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.interfaces.ITargetable;
-import hack.attack.server.templates.SpellTemplate;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Ellipse;
 import hack.attack.server.interfaces.*;
-import hack.attack.server.logger.Log;
-import java.rmi.Remote;
 import java.util.HashMap;
 
 /*
@@ -68,7 +53,6 @@ public class GameEngine extends Thread implements MouseListener {
     
     private static GameEngine instance;
     
-    private GraphicsEngine graphicsEngine;
     private Map map;
     private ArrayList<Wave> waveList;
     private Wave currentWave;
@@ -109,7 +93,6 @@ public class GameEngine extends Thread implements MouseListener {
         // This is implemented due previous bugs that kept the gameengine thread running while the game was closed.
         setDaemon(true);
         
-        graphicsEngine = GraphicsEngine.getInstance();
         map = Map.getInstance();
         tickCompleteListeners = new ArrayList<>();
         unsubscribedCompleteListeners = new ArrayList<>();
@@ -129,8 +112,9 @@ public class GameEngine extends Thread implements MouseListener {
      * Mostly used to draw the initial components like the bases, roads and event handlers
      */
     private void preStart(){
-        graphicsEngine.drawRoad(map.getRoad());
         
+        // MOVE TO CLIENTSIDE
+/*        
         // Initialize all GUI buttons
         ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV",null);
         sniperav.setOnMouseClicked(new EventHandler<MouseEvent>(){
@@ -567,40 +551,13 @@ public class GameEngine extends Thread implements MouseListener {
         
         
         ImageView spellEncrypt = (ImageView)graphicsEngine.getNode("spellEncrypt",null);
-        
+        */
     }
     
     /**
      * Starts the game. From this point, the initial wave will be created and the game will run from this point on.
      */
-    public void startGame(Object[] interfaces){
-        try{
-            if(interfaces[0] instanceof IClientCreate)
-            {
-                this.create = (IClientCreate)interfaces[0];
-            }
-            else
-                throw new IncorrectInterfaceProvidedException("First object in array should be IClientCreate!");
-            
-            if(interfaces[1] instanceof IClientUpdate)
-            {
-                this.update = (IClientUpdate)interfaces[1];
-            }
-            else
-                throw new IncorrectInterfaceProvidedException("Second object in array should be IClientUpdate!");
-            
-            if(interfaces[2] instanceof IClientDelete)
-            {
-                this.delete = (IClientDelete)interfaces[2];
-            }
-            else
-                throw new IncorrectInterfaceProvidedException("Third object in array should be ICLientDelete!");
-        }
-        catch (IncorrectInterfaceProvidedException ex)
-        {
-            Log log = new Log(LogState.ERROR, ex.getMessage());
-        }
-        
+    public void startGame(){
         gameRunning = true;        
         
         Wave w = generateNextWave();
@@ -827,6 +784,8 @@ public class GameEngine extends Thread implements MouseListener {
         double health = playerA.getHealth();
         double coins = playerA.getBitcoins();
         int wave = currentWave.getWaveNr();
+        ((IClientUpdate)interfacesA.get("update")).updateLabels(playerA, playerB, waveNumber);
+        ((IClientUpdate)interfacesB.get("update")).updateLabels(playerB, playerA, waveNumber);
         graphicsEngine.drawLabels(wave, name, health, coins);
     }
     

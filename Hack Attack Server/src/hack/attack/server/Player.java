@@ -11,6 +11,7 @@ import hack.attack.server.BitcoinMiner.OnMineComplete;
 import hack.attack.server.enums.Effect;
 import hack.attack.server.templates.*;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author Igor
  */
-public class Player {
+public class Player implements Serializable {
     
     //Fields
     private double health; //amount of player's health

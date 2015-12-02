@@ -35,12 +35,24 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     private List<Account> automaticGameUsers;
     private List<Session> sessions;
     
-    public ServerAdapter() throws RemoteException
+    private static ServerAdapter instance;
+    
+    private ServerAdapter() throws RemoteException
     {
+        instance = this;
         customGameUsers = new ArrayList<>();
         automaticGameUsers = new ArrayList<>();
         sessions = new ArrayList<>();
             
+    }
+    
+    public static ServerAdapter getInstance(){
+        try {
+            return instance == null ? new ServerAdapter() : instance;
+        } catch (RemoteException ex) {
+            Logger.getLogger(ServerAdapter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override

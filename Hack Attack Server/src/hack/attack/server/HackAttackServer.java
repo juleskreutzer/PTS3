@@ -14,8 +14,6 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -58,13 +56,13 @@ public class HackAttackServer extends Application {
     public static void main(String[] args) {
         launch(args);
         try{
-        IServerConnect connect = new ServerAdapter();
-        IServerUpdate update = new ServerAdapter();
-        
-        Registry registry = LocateRegistry.createRegistry(7611);
+            IServerConnect connect = ServerAdapter.getInstance();
+            IServerUpdate update = ServerAdapter.getInstance();
 
-        Naming.rebind("rmi://localhost:7611/HackAttackServerConnect", connect);
-        Naming.rebind("rmi://localhost:7611/HackAttackServerUpdate", update);
+            Registry registry = LocateRegistry.createRegistry(7611);
+
+            Naming.rebind("rmi://localhost:7611/HackAttackServerConnect", connect);
+            Naming.rebind("rmi://localhost:7611/HackAttackServerUpdate", update);
         
         
         } catch(RemoteException | MalformedURLException ex) {
