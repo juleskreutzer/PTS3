@@ -93,17 +93,20 @@
             <Image url="hackattackfx/resources/interface/Spells/40x40/encrypt.png" backgroundLoading="false" />
           </image>
         </ImageView>
-        <ImageView fx:id="buildBitcoinMiner" fitHeight="40.0" fitWidth="40.0" layoutX="485.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="hackattackfx/resources/interface/Icons/Base/light/Bitcoin.png" backgroundLoading="false" />
-          </image>
-        </ImageView>
       </children>
     </AnchorPane>
     <AnchorPane fx:id="windowMain" layoutX="0.0" layoutY="70.0" prefHeight="527.0" prefWidth="1366.0" style="-fx-background-image: url(&quot;hackattackfx/resources/Background.png&quot;);">
       <children>
         <AnchorPane fx:id="windowTop" layoutX="0.0" layoutY="0.0" prefHeight="260.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 0 0 2 0;" />
-        <AnchorPane fx:id="windowDown" layoutX="0.0" layoutY="267.0" prefHeight="260.0001220703125" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 2 0 0 0;" />
+        <AnchorPane fx:id="windowDown" layoutX="0.0" layoutY="267.0" prefHeight="260.0001220703125" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 2 0 0 0;">
+          <children>
+            <ImageView fx:id="buildBitcoinMiner" fitHeight="40.0" fitWidth="40.0" layoutX="69.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="hackattackfx/resources/interface/Icons/Base/light/Bitcoin.png" backgroundLoading="false" />
+              </image>
+            </ImageView>
+          </children>
+        </AnchorPane>
       </children>
     </AnchorPane>
   </children>
