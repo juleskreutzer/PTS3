@@ -6,20 +6,26 @@
 package hack.attack.client;
 
 import hack.attack.client.enums.Effect;
-import hack.attack.client.exceptions.DuplicateListenerException;
+import hack.attack.client.enums.ModuleName;
+import hack.attack.client.exceptions.DuplicateSpawnException;
+import hack.attack.client.exceptions.InvalidModuleEnumException;
+import hack.attack.client.exceptions.InvalidObjectException;
 import hack.attack.client.exceptions.NoUpgradeAllowedException;
 import hack.attack.client.exceptions.NotEnoughBitcoinsException;
 import hack.attack.client.interfaces.*;
 import hack.attack.client.templates.*;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Ellipse;
 
 /**
  *
@@ -37,6 +43,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     private Account account;
     
     private static ClientAdapter instance;
+    
+    SpawnTargetImage st = null;
     
     private ClientAdapter()
     {
@@ -79,6 +87,14 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     }
     
     /**
+     * This method will return the ID of this client
+     * @return uID of the current user
+     */
+    public int getCurrentUserID()
+    {
+        return this.account.getUID();
+    }
+    /**
      * This method will return a HashMap that is needed to call the IServerConnect methods
      * @return HashMap<String, IClient> containing the following interfaces:
      * <ul>
@@ -98,47 +114,183 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     }
 
     @Override
-    public void drawNewModules(List<Module> modules) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void drawNewModules(List<Module> modules, int uID) {
+        try{
+            // Check if modules isn't empty
+            if(modules == null)
+            {
+                throw new IllegalArgumentException("Nothing to draw because modules are empty");
+            }
+            
+            // Modules isn't empty, draw them
+            for(Module m : modules)
+            {
+                engine.spawn(m, uID);
+            }
+        }
+        catch(IllegalArgumentException ex)
+        {
+            engine.showEndGame(ex.getMessage());
+        } catch (DuplicateSpawnException | InvalidObjectException ex) {
+            System.out.print(ex.getMessage());
+        }
     }
 
     @Override
-    public void drawNewMinions(List<Minion> minions) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void drawNewMinions(List<Minion> minions, int uID) {
+        try{
+            // Check if minions isn't empty
+            if(minions == null)
+            {
+                throw new IllegalArgumentException("Nothing to draw because modules are empty");
+            }
+            
+            // Minions isn't empty, draw them
+            for(Minion m : minions)
+            {
+                engine.spawn(m, uID);
+            }
+        }
+        catch(IllegalArgumentException ex)
+        {
+            engine.showEndGame(ex.getMessage());
+        } catch (DuplicateSpawnException | InvalidObjectException ex) {
+            System.out.print(ex.getMessage());
+        }
     }
 
     @Override
-    public void drawNewSpells(List<Spell> spells) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void drawNewSpells(List<Spell> spells, int uID) {
+        try{
+            // Check if spells isn't empty
+            if(spells == null)
+            {
+                throw new IllegalArgumentException("Nothing to draw because modules are empty");
+            }
+            
+            // Modules isn't empty, draw them
+            for(Spell m : spells)
+            {
+                engine.spawn(m, uID);
+            }
+        }
+        catch(IllegalArgumentException ex)
+        {
+            engine.showEndGame(ex.getMessage());
+        } catch (DuplicateSpawnException | InvalidObjectException ex) {
+            System.out.print(ex.getMessage());
+        }
     }
 
     @Override
-    public void redrawCurrentModules(List<Module> modules) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void redrawCurrentModules(List<Module> modules, int uID) {
+        try{
+            // Check if modules isn't empty
+            if(modules == null)
+            {
+                throw new IllegalArgumentException("Nothing to draw because modules are empty");
+            }
+            
+            // Modules isn't empty, draw them
+            for(Module m : modules)
+            {
+                engine.spawn(m, uID);
+            }
+        }
+        catch(IllegalArgumentException ex)
+        {
+            engine.showEndGame(ex.getMessage());
+        } catch (DuplicateSpawnException | InvalidObjectException ex) {
+            System.out.print(ex.getMessage());
+        }
     }
 
     @Override
-    public void redrawCurrentMinions(List<Minion> minions) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void redrawCurrentMinions(List<Minion> minions, int uID) {
+        try{
+            // Check if modules isn't empty
+            if(minions == null)
+            {
+                throw new IllegalArgumentException("Nothing to draw because modules are empty");
+            }
+            
+            // Modules isn't empty, draw them
+            for(Minion m : minions)
+            {
+                engine.spawn(m, uID);
+            }
+        }
+        catch(IllegalArgumentException ex)
+        {
+            engine.showEndGame(ex.getMessage());
+        } catch (DuplicateSpawnException | InvalidObjectException ex) {
+            System.out.print(ex.getMessage());
+        }
     }
 
     @Override
-    public void redrawCurrentSpells(List<Spell> minions) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void redrawCurrentSpells(List<Spell> spells, int uID) {
+        try{
+            // Check if spells isn't empty
+            if(spells == null)
+            {
+                throw new IllegalArgumentException("Nothing to draw because modules are empty");
+            }
+            
+            // Spells isn't empty, draw them
+            for(Spell m : spells)
+            {
+                engine.spawn(m, uID);
+            }
+        }
+        catch(IllegalArgumentException ex)
+        {
+            engine.showEndGame(ex.getMessage());
+        } catch (DuplicateSpawnException | InvalidObjectException ex) {
+            System.out.print(ex.getMessage());
+        }
     }
 
     @Override
-    public void deleteCurrentModules(List<Module> modules) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deleteCurrentModules(List<Module> modules, int uID) {
+        try{
+            if(modules == null)
+            {
+                throw new IllegalArgumentException("Nothing to despawn. (modules)");
+            }
+            
+            for(Module m : modules)
+            {
+                engine.deSpawn(m, uID);
+            }
+            
+        }catch(IllegalArgumentException | InvalidObjectException ex)
+        {
+            System.out.print(ex.getMessage());
+        }
     }
 
     @Override
-    public void deleteCurrentMinions(List<Minion> minions) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deleteCurrentMinions(List<Minion> minions, int uID) {
+        try{
+            if(minions == null)
+            {
+                throw new IllegalArgumentException("Nothing to despawn. (minions)");
+            }
+            
+            for(Minion m : minions)
+            {
+                engine.deSpawn(m, uID);
+            }
+        }
+        catch(IllegalArgumentException | InvalidObjectException ex)
+        {
+            System.out.print(ex.getMessage());
+        } 
     }
 
     @Override
-    public void deleteCurrentSpells(List<Spell> spells) {
+    public void deleteCurrentSpells(List<Spell> spells, int uID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -153,19 +305,20 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     * @return The object that the player has build
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to build the module
     */  
-    public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate injector) throws NotEnoughBitcoinsException{
+    public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate injector, Point position, int width, int height) throws NotEnoughBitcoinsException, InvalidModuleEnumException{
         update.buildModule(sessionKey, account.getUID(), injector);
+        SoftwareInjector si = new SoftwareInjector(injector, position, width, height);
+        return si;
         
     }
     
     /**
      * Retrieve a SoftwareInjector object from the modules field and call the Upgrade method from inside the class
      * @param injector The object the player want's to upgrade
-     * @return A Boolean indicating if the upgrade was successful. True: Success, False: Not success
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to upgrade the object
      * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
-    public boolean upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException
+    public void upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException
     {
         update.upgradeModule(sessionKey, account.getUID(), injector);
         
@@ -178,17 +331,16 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to build the BitcoinMiner
      */
     public BitcoinMiner buildBitcoinMiner(BitCoinMinerTemplate miner) throws NotEnoughBitcoinsException{
-        update.buildModule(sessionKey, account.getUID(), miner);
+        return (BitcoinMiner)update.buildModule(sessionKey, account.getUID(), miner);
     }
     
     /**
      * Retrieve a BitcoinMiner object from the modules field, lower the player bitcoins and call the Upgrade method from inside the class
      * @param miner The object the client want's to upgrade
-     * @return Boolean indicating if the upgrade was successful. True: Success, False: Not success
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to upgrade the object
      * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
-    public boolean upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
+    public void upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
         update.upgradeModule(sessionKey, account.getUID(), miner);
     }
     
@@ -205,11 +357,10 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     /**
      * Upgrade the CPUUpgrade instance to a higher level.
      * @param cpu The object the client want's to upgrade
-     * @return A boolean indicating if the upgrade was successful. True : Succes, False : Not succes
      * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to upgrade the module
      * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
-    public boolean upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
+    public void upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
         update.upgradeModule(sessionKey, account.getUID(), cpu);
     }
     
@@ -219,7 +370,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @return An defense object that the player has build.
      * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to build the module
      */
-    public Defense buildDefense(DefenseTemplate defense) throws NotEnoughBitcoinsException{
+    public Defense buildDefense(DefenseTemplate defense, Point position, int width, int height) throws NotEnoughBitcoinsException{
        update.buildModule(sessionKey, account.getUID(), defense);
     }
     
@@ -227,12 +378,402 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * Upgrade the Defense instance to a higher level
      * @param defense The Defence object the client want's to upgrade
      * @param effect An effect the player want's to give to the module when it's been upgraded.
-     * @return A boolean indicating if the upgrade was successful. True: Succes, False: Not success.
      * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to upgrade the defense object
      * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
-    public boolean upgradeDefense(Defense defense, Effect effect) throws NotEnoughBitcoinsException, NoUpgradeAllowedException{
+    public void upgradeDefense(Defense defense, Effect effect) throws NotEnoughBitcoinsException, NoUpgradeAllowedException{
         update.upgradeModule(sessionKey, account.getUID(), defense);
     }	
+
+    @Override
+    public void startGame() {
+        
+    }
+
+    @Override
+    public void initialize() {
+        
+        // Initialize all GUI buttons
+        ImageView sniperav = (ImageView)engine.getNode("buildSniperAV",null);
+        sniperav.setOnMouseClicked(new EventHandler<MouseEvent>(){
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                st = engine.drawModuleSpawnTarget(ModuleName.SNIPER_ANTIVIRUS);
+                
+                engine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+                    }
+                });
+                // Set a listener for a second click to occur
+                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event) {
+                        
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                                try {
+                                    int x = (int)st.getX();
+                                    int y = (int)st.getY();
+                                    if(!engine.isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                    {   
+                                        Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50);
+                                        engine.spawn(defense);
+                                        engine.deSpawn(st);
+                                        defense.activate();
+                                    }
+                                    else
+                                    {
+                                        engine.showError("You are not allowed to build here.");
+                                    }
+                                } catch (NotEnoughBitcoinsException ex) {
+                                    engine.showError(ex.getMessage());
+                                } 
+                        } else {
+                            System.out.println("dd");
+                            try {
+                                engine.deSpawn(st);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                });
+            }
+            
+        });
+        sniperav.setOnMouseEntered(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, null, 0,0);
+                    engine.drawModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        sniperav.setOnMouseExited(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                engine.drawModuleStats(null);
+            }
+        });
+        
+        ImageView scaleav = (ImageView)engine.getNode("buildScaleAV",null);
+        scaleav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                st = engine.drawModuleSpawnTarget(ModuleName.SCALE_ANTIVIRUS);
+                engine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+                    }
+                });
+                // Set a listener for a second click to occur
+                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event) {
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                            try {
+                                try {
+                                    int x = (int)st.getX();
+                                    int y = (int)st.getY();
+                                    if(!engine.isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                    {
+                                        Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50);
+                                        engine.spawn(defense);
+                                        engine.deSpawn(st);
+                                        defense.activate();
+                                    }
+                                    else{
+                                        engine.showError("You are not allowed to build here.");
+                                    }
+                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                                } 
+                            } catch (InvalidModuleEnumException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (NotEnoughBitcoinsException ex) {
+                                engine.showError(ex.getMessage());
+                            }
+                        } else {
+                            System.out.println("dd");
+                            try {
+                                engine.deSpawn(st);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                
+                });
+            }
+            
+        });
+        scaleav.setOnMouseEntered(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, null, 0,0);
+                    engine.drawModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        scaleav.setOnMouseExited(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                engine.drawModuleStats(null);
+            }
+        });
+        
+        ImageView bottlecapav = (ImageView)engine.getNode("buildBottlecapAV",null);
+        bottlecapav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                st = engine.drawModuleSpawnTarget(ModuleName.BOTTLECAP_ANTIVIRUS);
+                engine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+                    }
+                });
+                // Set a listener for a second click to occur
+                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event) {
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                            try {
+                                try {
+                                    int x = (int)st.getX();
+                                    int y = (int)st.getY();
+                                    if(!engine.isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                    {
+                                        Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50);
+                                        engine.spawn(defense);
+                                        engine.deSpawn(st);
+                                        defense.activate();
+                                    }
+                                    else
+                                    {
+                                        engine.showError("You are not allowed to build here.");
+                                    }
+                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } catch (InvalidModuleEnumException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (NotEnoughBitcoinsException ex)
+                            {
+                                engine.showError(ex.getMessage());
+                            }
+                        } else {
+                            System.out.println("dd");
+                            try {
+                                engine.deSpawn(st);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                
+                });
+            }
+            
+        });
+        bottlecapav.setOnMouseEntered(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, null, 0,0);
+                    engine.drawModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        bottlecapav.setOnMouseExited(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                engine.drawModuleStats(null);
+            }
+        });
+        
+        ImageView muscleav = (ImageView)engine.getNode("buildMuscleAV",null);
+        muscleav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+ 
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                st = engine.drawModuleSpawnTarget(ModuleName.MUSCLE_ANTIVIRUS);
+                engine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+                    }
+                });
+                // Set a listener for a second click to occur
+                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event) {
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                            try {
+                                try {
+                                    int x = (int)st.getX();
+                                    int y = (int)st.getY();
+                                    if(!engine.isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
+                                    {
+                                        Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50);
+                                        engine.spawn(defense);
+                                        engine.deSpawn(st);
+                                        defense.activate();
+                                    }
+                                    else
+                                    {
+                                        engine.showError("You are not allowed to build here.");
+                                    }
+                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } catch (InvalidModuleEnumException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (NotEnoughBitcoinsException ex)
+                            {
+                                engine.showError(ex.getMessage());
+                            }
+                        } else {
+                            System.out.println("dd");
+                            try {
+                                engine.deSpawn(st);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                
+                });
+            }
+            
+        });
+        muscleav.setOnMouseEntered(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, null, 0,0);
+                    engine.drawModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        muscleav.setOnMouseExited(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                engine.drawModuleStats(null);
+            }
+        });
+        
+        ImageView bitcoinminer = (ImageView)engine.getNode("buildBitcoinMiner",null);
+        bitcoinminer.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                Image i = bitcoinminer.getImage();
+                Point p = new Point((int)bitcoinminer.getX(),(int)bitcoinminer.getY());
+                try {
+                    BitcoinMiner miner = new BitcoinMiner(Data.DEFAULT_MODULE_BITCOINMINER_1,p,(int)i.getWidth(),(int)i.getHeight());
+                    buildBitcoinMiner(miner);
+                    engine.drawBaseModule(ModuleName.BITCOIN_MINER, true);
+                    miner.activate();
+                } catch (NotEnoughBitcoinsException ex) {
+                    engine.showError("Not enough bitcoins!");
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        });
+        bitcoinminer.setOnMouseEntered(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    BitcoinMiner module = new BitcoinMiner(Data.DEFAULT_MODULE_BITCOINMINER_1,null,0,0);
+                    engine.drawModuleStats(module);
+                } catch (InvalidModuleEnumException ex) {
+                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        bitcoinminer.setOnMouseExited(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                engine.drawModuleStats(null);
+            }
+        });
+        
+        ImageView spellFirewall = (ImageView)engine.getNode("spellFirewall",null);
+        spellFirewall.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                Spell spell = new Spell(Data.DEFAULT_SPELL_FIREWALL);
+                Ellipse range = engine.drawSpellRange(spell);
+                engine.getScene().setOnMouseMoved(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event) {
+                        range.setCenterX(event.getSceneX());
+                        range.setCenterY(event.getSceneY());
+                    }
+                
+                });
+                range.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event) {
+                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                        for(Minion m : currentWave.minionsAsList()){
+                            if(targetInRange(range.getCenterX(), range.getCenterY(), spell.getRange(),m)){
+                                targets.add(m);
+                            }
+                        }
+                        executeSpell(spell, targets);
+                    }
+                    
+                });
+            }
+            
+        });
+        
+        ImageView spellLockdown = (ImageView)engine.getNode("spellLockdown",null);
+        
+        
+        ImageView spellVirusscan = (ImageView)engine.getNode("spellVirusscan",null);
+        
+        
+        ImageView spellCorrup = (ImageView)engine.getNode("spellCorrupt",null);
+        
+        
+        ImageView spellDisrupt = (ImageView)engine.getNode("spellDisrupt",null);
+        
+        
+        ImageView spellEncrypt = (ImageView)engine.getNode("spellEncrypt",null);
+        
+    }
+    
+    
     
 }

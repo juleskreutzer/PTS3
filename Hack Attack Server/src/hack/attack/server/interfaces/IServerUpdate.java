@@ -29,7 +29,7 @@ public interface IServerUpdate extends Remote {
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param module The module that the client wants to build
      */
-    public void buildModule(String sessionKey, int uID, Module module);
+    public Module buildModule(String sessionKey, int uID, Module module);
     
     /**
      * The client can call this method to execute a spell.
@@ -46,7 +46,7 @@ public interface IServerUpdate extends Remote {
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param spell The spell that the client wants to execute
      */
-    public void executeSpell(String sessionKey, int uID, Spell spell);
+    public Spell executeSpell(String sessionKey, int uID, Spell spell);
     
     /**
      * The client can call this method to upgrade a module.
@@ -61,5 +61,5 @@ public interface IServerUpdate extends Remote {
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param module Module the client wants to upgrade
      */
-    public void upgradeModule(String sessionKey, int uID, Module module);
+    public boolean upgradeModule(String sessionKey, int uID, Module module);
 }

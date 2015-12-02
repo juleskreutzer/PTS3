@@ -95,4 +95,9 @@ public class ModuleImage extends ObjectImage {
             return hovered;
     }
     
+    public Module getModule()
+    {
+        return module;
+    }
+    
 }

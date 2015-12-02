@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hackattackfx;
+package hack.attack.client;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -49,7 +49,7 @@ public class FXMLDocumentController implements Initializable {
 
     }    
     
-    public void addNode(Node node){
+    public void addNode(Node node, boolean isCurrentUser){
         Platform.runLater(new Runnable(){
 
             @Override
@@ -60,7 +60,7 @@ public class FXMLDocumentController implements Initializable {
         });
     }
     
-    public void removeNode(Node node){
+    public void removeNode(Node node, boolean isCurrentUser){
         Platform.runLater(new Runnable(){
 
             @Override

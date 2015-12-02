@@ -26,8 +26,9 @@ public interface IClientCreate extends IClient {
      * The server should only call this method when the module-list isn't null, but for some extra safety we could check
      * the module list on the server to see if it is null.
      * @param modules List of modules the client needs to draw
+     * @param uID
      */
-    public void drawNewModules(List<Module> modules);
+    public void drawNewModules(List<Module> modules, int uID);
     
     /**
      * This method is called by the server and is used to display new minions on the client.
@@ -36,8 +37,9 @@ public interface IClientCreate extends IClient {
      * 
      * The server shouldn't call this method when the list of minions is null, but we can check it for our client safety.
      * @param minions List of minions the client needs to draw
+     * @param uID
      */
-    public void drawNewMinions(List<Minion> minions);
+    public void drawNewMinions(List<Minion> minions, int uID);
     
     /**
      * This method is called by the server and is used to display the spells a player has executed on the client.
@@ -47,7 +49,18 @@ public interface IClientCreate extends IClient {
      * 
      * The server shouldn't call this method when the spell-list is null, but we can check if the list is null for our client safety.
      * @param spells List of spells the client needs to draw
+     * @param uID
      */
-    public void drawNewSpells(List<Spell> spells);
+    public void drawNewSpells(List<Spell> spells, int uID);
+    
+    /**
+     * 
+     */
+    public void startGame();
+    
+    /**
+     * 
+     */
+    public void initialize();
     
 }

@@ -40,7 +40,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
+import javafx.geometry.Point2D;
 /**
  *
  * @author Jasper Rouwhorst
@@ -113,23 +113,10 @@ public class GraphicsEngine{
         
         adapter = ClientAdapter.getInstance();
         
-        initialize();
-        
     }
     
     public static GraphicsEngine getInstance(){
         return instance == null ? new GraphicsEngine() : instance;
-    }
-    
-    private void initialize(){
-        GameEngine.getInstance().setOnTickCompleteListener(new GameEngine.OnCompleteTick() {
-
-            @Override
-            public void tickComplete(long elapsedtime) {
-                update();
-            }
-            
-        });
     }
     
     /**
@@ -163,8 +150,12 @@ public class GraphicsEngine{
      * @throws hackattackfx.exceptions.DuplicateSpawnException 
      * @throws hackattackfx.exceptions.InvalidObjectException 
      */
-    public void spawn(Object object) throws DuplicateSpawnException, InvalidObjectException{
+    public void spawn(Object object, int uID) throws DuplicateSpawnException, InvalidObjectException{
         // Checks if the object doesn't exists already
+        
+        int currentID = ClientAdapter.getInstance().getCurrentUserID();
+        boolean currentUser = uID == currentID;
+        
         List<Node> list = parent.getAllNodes();
         for(Node node : list){
             if(node instanceof ObjectImage){
@@ -178,13 +169,13 @@ public class GraphicsEngine{
         if(object instanceof Minion){
             Minion m = (Minion)object;
             MinionImage mi = new MinionImage(m);
-            parent.addNode(mi);
-            parent.addNode(mi.getHealthBar());
+            parent.addNode(mi, currentUser);
+            parent.addNode(mi.getHealthBar(), currentUser);
         }else if(object instanceof Module){
             Module m = (Module) object;
-            parent.addNode(new ModuleImage((Module)object));
+            parent.addNode(new ModuleImage((Module)object), currentUser);
         }else if(object instanceof Spell){
-            parent.addNode(new SpellImage((Spell)object));
+            parent.addNode(new SpellImage((Spell)object), currentUser);
         }else{
             throw new InvalidObjectException("The object you tried to spawn doesn't have a corresponding ObjectImage implementation");
         }
@@ -194,22 +185,40 @@ public class GraphicsEngine{
      * Check if the give {@link Node} exists then remove it from the UI.
      * @param n The node to despawn
      */
-    public void deSpawn(Node n) throws InvalidObjectException{
-        if(!parent.getAllNodes().contains(n)){
-            throw new InvalidObjectException("The despawned object does not exist");
-        }
+    public void deSpawn(Object object, int uID) throws InvalidObjectException{
         
-        if(n instanceof MinionImage)
+        int currentID = ClientAdapter.getInstance().getCurrentUserID();
+        boolean isCurrentUser = currentID == uID;
+        
+        ObservableList<Node> nodes = parent.getAllNodes();
+        for(Node n : nodes)
         {
-            Minion m = ((MinionImage)n).getMinion();
-            if(m.reachedBase()){
-                drawEffect(Effect.REACHED_BASE, m);
-            }else{
-                drawEffect(Effect.DIE, m);
+            if(object instanceof Minion)
+            {
+                Minion minion = (Minion)object;
+                Minion m = ((MinionImage)n).getMinion();
+                if(minion == m){
+                    if(m.reachedBase()){
+                        drawEffect(Effect.REACHED_BASE, m);
+                    }else{
+                        drawEffect(Effect.DIE, m);
+                    }
+                    parent.removeNode(n, isCurrentUser);
+                }
+            }
+            if(object instanceof Module)
+            {
+                Module module = (Module)object;
+                Module m = ((ModuleImage)n).getModule();
+                if(module == m)
+                {
+                    parent.removeNode(n, isCurrentUser);
+                }
             }
         }
-        parent.removeNode(n);
     }
+    
+    
     
     public double update(){
         draw();
@@ -236,14 +245,7 @@ public class GraphicsEngine{
                             hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
                             
                         }
-                        else{
-                            try {
-                                deSpawn(n);
-                                deSpawn(hb);
-                            } catch (InvalidObjectException ex) {
-                                Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
+                        
 
                     }else if(n instanceof ModuleImage){
                         ModuleImage mi = (ModuleImage)n;
@@ -253,20 +255,16 @@ public class GraphicsEngine{
                                 drawModuleRange((Module)mi.getReference());
                             }
                         }else{
-                                try {
-                                    // loops through all nodes, if it is an ModuleRange node, remove it.
-                                        Iterator i = parent.getAllNodes().iterator();
-                                        while (i.hasNext())
-                                        {
-                                            Node node = (Node)i.next();
-                                            if ("ModuleRange".equals(node.getId())) {
-                                                deSpawn(node);
-                                            }
-                                        }
-                                    moduleRange = null;
-                                } catch (InvalidObjectException ex) {
-                                    Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
+                            // loops through all nodes, if it is an ModuleRange node, remove it.
+                            Iterator i = parent.getAllNodes().iterator();
+                            while (i.hasNext())
+                            {
+                                Node node = (Node)i.next();
+                                if ("ModuleRange".equals(node.getId())) {
+                                    parent.removeNode(node, true);
                                 }
+                            }
+                            moduleRange = null;
                         }
                         
                         
@@ -318,10 +316,15 @@ public class GraphicsEngine{
         
     }
     
-    public void drawRoad(Road road){
-        for(Path p : road.getPaths()){
+    public void drawRoad(Road roadA, Road roadB){
+        for(Path p : roadA.getPaths()){
             PathImage image = new PathImage(p);
-            parent.addNode(image);
+            parent.addNode(image, true);
+        }
+        
+        for(Path p : roadB.getPaths()){
+            PathImage image = new PathImage(p);
+            parent.addNode(image, false);
         }
     }
     
@@ -694,5 +697,31 @@ public class GraphicsEngine{
         highlight.setStrokeWidth(1);
         highlight.setId("highlight");
         parent.addNode(highlight);
+    }
+    
+     /**
+     * Calculates if there is an existing node in the given square
+     * @param x the x-location of the left upper corner
+     * @param y the y-location of the left upper corner
+     * @param width the width of the square
+     * @param height the height of the square
+     * @return whether or not the given square is overlapping an existing node
+     */
+    public boolean isPointInNode(int x, int y, int width, int height) {
+            ObservableList<Node> nodes = parent.getAllNodes();
+            for(Node n : nodes)
+            {
+                if(n instanceof ModuleImage || n instanceof PathImage)
+                {
+                    Point2D p1 = new Point2D(x, y); // left upper corner
+                    Point2D p2 = new Point2D(x, y + height); // left bottom corner
+                    Point2D p3 = new Point2D(x + width, y); // right upper corner
+                    Point2D p4 = new Point2D(x + width, y + height); // right bottom corner
+                    Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height); // the middle
+                    boolean b = n.contains(p1) || n.contains(p2) || n.contains(p3) || n.contains(p4) || n.contains(p5);
+                    if (b) return true;
+                }
+            }
+            return false;
     }
 }

@@ -17,20 +17,23 @@ public interface IClientUpdate extends IClient {
     /**
      * 
      * @param modules 
+     * @param uID 
      */
-    public void redrawCurrentModules(List<Module> modules);
+    public void redrawCurrentModules(List<Module> modules, int uID);
     
     /**
      * 
      * @param minions 
+     * @param uID 
      */
-    public void redrawCurrentMinions(List<Minion> minions);
+    public void redrawCurrentMinions(List<Minion> minions, int uID);
     
     /**
      * 
-     * @param minions 
+     * @param spells
+     * @param uID
      */
-    public void redrawCurrentSpells(List<Spell> minions);
+    public void redrawCurrentSpells(List<Spell> spells, int uID);
     
     /**
      * This method should be called when an event occurs at the server that has influence on the player's health or bitcoins.
