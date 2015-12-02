@@ -306,9 +306,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to build the module
     */  
     public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate injector, Point position, int width, int height) throws NotEnoughBitcoinsException, InvalidModuleEnumException{
-        update.buildModule(sessionKey, account.getUID(), injector);
-        SoftwareInjector si = new SoftwareInjector(injector, position, width, height);
-        return si;
+        return (SoftwareInjector)update.buildModule(sessionKey, account.getUID(), injector, position, width, height);
+        
         
     }
     
@@ -330,8 +329,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @return an BitcoinMiner object that the player has build.
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to build the BitcoinMiner
      */
-    public BitcoinMiner buildBitcoinMiner(BitCoinMinerTemplate miner) throws NotEnoughBitcoinsException{
-        return (BitcoinMiner)update.buildModule(sessionKey, account.getUID(), miner);
+    public BitcoinMiner buildBitcoinMiner(BitCoinMinerTemplate miner, Point position, int width, int height) throws NotEnoughBitcoinsException{
+        return (BitcoinMiner)update.buildModule(sessionKey, account.getUID(), miner, position, width, height);
     }
     
     /**
@@ -350,8 +349,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @return an CPUUpgrade object that the player has build.
      * @throws NotEnoughBitcoinsException when the player hasn't enough bitcoins to build the CPUUpgrade object
      */
-    public CPUUpgrade buildCPUUpgrade(CPUUpgradeTemplate cpu) throws NotEnoughBitcoinsException{
-       update.buildModule(sessionKey, account.getUID(), cpu);
+    public CPUUpgrade buildCPUUpgrade(CPUUpgradeTemplate cpu, Point position, int width, int height) throws NotEnoughBitcoinsException{
+       return (CPUUpgrade)update.buildModule(sessionKey, account.getUID(), cpu, position, width, height);
     }
     
     /**
@@ -371,7 +370,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to build the module
      */
     public Defense buildDefense(DefenseTemplate defense, Point position, int width, int height) throws NotEnoughBitcoinsException{
-       update.buildModule(sessionKey, account.getUID(), defense);
+       return (Defense)update.buildModule(sessionKey, account.getUID(), defense, position, width, height);
     }
     
     /**
@@ -422,8 +421,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                     if(!engine.isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                     {   
                                         Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50);
-                                        engine.spawn(defense);
-                                        engine.deSpawn(st);
+                                        engine.spawn(defense, account.getUID());
+                                        engine.deSpawn(st, account.getUID());
                                         defense.activate();
                                     }
                                     else
@@ -432,11 +431,15 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                     }
                                 } catch (NotEnoughBitcoinsException ex) {
                                     engine.showError(ex.getMessage());
-                                } 
+                                } catch (DuplicateSpawnException ex) { 
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } 
                         } else {
                             System.out.println("dd");
                             try {
-                                engine.deSpawn(st);
+                                engine.deSpawn(st, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -491,8 +494,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                     if(!engine.isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                     {
                                         Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50);
-                                        engine.spawn(defense);
-                                        engine.deSpawn(st);
+                                        engine.spawn(defense, account.getUID());
+                                        engine.deSpawn(st, account.getUID());
                                         defense.activate();
                                     }
                                     else{
@@ -501,15 +504,13 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                 } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 } 
-                            } catch (InvalidModuleEnumException ex) {
-                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (NotEnoughBitcoinsException ex) {
                                 engine.showError(ex.getMessage());
                             }
                         } else {
                             System.out.println("dd");
                             try {
-                                engine.deSpawn(st);
+                                engine.deSpawn(st, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -565,8 +566,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                     if(!engine.isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                     {
                                         Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50);
-                                        engine.spawn(defense);
-                                        engine.deSpawn(st);
+                                        engine.spawn(defense, account.getUID());
+                                        engine.deSpawn(st, account.getUID());
                                         defense.activate();
                                     }
                                     else
@@ -576,8 +577,6 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                 } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                            } catch (InvalidModuleEnumException ex) {
-                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (NotEnoughBitcoinsException ex)
                             {
                                 engine.showError(ex.getMessage());
@@ -585,7 +584,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                         } else {
                             System.out.println("dd");
                             try {
-                                engine.deSpawn(st);
+                                engine.deSpawn(st, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -641,8 +640,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                     if(!engine.isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
                                     {
                                         Defense defense = buildDefense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50);
-                                        engine.spawn(defense);
-                                        engine.deSpawn(st);
+                                        engine.spawn(defense, account.getUID());
+                                        engine.deSpawn(st, account.getUID());
                                         defense.activate();
                                     }
                                     else
@@ -652,8 +651,6 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                 } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                            } catch (InvalidModuleEnumException ex) {
-                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (NotEnoughBitcoinsException ex)
                             {
                                 engine.showError(ex.getMessage());
@@ -661,7 +658,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                         } else {
                             System.out.println("dd");
                             try {
-                                engine.deSpawn(st);
+                                engine.deSpawn(st, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -697,14 +694,13 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                 Image i = bitcoinminer.getImage();
                 Point p = new Point((int)bitcoinminer.getX(),(int)bitcoinminer.getY());
                 try {
-                    BitcoinMiner miner = new BitcoinMiner(Data.DEFAULT_MODULE_BITCOINMINER_1,p,(int)i.getWidth(),(int)i.getHeight());
-                    buildBitcoinMiner(miner);
-                    engine.drawBaseModule(ModuleName.BITCOIN_MINER, true);
-                    miner.activate();
+                    BitcoinMiner miner = buildBitcoinMiner(Data.DEFAULT_MODULE_BITCOINMINER_1,p,(int)i.getWidth(),(int)i.getHeight());
+                    if(miner != null){
+                        engine.drawBaseModule(ModuleName.BITCOIN_MINER, true);
+                        miner.activate();
+                    }
                 } catch (NotEnoughBitcoinsException ex) {
                     engine.showError("Not enough bitcoins!");
-                } catch (InvalidModuleEnumException ex) {
-                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             
@@ -745,6 +741,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                     @Override
                     public void handle(MouseEvent event) {
                         ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                        
+                        
                         for(Minion m : currentWave.minionsAsList()){
                             if(targetInRange(range.getCenterX(), range.getCenterY(), spell.getRange(),m)){
                                 targets.add(m);

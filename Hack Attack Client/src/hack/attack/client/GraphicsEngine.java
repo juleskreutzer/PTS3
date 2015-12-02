@@ -199,9 +199,9 @@ public class GraphicsEngine{
                 Minion m = ((MinionImage)n).getMinion();
                 if(minion == m){
                     if(m.reachedBase()){
-                        drawEffect(Effect.REACHED_BASE, m);
+                        drawEffect(Effect.REACHED_BASE, m, isCurrentUser);
                     }else{
-                        drawEffect(Effect.DIE, m);
+                        drawEffect(Effect.DIE, m, isCurrentUser);
                     }
                     parent.removeNode(n, isCurrentUser);
                 }
@@ -381,7 +381,7 @@ public class GraphicsEngine{
         Image targetimage = new Image(file.toURI().toString());
         spawnTarget.setImage(targetimage);
         spawnTarget.setOpacity(0.5);
-        parent.addNode(spawnTarget);
+        parent.addNode(spawnTarget, true);
         
         return spawnTarget;
     }
@@ -399,7 +399,7 @@ public class GraphicsEngine{
         rangecircle.setStrokeWidth(3);
         rangecircle.setId("ModuleRange");
         moduleRange = rangecircle;
-        parent.addNode(rangecircle);
+        parent.addNode(rangecircle, true);
         return rangecircle;
     }
     
@@ -410,7 +410,7 @@ public class GraphicsEngine{
         rangecircle.setFill(Color.BLUE);
         rangecircle.setOpacity(0.7);
         rangecircle.setId("SpellRange");
-        parent.addNode(rangecircle);
+        parent.addNode(rangecircle, true);
         return rangecircle;
     }
     
@@ -463,7 +463,7 @@ public class GraphicsEngine{
      * @param reward Used when a minion is killed to show it's reward in bitcoins.
      * @param damage Used when a player is attacked to show the amount of damage the minion did to the player
      */
-    public void drawEffect(Effect effect, ITargetable target)
+    public void drawEffect(Effect effect, ITargetable target, boolean isCurrentUser)
     {
         Label label;
         
@@ -489,7 +489,7 @@ public class GraphicsEngine{
                     label.setLayoutY(position.getY());
                     label.setTextFill(Color.GREEN);
                     label.setText(String.format("+ %s ฿", reward));
-                    parent.addNode(label);
+                    parent.addNode(label, false);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -497,7 +497,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                            parent.removeNode(label);
+                            parent.removeNode(label, isCurrentUser);
                         }
 
 
@@ -510,7 +510,7 @@ public class GraphicsEngine{
                     label.setLayoutY(position.getY());
                     label.setTextFill(Color.RED);
                     label.setText(String.format("- %s HP", damage));
-                    parent.addNode(label);
+                    parent.addNode(label, isCurrentUser);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -518,7 +518,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                            parent.removeNode(label);
+                            parent.removeNode(label, isCurrentUser);
                         }
 
 
@@ -530,7 +530,7 @@ public class GraphicsEngine{
                     label.setTextFill(Color.GREEN);
                     label.setLayoutX(position.getX());
                     label.setLayoutY(position.getY());
-                    parent.addNode(label);
+                    parent.addNode(label, isCurrentUser);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -538,7 +538,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                        parent.removeNode(label);
+                        parent.removeNode(label, isCurrentUser);
                     }
 
                     });
@@ -550,7 +550,7 @@ public class GraphicsEngine{
                     label.setTextFill(Color.RED);
                     label.setLayoutX(position.getX());
                     label.setLayoutY(position.getY());
-                    parent.addNode(label);
+                    parent.addNode(label, isCurrentUser);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -558,7 +558,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                        parent.removeNode(label);
+                        parent.removeNode(label, isCurrentUser);
                     }
 
                     });
@@ -570,7 +570,7 @@ public class GraphicsEngine{
                     label.setTextFill(Color.PURPLE);
                     label.setLayoutX(position.getX());
                     label.setLayoutY(position.getY());
-                    parent.addNode(label);
+                    parent.addNode(label, isCurrentUser);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -578,7 +578,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                        parent.removeNode(label);
+                        parent.removeNode(label, isCurrentUser);
                     }
 
                     });
@@ -590,7 +590,7 @@ public class GraphicsEngine{
                     label.setTextFill(Color.PURPLE);
                     label.setLayoutX(position.getX());
                     label.setLayoutY(position.getY());
-                    parent.addNode(label);
+                    parent.addNode(label, isCurrentUser);
                     fadeOut.setNode(label);
                     fadeOut.playFromStart();
 
@@ -598,7 +598,7 @@ public class GraphicsEngine{
 
                         @Override
                         public void handle(ActionEvent event) {
-                        parent.removeNode(label);
+                        parent.removeNode(label, isCurrentUser);
                     }
 
                     });
@@ -696,7 +696,8 @@ public class GraphicsEngine{
         highlight.setOpacity(50);
         highlight.setStrokeWidth(1);
         highlight.setId("highlight");
-        parent.addNode(highlight);
+        System.out.print("Can we change this in GraphicsEngine (CreateHighLight)?");
+        parent.addNode(highlight, true);
     }
     
      /**
