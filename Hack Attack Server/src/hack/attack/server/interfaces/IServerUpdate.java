@@ -31,6 +31,10 @@ public interface IServerUpdate extends Remote {
      * @param sessionKey a unique key to identify the session on the server, received after the 'hand shake'
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param module The module that the client wants to build
+     * @param position
+     * @param width
+     * @param height
+     * @return 
      */
     public Module buildModule(String sessionKey, int uID, ModuleTemplate module, Point position, int width, int height);
     
@@ -48,6 +52,7 @@ public interface IServerUpdate extends Remote {
      * @param sessionKey a unique key to identify the session on the server, received after the 'hand shake'
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param spell The spell that the client wants to execute
+     * @return 
      */
     public Spell executeSpell(String sessionKey, int uID, SpellTemplate spell);
     

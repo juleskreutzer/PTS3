@@ -9,6 +9,8 @@ import hack.attack.server.enums.*;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.interfaces.*;
 import hack.attack.server.logger.Log;
+import hack.attack.server.templates.*;
+import java.awt.Point;
 import java.lang.reflect.AccessibleObject;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -56,7 +58,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     }
 
     @Override
-    public HashMap<String, IServerUpdate> hostCustomGame(Account account, HashMap<String, Remote> interfaces) {
+    public HashMap<String, IServerUpdate> hostCustomGame(Account account, HashMap<String, IClient> interfaces) {
         customGameUsers.add(account);
         
         String key = "";
@@ -91,7 +93,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     }
 
     @Override
-    public HashMap<String, IServerUpdate> joinCustomGame(Account account, String targetUsername, HashMap<String, Remote> interfaces) {
+    public HashMap<String, IServerUpdate> joinCustomGame(Account account, String targetUsername, HashMap<String, IClient> interfaces) {
         int count = 0;
         
         try{
@@ -129,7 +131,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     }
 
     @Override
-    public HashMap<String, IServerUpdate> findMatch(Account account, HashMap<String, Remote> interfaces) {
+    public HashMap<String, IServerUpdate> findMatch(Account account, HashMap<String, IClient> interfaces) {
         int modulo = automaticGameUsers.size() % 2;
         
         if(modulo == 1)
@@ -211,9 +213,10 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
      * @param sessionKey Unique key to identify the session on the server
      * @param uID Unique identifier for the user
      * @param module Module that player would like to build
+     * @return 
      */
     @Override
-    public void buildModule(String sessionKey, int uID, Module module) {
+    public Module buildModule(String sessionKey, int uID, ModuleTemplate module, Point position, int width, int height) {
         try{
             Session session = null;
         
@@ -236,9 +239,10 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             switch(module.getModuleName())
             {
                 case BITCOIN_MINER:
-                    if(module instanceof BitcoinMiner)
+                    if(module instanceof BitCoinMinerTemplate)
                     {
-                        session.getEngine().getPlayer().buildBitcoinMiner((BitcoinMiner) module);
+                        BitcoinMiner miner = new BitcoinMiner(session.getEngine(), (BitCoinMinerTemplate)module, position, width, height);
+                        session.getEngine().getPlayer(uID).buildBitcoinMiner(miner);
                     }
                     else
                     {
@@ -246,9 +250,9 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     }
                     break;
                 case SOFTWARE_INJECTOR:
-                    if(module instanceof SoftwareInjector)
+                    if(module instanceof SoftwareInjectorTemplate)
                     {
-                        session.getEngine().getPlayer().buildSoftwareInjector((SoftwareInjector) module);
+                        session.getEngine().getPlayer(uID).buildSoftwareInjector((SoftwareInjectorTemplate)module, position, width, height);
                     }
                     else
                     {
@@ -256,9 +260,10 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     }
                     break;
                 case CPU_UPGRADE:
-                    if(module instanceof CPUUpgrade)
+                    if(module instanceof CPUUpgradeTemplate)
                     {
-                        session.getEngine().getPlayer().buildCPUUpgrade((CPUUpgrade) module);
+                        CPUUpgrade cpu = new CPUUpgrade(session.getEngine(), (CPUUpgradeTemplate) module, position, width, height);
+                        session.getEngine().getPlayer(uID).buildCPUUpgrade(cpu);
                     }
                     else
                     {
@@ -266,9 +271,10 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     }
                     break;
                 case SNIPER_ANTIVIRUS:
-                    if(module instanceof Defense)
+                    if(module instanceof DefenseTemplate)
                     {
-                        session.getEngine().getPlayer().buildDefense((Defense) module);
+                        Defense defense = new Defense(session.getEngine(), (DefenseTemplate) module, position, width, height);
+                        session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
                     {
@@ -276,9 +282,10 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     }
                     break;
                 case BOTTLECAP_ANTIVIRUS:
-                    if(module instanceof Defense)
+                    if(module instanceof DefenseTemplate)
                     {
-                        session.getEngine().getPlayer().buildDefense((Defense) module);
+                        Defense defense = new Defense(session.getEngine(), (DefenseTemplate) module, position, width, height);
+                        session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
                     {
@@ -286,9 +293,10 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     }
                     break;
                 case SCALE_ANTIVIRUS:
-                    if(module instanceof Defense)
+                    if(module instanceof DefenseTemplate)
                     {
-                        session.getEngine().getPlayer().buildDefense((Defense) module);
+                        Defense defense = new Defense(session.getEngine(), (DefenseTemplate) module, position, width, height);
+                        session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
                     {
@@ -296,9 +304,10 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     }
                     break;
                 case MUSCLE_ANTIVIRUS:
-                    if(module instanceof Defense)
+                    if(module instanceof DefenseTemplate)
                     {
-                        session.getEngine().getPlayer().buildDefense((Defense) module);
+                        Defense defense = new Defense(session.getEngine(), (DefenseTemplate) module, position, width, height);
+                        session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
                     {
@@ -312,19 +321,19 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 
             }
         }
-        catch(InvalidSessionKeyException | InvalidModuleEnumException | InvalidObjectException ex)
+        catch(InvalidSessionKeyException | InvalidModuleEnumException | InvalidObjectException  ex)
         {
             Log log = new Log(LogState.ERROR, ex.getMessage());
+        } catch (NotEnoughBitcoinsException ex) {
+            new Log(LogState.WARNING, ex.getMessage());
         }
-        catch(NotEnoughBitcoinsException ex)
-        {
-            Log log = new Log(LogState.WARNING, ex.getMessage());
-        }
+        
+        return null;
     }
 
     
     @Override
-    public void executeSpell(String sessionKey, int uID, Spell spell) {
+    public Spell executeSpell(String sessionKey, int uID, SpellTemplate spell) {
         try{
             Session session = null;
             for(Session s : sessions)
@@ -373,10 +382,12 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
         {
             Log log = new Log(LogState.WARNING, ex.getMessage());
         }
+        
+        return null;
     }
 
     @Override
-    public void upgradeModule(String sessionKey, int uID, Module module) {
+    public boolean upgradeModule(String sessionKey, int uID, Module module) {
         try{
             Session session = null;
             for(Session s : sessions)
@@ -397,7 +408,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case BITCOIN_MINER:
                     if(module instanceof BitcoinMiner)
                     {
-                        session.getEngine().getPlayer().upgradeBitcoinMiner((BitcoinMiner) module);
+                        session.getEngine().getPlayer(uID).upgradeBitcoinMiner((BitcoinMiner) module);
                     }
                     else
                     {
@@ -407,7 +418,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case CPU_UPGRADE:
                     if(module instanceof CPUUpgrade)
                     {
-                        session.getEngine().getPlayer().upgradeCPUUpgrade((CPUUpgrade) module);
+                        session.getEngine().getPlayer(uID).upgradeCPUUpgrade((CPUUpgrade) module);
                     }
                     else
                     {
@@ -417,7 +428,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case SOFTWARE_INJECTOR:
                     if(module instanceof SoftwareInjector)
                     {
-                        session.getEngine().getPlayer().upgradeSoftwareInjector((SoftwareInjector) module);
+                        session.getEngine().getPlayer(uID).upgradeSoftwareInjector((SoftwareInjector) module);
                     }
                     else
                     {
@@ -427,7 +438,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case SNIPER_ANTIVIRUS:
                     if(module instanceof Defense)
                     {
-                        session.getEngine().getPlayer().upgradeDefense((Defense) module, null);
+                        session.getEngine().getPlayer(uID).upgradeDefense((Defense) module, null);
                     }
                     else
                     {
@@ -437,7 +448,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case SCALE_ANTIVIRUS:
                     if(module instanceof Defense)
                     {
-                        session.getEngine().getPlayer().upgradeDefense((Defense) module, null);
+                        session.getEngine().getPlayer(uID).upgradeDefense((Defense) module, null);
                     }
                     else
                     {
@@ -447,7 +458,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case MUSCLE_ANTIVIRUS:
                     if(module instanceof Defense)
                     {
-                        session.getEngine().getPlayer().upgradeDefense((Defense) module, null);
+                        session.getEngine().getPlayer(uID).upgradeDefense((Defense) module, null);
                     }
                     else
                     {
@@ -457,7 +468,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case BOTTLECAP_ANTIVIRUS:
                     if(module instanceof Defense)
                     {
-                        session.getEngine().getPlayer().upgradeDefense((Defense) module, null);
+                        session.getEngine().getPlayer(uID).upgradeDefense((Defense) module, null);
                     }
                     else
                     {
@@ -472,9 +483,11 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
         {
             Log log = new Log(LogState.ERROR, ex.getMessage());
         }
-        catch(NotEnoughBitcoinsException | NoUpgradeAllowedException ex)
+        catch(NotEnoughBitcoinsException ex)
         {
             Log log = new Log(LogState.WARNING, ex.getMessage());
         }
+        
+        return false;
     }
 }

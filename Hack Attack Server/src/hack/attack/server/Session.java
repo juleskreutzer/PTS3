@@ -21,7 +21,7 @@ public class Session {
     private Account playerB;
     private GameEngine engine;
     
-    public Session(String key, HashMap<String, Remote> interfaces, Account PlayerA)
+    public Session(String key, HashMap<String, IClient> interfaces, Account PlayerA)
     {
         this.sessionKey = key;
         this.playerA = PlayerA;
@@ -42,7 +42,7 @@ public class Session {
         return this.playerB;
     }
     
-    public void joinSession(Account account, HashMap<String, Remote> interfaces)
+    public void joinSession(Account account, HashMap<String, IClient> interfaces)
     {
         this.playerB = account;
     }

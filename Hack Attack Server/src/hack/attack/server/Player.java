@@ -33,6 +33,7 @@ public class Player {
     private double bitcoins; //amount of player's currency in bitcoins
     private Point baseLocation;
     private List<Module> modules;
+    private int uID;
     
     public Player(){}
     /**
@@ -42,12 +43,13 @@ public class Player {
      * @param b bitcoins value for the player
      * @param l baselocation for the player
      */
-    public Player(GameEngine engine, double h, String n, double b, Point l) {
+    public Player(GameEngine engine, double h, String n, double b, Point l, int uID) {
         this.engine = engine;
         health = h;
         name = n;
         bitcoins = b;
         baseLocation = l;
+        this.uID = uID;
         modules = new ArrayList<Module>();
     }
     
@@ -287,16 +289,19 @@ public class Player {
             {
                 return false;
             }
-        } catch (NoUpgradeAllowedException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-	} catch (NotEnoughBitcoinsException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex.getMessage());
-        }
+        } catch (NoUpgradeAllowedException | NotEnoughBitcoinsException ex) {
+            new Log(LogState.WARNING, ex.getMessage());
+	}
         
         return false;
     }		
     
     public Point getBaseLocation(){
         return baseLocation;
+    }
+    
+    public int getUID()
+    {
+        return this.uID;
     }
 }

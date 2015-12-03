@@ -85,10 +85,10 @@ public class GameEngine extends Thread implements MouseListener {
     {
         this.interfacesA = interfacesA;
         this.interfacesB = interfacesB;
-        initialize(session.getPlayerA().getDisplayName(), session.getPlayerB().getDisplayName());
+        initialize(session.getPlayerA().getDisplayName(), session.getPlayerA().getUID(), session.getPlayerB().getDisplayName(), session.getPlayerB().getUID());
     }
     
-    private void initialize(String playerNameA, String playerNameB){
+    private void initialize(String playerNameA, int uIDA, String playerNameB, int uIDB){
         // This makes a daemon thread of the gameengine. This means that this thread will not prevent the JVM from shutting down. 
         // This is implemented due previous bugs that kept the gameengine thread running while the game was closed.
         setDaemon(true);
@@ -99,8 +99,8 @@ public class GameEngine extends Thread implements MouseListener {
         listeners = new ArrayList<>();
         unsubscribedListeners = new ArrayList<>();
         waveList = new ArrayList<>();
-        playerA = new Player(100, playerNameA, 100, new Point(0,50));
-        playerB = new Player(100, playerNameB, 100, new Point(100,50));
+        playerA = new Player(this, 100, playerNameA, 100, new Point(0,50), uIDA);
+        playerB = new Player(this, 100, playerNameB, 100, new Point(100,50), uIDB);
         gameRunning = false;
         waveNumber = 0;
         lastWaveStart = GameTime.getElapsedTime();
@@ -586,9 +586,15 @@ public class GameEngine extends Thread implements MouseListener {
         {
             if(playerA.getHealth() <= 0)
             {
-               graphicsEngine.showEndGame(playerA.getName());
+               IClientUpdate iClientUpdate = (IClientUpdate)interfacesA.get("update");
+               throw new Exception("Finish ME! (GameEngine, tick)");
                gameRunning = false;
                
+            }
+            
+            if(playerB.getHealth() <= 0)
+            {
+                
             }
 
             if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
@@ -679,10 +685,18 @@ public class GameEngine extends Thread implements MouseListener {
     
     /**
      * Returns the player object from the player that's currently playing. So no enemy Player is returned.
+     * @param uID unique ID of a player
      * @return Current user
      */
-    public Player getPlayer(){
-        return playerA;
+    public Player getPlayer(int uID){
+        if(playerA.getUID() == uID)
+        {
+            return playerA;
+        }
+        else
+        {
+            return playerB;
+        }
     }
     
     public void setOnTickListener(OnExecuteTick callback){
