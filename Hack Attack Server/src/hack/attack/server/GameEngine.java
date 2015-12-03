@@ -587,13 +587,15 @@ public class GameEngine extends Thread implements MouseListener {
             if(playerA.getHealth() <= 0)
             {
                IClientUpdate iClientUpdate = (IClientUpdate)interfacesA.get("update");
-               throw new Exception("Finish ME! (GameEngine, tick)");
+               iClientUpdate.updateLabels(waveNumber, playerA.getName(), String.format("%s", playerA.getHealth()), String.format("%s", playerA.getBitcoins()), playerB.getName(), String.format("%s", playerB.getHealth()));
                gameRunning = false;
                
             }
             
             if(playerB.getHealth() <= 0)
             {
+                IClientUpdate iClientUpdate = (IClientUpdate)interfacesB.get("update");
+                iClientUpdate.updateLabels(waveNumber, playerB.getName(), String.format("%s", playerB.getHealth()), String.format("%s", playerB.getBitcoins()), playerA.getName(), String.format("%s", playerA.getHealth()));
                 
             }
 
@@ -680,7 +682,7 @@ public class GameEngine extends Thread implements MouseListener {
         }
         System.out.println(bytes + " : " + kiloBytes + " : " +megaBytes + " : " +gigaBytes + " : " + teraBytes + " : " + petaBytes); // for logging purpose
         
-        return new Wave(waveNumber,1 + 0.1*waveNumber,playerA,bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);
+        return new Wave(this, waveNumber,1 + 0.1*waveNumber,playerA,bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);
     }
     
     /**
@@ -798,35 +800,9 @@ public class GameEngine extends Thread implements MouseListener {
         double health = playerA.getHealth();
         double coins = playerA.getBitcoins();
         int wave = currentWave.getWaveNr();
-        ((IClientUpdate)interfacesA.get("update")).updateLabels(playerA, playerB, waveNumber);
-        ((IClientUpdate)interfacesB.get("update")).updateLabels(playerB, playerA, waveNumber);
-        graphicsEngine.drawLabels(wave, name, health, coins);
-    }
-    
-    /**
-     * Calculates if there is an existing node in the given square
-     * @param x the x-location of the left upper corner
-     * @param y the y-location of the left upper corner
-     * @param width the width of the square
-     * @param height the height of the square
-     * @return whether or not the given square is overlapping an existing node
-     */
-    private boolean isPointInNode(int x, int y, int width, int height) {
-            ObservableList<Node> nodes = graphicsEngine.getNodes();
-            for(Node n : nodes)
-            {
-                if(n instanceof ModuleImage || n instanceof PathImage)
-                {
-                    Point2D p1 = new Point2D(x, y); // left upper corner
-                    Point2D p2 = new Point2D(x, y + height); // left bottom corner
-                    Point2D p3 = new Point2D(x + width, y); // right upper corner
-                    Point2D p4 = new Point2D(x + width, y + height); // right bottom corner
-                    Point2D p5 = new Point2D(x + 0.5*width, y + 0.5*height); // the middle
-                    boolean b = n.contains(p1) || n.contains(p2) || n.contains(p3) || n.contains(p4) || n.contains(p5);
-                    if (b) return true;
-                }
-            }
-            return false;
+        ((IClientUpdate)interfacesA.get("update")).updateLabels(waveNumber, playerA.getName(), String.format("%s", playerA.getHealth()), String.format("%s", playerA.getBitcoins()), playerB.getName(), String.format("%s", playerB.getHealth()));
+        ((IClientUpdate)interfacesB.get("update")).updateLabels(waveNumber, playerB.getName(), String.format("%s", playerB.getHealth()), String.format("%s", playerB.getBitcoins()), playerA.getName(), String.format("%s", playerA.getHealth()));
+        
     }
     
     /**
