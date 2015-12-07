@@ -170,7 +170,7 @@ public class GraphicsEngine{
             Module m = (Module) object;
             parent.addNode(new ModuleImage((Module)object), window);
         }else if(object instanceof Spell){
-            parent.addNode(new SpellImage((Spell)object), window);
+            //parent.addNode(new SpellImage((Spell)object), window);
         }else{
             throw new InvalidObjectException("The object you tried to spawn doesn't have a corresponding ObjectImage implementation");
         }

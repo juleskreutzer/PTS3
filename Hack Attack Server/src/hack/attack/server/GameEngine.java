@@ -758,9 +758,17 @@ public class GameEngine extends Thread implements MouseListener {
     /**
      * Adds the effect of the spell to every targeted minion in the range of this spell.
      * @param spell The spell to perform.
-     * @param targets The targets the spell should execute on.. Most likely minions or defense modules.
+     * @param position
+     * @param uID
      */
-    public void executeSpell(Spell spell, ArrayList<ITargetable> targets){
+    public void executeSpell(Spell spell, Point position, int uID){
+        List<ITargetable> targets = new ArrayList<>();
+        
+        for(Minion m : currentWave.minionsAsList()){
+            if(targetInRange(position.getX(), position.getY(), spell.getRange(),m)){
+                targets.add(m);
+            }
+        }
         switch(spell.getName()){
             case FIREWALL:
                 for(ITargetable t : targets){
@@ -774,7 +782,11 @@ public class GameEngine extends Thread implements MouseListener {
                         
                     });
                     m.applyEffect(effect);
-                    graphicsEngine.drawEffect(Effect.SLOWED, m);
+                    IClientCreate createA = (IClientCreate)interfacesA.get("create");
+                    IClientCreate createB = (IClientCreate)interfacesB.get("create");
+                    
+                    createA.drawNewSpells(Effect.SLOWED, targets, uID);
+                    createB.drawNewSpells(Effect.SLOWED, targets, uID);
                 }
                 break;
             case LOCKDOWN:

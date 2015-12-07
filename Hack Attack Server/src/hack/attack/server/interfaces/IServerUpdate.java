@@ -52,9 +52,10 @@ public interface IServerUpdate extends Remote {
      * @param sessionKey a unique key to identify the session on the server, received after the 'hand shake'
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param spell The spell that the client wants to execute
+     * @param position
      * @return 
      */
-    public Spell executeSpell(String sessionKey, int uID, SpellTemplate spell);
+    public Spell executeSpell(String sessionKey, int uID, SpellTemplate spell, Point position);
     
     /**
      * The client can call this method to upgrade a module.

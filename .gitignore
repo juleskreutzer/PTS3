@@ -16,3 +16,5 @@ hs_err_pid*
 /Hack Attack Server/nbproject/private/
 /Hack Attack Server/build/
 /Hack Attack Client/build/
+/Hack Attack Server/dist/
+/Hack Attack Client/dist/

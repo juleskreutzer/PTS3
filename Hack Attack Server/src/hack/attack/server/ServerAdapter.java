@@ -333,7 +333,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
 
     
     @Override
-    public Spell executeSpell(String sessionKey, int uID, SpellTemplate spell) {
+    public Spell executeSpell(String sessionKey, int uID, SpellTemplate spell, Point position) {
         try{
             Session session = null;
             for(Session s : sessions)
@@ -357,17 +357,23 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             switch(spell.getName())
             {
                 case CORRUPT:
-                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                    session.getEngine().executeSpell(new Spell(spell), position, uID);
+                    break;
                 case ENCRYPT:
-                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                    session.getEngine().executeSpell(new Spell(spell), position, uID);
+                    break;
                 case DISRUPT:
-                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                    session.getEngine().executeSpell(new Spell(spell), position, uID);
+                    break;
                 case FIREWALL:
-                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                    session.getEngine().executeSpell(new Spell(spell), position, uID);
+                    break;
                 case LOCKDOWN:
-                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                    session.getEngine().executeSpell(new Spell(spell), position, uID);
+                    break;
                 case VIRUSSCAN:
-                    throw new IllegalArgumentException("IServerUpdate executeSpell method isn't implemented correctly");
+                    session.getEngine().executeSpell(new Spell(spell), position, uID);
+                    break;
                 default:
                     throw new InvalidObjectException("SpellName not recognized.");
             }

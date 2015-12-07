@@ -160,25 +160,27 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     }
 
     @Override
-    public void drawNewSpells(List<Spell> spells, int uID) {
+    public void drawNewSpells(Effect effect, List<ITargetable> targets, int uID) {
         try{
             // Check if spells isn't empty
-            if(spells == null)
+            if(targets == null || targets.size() < 1)
             {
                 throw new IllegalArgumentException("Nothing to draw because modules are empty");
             }
             
             // Modules isn't empty, draw them
-            for(Spell m : spells)
+            for(ITargetable t : targets)
             {
-                engine.spawn(m, uID);
+                Minion m = (Minion)t;
+                int currentID = account.getUID();
+                FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
+                engine.drawEffect(effect, t, window);
             }
+                
         }
         catch(IllegalArgumentException ex)
         {
             engine.showEndGame(ex.getMessage());
-        } catch (DuplicateSpawnException | InvalidObjectException ex) {
-            System.out.print(ex.getMessage());
         }
     }
 
@@ -722,8 +724,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
         spellFirewall.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent event) {
-                Spell spell = new Spell(Data.DEFAULT_SPELL_FIREWALL);
-                Ellipse range = engine.drawSpellRange(spell);
+                SpellTemplate spell = Data.DEFAULT_SPELL_FIREWALL;
+                Ellipse range = engine.drawSpellRange(new Spell(spell));
                 engine.getScene().setOnMouseMoved(new EventHandler<MouseEvent>(){
                     @Override
                     public void handle(MouseEvent event) {
@@ -736,14 +738,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                     @Override
                     public void handle(MouseEvent event) {
                         ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        update.executeSpell(sessionKey, account.getUID(), spell);
-                        
-                        for(Minion m : currentWave.minionsAsList()){
-                            if(targetInRange(range.getCenterX(), range.getCenterY(), spell.getRange(),m)){
-                                targets.add(m);
-                            }
-                        }
-                        executeSpell(spell, targets);
+                        Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                        update.executeSpell(sessionKey, account.getUID(), spell, p);
                     }
                     
                 });

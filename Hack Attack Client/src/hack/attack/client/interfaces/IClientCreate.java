@@ -6,6 +6,7 @@
 package hack.attack.client.interfaces;
 
 import hack.attack.client.*;
+import hack.attack.client.enums.Effect;
 import java.util.List;
 
 /**
@@ -48,10 +49,11 @@ public interface IClientCreate extends IClient {
      * a player to cast a spell, because that will be done on the server.
      * 
      * The server shouldn't call this method when the spell-list is null, but we can check if the list is null for our client safety.
-     * @param spells List of spells the client needs to draw
+     * @param effect
+     * @param targets
      * @param uID
      */
-    public void drawNewSpells(List<Spell> spells, int uID);
+    public void drawNewSpells(Effect effect, List<ITargetable> targets, int uID);
     
     /**
      * 
