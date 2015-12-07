@@ -25,33 +25,35 @@ public class PathImage extends ObjectImage {
         super(path);
         this.path = path;
         
-        File file = null;
-        file = new File("src/hackattackfx/resources/Path.png");
+        File fileHorizontal = null;
+        File fileVertical = null;
+        fileHorizontal = new File("src/hackattackfx/resources/PathHorizontal.png");
+        fileVertical = new File("src/hackattackfx/resources/PathVertical.png");
         Image image = null;
 
         switch(path.getDirection()){
             case Up:
-                image = new Image(file.toURI().toString(), 20, path.getLength()+20, false, true);
+                image = new Image(fileVertical.toURI().toString(), 20, path.getLength(), false, true);
                 // 25 = width of the path.png / 2
                 setX(path.getEnd().x - (image.getWidth() / 2));
-                setY(path.getEnd().y - (image.getWidth() / 2));
+                setY(path.getEnd().y - (image.getWidth() / 2) + 10);
                 break;
             case Down:
-                image = new Image(file.toURI().toString(), 20, path.getLength(), false, true);
+                image = new Image(fileVertical.toURI().toString(), 20, path.getLength(), false, true);
                 // 25 = width of the path.png / 2
                 setX(path.getStart().x - (image.getWidth() / 2));
-                setY(path.getStart().y - (image.getWidth() / 2));
+                setY(path.getStart().y - (image.getWidth() / 2) + 10);
                 break;
             case Right:
-                image = new Image(file.toURI().toString(), path.getLength(), 20, false, true);
+                image = new Image(fileHorizontal.toURI().toString(), path.getLength(), 20, false, true);
                 // 25 = width of the path.png / 2
-                setX(path.getStart().x - (image.getHeight() / 2));
+                setX(path.getStart().x - (image.getHeight() / 2) + 10);
                 setY(path.getStart().y - (image.getHeight() / 2));
                 break;
             case Left:
-                image = new Image(file.toURI().toString(), path.getLength()+20, 20, false, true);
+                image = new Image(fileHorizontal.toURI().toString(), path.getLength(), 20, false, true);
                 // 25 = width of the path.png / 2
-                setX(path.getEnd().x - (image.getHeight() / 2));
+                setX(path.getEnd().x - (image.getHeight() / 2) + 10);
                 setY(path.getEnd().y - (image.getHeight() / 2));
                 break;
         }

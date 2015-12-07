@@ -34,17 +34,13 @@ public class Map {
         
         //Create the map's road out of Paths.
         try {
-            road.addPath(new Path(new Point(baseLocationA.x, baseLocationA.y),50, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),70, Path.Direction.Up));
-            road.addPath(new Path(road.getEnd(),360, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),140, Path.Direction.Down));
+            road.addPath(new Path(new Point(180, 245),290, Path.Direction.Right));
+            road.addPath(new Path(road.getEnd(),110, Path.Direction.Up));
+            road.addPath(new Path(road.getEnd(),280, Path.Direction.Right));
+            road.addPath(new Path(road.getEnd(),110, Path.Direction.Down));
+            road.addPath(new Path(road.getEnd(),280, Path.Direction.Right));
+            road.addPath(new Path(road.getEnd(),110, Path.Direction.Up));
             road.addPath(new Path(road.getEnd(),180, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),140, Path.Direction.Up));
-            road.addPath(new Path(road.getEnd(),95, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),165, Path.Direction.Up));
-            road.addPath(new Path(road.getEnd(),360, Path.Direction.Right));
-            road.addPath(new Path(road.getEnd(),70, Path.Direction.Down));
-            road.addPath(new Path(road.getEnd(),50, Path.Direction.Right));
             
         } catch (FloatingPathException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
