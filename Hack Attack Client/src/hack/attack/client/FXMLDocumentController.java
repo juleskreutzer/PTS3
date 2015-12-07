@@ -25,11 +25,11 @@ import javafx.scene.layout.Pane;
 
 public class FXMLDocumentController implements Initializable {
     
-    public enum Window {
-        TOP,
-        DOWN,
-        MAIN
-    }
+    @FXML
+    private AnchorPane windowLabel;
+    
+    @FXML
+    private AnchorPane windowControls;
     
     @FXML
     private AnchorPane windowMain;
@@ -49,6 +49,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private ImageView errorImage;
     
+    public enum Window {
+        TOP,
+        DOWN,
+        MAIN
+    }
+    
     private GraphicsEngine gEngine;
     private static FXMLDocumentController instance;
     
@@ -63,6 +69,7 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gEngine = GraphicsEngine.getInstance();
+        System.out.print("Initialize method called! ================================================================================================================================================================");
 
     }    
     
@@ -124,7 +131,7 @@ public class FXMLDocumentController implements Initializable {
     public Node getNode(String id, Pane parent){
         ObservableList<Node> list;
         if(parent == null){
-            list = windowMain.getChildren();
+            list = window.getChildren();
         }else{
             list = parent.getChildren();
         }

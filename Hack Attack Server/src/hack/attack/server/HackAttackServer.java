@@ -54,20 +54,21 @@ public class HackAttackServer extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);
+        
         try{
             IServerConnect connect = ServerAdapter.getInstance();
             IServerUpdate update = ServerAdapter.getInstance();
 
             Registry registry = LocateRegistry.createRegistry(7611);
             
-            registry.rebind("rmi://145.93.57.8:7611/HackAttackServerConnect", connect);
-            registry.rebind("rmi://145.93.57.8:7611/HackAttackServerUpdate", update);
+            registry.rebind("rmi://localhost:7611/HackAttackServerConnect", connect);
+            registry.rebind("rmi://localhost:7611/HackAttackServerUpdate", update);
         
         
         } catch(RemoteException ex) {
             Log log = new Log(LogState.ERROR, ex.getMessage());
         }
+        launch(args);
     }
     
 }

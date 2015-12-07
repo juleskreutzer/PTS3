@@ -7,6 +7,7 @@ package hack.attack.client.interfaces;
 
 import hack.attack.client.Account;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 
 /**
@@ -24,9 +25,10 @@ public interface IServerConnect extends Remote{
      * IClientCreate, IClientUpdate and IClientDelete
      * @return Returns a hashMap<String, IServerUpdate> The string will be the sessionKey and IServerUpdate will be an interface the client 
      * can use to communicate with the server while in-game
+     * @throws java.rmi.RemoteException
      * 
      */
-    public HashMap<String, IServerUpdate> hostCustomGame(Account account, HashMap<String, IClient> interfaces);
+    public HashMap<String, IServerUpdate> hostCustomGame(Account account, HashMap<String, IClient> interfaces) throws RemoteException;
     
     /**
      * When a user wants to join a custom match, this interface method needs to be called.
@@ -40,8 +42,9 @@ public interface IServerConnect extends Remote{
      * IClientCreate, IClientUpdate and IClientDelete
      * @return Returns a hashMap<String, IServerUpdate> The string will be the sessionKey and IServerUpdate will be an interface the client
      * can use to communicate with the server while in-game
+     * @throws java.rmi.RemoteException
      */
-    public HashMap<String, IServerUpdate> joinCustomGame(Account account, String targetUsername, HashMap<String, IClient> interfaces);
+    public HashMap<String, IServerUpdate> joinCustomGame(Account account, String targetUsername, HashMap<String, IClient> interfaces) throws RemoteException;
     
     /**
      * When a user wants to start or join a automatic match, this interface method needs to be called.
@@ -52,6 +55,7 @@ public interface IServerConnect extends Remote{
      * IClientCreate, IClientUpdate and IClientDelete
      * @return Returns a hashMap<String, IServerUpdate> The string will be the sessionKey and IServerUpdate will be an interface the client 
      * can use to communicate with the server while in-game
+     * @throws java.rmi.RemoteException
      */
-    public HashMap<String, IServerUpdate> findMatch(Account account, HashMap<String, IClient> interfaces);
+    public HashMap<String, IServerUpdate> findMatch(Account account, HashMap<String, IClient> interfaces) throws RemoteException;
 }

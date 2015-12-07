@@ -7,6 +7,7 @@ package hack.attack.client.interfaces;
 
 import hack.attack.client.*;
 import hack.attack.client.enums.Effect;
+import java.rmi.RemoteException;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public interface IClientCreate extends IClient {
      * @param modules List of modules the client needs to draw
      * @param uID
      */
-    public void drawNewModules(List<Module> modules, int uID);
+    public void drawNewModules(List<Module> modules, int uID) throws RemoteException;
     
     /**
      * This method is called by the server and is used to display new minions on the client.
@@ -40,7 +41,7 @@ public interface IClientCreate extends IClient {
      * @param minions List of minions the client needs to draw
      * @param uID
      */
-    public void drawNewMinions(List<Minion> minions, int uID);
+    public void drawNewMinions(List<Minion> minions, int uID) throws RemoteException;
     
     /**
      * This method is called by the server and is used to display the spells a player has executed on the client.
@@ -53,16 +54,16 @@ public interface IClientCreate extends IClient {
      * @param targets
      * @param uID
      */
-    public void drawNewSpells(Effect effect, List<ITargetable> targets, int uID);
+    public void drawNewSpells(Effect effect, List<ITargetable> targets, int uID) throws RemoteException;
     
     /**
      * 
      */
-    public void startGame();
+    public void startGame() throws RemoteException;
     
     /**
      * 
      */
-    public void initialize();
+    public void initialize() throws RemoteException;
     
 }

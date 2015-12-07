@@ -6,6 +6,7 @@
 package hack.attack.client.interfaces;
 
 import hack.attack.client.*;
+import java.rmi.RemoteException;
 import java.util.List;
 
 /**
@@ -19,21 +20,21 @@ public interface IClientUpdate extends IClient {
      * @param modules 
      * @param uID 
      */
-    public void redrawCurrentModules(List<Module> modules, int uID);
+    public void redrawCurrentModules(List<Module> modules, int uID) throws RemoteException;
     
     /**
      * 
      * @param minions 
      * @param uID 
      */
-    public void redrawCurrentMinions(List<Minion> minions, int uID);
+    public void redrawCurrentMinions(List<Minion> minions, int uID) throws RemoteException;
     
     /**
      * 
      * @param spells
      * @param uID
      */
-    public void redrawCurrentSpells(List<Spell> spells, int uID);
+    public void redrawCurrentSpells(List<Spell> spells, int uID) throws RemoteException;
     
     /**
      * This method should be called when an event occurs at the server that has influence on the player's health or bitcoins.
@@ -52,5 +53,5 @@ public interface IClientUpdate extends IClient {
      * @param playerB Instance of player class with fields like displayname, health, bitcoins
      * @param waveNumber Number indicating the current wave
      */
-    public void updateLabels(int waveNumber, String playernamea, String healthplayera, String bitcoinsplayera, String playernameb, String healthplayerb);
+    public void updateLabels(int waveNumber, String playernamea, String healthplayera, String bitcoinsplayera, String playernameb, String healthplayerb) throws RemoteException;
 }

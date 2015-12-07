@@ -6,6 +6,7 @@
 package hack.attack.server.interfaces;
 
 import hack.attack.server.*;
+import java.rmi.RemoteException;
 import java.util.List;
 /**
  *
@@ -21,7 +22,7 @@ public interface IClientDelete extends IClient {
      * @param modules List of modules that need to be deleted from the client
      * @param uID
      */
-    public void deleteCurrentModules(List<Module> modules, int uID);
+    public void deleteCurrentModules(List<Module> modules, int uID) throws RemoteException;
     
     /**
      * The server will call this method to delete minions a client has drawn.
@@ -31,7 +32,7 @@ public interface IClientDelete extends IClient {
      * @param minions List of minions that need to be deleted from the client
      * @param uID
      */
-    public void deleteCurrentMinions(List<Minion> minions, int uID);
+    public void deleteCurrentMinions(List<Minion> minions, int uID) throws RemoteException;
     
     /**
      * The server will call this method to delete spells a client has drawn.
@@ -41,6 +42,6 @@ public interface IClientDelete extends IClient {
      * @param spells List of spells the need to be deleted from the client
      * @param uID
      */
-    public void deleteCurrentSpells(List<Spell> spells, int uID);
+    public void deleteCurrentSpells(List<Spell> spells, int uID) throws RemoteException;
     
 }

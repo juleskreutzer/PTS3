@@ -81,10 +81,10 @@ public class GraphicsEngine{
     private GraphicsEngine(){
         instance = this;
         parent = FXMLDocumentController.getInstance();
-        pauseButton = (ImageView)parent.getNode("btnPause", null);
-        File pause = new File("src/hackattackfx/resources/interface/Icons/PauseButton.png");
+        //pauseButton = (ImageView)parent.getNode("btnPause", null);
+        File pause = new File("src/hack/attack/client/resources/interface/Icons/PauseButton.png");
         pauseImage = new Image(pause.toURI().toString());
-        File play = new File("src/hackattackfx/resources/interface/Icons/PlayButton.png");
+        File play = new File("src/hack/attack/client/resources/interface/Icons/PlayButton.png");
         playImage = new Image(play.toURI().toString());
         lblCurrentWave = (Label)parent.getNode("lblCurrentWave",null);
         lblPlayerName = (Label)parent.getNode("lblPlayerName",null);
@@ -100,7 +100,7 @@ public class GraphicsEngine{
         lblStatsCosts = (Label)parent.getNode("lblStatsCosts",null);
         errorLabel = (Label)parent.getNode("errorLabel",null);
         errorImage = (ImageView)parent.getNode("errorImage",null);
-        File file = new File("src/hackattackfx/resources/error.png");
+        File file = new File("src/hack/attack/client/resources/error.png");
         Image image = new Image(file.toURI().toString());
         errorImage.setImage(image);
         errorImage.setVisible(false);
@@ -142,8 +142,8 @@ public class GraphicsEngine{
      * From the moment an object is spawned, it will be updated every tick.
      * This is the entry point for an object to be updated every tick.
      * @param object 
-     * @throws hackattackfx.exceptions.DuplicateSpawnException 
-     * @throws hackattackfx.exceptions.InvalidObjectException 
+     * @throws hack/attack/client.exceptions.DuplicateSpawnException 
+     * @throws hack/attack/client.exceptions.InvalidObjectException 
      */
     public void spawn(Object object, int uID) throws DuplicateSpawnException, InvalidObjectException{
         // Checks if the object doesn't exists already
@@ -333,43 +333,43 @@ public class GraphicsEngine{
         
         File file = null;
         
-        File unavailableFile = new File("src/hackattackfx/resources/unavailable.png");
+        File unavailableFile = new File("src/hack/attack/client/resources/unavailable.png");
         Image unavailableTargetImage = new Image(unavailableFile.toURI().toString());
         Image availableTargetImage;
         
         switch(module){
             case BITCOIN_MINER:
-                file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+                file = new File("src/hack/attack/client/resources/DefenceSpawnTarget.png");
                 availableTargetImage = new Image(file.toURI().toString());
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_BITCOINMINER_1, unavailableTargetImage, availableTargetImage);
                 break;
             case SOFTWARE_INJECTOR:
-                file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+                file = new File("src/hack/attack/client/resources/DefenceSpawnTarget.png");
                 availableTargetImage = new Image(file.toURI().toString());
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_SOFTWAREINJECTOR_1, unavailableTargetImage, availableTargetImage);
                 break;
             case CPU_UPGRADE:
-                file = new File("src/hackattackfx/resources/DefenceSpawnTarget.png");
+                file = new File("src/hack/attack/client/resources/DefenceSpawnTarget.png");
                 availableTargetImage = new Image(file.toURI().toString());
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_CPUUPGRADE_1, unavailableTargetImage, availableTargetImage);
                 break;
             case SNIPER_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/sniper_module.png");
+                file = new File("src/hack/attack/client/resources/interface/module/40x40/sniper_module.png");
                 availableTargetImage = new Image(file.toURI().toString());
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, unavailableTargetImage, availableTargetImage);
                 break;
             case BOTTLECAP_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/bottlecap_module.png");
+                file = new File("src/hack/attack/client/resources/interface/module/40x40/bottlecap_module.png");
                 availableTargetImage = new Image(file.toURI().toString());
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, unavailableTargetImage, availableTargetImage);
                 break;
             case SCALE_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/scale_module.png");
+                file = new File("src/hack/attack/client/resources/interface/module/40x40/scale_module.png");
                 availableTargetImage = new Image(file.toURI().toString());
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, unavailableTargetImage, availableTargetImage);
                 break;
             case MUSCLE_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/muscle_module.png");
+                file = new File("src/hack/attack/client/resources/interface/module/40x40/muscle_module.png");
                 availableTargetImage = new Image(file.toURI().toString());
                 spawnTarget = new SpawnTargetImage(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, unavailableTargetImage, availableTargetImage);
                 break;
@@ -421,9 +421,9 @@ public class GraphicsEngine{
             case BITCOIN_MINER:
                 File file;
                 if(enabled){
-                    file = new File("src/hackattackfx/resources/interface/Icons/Base/dark/Bitcoin.png");
+                    file = new File("src/hack/attack/client/resources/interface/Icons/Base/dark/Bitcoin.png");
                 }else{
-                    file = new File("src/hackattackfx/resources/interface/Icons/Base/light/Bitcoin.png");
+                    file = new File("src/hack/attack/client/resources/interface/Icons/Base/light/Bitcoin.png");
                 }
                 ImageView miner = (ImageView)parent.getNode("buildBitcoinMiner",null);
                 Image image = new Image(file.toURI().toString());

@@ -10,6 +10,7 @@ import hack.attack.server.templates.ModuleTemplate;
 import hack.attack.server.templates.SpellTemplate;
 import java.awt.Point;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -36,7 +37,7 @@ public interface IServerUpdate extends Remote {
      * @param height
      * @return 
      */
-    public Module buildModule(String sessionKey, int uID, ModuleTemplate module, Point position, int width, int height);
+    public Module buildModule(String sessionKey, int uID, ModuleTemplate module, Point position, int width, int height) throws RemoteException;
     
     /**
      * The client can call this method to execute a spell.
@@ -55,7 +56,7 @@ public interface IServerUpdate extends Remote {
      * @param position
      * @return 
      */
-    public Spell executeSpell(String sessionKey, int uID, SpellTemplate spell, Point position);
+    public Spell executeSpell(String sessionKey, int uID, SpellTemplate spell, Point position) throws RemoteException;
     
     /**
      * The client can call this method to upgrade a module.
@@ -70,5 +71,5 @@ public interface IServerUpdate extends Remote {
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param module Module the client wants to upgrade
      */
-    public boolean upgradeModule(String sessionKey, int uID, Module module);
+    public boolean upgradeModule(String sessionKey, int uID, Module module) throws RemoteException;
 }
