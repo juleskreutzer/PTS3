@@ -41,6 +41,9 @@ public class FXMLDocumentController implements Initializable {
     private AnchorPane windowDown;
     
     @FXML
+    private AnchorPane window;
+    
+    @FXML
     private Label errorLabel;
     
     @FXML

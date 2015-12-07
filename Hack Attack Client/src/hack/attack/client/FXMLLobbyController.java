@@ -77,7 +77,7 @@ public class FXMLLobbyController implements Initializable {
             });
         
             
-            connect = (IServerConnect)Naming.lookup("rmi://localhost:7611/HackAttackServerConnect");
+            connect = (IServerConnect)Naming.lookup("rmi://145.93.57.8:7611/HackAttackServerConnect");
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(FXMLLobbyController.class.getName()).log(Level.SEVERE, null, ex);
         }

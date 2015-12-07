@@ -60,12 +60,12 @@ public class HackAttackServer extends Application {
             IServerUpdate update = ServerAdapter.getInstance();
 
             Registry registry = LocateRegistry.createRegistry(7611);
-
-            Naming.rebind("rmi://localhost:7611/HackAttackServerConnect", connect);
-            Naming.rebind("rmi://localhost:7611/HackAttackServerUpdate", update);
+            
+            registry.rebind("rmi://145.93.57.8:7611/HackAttackServerConnect", connect);
+            registry.rebind("rmi://145.93.57.8:7611/HackAttackServerUpdate", update);
         
         
-        } catch(RemoteException | MalformedURLException ex) {
+        } catch(RemoteException ex) {
             Log log = new Log(LogState.ERROR, ex.getMessage());
         }
     }
