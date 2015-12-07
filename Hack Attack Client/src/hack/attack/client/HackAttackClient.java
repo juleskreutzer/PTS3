@@ -23,7 +23,8 @@ import javafx.stage.Stage;
 public class HackAttackClient extends Application {
     
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws Exception {
+        
         FXMLLoader loader = new FXMLLoader();
         Parent loaderroot = (Parent)loader.load(getClass().getResource("FXMLLoader.fxml").openStream());
         FXMLLoaderController controller = loader.<FXMLLoaderController>getController();
@@ -34,6 +35,17 @@ public class HackAttackClient extends Application {
         
         controller.initializeData();
         stage.setTitle("Loading Hack Attack");
+        
+//        FXMLLoader gameloader = new FXMLLoader();
+//        Parent mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
+//        Stage gamestage = new Stage();
+//        scene = new Scene(mainroot);
+//        gamestage.setScene(scene);
+//        gamestage.show();
+//        gamestage.setTitle("Hack Attack");
+//        
+//        gEngine = GameEngine.getInstance();
+//        gEngine.start();
     }
 
     /**

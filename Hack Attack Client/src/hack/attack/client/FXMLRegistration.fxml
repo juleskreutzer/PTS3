@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="621.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hackattackfx.FXMLRegistrationController">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="621.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hack.attack.client.FXMLRegistrationController">
    <children>
       <Label fx:id="errorLabel" alignment="CENTER" layoutY="89.0" prefHeight="17.0" prefWidth="621.0" text="Register your own Hack Attack account" textAlignment="CENTER" />
       <Label id="label" layoutX="162.0" layoutY="37.0" text="Hack Attack" textFill="#386db2">
