@@ -5,6 +5,8 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.Spell;
+import hack.attack.rmi.Module;
 import hack.attack.client.enums.ModuleName;
 import java.awt.Point;
 import java.util.List;

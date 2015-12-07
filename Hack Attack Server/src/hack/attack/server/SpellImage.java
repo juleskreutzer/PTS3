@@ -5,6 +5,7 @@
  */
 package hack.attack.server;
 
+import hack.attack.rmi.Spell;
 import javafx.scene.image.ImageView;
 /**
  *

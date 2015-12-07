@@ -5,9 +5,12 @@
  */
 package hack.attack.server;
 
-import hack.attack.interfaces.IServerConnect;
-import hack.attack.interfaces.IServerUpdate;
-import hack.attack.interfaces.IClient;
+import hack.attack.rmi.Account;
+import hack.attack.rmi.Spell;
+import hack.attack.rmi.Module;
+import hack.attack.rmi.IServerConnect;
+import hack.attack.rmi.IServerUpdate;
+import hack.attack.rmi.IClient;
 import hack.attack.server.enums.*;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.logger.Log;

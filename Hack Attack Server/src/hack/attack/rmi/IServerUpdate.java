@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.interfaces;
+package hack.attack.rmi;
 
-import hack.attack.client.*;
-import hack.attack.client.templates.ModuleTemplate;
-import hack.attack.client.templates.SpellTemplate;
+import hack.attack.server.*;
+import hack.attack.server.templates.ModuleTemplate;
+import hack.attack.server.templates.SpellTemplate;
 import java.awt.Point;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -32,6 +32,10 @@ public interface IServerUpdate extends Remote {
      * @param sessionKey a unique key to identify the session on the server, received after the 'hand shake'
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param module The module that the client wants to build
+     * @param position
+     * @param width
+     * @param height
+     * @return 
      */
     public Module buildModule(String sessionKey, int uID, ModuleTemplate module, Point position, int width, int height) throws RemoteException;
     
@@ -66,7 +70,6 @@ public interface IServerUpdate extends Remote {
      * @param sessionKey a unique key to identify the session on the server, received after the 'hand shake'
      * @param uID unique ID of the user, received after the login call to the API on the client
      * @param module Module the client wants to upgrade
-     * @return 
      */
     public boolean upgradeModule(String sessionKey, int uID, Module module) throws RemoteException;
 }

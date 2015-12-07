@@ -5,6 +5,7 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.Module;
 import hack.attack.client.enums.ModuleName;
 import java.awt.Point;
 import hack.attack.client.exceptions.*;

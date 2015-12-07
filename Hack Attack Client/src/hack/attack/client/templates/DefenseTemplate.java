@@ -5,6 +5,7 @@
  */
 package hack.attack.client.templates;
 
+import hack.attack.rmi.Effect;
 import hack.attack.client.enums.*;
 
 /**

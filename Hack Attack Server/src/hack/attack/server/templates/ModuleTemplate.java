@@ -13,6 +13,9 @@ import java.awt.Point;
  * @author juleskreutzer
  */
 public abstract class ModuleTemplate {
+    
+    private static final long serialVersionUID = 000004L;
+    
     protected double cost;
     protected int level;
     protected String displayName;

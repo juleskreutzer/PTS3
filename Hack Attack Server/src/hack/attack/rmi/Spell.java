@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.client;
-import hack.attack.client.enums.*;
-import hack.attack.client.exceptions.*;
-import hack.attack.client.templates.SpellTemplate;
+package hack.attack.rmi;
+import hack.attack.server.enums.*;
+import hack.attack.server.exceptions.*;
+import hack.attack.server.templates.SpellTemplate;
 
 /**
  *
  * @author juleskreutzer
  */
 public class Spell {
+    
+    private static final long serialVersionUID = 000006L;
     
     private SpellName name;
     private SpellType type;

@@ -1,0 +1,2 @@
+2015/12/07 23:24:50 - STATUS : ERROR - Port already in use: 7611; nested exception is: 
+	java.net.BindException: Address already in use: JVM_Bind

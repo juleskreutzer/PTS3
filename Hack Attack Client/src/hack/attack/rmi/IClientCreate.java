@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.interfaces;
+package hack.attack.rmi;
 
-import hack.attack.client.*;
-import hack.attack.client.enums.Effect;
 import java.rmi.RemoteException;
 import java.util.List;
 

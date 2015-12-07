@@ -5,6 +5,7 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.Effect;
 import hack.attack.client.templates.*;
 import hack.attack.client.enums.*;
 import hack.attack.client.exceptions.*;

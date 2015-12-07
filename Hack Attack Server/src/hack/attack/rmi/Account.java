@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.client;
+package hack.attack.rmi;
 
 import java.io.Serializable;
 
@@ -11,7 +11,9 @@ import java.io.Serializable;
  *
  * @author juleskreutzer
  */
-public class Account implements Serializable {
+public class Account implements Serializable{
+    
+    private static final long serialVersionUID = 000001L;
     
     /**
      * The uID is a unique identifier for the user that has been used in the database.

@@ -5,6 +5,7 @@
  */
 package hack.attack.server;
 
+import hack.attack.rmi.Effect;
 import hack.attack.server.templates.*;
 import hack.attack.server.enums.*;
 import hack.attack.server.exceptions.*;

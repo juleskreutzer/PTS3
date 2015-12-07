@@ -6,8 +6,8 @@
 package hack.attack.server;
 
 import hack.attack.server.enums.LogState;
-import hack.attack.interfaces.IServerConnect;
-import hack.attack.interfaces.IServerUpdate;
+import hack.attack.rmi.IServerConnect;
+import hack.attack.rmi.IServerUpdate;
 import hack.attack.server.logger.Log;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -56,12 +56,12 @@ public class HackAttackServer extends Application {
     public static void main(String[] args) {
         
         try{
-            IServerConnect connect = ServerAdapter.getInstance();
+            ServerAdapter connect = ServerAdapter.getInstance();
             IServerUpdate update = ServerAdapter.getInstance();
 
+            System.setProperty( "java.rmi.server.hostname", "192.168.2.6" ) ;
             Registry registry = LocateRegistry.createRegistry(7611);
             registry.rebind("HackAttackServerConnect", connect);
-            registry.rebind("HackAttackServerUpdate", update);
         
         
         } catch(RemoteException ex) {

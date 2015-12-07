@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.interfaces;
+package hack.attack.rmi;
 
-import hack.attack.server.*;
-import hack.attack.server.templates.ModuleTemplate;
-import hack.attack.server.templates.SpellTemplate;
+import hack.attack.client.*;
+import hack.attack.client.templates.ModuleTemplate;
+import hack.attack.client.templates.SpellTemplate;
 import java.awt.Point;
 import java.rmi.Remote;
 import java.rmi.RemoteException;

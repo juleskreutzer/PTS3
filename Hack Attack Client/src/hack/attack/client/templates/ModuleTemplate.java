@@ -14,6 +14,9 @@ import java.io.Serializable;
  * @author juleskreutzer
  */
 public abstract class ModuleTemplate implements Serializable{
+    
+    private static final long serialVersionUID = 000004L;
+    
     protected double cost;
     protected int level;
     protected String displayName;

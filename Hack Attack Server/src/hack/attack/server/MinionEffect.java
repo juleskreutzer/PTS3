@@ -5,7 +5,7 @@
  */
 package hack.attack.server;
 
-import hack.attack.server.enums.Effect;
+import hack.attack.rmi.Effect;
 import java.util.Timer;
 import java.util.TimerTask;
 

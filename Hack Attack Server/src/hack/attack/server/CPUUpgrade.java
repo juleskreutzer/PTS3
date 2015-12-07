@@ -5,6 +5,8 @@
  */
 package hack.attack.server;
 
+import hack.attack.rmi.Minion;
+import hack.attack.rmi.Module;
 import hack.attack.server.exceptions.InvalidModuleEnumException;
 import hack.attack.server.enums.ModuleName;
 import java.awt.Point;

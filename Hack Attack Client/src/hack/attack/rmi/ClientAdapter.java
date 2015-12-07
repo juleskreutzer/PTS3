@@ -3,15 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.client;
+package hack.attack.rmi;
 
-import hack.attack.interfaces.IClientCreate;
-import hack.attack.interfaces.ITargetable;
-import hack.attack.interfaces.IClient;
-import hack.attack.interfaces.IClientDelete;
-import hack.attack.interfaces.IServerUpdate;
-import hack.attack.interfaces.IClientUpdate;
-import hack.attack.client.enums.Effect;
+import hack.attack.client.BitcoinMiner;
+import hack.attack.client.CPUUpgrade;
+import hack.attack.client.Data;
+import hack.attack.client.Defense;
+import hack.attack.client.FXMLDocumentController;
+import hack.attack.client.GraphicsEngine;
+import hack.attack.client.SoftwareInjector;
+import hack.attack.client.SpawnTargetImage;
+import hack.attack.rmi.Spell;
+import hack.attack.rmi.Minion;
+import hack.attack.rmi.Module;
+import hack.attack.rmi.IClientCreate;
+import hack.attack.rmi.ITargetable;
+import hack.attack.rmi.IClient;
+import hack.attack.rmi.IClientDelete;
+import hack.attack.rmi.IServerUpdate;
+import hack.attack.rmi.IClientUpdate;
+import hack.attack.rmi.Effect;
 import hack.attack.client.enums.ModuleName;
 import hack.attack.client.exceptions.DuplicateSpawnException;
 import hack.attack.client.exceptions.InvalidModuleEnumException;
@@ -21,6 +32,7 @@ import hack.attack.client.exceptions.NotEnoughBitcoinsException;
 import hack.attack.client.templates.*;
 import java.awt.Point;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +49,9 @@ import javafx.scene.shape.Ellipse;
  *
  * @author juleskreutzer
  */
-public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelete {
+public class ClientAdapter extends UnicastRemoteObject implements IClientCreate, IClientUpdate, IClientDelete {
+    
+    private static final long serialVersionUID = 999000L;
     
     private String sessionKey;
     private IServerUpdate update;
@@ -52,7 +66,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     
     SpawnTargetImage st = null;
     
-    private ClientAdapter()
+    private ClientAdapter() throws RemoteException
     {
         this.engine = GraphicsEngine.getInstance();
         this.clientCreate = this;
@@ -62,7 +76,12 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     
     public static ClientAdapter getInstance()
     {
-        return instance == null ? new ClientAdapter() : instance;
+        try{
+            return instance == null ? new ClientAdapter() : instance;
+        }catch(RemoteException ex){
+            System.out.println(ex.toString());
+        }
+        return null;
     }
     
     /**

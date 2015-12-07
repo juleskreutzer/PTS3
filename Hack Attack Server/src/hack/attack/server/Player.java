@@ -6,9 +6,12 @@
 
 package hack.attack.server;
 
+import hack.attack.rmi.Spell;
+import hack.attack.rmi.Minion;
+import hack.attack.rmi.Module;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.BitcoinMiner.OnMineComplete;
-import hack.attack.server.enums.Effect;
+import hack.attack.rmi.Effect;
 import hack.attack.server.enums.LogState;
 import hack.attack.server.logger.Log;
 import hack.attack.server.templates.*;

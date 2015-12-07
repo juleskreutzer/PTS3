@@ -5,6 +5,8 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.Minion;
+import hack.attack.rmi.Module;
 import javafx.scene.image.Image;
 import java.io.File;
 import javafx.event.EventHandler;

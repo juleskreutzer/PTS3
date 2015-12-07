@@ -5,7 +5,8 @@
  */
 package hack.attack.server;
 
-import hack.attack.interfaces.IClient;
+import hack.attack.rmi.Account;
+import hack.attack.rmi.IClient;
 import hack.attack.server.enums.LogState;
 import hack.attack.server.logger.Log;
 import java.rmi.Remote;

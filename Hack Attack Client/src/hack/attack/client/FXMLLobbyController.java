@@ -5,18 +5,18 @@
  */
 package hack.attack.client;
 
-import hack.attack.interfaces.IClient;
-import hack.attack.interfaces.IClientCreate;
-import hack.attack.interfaces.IClientDelete;
-import hack.attack.interfaces.IClientUpdate;
-import hack.attack.interfaces.IServerConnect;
-import hack.attack.interfaces.IServerUpdate;
+import hack.attack.rmi.Account;
+import hack.attack.rmi.ClientAdapter;
+import hack.attack.rmi.IServerConnect;
+import hack.attack.rmi.IServerUpdate;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -77,8 +77,9 @@ public class FXMLLobbyController implements Initializable {
             });
         
             //System.setProperty("java.rmi.server.hostname","localhost");
-            connect = (IServerConnect)Naming.lookup("rmi://145.93.57.8:7611/HackAttackServerConnect");
-        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            Registry registry = LocateRegistry.getRegistry("127.0.0.1",7611);
+            connect = (IServerConnect)registry.lookup("HackAttackServerConnect");
+        } catch (NotBoundException | RemoteException ex) {
             Logger.getLogger(FXMLLobbyController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

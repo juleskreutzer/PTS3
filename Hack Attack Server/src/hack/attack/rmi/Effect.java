@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.interfaces;
+package hack.attack.rmi;
 
 /**
  *
- * @author juleskreutzer
+ * @author Igor
  */
-public interface IClient {
+public enum Effect {
+    SLOWED,
+    POISENED,
+    SPLASH,
+    DECRYPTED,
+    DIE,
+    REACHED_BASE
     
 }

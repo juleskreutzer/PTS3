@@ -12,6 +12,9 @@ import java.io.Serializable;
  * @author juleskreutzer
  */
 public class SpellTemplate implements Serializable {
+    
+    private static final long serialVersionUID = 000005L;
+    
     private SpellName name;
     private double range;
     private SpellType type;

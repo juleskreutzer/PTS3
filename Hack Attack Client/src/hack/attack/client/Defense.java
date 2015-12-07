@@ -5,11 +5,13 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.Minion;
+import hack.attack.rmi.Module;
 import hack.attack.client.enums.DefenseType;
-import hack.attack.client.enums.Effect;
+import hack.attack.rmi.Effect;
 import hack.attack.client.enums.ModuleName;
 import hack.attack.client.exceptions.*;
-import hack.attack.interfaces.ITargetable;
+import hack.attack.rmi.ITargetable;
 import java.awt.Point;
 import hack.attack.client.templates.*;
 import java.util.ArrayList;

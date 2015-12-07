@@ -5,9 +5,10 @@
  */
 package hack.attack.server;
 
+import hack.attack.rmi.Minion;
 import hack.attack.server.GameEngine.OnCompleteTick;
 import hack.attack.server.MinionEffect.OnEffectExpired;
-import hack.attack.server.enums.Effect;
+import hack.attack.rmi.Effect;
 import hack.attack.server.exceptions.DuplicateSpawnException;
 import hack.attack.server.exceptions.InvalidObjectException;
 import hack.attack.server.exceptions.UnsubscribeNonListenerException;

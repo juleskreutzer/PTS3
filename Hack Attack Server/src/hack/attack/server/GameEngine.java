@@ -1,15 +1,18 @@
 package hack.attack.server;
 
-import hack.attack.interfaces.IClientUpdate;
-import hack.attack.interfaces.IClientCreate;
-import hack.attack.interfaces.IClient;
+import hack.attack.rmi.Spell;
+import hack.attack.rmi.Minion;
+import hack.attack.rmi.Module;
+import hack.attack.rmi.IClientUpdate;
+import hack.attack.rmi.IClientCreate;
+import hack.attack.rmi.IClient;
 import hack.attack.server.GameEngine.OnExecuteTick;
 import hack.attack.server.MinionEffect.OnEffectExpired;
-import hack.attack.server.enums.Effect;
+import hack.attack.rmi.Effect;
 import java.awt.Point;
 import java.util.ArrayList;
 import hack.attack.server.exceptions.*;
-import hack.attack.interfaces.ITargetable;
+import hack.attack.rmi.ITargetable;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.List;

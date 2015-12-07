@@ -11,6 +11,9 @@ import hack.attack.server.enums.*;
  * @author juleskreutzer
  */
 public class SpellTemplate {
+    
+    private static final long serialVersionUID = 000005L;
+    
     private SpellName name;
     private double range;
     private SpellType type;
