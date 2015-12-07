@@ -1,12 +1,15 @@
 package hack.attack.server;
 
+import hack.attack.interfaces.IClientUpdate;
+import hack.attack.interfaces.IClientCreate;
+import hack.attack.interfaces.IClient;
 import hack.attack.server.GameEngine.OnExecuteTick;
 import hack.attack.server.MinionEffect.OnEffectExpired;
 import hack.attack.server.enums.Effect;
 import java.awt.Point;
 import java.util.ArrayList;
 import hack.attack.server.exceptions.*;
-import hack.attack.server.interfaces.ITargetable;
+import hack.attack.interfaces.ITargetable;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.List;
@@ -16,8 +19,10 @@ import java.util.TimerTask;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import hack.attack.server.interfaces.*;
+import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -574,14 +579,18 @@ public class GameEngine extends Thread implements MouseListener {
 
             @Override
             public void run() {
-                tick();
-                //System.out.print("use javaFX thread (gameEngine line 157) (animationTimer)");
+                try {
+                    tick();
+                    //System.out.print("use javaFX thread (gameEngine line 157) (animationTimer)");
+                } catch (RemoteException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }, 0, 15);
         
     }
     
-    private void tick(){
+    private void tick() throws RemoteException{
         if(gameRunning)
         {
             if(playerA.getHealth() <= 0)
@@ -761,7 +770,7 @@ public class GameEngine extends Thread implements MouseListener {
      * @param position
      * @param uID
      */
-    public void executeSpell(Spell spell, Point position, int uID){
+    public void executeSpell(Spell spell, Point position, int uID) throws RemoteException{
         List<ITargetable> targets = new ArrayList<>();
         
         for(Minion m : currentWave.minionsAsList()){
@@ -807,7 +816,7 @@ public class GameEngine extends Thread implements MouseListener {
         }
     }
     
-    private void fillLabels(){
+    private void fillLabels() throws RemoteException{
         String name = playerA.getName();
         double health = playerA.getHealth();
         double coins = playerA.getBitcoins();

@@ -9,7 +9,7 @@ import hack.attack.client.enums.Effect;
 import hack.attack.client.enums.ModuleName;
 import java.util.List;
 import hack.attack.client.exceptions.*;
-import hack.attack.client.interfaces.ITargetable;
+import hack.attack.interfaces.ITargetable;
 import java.awt.Point;
 import java.io.File;
 import java.util.Iterator;
@@ -81,7 +81,7 @@ public class GraphicsEngine{
     private GraphicsEngine(){
         instance = this;
         parent = FXMLDocumentController.getInstance();
-        //pauseButton = (ImageView)parent.getNode("btnPause", null);
+        pauseButton = (ImageView)parent.getNode("btnPause", null);
         File pause = new File("src/hack/attack/client/resources/interface/Icons/PauseButton.png");
         pauseImage = new Image(pause.toURI().toString());
         File play = new File("src/hack/attack/client/resources/interface/Icons/PlayButton.png");

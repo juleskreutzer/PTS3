@@ -5,9 +5,11 @@
  */
 package hack.attack.server;
 
+import hack.attack.interfaces.IServerConnect;
+import hack.attack.interfaces.IServerUpdate;
+import hack.attack.interfaces.IClient;
 import hack.attack.server.enums.*;
 import hack.attack.server.exceptions.*;
-import hack.attack.server.interfaces.*;
 import hack.attack.server.logger.Log;
 import hack.attack.server.templates.*;
 import java.awt.Point;
@@ -380,7 +382,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 
             
         }
-        catch(InvalidSessionKeyException | InvalidObjectException ex)
+        catch(InvalidSessionKeyException | InvalidObjectException | RemoteException ex)
         {
             Log log = new Log(LogState.ERROR, ex.getMessage());
         }

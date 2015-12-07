@@ -5,8 +5,8 @@
  */
 package hack.attack.server;
 
+import hack.attack.interfaces.IClient;
 import hack.attack.server.enums.LogState;
-import hack.attack.server.interfaces.*;
 import hack.attack.server.logger.Log;
 import java.rmi.Remote;
 import java.util.HashMap;

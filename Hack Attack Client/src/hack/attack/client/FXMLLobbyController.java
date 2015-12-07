@@ -5,12 +5,12 @@
  */
 package hack.attack.client;
 
-import hack.attack.client.interfaces.IClient;
-import hack.attack.client.interfaces.IClientCreate;
-import hack.attack.client.interfaces.IClientDelete;
-import hack.attack.client.interfaces.IClientUpdate;
-import hack.attack.client.interfaces.IServerConnect;
-import hack.attack.client.interfaces.IServerUpdate;
+import hack.attack.interfaces.IClient;
+import hack.attack.interfaces.IClientCreate;
+import hack.attack.interfaces.IClientDelete;
+import hack.attack.interfaces.IClientUpdate;
+import hack.attack.interfaces.IServerConnect;
+import hack.attack.interfaces.IServerUpdate;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -76,8 +76,8 @@ public class FXMLLobbyController implements Initializable {
                 }
             });
         
-            System.setProperty("java.rmi.server.hostname","localhost");
-            connect = (IServerConnect)Naming.lookup("rmi://localhost:7611/HackAttackServerConnect");
+            //System.setProperty("java.rmi.server.hostname","localhost");
+            connect = (IServerConnect)Naming.lookup("rmi://145.93.57.8:7611/HackAttackServerConnect");
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(FXMLLobbyController.class.getName()).log(Level.SEVERE, null, ex);
         }

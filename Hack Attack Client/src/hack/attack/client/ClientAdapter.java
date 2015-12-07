@@ -5,6 +5,12 @@
  */
 package hack.attack.client;
 
+import hack.attack.interfaces.IClientCreate;
+import hack.attack.interfaces.ITargetable;
+import hack.attack.interfaces.IClient;
+import hack.attack.interfaces.IClientDelete;
+import hack.attack.interfaces.IServerUpdate;
+import hack.attack.interfaces.IClientUpdate;
 import hack.attack.client.enums.Effect;
 import hack.attack.client.enums.ModuleName;
 import hack.attack.client.exceptions.DuplicateSpawnException;
@@ -12,9 +18,9 @@ import hack.attack.client.exceptions.InvalidModuleEnumException;
 import hack.attack.client.exceptions.InvalidObjectException;
 import hack.attack.client.exceptions.NoUpgradeAllowedException;
 import hack.attack.client.exceptions.NotEnoughBitcoinsException;
-import hack.attack.client.interfaces.*;
 import hack.attack.client.templates.*;
 import java.awt.Point;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -307,7 +313,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
     * @return The object that the player has build
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to build the module
     */  
-    public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate injector, Point position, int width, int height) throws NotEnoughBitcoinsException, InvalidModuleEnumException{
+    public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate injector, Point position, int width, int height) throws NotEnoughBitcoinsException, InvalidModuleEnumException, RemoteException{
         return (SoftwareInjector)update.buildModule(sessionKey, account.getUID(), injector, position, width, height);
         
         
@@ -319,7 +325,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to upgrade the object
      * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
-    public void upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException
+    public void upgradeSoftwareInjector(SoftwareInjector injector) throws NotEnoughBitcoinsException, NoUpgradeAllowedException, RemoteException
     {
         update.upgradeModule(sessionKey, account.getUID(), injector);
         
@@ -331,7 +337,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @return an BitcoinMiner object that the player has build.
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to build the BitcoinMiner
      */
-    public BitcoinMiner buildBitcoinMiner(BitCoinMinerTemplate miner, Point position, int width, int height) throws NotEnoughBitcoinsException{
+    public BitcoinMiner buildBitcoinMiner(BitCoinMinerTemplate miner, Point position, int width, int height) throws NotEnoughBitcoinsException, RemoteException{
         return (BitcoinMiner)update.buildModule(sessionKey, account.getUID(), miner, position, width, height);
     }
     
@@ -341,7 +347,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @throws NotEnoughBitcoinsException when the player doesn't have enough bitcoins to upgrade the object
      * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
-    public void upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
+    public void upgradeBitcoinMiner(BitcoinMiner miner) throws NotEnoughBitcoinsException, NoUpgradeAllowedException, RemoteException {
         update.upgradeModule(sessionKey, account.getUID(), miner);
     }
     
@@ -351,7 +357,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @return an CPUUpgrade object that the player has build.
      * @throws NotEnoughBitcoinsException when the player hasn't enough bitcoins to build the CPUUpgrade object
      */
-    public CPUUpgrade buildCPUUpgrade(CPUUpgradeTemplate cpu, Point position, int width, int height) throws NotEnoughBitcoinsException{
+    public CPUUpgrade buildCPUUpgrade(CPUUpgradeTemplate cpu, Point position, int width, int height) throws NotEnoughBitcoinsException, RemoteException{
        return (CPUUpgrade)update.buildModule(sessionKey, account.getUID(), cpu, position, width, height);
     }
     
@@ -361,7 +367,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to upgrade the module
      * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
-    public void upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException, NoUpgradeAllowedException {
+    public void upgradeCPUUpgrade(CPUUpgrade cpu) throws NotEnoughBitcoinsException, NoUpgradeAllowedException, RemoteException {
         update.upgradeModule(sessionKey, account.getUID(), cpu);
     }
     
@@ -371,7 +377,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @return An defense object that the player has build.
      * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to build the module
      */
-    public Defense buildDefense(DefenseTemplate defense, Point position, int width, int height) throws NotEnoughBitcoinsException{
+    public Defense buildDefense(DefenseTemplate defense, Point position, int width, int height) throws NotEnoughBitcoinsException, RemoteException{
        return (Defense)update.buildModule(sessionKey, account.getUID(), defense, position, width, height);
     }
     
@@ -382,7 +388,7 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
      * @throws NotEnoughBitcoinsException when the client doesn't have enough bitcoins to upgrade the defense object
      * @throws NoUpgradeAllowedException when the given parameter is already at it's highest level.
      */
-    public void upgradeDefense(Defense defense, Effect effect) throws NotEnoughBitcoinsException, NoUpgradeAllowedException{
+    public void upgradeDefense(Defense defense, Effect effect) throws NotEnoughBitcoinsException, NoUpgradeAllowedException, RemoteException{
         update.upgradeModule(sessionKey, account.getUID(), defense);
     }	
 
@@ -435,6 +441,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                 } catch (DuplicateSpawnException ex) { 
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (RemoteException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             } 
                         } else {
@@ -502,6 +510,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                         engine.showError("You are not allowed to build here.");
                                     }
                                 } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (RemoteException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 } 
                             } catch (NotEnoughBitcoinsException ex) {
@@ -574,6 +584,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                         engine.showError("You are not allowed to build here.");
                                     }
                                 } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (RemoteException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             } catch (NotEnoughBitcoinsException ex)
@@ -648,6 +660,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                                     }
                                 } catch (DuplicateSpawnException | InvalidObjectException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (RemoteException ex) {
+                                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             } catch (NotEnoughBitcoinsException ex)
                             {
@@ -698,6 +712,8 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                     }
                 } catch (NotEnoughBitcoinsException ex) {
                     engine.showError("Not enough bitcoins!");
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             
@@ -739,7 +755,11 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                     public void handle(MouseEvent event) {
                         ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
                         Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
-                        update.executeSpell(sessionKey, account.getUID(), spell, p);
+                        try {
+                            update.executeSpell(sessionKey, account.getUID(), spell, p);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                     
                 });

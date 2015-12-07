@@ -10,7 +10,7 @@ import hack.attack.server.enums.DefenseType;
 import hack.attack.server.enums.Effect;
 import hack.attack.server.enums.ModuleName;
 import hack.attack.server.exceptions.*;
-import hack.attack.server.interfaces.ITargetable;
+import hack.attack.interfaces.ITargetable;
 import java.awt.Point;
 import hack.attack.server.templates.*;
 import java.util.ArrayList;
