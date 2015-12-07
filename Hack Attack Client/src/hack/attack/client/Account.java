@@ -5,11 +5,13 @@
  */
 package hack.attack.client;
 
+import java.io.Serializable;
+
 /**
  *
  * @author juleskreutzer
  */
-public class Account {
+public class Account implements Serializable {
     
     /**
      * The uID is a unique identifier for the user that has been used in the database.
