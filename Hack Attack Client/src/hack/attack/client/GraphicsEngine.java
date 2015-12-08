@@ -601,6 +601,63 @@ public class GraphicsEngine{
                     });
 
                     break;
+                case BUFFED:
+                    label = new Label();
+                    label.setText("BUFFED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
+                case STOPPED:
+                    label = new Label();
+                    label.setText("STOPPED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
+                case ENCRYPT:
+                    label = new Label();
+                    label.setText("ENCRYPTED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
             }
         }
     }
