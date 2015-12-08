@@ -1,7 +1,7 @@
 package hack.attack.server;
 
 import hack.attack.server.GameEngine.OnExecuteTick;
-import hack.attack.server.MinionEffect.OnEffectExpired;
+import hack.attack.server.AppliedEffect.OnEffectExpired;
 
 import hack.attack.server.enums.Effect;
 import hack.attack.server.templates.MinionTemplate;
@@ -50,7 +50,7 @@ public class Minion implements IMoveable, ITargetable {
     
     private OnExecuteTick tickListener;
     private MinionHeartbeat heartbeat;
-    private MinionEffect activeEffect;
+    private AppliedEffect activeEffect;
     
     // Constructor
     /**
@@ -298,15 +298,15 @@ public class Minion implements IMoveable, ITargetable {
     }
     
     /**
-     * This method will apply the effect of a MinionEffect object. 
+     * This method will apply the effect of a AppliedEffect object. 
      * 
      * When a spell is cast, this method has to be always called to apply the effect to the minion.
      * 
      * The Effect STOPPED doesn't need to be used in this method. It is better to check if a minion has the STOPPED-effect in the
      * move method in this class.
-     * @param effect MinionEffect instance containing the effect we want to give to the minion.
+     * @param effect AppliedEffect instance containing the effect we want to give to the minion.
      */
-    public void applyEffect(MinionEffect effect){
+    public void applyEffect(AppliedEffect effect){
         activeEffect = effect.getEffectType() != Effect.DIE && effect.getEffectType() != Effect.REACHED_BASE ? effect : null;
         switch(effect.getEffectType()){
             case SLOWED:
