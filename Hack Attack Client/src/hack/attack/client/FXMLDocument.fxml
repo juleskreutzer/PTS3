@@ -95,10 +95,11 @@
         </ImageView>
       </children>
     </AnchorPane>
-    <AnchorPane id="mainWindow" fx:id="windowMain" layoutX="0.0" layoutY="70.0" prefHeight="527.0" prefWidth="1366.0" style="-fx-background-image: url(&quot;hack/attack/client/resources/Background.png&quot;);">
+    <AnchorPane id="mainWindow" fx:id="windowMain" layoutX="0.0" layoutY="70.0" prefHeight="527.0" prefWidth="1366.0">
       <children>
-        <AnchorPane id="windowTop" fx:id="windowTop" layoutX="0.0" layoutY="0.0" prefHeight="260.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 0 0 2 0;" />
-        <AnchorPane id="windowDown" fx:id="windowDown" layoutX="0.0" layoutY="267.0" prefHeight="260.0001220703125" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 2 0 0 0;">
+        <AnchorPane id="windowTop" fx:id="windowTop" layoutX="0.0" layoutY="0.0" prefHeight="260.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 0 0 2 0;&#10-fx-background-image: url(&quot;hack/attack/client/resources/Field.png&quot;);">
+        </AnchorPane>
+        <AnchorPane id="windowDown" fx:id="windowDown" layoutX="0.0" layoutY="267.0" prefHeight="260.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 2 0 0 0;&#10-fx-background-image: url(&quot;hack/attack/client/resources/Field.png&quot;);">
           <children>
             <ImageView fx:id="buildBitcoinMiner" fitHeight="40.0" fitWidth="40.0" layoutX="69.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true">
               <image>
