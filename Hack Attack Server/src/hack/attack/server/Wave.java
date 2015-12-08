@@ -126,7 +126,7 @@ public class Wave {
 
                                 if(reachedBase)
                                 {
-                                    MinionEffect effect = new MinionEffect(Effect.REACHED_BASE, 0, new OnEffectExpired(){
+                                    AppliedEffect effect = new AppliedEffect(Effect.REACHED_BASE, 0, new OnEffectExpired(){
 
                                         @Override
                                         public void onExpired() {
@@ -137,7 +137,7 @@ public class Wave {
                                 }
                                 else
                                 {
-                                    MinionEffect effect = new MinionEffect(Effect.DIE, 0, new OnEffectExpired(){
+                                    AppliedEffect effect = new AppliedEffect(Effect.DIE, 0, new OnEffectExpired(){
 
                                         @Override
                                         public void onExpired() {
