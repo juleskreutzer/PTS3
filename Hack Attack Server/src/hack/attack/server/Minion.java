@@ -141,6 +141,11 @@ public class Minion implements IMoveable, ITargetable {
                 position.y = targetPosition.y;
             }
         }
+        else if(this.activeEffect.getEffectType() == Effect.STOPPED)
+        {
+            position.x = position.x;
+            position.y = position.y;
+        }
         else{
             List<Path> paths = Map.getInstance().getRoad().getPaths();
             for(Path p : paths){
