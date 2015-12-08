@@ -26,6 +26,7 @@ import java.util.logging.Logger;
  */
 public class Defense extends Module implements ITargetable {
     private double damage;
+    private transient boolean canDoDamage;
     private int range;
     // The amount of attacks per second
     private int frequency;
@@ -68,6 +69,7 @@ public class Defense extends Module implements ITargetable {
         this.damage = template.getDamage();
         this.range = template.getRange();
         this.frequency = template.getFrequency();
+        this.canDoDamage = true;
         reloading = false;
         
     }
@@ -184,6 +186,10 @@ public class Defense extends Module implements ITargetable {
     }
     
     public double getDamage(){
+        if(this.canDoDamage == false)
+        {
+            return 0.0;
+        }
         return damage;
     }
     
@@ -438,7 +444,7 @@ public class Defense extends Module implements ITargetable {
                 
                 break;
             case SPLASH:
-                
+                this.canDoDamage = false;
                 break;
             case DECRYPTED: 
                 
@@ -465,7 +471,7 @@ public class Defense extends Module implements ITargetable {
 
                 break;
             case SPLASH:
-
+                this.canDoDamage = true;
                 break;
             case DECRYPTED: 
 

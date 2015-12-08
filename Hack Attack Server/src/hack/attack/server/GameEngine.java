@@ -889,7 +889,22 @@ public class GameEngine extends Thread implements MouseListener {
                 }
                 break;
             case DISRUPT: 
-                
+                for(ITargetable t : defenseTargets)
+                {
+                    Defense d = (Defense)t;
+                    AppliedEffect effect = new AppliedEffect(Effect.SPLASH, spell.getEffectDuration(), new OnEffectExpired(){
+
+                        @Override
+                        public void onExpired() {
+                            d.removeEffect();
+                        }
+                        
+                    });
+                    d.applyEffect(effect);
+                    
+                    createA.drawNewSpells(Effect.SPLASH, defenseTargets, uID);
+                    createB.drawNewSpells(Effect.SPLASH, defenseTargets, uID);
+                }
                 break;
             case ENCRYPT:
                 for(ITargetable t : minionTargets)
