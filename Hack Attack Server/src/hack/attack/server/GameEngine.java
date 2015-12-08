@@ -778,6 +778,10 @@ public class GameEngine extends Thread implements MouseListener {
                 targets.add(m);
             }
         }
+        
+        IClientCreate createA = (IClientCreate)interfacesA.get("create");
+        IClientCreate createB = (IClientCreate)interfacesB.get("create");
+        
         switch(spell.getName()){
             case FIREWALL:
                 for(ITargetable t : targets){
@@ -791,27 +795,100 @@ public class GameEngine extends Thread implements MouseListener {
                         
                     });
                     m.applyEffect(effect);
-                    IClientCreate createA = (IClientCreate)interfacesA.get("create");
-                    IClientCreate createB = (IClientCreate)interfacesB.get("create");
                     
                     createA.drawNewSpells(Effect.SLOWED, targets, uID);
                     createB.drawNewSpells(Effect.SLOWED, targets, uID);
                 }
                 break;
             case LOCKDOWN:
-                
+                for(ITargetable t : targets)
+                {
+                    Minion m = (Minion)t;
+                    MinionEffect effect = new MinionEffect(Effect.STOPPED, spell.getEffectDuration(), new OnEffectExpired() {
+
+                        @Override
+                        public void onExpired() {
+                            m.removeEffect();
+                        }
+                        
+                    });
+                    m.applyEffect(effect);
+                    
+                    createA.drawNewSpells(Effect.STOPPED, targets, uID);
+                    createB.drawNewSpells(Effect.STOPPED, targets, uID);
+                }
                 break;
             case VIRUSSCAN: 
-                
+                for(ITargetable t : targets)
+                {
+                    Minion m = (Minion)t;
+                    MinionEffect effect = new MinionEffect(Effect.BUFFED, spell.getEffectDuration(), new OnEffectExpired() {
+
+                        @Override
+                        public void onExpired() {
+                            m.removeEffect();
+                        }
+                        
+                    });
+                    m.applyEffect(effect);
+                    
+                    createA.drawNewSpells(Effect.BUFFED, targets, uID);
+                    createB.drawNewSpells(Effect.BUFFED, targets, uID);
+                }
                 break;
             case CORRUPT:
-                
+                for(ITargetable t : targets)
+                {
+                    Minion m = (Minion)t;
+                    MinionEffect effect = new MinionEffect(Effect.SPLASH, spell.getEffectDuration(), new OnEffectExpired(){
+
+                        @Override
+                        public void onExpired() {
+                            m.removeEffect();
+                        }
+                        
+                    });
+                    m.applyEffect(effect);
+                    
+                    createA.drawNewSpells(Effect.SPLASH, targets, uID);
+                    createB.drawNewSpells(Effect.SPLASH, targets, uID);
+                }
                 break;
             case DISRUPT: 
-                
+                for(ITargetable t : targets)
+                {
+                    Minion m = (Minion)t;
+                    MinionEffect effect = new MinionEffect(Effect.SPLASH, spell.getEffectDuration(), new OnEffectExpired(){
+
+                        @Override
+                        public void onExpired() {
+                            m.removeEffect();
+                        }
+                        
+                    });
+                    m.applyEffect(effect);
+                    
+                    createA.drawNewSpells(Effect.SPLASH, targets, uID);
+                    createB.drawNewSpells(Effect.SPLASH, targets, uID);
+                }
                 break;
             case ENCRYPT:
-                
+                for(ITargetable t : targets)
+                {
+                    Minion m = (Minion)t;
+                    MinionEffect effect = new MinionEffect(Effect.ENCRYPT, spell.getEffectDuration(), new OnEffectExpired(){
+
+                        @Override
+                        public void onExpired() {
+                            m.removeEffect();
+                        }
+                        
+                    });
+                    m.applyEffect(effect);
+                    
+                    createA.drawNewSpells(Effect.ENCRYPT, targets, uID);
+                    createB.drawNewSpells(Effect.ENCRYPT, targets, uID);
+                }
                 break;
         }
     }
