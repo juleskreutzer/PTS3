@@ -35,16 +35,17 @@ public class Minion implements IMoveable, ITargetable {
     
     //Fields
     private MinionType minionType; //The MinionType of the minion
-    private Player enemyPlayer; //The player the minions are supposed to attack.
+    private transient Player enemyPlayer; //The player the minions are supposed to attack.
     private double health; //The ammunt of health the minion currently has.
     private double initialHealth; // the health this minion had when created.
-    private double speed; //The rate at which the minion moves towards the targetPosition.
+    private transient double speed; //The rate at which the minion moves towards the targetPosition.
     private Point.Double position; //The current position of the minion.
     private double damage; //The damage the minion will deal upon reching enemyPlayer.
-    private boolean reachedBase; // whether the minion reached enemy base
+    private transient boolean canReceiveDamage; //Boolean indicating if the minion can receive damage
+    private transient boolean reachedBase; // whether the minion reached enemy base
     
     private Point targetPosition; // The position this minion is currently moving to. Can change.
-    private boolean encrypted; //Is true when the minion is encrypted.
+    private transient boolean encrypted; //Is true when the minion is encrypted.
     private double reward; //The ammount of bitcoins the minion is worth, the opposing player gains this upon the minions destruction.
     
     private OnExecuteTick tickListener;
@@ -79,6 +80,7 @@ public class Minion implements IMoveable, ITargetable {
         encrypted = minion.getEncrypted();
         minionType = minion.getMinionType();
         this.enemyPlayer = enemyPlayer;
+        this.canReceiveDamage = true;
     }
     
     public double getHealthInPercentage() {
@@ -281,6 +283,10 @@ public class Minion implements IMoveable, ITargetable {
     }
     
     public void receiveDamage(double damage){
+        double d = damage;
+        
+        if(!this.canReceiveDamage){d = 0.0;}
+        
         health -= damage;
         //System.out.println(String.format("Dealing damage: %f, remaining health: %f", damage, health));
         if(health <= 0){
@@ -291,16 +297,31 @@ public class Minion implements IMoveable, ITargetable {
         }
     }
     
+    /**
+     * This method will apply the effect of a MinionEffect object. 
+     * 
+     * When a spell is cast, this method has to be always called to apply the effect to the minion.
+     * 
+     * The Effect STOPPED doesn't need to be used in this method. It is better to check if a minion has the STOPPED-effect in the
+     * move method in this class.
+     * @param effect MinionEffect instance containing the effect we want to give to the minion.
+     */
     public void applyEffect(MinionEffect effect){
         activeEffect = effect.getEffectType() != Effect.DIE && effect.getEffectType() != Effect.REACHED_BASE ? effect : null;
         switch(effect.getEffectType()){
             case SLOWED:
                 speed /= 2;
                 break;
-            case POISENED:
-                
+            case BUFFED:
+                damage *= 1.25;
                 break;
             case SPLASH:
+                this.canReceiveDamage = false;
+                break;
+            case ENCRYPT:
+                this.encrypted = true;
+                break;
+            case POISENED:
                 
                 break;
             case DECRYPTED: 
@@ -320,10 +341,16 @@ public class Minion implements IMoveable, ITargetable {
             case SLOWED:
                 speed *= 2;
                 break;
-            case POISENED:
-                
+            case BUFFED:
+                damage /= 1.25;
                 break;
             case SPLASH:
+                this.canReceiveDamage = true;
+                break;
+            case ENCRYPT:
+                this.encrypted = false;
+                break;
+            case POISENED:
                 
                 break;
             case DECRYPTED: 
