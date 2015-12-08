@@ -660,6 +660,54 @@ public class GraphicsEngine{
                     break;
             }
         }
+        else if(target instanceof Defense)
+        {
+            fadeOut = new FadeTransition(Duration.millis(10000));
+            Defense d = (Defense)target;
+            Point position = d.getPosition();
+            
+            switch(effect)
+            {
+                case BUFFED:
+                    label = new Label();
+                    label.setText("RANGE INCREASED\nDAMAGE INCREASED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
+                case SPLASH:
+                    label = new Label();
+                    label.setText("DISABLED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
+            }
+        }
     }
     
     public void showEndGame(String name)
