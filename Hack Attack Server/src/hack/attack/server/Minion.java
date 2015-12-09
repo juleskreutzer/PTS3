@@ -316,7 +316,8 @@ public class Minion implements IMoveable, ITargetable {
                 damage *= 1.25;
                 break;
             case SPLASH:
-                this.canReceiveDamage = false;
+                double d = this.health * 0.25;
+                this.receiveDamage(d);
                 break;
             case ENCRYPT:
                 this.encrypted = true;

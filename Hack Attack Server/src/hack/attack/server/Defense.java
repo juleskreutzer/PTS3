@@ -428,7 +428,8 @@ public class Defense extends Module implements ITargetable {
      */
     public void fire(Minion minion){
         //System.out.println(this.toString() + " is attacking " + minion.toString());
-        minion.receiveDamage(damage);
+        
+        if(canDoDamage) { minion.receiveDamage(damage); }
         if(!targetInRange(minion)||minion.getHealth() <= 0){
             target = null;
         }
