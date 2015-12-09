@@ -753,12 +753,23 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
                 range.setOnMouseClicked(new EventHandler<MouseEvent>(){
                     @Override
                     public void handle(MouseEvent event) {
-                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
-                        try {
-                            update.executeSpell(sessionKey, account.getUID(), spell, p);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                     
@@ -787,12 +798,24 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
 
                     @Override
                     public void handle(MouseEvent event) {
-                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
-                        try {
-                            update.executeSpell(sessionKey, account.getUID(), spell, p);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 });
@@ -821,12 +844,24 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
 
                     @Override
                     public void handle(MouseEvent event) {
-                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
-                        try {
-                            update.executeSpell(sessionKey, account.getUID(), spell, p);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 });
@@ -854,12 +889,24 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
 
                     @Override
                     public void handle(MouseEvent event) {
-                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
-                        try {
-                            update.executeSpell(sessionKey, account.getUID(), spell, p);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 });
@@ -887,12 +934,24 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
 
                     @Override
                     public void handle(MouseEvent event) {
-                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
-                        try {
-                            update.executeSpell(sessionKey, account.getUID(), spell, p);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 });
@@ -920,12 +979,24 @@ public class ClientAdapter implements IClientCreate, IClientUpdate, IClientDelet
 
                     @Override
                     public void handle(MouseEvent event) {
-                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
-                        try {
-                            update.executeSpell(sessionKey, account.getUID(), spell, p);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 });
