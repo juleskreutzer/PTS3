@@ -5,10 +5,12 @@
  */
 package hack.attack.rmi;
 
+import java.rmi.Remote;
+
 /**
  *
  * @author juleskreutzer
  */
-public interface IClient {
+public interface IClient extends Remote{
     
 }

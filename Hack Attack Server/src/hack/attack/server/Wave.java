@@ -9,9 +9,11 @@ import hack.attack.rmi.Minion;
 import hack.attack.server.GameEngine.OnCompleteTick;
 import hack.attack.server.MinionEffect.OnEffectExpired;
 import hack.attack.rmi.Effect;
+import hack.attack.server.enums.LogState;
 import hack.attack.server.exceptions.DuplicateSpawnException;
 import hack.attack.server.exceptions.InvalidObjectException;
 import hack.attack.server.exceptions.UnsubscribeNonListenerException;
+import hack.attack.server.logger.Log;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -157,7 +159,7 @@ public class Wave {
                     try {
                         engine.unsubscribeListener(this);
                     } catch (UnsubscribeNonListenerException e) {
-                        System.out.println(e.toString());
+                        HackAttackServer.writeConsole(new Log(LogState.ERROR, e.toString()));
                     }
                 }
             }

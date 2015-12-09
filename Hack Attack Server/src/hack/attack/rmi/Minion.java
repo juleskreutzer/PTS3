@@ -283,10 +283,8 @@ public class Minion implements IMoveable, ITargetable {
     
     public void receiveDamage(double damage){
         health -= damage;
-        //System.out.println(String.format("Dealing damage: %f, remaining health: %f", damage, health));
         if(health <= 0){
             if (heartbeat != null) {
-                //System.out.println();
                 heartbeat.onMinionDeath(this, false);
             }
         }

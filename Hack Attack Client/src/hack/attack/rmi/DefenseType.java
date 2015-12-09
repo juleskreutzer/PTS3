@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.client.enums;
+package hack.attack.rmi;
 
 /**
- *
+ * 
  * @author juleskreutzer
  */
-public enum ModuleName {
-    BITCOIN_MINER, SOFTWARE_INJECTOR, CPU_UPGRADE, SNIPER_ANTIVIRUS, BOTTLECAP_ANTIVIRUS, SCALE_ANTIVIRUS, MUSCLE_ANTIVIRUS;
+public enum DefenseType {
+    RANGE, CHEAP, BALANCED, STRONG;
 }

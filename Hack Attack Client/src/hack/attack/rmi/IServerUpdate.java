@@ -5,9 +5,6 @@
  */
 package hack.attack.rmi;
 
-import hack.attack.client.*;
-import hack.attack.client.templates.ModuleTemplate;
-import hack.attack.client.templates.SpellTemplate;
 import java.awt.Point;
 import java.rmi.Remote;
 import java.rmi.RemoteException;

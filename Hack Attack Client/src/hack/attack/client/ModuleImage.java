@@ -5,6 +5,7 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.Defense;
 import hack.attack.rmi.Module;
 import java.io.File;
 import javafx.event.EventHandler;

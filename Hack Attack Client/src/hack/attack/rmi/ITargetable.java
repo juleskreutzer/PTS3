@@ -6,6 +6,7 @@
 package hack.attack.rmi;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 /**
  * This is an empty interface. It's main purpose is to tag an object as targetable by a spell.
@@ -14,7 +15,7 @@ import java.awt.Point;
  */
 
 
-public interface ITargetable {
+public interface ITargetable extends Serializable{
     
     public Point getPosition();
     

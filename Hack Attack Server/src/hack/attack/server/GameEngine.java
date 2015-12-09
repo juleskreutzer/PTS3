@@ -13,6 +13,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import hack.attack.server.exceptions.*;
 import hack.attack.rmi.ITargetable;
+import hack.attack.server.enums.LogState;
+import hack.attack.server.logger.Log;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.List;
@@ -75,8 +77,8 @@ public class GameEngine extends Thread implements MouseListener {
     private String playerBName;
     
     // Available interfaces to communicate with client
-    private HashMap<String, IClient> interfacesA;
-    private HashMap<String, IClient> interfacesB;
+    private final HashMap<String, IClient> interfacesA;
+    private final HashMap<String, IClient> interfacesB;
     
     private boolean gameRunning;
     private Spell selectedSpell;
@@ -113,453 +115,13 @@ public class GameEngine extends Thread implements MouseListener {
         waveNumber = 0;
         lastWaveStart = GameTime.getElapsedTime();
         preStart();
-        startGame();
     }
     
     /**
      * Mostly used to draw the initial components like the bases, roads and event handlers
      */
     private void preStart(){
-        
-        // MOVE TO CLIENTSIDE
-/*        
-        // Initialize all GUI buttons
-        ImageView sniperav = (ImageView)graphicsEngine.getNode("buildSniperAV",null);
-        sniperav.setOnMouseClicked(new EventHandler<MouseEvent>(){
- 
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event) {
-                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SNIPER_ANTIVIRUS);
-                
-                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
 
-                    @Override
-                    public void handle(javafx.scene.input.MouseEvent event) {
-                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
-                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
-                    }
-                });
-                // Set a listener for a second click to occur
-                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        
-                        MouseButton m = event.getButton();
-                        if (m == MouseButton.PRIMARY){
-                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
-                            try {
-                                try {
-                                    int x = (int)st.getX();
-                                    int y = (int)st.getY();
-
-
-                                    if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
-                                    {   
-                                        Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, position, 50, 50));
-                                        graphicsEngine.spawn(defense);
-                                        graphicsEngine.deSpawn(st);
-                                        defense.activate();
-                                    }
-                                    else
-                                    {
-                                        graphicsEngine.showError("You are not allowed to build here.");
-                                    }
-                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
-                                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                                } catch (NotEnoughBitcoinsException ex) {
-                                    graphicsEngine.showError(ex.getMessage());
-                                } 
-                            } catch (InvalidModuleEnumException ex) {
-                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else {
-                            System.out.println("dd");
-                            try {
-                                graphicsEngine.deSpawn(st);
-                            } catch (InvalidObjectException ex) {
-                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }
-                });
-            }
-            
-        });
-        sniperav.setOnMouseEntered(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SNIPER_1, null, 0,0);
-                    graphicsEngine.drawModuleStats(module);
-                } catch (InvalidModuleEnumException ex) {
-                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        sniperav.setOnMouseExited(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                graphicsEngine.drawModuleStats(null);
-            }
-        });
-        
-        ImageView scaleav = (ImageView)graphicsEngine.getNode("buildScaleAV",null);
-        scaleav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
- 
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event) {
-                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.SCALE_ANTIVIRUS);
-                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
-
-                    @Override
-                    public void handle(javafx.scene.input.MouseEvent event) {
-                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
-                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
-
-                    }
-                });
-                // Set a listener for a second click to occur
-                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        MouseButton m = event.getButton();
-                        if (m == MouseButton.PRIMARY){
-                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
-                            try {
-
-                                try {
-                                    int x = (int)st.getX();
-                                    int y = (int)st.getY();
-
-
-                                    if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
-                                    {
-                                        Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, position, 50, 50));
-                                        graphicsEngine.spawn(defense);
-                                        graphicsEngine.deSpawn(st);
-                                        defense.activate();
-                                    }
-                                    else{
-                                        graphicsEngine.showError("You are not allowed to build here.");
-                                    }
-                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
-                                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                                } 
-
-
-                            } catch (InvalidModuleEnumException ex) {
-                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (NotEnoughBitcoinsException ex) {
-                                graphicsEngine.showError(ex.getMessage());
-                            }
-                        } else {
-                            System.out.println("dd");
-                            try {
-                                graphicsEngine.deSpawn(st);
-                            } catch (InvalidObjectException ex) {
-                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }
-                
-                });
-            }
-            
-        });
-        scaleav.setOnMouseEntered(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_SCALE_1, null, 0,0);
-                    graphicsEngine.drawModuleStats(module);
-                } catch (InvalidModuleEnumException ex) {
-                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        scaleav.setOnMouseExited(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                graphicsEngine.drawModuleStats(null);
-            }
-        });
-        
-        ImageView bottlecapav = (ImageView)graphicsEngine.getNode("buildBottlecapAV",null);
-        bottlecapav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
- 
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event) {
-                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.BOTTLECAP_ANTIVIRUS);
-                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
-
-                    @Override
-                    public void handle(javafx.scene.input.MouseEvent event) {
-                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
-                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
-
-                    }
-                });
-                // Set a listener for a second click to occur
-                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        MouseButton m = event.getButton();
-                        if (m == MouseButton.PRIMARY){
-                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
-                            try {
-
-                                try {
-                                    int x = (int)st.getX();
-                                    int y = (int)st.getY();
-
-
-                                    if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
-                                    {
-                                        Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, position, 50, 50));
-                                        graphicsEngine.spawn(defense);
-                                        graphicsEngine.deSpawn(st);
-                                        defense.activate();
-                                    }
-                                    else
-                                    {
-                                        graphicsEngine.showError("You are not allowed to build here.");
-                                    }
-                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
-                                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-
-
-                            } catch (InvalidModuleEnumException ex) {
-                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (NotEnoughBitcoinsException ex)
-                            {
-                                graphicsEngine.showError(ex.getMessage());
-                            }
-                        } else {
-                            System.out.println("dd");
-                            try {
-                                graphicsEngine.deSpawn(st);
-                            } catch (InvalidObjectException ex) {
-                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }
-                
-                });
-            }
-            
-        });
-        bottlecapav.setOnMouseEntered(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_BOTTLECAP_1, null, 0,0);
-                    graphicsEngine.drawModuleStats(module);
-                } catch (InvalidModuleEnumException ex) {
-                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        bottlecapav.setOnMouseExited(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                graphicsEngine.drawModuleStats(null);
-            }
-        });
-        
-        ImageView muscleav = (ImageView)graphicsEngine.getNode("buildMuscleAV",null);
-        muscleav.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
- 
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event) {
-                st = graphicsEngine.drawModuleSpawnTarget(ModuleName.MUSCLE_ANTIVIRUS);
-                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
-
-                    @Override
-                    public void handle(javafx.scene.input.MouseEvent event) {
-                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
-                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
-
-                    }
-                });
-                // Set a listener for a second click to occur
-                st.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        MouseButton m = event.getButton();
-                        if (m == MouseButton.PRIMARY){
-                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
-                            try {
-
-                                try {
-                                    int x = (int)st.getX();
-                                    int y = (int)st.getY();
-
-                                    if(!isPointInNode(x, y, (int)st.getImage().getWidth(), (int)st.getImage().getHeight()))
-                                    {
-                                        Defense defense = playerA.buildDefense(new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, position, 50, 50));
-                                        graphicsEngine.spawn(defense);
-                                        graphicsEngine.deSpawn(st);
-                                        defense.activate();
-                                    }
-                                    else
-                                    {
-                                        graphicsEngine.showError("You are not allowed to build here.");
-                                    }
-                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
-                                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-
-
-                            } catch (InvalidModuleEnumException ex) {
-                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (NotEnoughBitcoinsException ex)
-                            {
-                                graphicsEngine.showError(ex.getMessage());
-                            }
-                        } else {
-                            System.out.println("dd");
-                            try {
-                                graphicsEngine.deSpawn(st);
-                            } catch (InvalidObjectException ex) {
-                                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }
-                
-                });
-            }
-            
-        });
-        muscleav.setOnMouseEntered(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    Module module = new Defense(Data.DEFAULT_MODULE_DEFENSE_MUSCLE_1, null, 0,0);
-                    graphicsEngine.drawModuleStats(module);
-                } catch (InvalidModuleEnumException ex) {
-                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        muscleav.setOnMouseExited(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                graphicsEngine.drawModuleStats(null);
-            }
-        });
-        
-        ImageView bitcoinminer = (ImageView)graphicsEngine.getNode("buildBitcoinMiner",null);
-        bitcoinminer.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                Image i = bitcoinminer.getImage();
-                Point p = new Point((int)bitcoinminer.getX(),(int)bitcoinminer.getY());
-                try {
-                    BitcoinMiner miner = new BitcoinMiner(Data.DEFAULT_MODULE_BITCOINMINER_1,p,(int)i.getWidth(),(int)i.getHeight());
-                    playerA.buildBitcoinMiner(miner);
-                    graphicsEngine.drawBaseModule(ModuleName.BITCOIN_MINER, true);
-                    miner.activate();
-                } catch (NotEnoughBitcoinsException ex) {
-                    graphicsEngine.showError("Not enough bitcoins!");
-                } catch (InvalidModuleEnumException ex) {
-                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-        });
-        bitcoinminer.setOnMouseEntered(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    BitcoinMiner module = new BitcoinMiner(Data.DEFAULT_MODULE_BITCOINMINER_1,null,0,0);
-                    graphicsEngine.drawModuleStats(module);
-                } catch (InvalidModuleEnumException ex) {
-                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        bitcoinminer.setOnMouseExited(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                graphicsEngine.drawModuleStats(null);
-            }
-        });
-        
-        ImageView pausebutton = (ImageView)graphicsEngine.getNode("btnPause",null);
-        pausebutton.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                gameRunning = !gameRunning;
-                graphicsEngine.setPauseButton(gameRunning);
-            }
-        
-        });
-        
-        ImageView spellFirewall = (ImageView)graphicsEngine.getNode("spellFirewall",null);
-        spellFirewall.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                Spell spell = new Spell(Data.DEFAULT_SPELL_FIREWALL);
-                Ellipse range = graphicsEngine.drawSpellRange(spell);
-                graphicsEngine.getScene().setOnMouseMoved(new EventHandler<MouseEvent>(){
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        range.setCenterX(event.getSceneX());
-                        range.setCenterY(event.getSceneY());
-                    }
-                
-                });
-                range.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        for(Minion m : currentWave.minionsAsList()){
-                            if(targetInRange(range.getCenterX(), range.getCenterY(), spell.getRange(),m)){
-                                targets.add(m);
-                            }
-                        }
-                        executeSpell(spell, targets);
-                    }
-                    
-                });
-            }
-            
-        });
-        
-        ImageView spellLockdown = (ImageView)graphicsEngine.getNode("spellLockdown",null);
-        
-        
-        ImageView spellVirusscan = (ImageView)graphicsEngine.getNode("spellVirusscan",null);
-        
-        
-        ImageView spellCorrup = (ImageView)graphicsEngine.getNode("spellCorrupt",null);
-        
-        
-        ImageView spellDisrupt = (ImageView)graphicsEngine.getNode("spellDisrupt",null);
-        
-        
-        ImageView spellEncrypt = (ImageView)graphicsEngine.getNode("spellEncrypt",null);
-        */
     }
     
     /**
@@ -584,7 +146,6 @@ public class GameEngine extends Thread implements MouseListener {
             public void run() {
                 try {
                     tick();
-                    //System.out.print("use javaFX thread (gameEngine line 157) (animationTimer)");
                 } catch (RemoteException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -596,19 +157,22 @@ public class GameEngine extends Thread implements MouseListener {
     private void tick() throws RemoteException{
         if(gameRunning)
         {
+            IClientUpdate iClientUpdateA = (IClientUpdate)interfacesA.get("update");
+            IClientUpdate iClientUpdateB = (IClientUpdate)interfacesB.get("update");
+            
             if(playerA.getHealth() <= 0)
             {
-               IClientUpdate iClientUpdate = (IClientUpdate)interfacesA.get("update");
-               iClientUpdate.updateLabels(waveNumber, playerA.getName(), String.format("%s", playerA.getHealth()), String.format("%s", playerA.getBitcoins()), playerB.getName(), String.format("%s", playerB.getHealth()));
+               
+               iClientUpdateA.updateLabels(waveNumber, playerA.getName(), String.format("%s", playerA.getHealth()), String.format("%s", playerA.getBitcoins()), playerB.getName(), String.format("%s", playerB.getHealth()));
                gameRunning = false;
                
             }
             
             if(playerB.getHealth() <= 0)
             {
-                IClientUpdate iClientUpdate = (IClientUpdate)interfacesB.get("update");
-                iClientUpdate.updateLabels(waveNumber, playerB.getName(), String.format("%s", playerB.getHealth()), String.format("%s", playerB.getBitcoins()), playerA.getName(), String.format("%s", playerA.getHealth()));
                 
+                iClientUpdateB.updateLabels(waveNumber, playerB.getName(), String.format("%s", playerB.getHealth()), String.format("%s", playerB.getBitcoins()), playerA.getName(), String.format("%s", playerA.getHealth()));
+                gameRunning = false;
             }
 
             if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
@@ -623,6 +187,12 @@ public class GameEngine extends Thread implements MouseListener {
             processUnsubscribers();
             notifyListeners();
             fillLabels();
+            
+            iClientUpdateA.redrawCurrentMinions(currentWave.minionsAsList(), playerA.getUID());
+            iClientUpdateA.redrawCurrentModules(playerA.getModules(), playerA.getUID());
+            
+            iClientUpdateB.redrawCurrentMinions(currentWave.minionsAsList(), playerB.getUID());
+            iClientUpdateB.redrawCurrentModules(playerB.getModules(), playerB.getUID());
         }
     }
     
@@ -692,7 +262,7 @@ public class GameEngine extends Thread implements MouseListener {
             ++bytes;
             waveStrongness -= 1;
         }
-        System.out.println(bytes + " : " + kiloBytes + " : " +megaBytes + " : " +gigaBytes + " : " + teraBytes + " : " + petaBytes); // for logging purpose
+        HackAttackServer.writeConsole(new Log(LogState.OK, (bytes + " : " + kiloBytes + " : " +megaBytes + " : " +gigaBytes + " : " + teraBytes + " : " + petaBytes))); // for logging purpose
         
         return new Wave(this, waveNumber,1 + 0.1*waveNumber,playerA,bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);
     }

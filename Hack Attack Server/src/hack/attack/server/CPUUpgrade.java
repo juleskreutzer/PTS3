@@ -8,7 +8,7 @@ package hack.attack.server;
 import hack.attack.rmi.Minion;
 import hack.attack.rmi.Module;
 import hack.attack.server.exceptions.InvalidModuleEnumException;
-import hack.attack.server.enums.ModuleName;
+import hack.attack.rmi.ModuleName;
 import java.awt.Point;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.templates.*;
@@ -29,9 +29,9 @@ public class CPUUpgrade extends Module {
      * @param height height of the module
      * @throws InvalidModuleEnumException when this is not a valid {@link ModuleName}
      */
-    public CPUUpgrade(GameEngine engine, CPUUpgradeTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    public CPUUpgrade(CPUUpgradeTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
     {
-        super(engine, template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
+        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
         if(template.getModuleName() != ModuleName.CPU_UPGRADE)
         {
             throw new InvalidModuleEnumException();

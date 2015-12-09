@@ -5,18 +5,14 @@
  */
 package hack.attack.rmi;
 
-import hack.attack.server.GameEngine;
-import hack.attack.server.enums.ModuleName;
 import java.awt.Point;
-import hack.attack.server.exceptions.*;
+import java.io.Serializable;
 
 /**
  *
  * @author juleskreutzer
  */
-abstract public class Module {
-    
-    protected GameEngine engine;
+abstract public class Module implements Serializable {
     
     private static final long serialVersionUID = 000003L;
     
@@ -30,9 +26,8 @@ abstract public class Module {
     protected ModuleName moduleName;
     protected String desc;
     
-    public Module(GameEngine engine, double cost, Point position, int width, int height, ModuleName name, int level, String desc)
+    public Module(double cost, Point position, int width, int height, ModuleName name, int level, String desc)
     {
-        this.engine = engine;
         this.width = width;
         this.height = height;
         this.cost = cost;

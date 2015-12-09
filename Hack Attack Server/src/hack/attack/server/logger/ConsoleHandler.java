@@ -5,6 +5,7 @@
  */
 package hack.attack.server.logger;
 
+import hack.attack.server.HackAttackServer;
 import hack.attack.server.enums.LogState;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -47,7 +48,7 @@ public class ConsoleHandler {
         }
         catch(FileNotFoundException | UnsupportedEncodingException ex)
         {
-            System.out.print(ex.toString());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.toString()));
         }
         finally{
             pr.close();

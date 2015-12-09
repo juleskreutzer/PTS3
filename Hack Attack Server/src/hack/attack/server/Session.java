@@ -20,16 +20,23 @@ public class Session {
     private String sessionKey;
     private Account playerA;
     private Account playerB;
+    private final HashMap<String, IClient> interfacesA;
+    private HashMap<String, IClient> interfacesB;
+    
     private GameEngine engine;
     
     public Session(String key, HashMap<String, IClient> interfaces, Account PlayerA)
     {
         this.sessionKey = key;
         this.playerA = PlayerA;
+        interfacesA = interfaces;
     }
     
     public GameEngine getEngine()
     {
+        if(engine == null){
+            engine = new GameEngine(this, interfacesA, interfacesB);
+        }
         return engine;
     }
     
@@ -46,6 +53,7 @@ public class Session {
     public void joinSession(Account account, HashMap<String, IClient> interfaces)
     {
         this.playerB = account;
+        interfacesB = interfaces;
     }
     
     public String getSessionKey()

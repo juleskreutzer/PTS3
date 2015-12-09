@@ -3,11 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.client.templates;
+package hack.attack.rmi;
 
-import hack.attack.client.enums.*;
-import hack.attack.client.exceptions.*;
-import java.awt.Point;
 import java.io.Serializable;
 /**
  *
@@ -76,7 +73,7 @@ public abstract class ModuleTemplate implements Serializable{
      * 
      * @return the name of the object as a String
      */
-    protected void getName()
+    public void getName()
     {        
         switch(moduleName)
         {

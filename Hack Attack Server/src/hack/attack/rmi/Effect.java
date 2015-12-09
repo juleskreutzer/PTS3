@@ -5,11 +5,13 @@
  */
 package hack.attack.rmi;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Igor
  */
-public enum Effect {
+public enum Effect implements Serializable {
     SLOWED,
     POISENED,
     SPLASH,

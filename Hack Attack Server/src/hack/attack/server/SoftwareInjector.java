@@ -7,13 +7,13 @@ package hack.attack.server;
 
 import hack.attack.rmi.Spell;
 import hack.attack.rmi.Module;
-import hack.attack.server.enums.ModuleName;
+import hack.attack.rmi.ModuleName;
 import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.templates.SoftwareInjectorTemplate;
-import hack.attack.server.templates.SpellTemplate;
+import hack.attack.rmi.SpellTemplate;
 
 /**
  *
@@ -31,9 +31,9 @@ public class SoftwareInjector extends Module {
      * @param width Width for the module
      * @param height Height for the module
      */
-    public SoftwareInjector(GameEngine engine, SoftwareInjectorTemplate softwareInjector, Point position, int width, int height) throws InvalidModuleEnumException
+    public SoftwareInjector(SoftwareInjectorTemplate softwareInjector, Point position, int width, int height) throws InvalidModuleEnumException
     {
-        super(engine, softwareInjector.getCost(), position, width, height, softwareInjector.getModuleName(), softwareInjector.getLevel(), softwareInjector.getDescription());
+        super(softwareInjector.getCost(), position, width, height, softwareInjector.getModuleName(), softwareInjector.getLevel(), softwareInjector.getDescription());
         if( softwareInjector.getModuleName() != ModuleName.SOFTWARE_INJECTOR)
         {
             throw new InvalidModuleEnumException();

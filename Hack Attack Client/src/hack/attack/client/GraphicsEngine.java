@@ -5,12 +5,14 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.Defense;
+import hack.attack.client.FXMLDocumentController.Window;
 import hack.attack.rmi.ClientAdapter;
 import hack.attack.rmi.Spell;
 import hack.attack.rmi.Minion;
 import hack.attack.rmi.Module;
 import hack.attack.rmi.Effect;
-import hack.attack.client.enums.ModuleName;
+import hack.attack.rmi.ModuleName;
 import java.util.List;
 import hack.attack.client.exceptions.*;
 import hack.attack.rmi.ITargetable;
@@ -19,24 +21,17 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -84,39 +79,45 @@ public class GraphicsEngine{
     
     private GraphicsEngine(){
         instance = this;
-        parent = FXMLDocumentController.getInstance();
-//        pauseButton = (ImageView)parent.getNode("btnPause", null);
-//        File pause = new File("src/hack/attack/client/resources/interface/Icons/PauseButton.png");
-//        pauseImage = new Image(pause.toURI().toString());
-//        File play = new File("src/hack/attack/client/resources/interface/Icons/PlayButton.png");
-//        playImage = new Image(play.toURI().toString());
-//        lblCurrentWave = (Label)parent.getNode("lblCurrentWave",null);
-//        lblPlayerName = (Label)parent.getNode("lblPlayerName",null);
-//        lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth",null);
-//        lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins",null);
-//        lblStatsName = (Label)parent.getNode("lblStatsName",null);
-//        lblStatsDescription = (Label)parent.getNode("lblStatsDescription",null);
-//        lblStatsDamage = (Label)parent.getNode("lblStatsDamage",null);
-//        lblStatsLevel = (Label)parent.getNode("lblStatsLevel",null);
-//        lblStatsROF = (Label)parent.getNode("lblStatsROF",null);
-//        lblStatsEffect = (Label)parent.getNode("lblStatsEffect",null);
-//        lblStatsRange = (Label)parent.getNode("lblStatsRange",null);
-//        lblStatsCosts = (Label)parent.getNode("lblStatsCosts",null);
-//        errorLabel = (Label)parent.getNode("errorLabel",null);
-//        errorImage = (ImageView)parent.getNode("errorImage",null);
-//        File file = new File("src/hack/attack/client/resources/error.png");
-//        Image image = new Image(file.toURI().toString());
-//        errorImage.setImage(image);
-//        errorImage.setVisible(false);
-//        errorLabel.setVisible(false);
         
-//        createEffect(lblCurrentWave);
-//        createEffect(lblPlayerName);
-//        createEffect(lblPlayerHealth);
-//        createEffect(lblPlayerBitcoins);
         
         adapter = ClientAdapter.getInstance();
         
+    }
+    
+    public GraphicsEngine initialize(FXMLDocumentController controller){
+        parent = controller;
+        
+        pauseButton = (ImageView)parent.getNode("btnPause", null);
+        File pause = new File("src/hack/attack/client/resources/interface/Icons/PauseButton.png");
+        pauseImage = new Image(pause.toURI().toString());
+        File play = new File("src/hack/attack/client/resources/interface/Icons/PlayButton.png");
+        playImage = new Image(play.toURI().toString());
+        lblCurrentWave = (Label)parent.getNode("lblCurrentWave",null);
+        lblPlayerName = (Label)parent.getNode("lblPlayerName",null);
+        lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth",null);
+        lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins",null);
+        lblStatsName = (Label)parent.getNode("lblStatsName",null);
+        lblStatsDescription = (Label)parent.getNode("lblStatsDescription",null);
+        lblStatsDamage = (Label)parent.getNode("lblStatsDamage",null);
+        lblStatsLevel = (Label)parent.getNode("lblStatsLevel",null);
+        lblStatsROF = (Label)parent.getNode("lblStatsROF",null);
+        lblStatsEffect = (Label)parent.getNode("lblStatsEffect",null);
+        lblStatsRange = (Label)parent.getNode("lblStatsRange",null);
+        lblStatsCosts = (Label)parent.getNode("lblStatsCosts",null);
+        errorLabel = (Label)parent.getNode("errorLabel",null);
+        errorImage = (ImageView)parent.getNode("errorImage",null);
+        File file = new File("src/hack/attack/client/resources/error.png");
+        Image image = new Image(file.toURI().toString());
+        errorImage.setImage(image);
+        errorImage.setVisible(false);
+        errorLabel.setVisible(false);
+      
+        createEffect(lblCurrentWave);
+        createEffect(lblPlayerName);
+        createEffect(lblPlayerHealth);
+        createEffect(lblPlayerBitcoins);
+        return this;
     }
     
     public static GraphicsEngine getInstance(){
@@ -127,8 +128,8 @@ public class GraphicsEngine{
      * The Scene is the main window the whole application runs in
      * @return The main AnchorPane
      */
-    public AnchorPane getScene(){
-        return parent.getScene();
+    public Pane getScene(Window window){
+        return parent.getScene(window);
     }
     
     /**
@@ -141,6 +142,7 @@ public class GraphicsEngine{
         Node n = parent.getNode(id, p);
         return n;
     }
+    
     
     /**
      * From the moment an object is spawned, it will be updated every tick.
@@ -620,8 +622,8 @@ public class GraphicsEngine{
                 text.setText(String.format("Game over, %s", name));
                 text.setFill(Color.RED);
                 text.setStyle("-fx-font-size: 40");
-                double height = parent.getScene().getHeight();
-                double width = parent.getScene().getWidth();
+                double height = parent.getScene(Window.MAIN).getHeight();
+                double width = parent.getScene(Window.MAIN).getWidth();
                 height -= 40;
                 width -= 280;
                 text.setLayoutX(width/2);

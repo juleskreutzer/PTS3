@@ -92,6 +92,7 @@ public class FXMLLobbyController implements Initializable {
     public void automaticMatch() throws IOException
     {
         ClientAdapter adapter = ClientAdapter.getInstance();
+        adapter.setAccount(account);
         HashMap<String, IServerUpdate> result = connect.findMatch(account, adapter.getInterfaces());
         
         for(String key : result.keySet())
@@ -100,8 +101,10 @@ public class FXMLLobbyController implements Initializable {
             adapter.setIServerUpdate((IServerUpdate)result.get(key));
         }
         
-        FXMLLoader gameloader = new FXMLLoader();
-        Parent mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
+        
+        FXMLLoader gameloader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
+        Parent mainroot = (Parent)gameloader.load();
+        FXMLDocumentController controller = gameloader.getController();
         Stage stage  = (Stage)pane.getScene().getWindow();
         stage.close();
         Stage gamestage = new Stage();
@@ -109,6 +112,7 @@ public class FXMLLobbyController implements Initializable {
         gamestage.setScene(scene);
         gamestage.setTitle("Hack Attack");
         gamestage.show();
+        adapter.initialize(controller);
 
         //GameEngine engine = GameEngine.getInstance();
         //engine.start();

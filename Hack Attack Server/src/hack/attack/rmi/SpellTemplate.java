@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.server.templates;
+package hack.attack.rmi;
 import hack.attack.server.enums.*;
 
 /**

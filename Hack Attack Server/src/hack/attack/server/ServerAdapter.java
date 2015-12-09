@@ -5,6 +5,10 @@
  */
 package hack.attack.server;
 
+import hack.attack.rmi.Defense;
+import hack.attack.rmi.DefenseTemplate;
+import hack.attack.rmi.ModuleTemplate;
+import hack.attack.rmi.SpellTemplate;
 import hack.attack.rmi.Account;
 import hack.attack.rmi.Spell;
 import hack.attack.rmi.Module;
@@ -16,13 +20,7 @@ import hack.attack.server.exceptions.*;
 import hack.attack.server.logger.Log;
 import hack.attack.server.templates.*;
 import java.awt.Point;
-import java.lang.reflect.AccessibleObject;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,17 +71,17 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             key = "HackAttackServer" + date.toString();
             sessionKey = Data.encrypt(key);
         } catch (Exception ex) {
-            Log log = new Log(LogState.ERROR, ex.getMessage());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
         }
         
         if(account == null)
         {
-            Log log = new Log(LogState.ERROR, "Account object is null");
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, "Account object is null"));
         }
         
         if(interfaces == null || interfaces.size() != 3)
         {
-            Log log = new Log(LogState.ERROR, "No or not enough interfaces provided!");
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, "No or not enough interfaces provided!"));
         }
         
         Session session = new Session(sessionKey, interfaces, account);
@@ -129,8 +127,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 }
             }
         } catch (NoHostAvailableException ex) {
-            System.out.print(ex.toString());
-            Log log = new Log(LogState.ERROR, ex.getMessage());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
         }
         return null;
     }
@@ -166,6 +163,10 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     session.joinSession(account, interfaces);
                     HashMap hashMap = new HashMap<>();
                     hashMap.put(session.getSessionKey(), this);
+                    
+                    session.getEngine().startGame();
+                    session.getEngine().start();
+                    
                     return hashMap;
                 }
             }
@@ -180,19 +181,20 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             try{
                 Date date = new Date();
                 key = "HackAttackServer" + date.toString();
+
                 sessionKey = Data.encrypt(key);
             } catch (Exception ex) {
-                Log log = new Log(LogState.ERROR, ex.getMessage());
+                HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
             }
             
             if(account == null)
             {
-                Log log = new Log(LogState.ERROR, "Account object is null");
+                HackAttackServer.writeConsole(new Log(LogState.ERROR, "Account object is null"));
             }
         
             if(interfaces == null || interfaces.size() != 3)
             {
-                Log log = new Log(LogState.ERROR, "No or not enough interfaces provided!");
+                HackAttackServer.writeConsole(new Log(LogState.ERROR, "No or not enough interfaces provided!"));
             }
             
             Session session = new Session(sessionKey, interfaces, account);
@@ -230,6 +232,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 if(s.getSessionKey().equals(sessionKey))
                 {
                     session = s;
+                    break;
                 }
             }
         
@@ -246,79 +249,72 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case BITCOIN_MINER:
                     if(module instanceof BitCoinMinerTemplate)
                     {
-                        BitcoinMiner miner = new BitcoinMiner(session.getEngine(), (BitCoinMinerTemplate)module, position, width, height);
-                        session.getEngine().getPlayer(uID).buildBitcoinMiner(miner);
+                        BitcoinMiner miner = new BitcoinMiner((BitCoinMinerTemplate)module, position, width, height);
+                        return session.getEngine().getPlayer(uID).buildBitcoinMiner(miner);
                     }
                     else
                     {
                         throw new InvalidObjectException("provided object is not a BitcoinMiner object");
                     }
-                    break;
                 case SOFTWARE_INJECTOR:
                     if(module instanceof SoftwareInjectorTemplate)
                     {
-                        session.getEngine().getPlayer(uID).buildSoftwareInjector((SoftwareInjectorTemplate)module, position, width, height);
+                        return session.getEngine().getPlayer(uID).buildSoftwareInjector((SoftwareInjectorTemplate)module, position, width, height);
                     }
                     else
                     {
                         throw new InvalidObjectException("Provided object is not a SoftwareInjector object");
                     }
-                    break;
                 case CPU_UPGRADE:
                     if(module instanceof CPUUpgradeTemplate)
                     {
-                        CPUUpgrade cpu = new CPUUpgrade(session.getEngine(), (CPUUpgradeTemplate) module, position, width, height);
-                        session.getEngine().getPlayer(uID).buildCPUUpgrade(cpu);
+                        CPUUpgrade cpu = new CPUUpgrade((CPUUpgradeTemplate) module, position, width, height);
+                        return session.getEngine().getPlayer(uID).buildCPUUpgrade(cpu);
                     }
                     else
                     {
                         throw new InvalidObjectException("Provided object is not a CPUUpgrade object");
                     }
-                    break;
                 case SNIPER_ANTIVIRUS:
                     if(module instanceof DefenseTemplate)
                     {
-                        Defense defense = new Defense(session.getEngine(), (DefenseTemplate) module, position, width, height);
-                        session.getEngine().getPlayer(uID).buildDefense(defense);
+                        Defense defense = new Defense((DefenseTemplate) module, position, width, height);
+                        return session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
                     {
                         throw new InvalidObjectException("Provided object is not a Defense object");
                     }
-                    break;
                 case BOTTLECAP_ANTIVIRUS:
                     if(module instanceof DefenseTemplate)
                     {
-                        Defense defense = new Defense(session.getEngine(), (DefenseTemplate) module, position, width, height);
-                        session.getEngine().getPlayer(uID).buildDefense(defense);
+                        Defense defense = new Defense((DefenseTemplate) module, position, width, height);
+                        return session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
                     {
                         throw new InvalidObjectException("Provided object is not a Defense object");
                     }
-                    break;
                 case SCALE_ANTIVIRUS:
                     if(module instanceof DefenseTemplate)
                     {
-                        Defense defense = new Defense(session.getEngine(), (DefenseTemplate) module, position, width, height);
-                        session.getEngine().getPlayer(uID).buildDefense(defense);
+                        Defense defense = new Defense((DefenseTemplate) module, position, width, height);
+                        return session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
                     {
                         throw new InvalidObjectException("Provided object is not a Defense object");
                     }
-                    break;
                 case MUSCLE_ANTIVIRUS:
                     if(module instanceof DefenseTemplate)
                     {
-                        Defense defense = new Defense(session.getEngine(), (DefenseTemplate) module, position, width, height);
-                        session.getEngine().getPlayer(uID).buildDefense(defense);
+                        Defense defense = new Defense((DefenseTemplate) module, position, width, height);
+                        return session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
                     {
                         throw new InvalidObjectException("Provided object is not a Defense object");
                     }
-                    break;
                 default:
                     // The given module type is not found
                     throw new InvalidModuleEnumException("ModuleName not recognized");
@@ -328,9 +324,9 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
         }
         catch(InvalidSessionKeyException | InvalidModuleEnumException | InvalidObjectException  ex)
         {
-            Log log = new Log(LogState.ERROR, ex.getMessage());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
         } catch (NotEnoughBitcoinsException ex) {
-            new Log(LogState.WARNING, ex.getMessage());
+            HackAttackServer.writeConsole(new Log(LogState.WARNING, ex.getMessage()));
         }
         
         return null;
@@ -387,11 +383,11 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
         }
         catch(InvalidSessionKeyException | InvalidObjectException | RemoteException ex)
         {
-            Log log = new Log(LogState.ERROR, ex.getMessage());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
         }
         catch(IllegalArgumentException ex)
         {
-            Log log = new Log(LogState.WARNING, ex.getMessage());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
         }
         
         return null;
@@ -492,11 +488,11 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
         }
         catch(InvalidSessionKeyException | InvalidObjectException ex)
         {
-            Log log = new Log(LogState.ERROR, ex.getMessage());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
         }
         catch(NotEnoughBitcoinsException ex)
         {
-            Log log = new Log(LogState.WARNING, ex.getMessage());
+            HackAttackServer.writeConsole(new Log(LogState.WARNING, ex.getMessage()));
         }
         
         return false;

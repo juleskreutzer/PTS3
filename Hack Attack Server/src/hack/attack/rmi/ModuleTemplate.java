@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.server.templates;
+package hack.attack.rmi;
 
-import hack.attack.server.enums.*;
-import hack.attack.server.exceptions.*;
-import java.awt.Point;
+import java.io.Serializable;
+
 /**
  *
  * @author juleskreutzer
  */
-public abstract class ModuleTemplate {
+public abstract class ModuleTemplate implements Serializable{
     
     private static final long serialVersionUID = 000004L;
     
@@ -75,7 +74,7 @@ public abstract class ModuleTemplate {
      * 
      * @return the name of the object as a String
      */
-    protected void getName()
+    public void getName()
     {        
         switch(moduleName)
         {

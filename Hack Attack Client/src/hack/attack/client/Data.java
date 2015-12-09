@@ -5,6 +5,10 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.ModuleName;
+import hack.attack.rmi.DefenseType;
+import hack.attack.rmi.DefenseTemplate;
+import hack.attack.rmi.SpellTemplate;
 import hack.attack.rmi.Effect;
 import hack.attack.client.templates.*;
 import hack.attack.client.enums.*;

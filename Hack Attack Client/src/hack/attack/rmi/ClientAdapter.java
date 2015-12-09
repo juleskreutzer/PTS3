@@ -8,22 +8,11 @@ package hack.attack.rmi;
 import hack.attack.client.BitcoinMiner;
 import hack.attack.client.CPUUpgrade;
 import hack.attack.client.Data;
-import hack.attack.client.Defense;
 import hack.attack.client.FXMLDocumentController;
+import hack.attack.client.FXMLDocumentController.Window;
 import hack.attack.client.GraphicsEngine;
 import hack.attack.client.SoftwareInjector;
 import hack.attack.client.SpawnTargetImage;
-import hack.attack.rmi.Spell;
-import hack.attack.rmi.Minion;
-import hack.attack.rmi.Module;
-import hack.attack.rmi.IClientCreate;
-import hack.attack.rmi.ITargetable;
-import hack.attack.rmi.IClient;
-import hack.attack.rmi.IClientDelete;
-import hack.attack.rmi.IServerUpdate;
-import hack.attack.rmi.IClientUpdate;
-import hack.attack.rmi.Effect;
-import hack.attack.client.enums.ModuleName;
 import hack.attack.client.exceptions.DuplicateSpawnException;
 import hack.attack.client.exceptions.InvalidModuleEnumException;
 import hack.attack.client.exceptions.InvalidObjectException;
@@ -68,10 +57,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
     
     private ClientAdapter() throws RemoteException
     {
-        this.engine = GraphicsEngine.getInstance();
-        this.clientCreate = this;
-        this.clientDelete = this;
-        this.clientUpdate = this;
+        instance = this;
+        this.clientCreate = (IClientCreate)getInstance();
+        this.clientDelete = (IClientDelete)getInstance();
+        this.clientUpdate = (IClientUpdate)getInstance();
+        
     }
     
     public static ClientAdapter getInstance()
@@ -117,7 +107,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
      */
     public int getCurrentUserID()
     {
-        return this.account.getUID();
+        return account.getUID();
     }
     /**
      * This method will return a HashMap that is needed to call the IServerConnect methods
@@ -131,38 +121,16 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
     public HashMap<String, IClient> getInterfaces()
     {
         HashMap<String, IClient> interfaces = new HashMap<>();
-        interfaces.put("create", this.clientCreate);
-        interfaces.put("update", this.clientUpdate);
-        interfaces.put("delete", this.clientDelete);
+        interfaces.put("create", clientCreate);
+        interfaces.put("update", clientUpdate);
+        interfaces.put("delete", clientDelete);
         
         return interfaces;
     }
 
     @Override
-    public void drawNewModules(List<Module> modules, int uID) {
-        try{
-            // Check if modules isn't empty
-            if(modules == null)
-            {
-                throw new IllegalArgumentException("Nothing to draw because modules are empty");
-            }
-            
-            // Modules isn't empty, draw them
-            for(Module m : modules)
-            {
-                engine.spawn(m, uID);
-            }
-        }
-        catch(IllegalArgumentException ex)
-        {
-            engine.showEndGame(ex.getMessage());
-        } catch (DuplicateSpawnException | InvalidObjectException ex) {
-            System.out.print(ex.getMessage());
-        }
-    }
-
-    @Override
     public void drawNewMinions(List<Minion> minions, int uID) {
+        System.out.println("drawNewMinions");
         try{
             // Check if minions isn't empty
             if(minions == null)
@@ -211,6 +179,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
 
     @Override
     public void redrawCurrentModules(List<Module> modules, int uID) {
+        System.out.println("redrawCurrentModules");
         try{
             // Check if modules isn't empty
             if(modules == null)
@@ -221,19 +190,18 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             // Modules isn't empty, draw them
             for(Module m : modules)
             {
-                engine.spawn(m, uID);
+                engine.update(uID);
             }
         }
         catch(IllegalArgumentException ex)
         {
             engine.showEndGame(ex.getMessage());
-        } catch (DuplicateSpawnException | InvalidObjectException ex) {
-            System.out.print(ex.getMessage());
         }
     }
 
     @Override
     public void redrawCurrentMinions(List<Minion> minions, int uID) {
+        System.out.println("redrawCurrentMinions");
         try{
             // Check if modules isn't empty
             if(minions == null)
@@ -416,8 +384,10 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
         
     }
 
-    @Override
-    public void initialize() {
+    public void initialize(FXMLDocumentController controller) {
+        
+        engine = GraphicsEngine.getInstance().initialize(controller);
+        
         
         // Initialize all GUI buttons
         ImageView sniperav = (ImageView)engine.getNode("buildSniperAV",null);
@@ -427,7 +397,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             public void handle(javafx.scene.input.MouseEvent event) {
                 st = engine.drawModuleSpawnTarget(ModuleName.SNIPER_ANTIVIRUS);
                 
-                engine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
                     @Override
                     public void handle(javafx.scene.input.MouseEvent event) {
                         st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
@@ -457,11 +427,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                                     }
                                 } catch (NotEnoughBitcoinsException ex) {
                                     engine.showError(ex.getMessage());
-                                } catch (DuplicateSpawnException ex) { 
-                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (InvalidObjectException ex) {
+                                } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (DuplicateSpawnException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             } 
                         } else {
@@ -501,7 +471,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 st = engine.drawModuleSpawnTarget(ModuleName.SCALE_ANTIVIRUS);
-                engine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
                     @Override
                     public void handle(javafx.scene.input.MouseEvent event) {
                         st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
@@ -528,9 +498,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                                     else{
                                         engine.showError("You are not allowed to build here.");
                                     }
-                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                } catch (InvalidObjectException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 } catch (RemoteException ex) {
+                                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (DuplicateSpawnException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 } 
                             } catch (NotEnoughBitcoinsException ex) {
@@ -574,11 +546,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 st = engine.drawModuleSpawnTarget(ModuleName.BOTTLECAP_ANTIVIRUS);
-                engine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
                     @Override
                     public void handle(javafx.scene.input.MouseEvent event) {
-                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
-                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+                        st.setX(event.getX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getY() - (st.getImage().getHeight()/2));
                     }
                 });
                 // Set a listener for a second click to occur
@@ -587,7 +559,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                     public void handle(MouseEvent event) {
                         MouseButton m = event.getButton();
                         if (m == MouseButton.PRIMARY){
-                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                            Point position = new Point((int)event.getX(), (int)event.getY());
                             try {
                                 try {
                                     int x = (int)st.getX();
@@ -602,9 +574,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                                     {
                                         engine.showError("You are not allowed to build here.");
                                     }
-                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                } catch (InvalidObjectException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 } catch (RemoteException ex) {
+                                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (DuplicateSpawnException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             } catch (NotEnoughBitcoinsException ex)
@@ -649,7 +623,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 st = engine.drawModuleSpawnTarget(ModuleName.MUSCLE_ANTIVIRUS);
-                engine.getScene().setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
                     @Override
                     public void handle(javafx.scene.input.MouseEvent event) {
                         st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
@@ -677,9 +651,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                                     {
                                         engine.showError("You are not allowed to build here.");
                                     }
-                                } catch (DuplicateSpawnException | InvalidObjectException ex) {
+                                } catch (InvalidObjectException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 } catch (RemoteException ex) {
+                                    Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (DuplicateSpawnException ex) {
                                     Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             } catch (NotEnoughBitcoinsException ex)
@@ -761,7 +737,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             public void handle(MouseEvent event) {
                 SpellTemplate spell = Data.DEFAULT_SPELL_FIREWALL;
                 Ellipse range = engine.drawSpellRange(new Spell(spell));
-                engine.getScene().setOnMouseMoved(new EventHandler<MouseEvent>(){
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
                     @Override
                     public void handle(MouseEvent event) {
                         range.setCenterX(event.getSceneX());

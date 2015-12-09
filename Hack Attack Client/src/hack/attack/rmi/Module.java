@@ -5,15 +5,14 @@
  */
 package hack.attack.rmi;
 
-import hack.attack.client.enums.ModuleName;
 import java.awt.Point;
-import hack.attack.client.exceptions.*;
+import java.io.Serializable;
 
 /**
  *
  * @author juleskreutzer
  */
-abstract public class Module {
+abstract public class Module implements Serializable {
     
     private static final long serialVersionUID = 000003L;
     

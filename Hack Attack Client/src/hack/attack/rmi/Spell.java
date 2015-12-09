@@ -6,7 +6,6 @@
 package hack.attack.rmi;
 import hack.attack.client.enums.*;
 import hack.attack.client.exceptions.*;
-import hack.attack.client.templates.SpellTemplate;
 
 /**
  *

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.client.templates;
+package hack.attack.rmi;
 import hack.attack.client.enums.*;
 import java.io.Serializable;
 

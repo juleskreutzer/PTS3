@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.server.templates;
+package hack.attack.rmi;
 
-import hack.attack.rmi.Effect;
-import hack.attack.server.enums.*;
+import java.io.Serializable;
 
 /**
  *
  * @author juleskreutzer
  */
-public class DefenseTemplate extends ModuleTemplate {
+public class DefenseTemplate extends ModuleTemplate implements Serializable {
+    
+    private static final long serialVersionUID = 000025L;
+    
     private double damage;
     private int range;
     private DefenseType defenseType;

@@ -6,6 +6,7 @@
 
 package hack.attack.server;
 
+import hack.attack.rmi.Defense;
 import hack.attack.rmi.Spell;
 import hack.attack.rmi.Minion;
 import hack.attack.rmi.Module;
@@ -75,7 +76,7 @@ public class Player {
     public SoftwareInjector buildSoftwareInjector(SoftwareInjectorTemplate template, Point position, int width, int height){
         try {
             SoftwareInjector injector;
-                injector = new SoftwareInjector(engine, template, position, width, height);
+                injector = new SoftwareInjector(template, position, width, height);
             this.removeBitcoins(injector.getCost());
             modules.add(injector);
             return injector;
@@ -132,11 +133,12 @@ public class Player {
                 }
             });
             this.removeBitcoins(miner.getCost());
+            miner.activate(engine);
             modules.add(miner);
         }
         catch(DuplicateListenerException ex)
         {
-            System.out.print(ex.toString());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.toString()));
         }
         
         return miner;
@@ -181,6 +183,7 @@ public class Player {
     public Defense buildDefense(Defense defense) throws NotEnoughBitcoinsException{
         this.removeBitcoins(defense.getCost());
         modules.add(defense);
+        defense.activate(engine);
         return defense;
     }
     
