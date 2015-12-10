@@ -15,6 +15,8 @@ import java.rmi.RemoteException;
  */
 public interface IServerUpdate extends Remote {
     
+    public boolean ready(String sessionkey, Account account) throws RemoteException;
+    
     /**
      * The client can call this method to create a new module.
      * 

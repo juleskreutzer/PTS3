@@ -1,14 +1,7 @@
 package hack.attack.rmi;
 
 import hack.attack.client.templates.MinionTemplate;
-import hack.attack.client.enums.MinionType;
-import hack.attack.client.exceptions.UnsubscribeNonListenerException;
-import hack.attack.rmi.IMoveable;
-import hack.attack.rmi.ITargetable;
 import java.awt.Point;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,12 +25,15 @@ public class Minion implements ITargetable {
     //Fields
     private MinionType minionType; //The MinionType of the minion
     private double health; //The ammunt of health the minion currently has.
-    private double initialHealth;
-    private double damage;
-    private boolean reachedBase;
+    private double initialHealth; // the health this minion had when created.
+    private double speed; //The rate at which the minion moves towards the targetPosition.
     private Point.Double position; //The current position of the minion.
-    private double reward; //The ammount of bitcoins the minion is worth, the opposing player gains this upon the minions destruction.
+    private double damage; //The damage the minion will deal upon reching enemyPlayer.
+    private boolean reachedBase; // whether the minion reached enemy base
     
+    private Point targetPosition; // The position this minion is currently moving to. Can change.
+    private boolean encrypted; //Is true when the minion is encrypted.
+    private double reward; //The ammount of bitcoins the minion is worth, the opposing player gains this upon the minions destruction.
     
     // Constructor
     /**
@@ -49,6 +45,22 @@ public class Minion implements ITargetable {
     public Minion(MinionType type)
     {
         throw new UnsupportedOperationException("The minion class doesn't get it\'s data from the data-class yet.");
+    }
+    
+    /**
+     * The minion, loaded from MinionTemplate with some modified stats.
+     * @param minion, the template of minion that is loaded from the database.
+     * @param multiplier, the multiplier that is used to increase certain values.
+     */
+    public Minion(MinionTemplate minion, double multiplier)
+    {
+        health = (minion.getHealth() * multiplier);
+        initialHealth = health;
+        speed = (minion.getSpeed());
+        damage = (minion.getDamage());
+        reward = (minion.getReward());
+        encrypted = minion.getEncrypted();
+        minionType = minion.getMinionType();
     }
     
     public double getHealthInPercentage() {

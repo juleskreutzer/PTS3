@@ -100,13 +100,13 @@ public class FXMLDocumentController implements Initializable {
                switch(type)
                 {
                     case TOP:
-                        windowTop.getChildren().add(node);
+                        windowTop.getChildren().remove(node);
                         break;
                     case DOWN:
-                        windowDown.getChildren().add(node);
+                        windowDown.getChildren().remove(node);
                         break;
                     case MAIN:
-                        windowMain.getChildren().add(node);
+                        windowMain.getChildren().remove(node);
                         break;
                 }
             }

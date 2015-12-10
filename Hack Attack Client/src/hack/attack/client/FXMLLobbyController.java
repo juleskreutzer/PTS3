@@ -95,11 +95,7 @@ public class FXMLLobbyController implements Initializable {
         adapter.setAccount(account);
         HashMap<String, IServerUpdate> result = connect.findMatch(account, adapter.getInterfaces());
         
-        for(String key : result.keySet())
-        {
-            adapter.setSessionKey(key);
-            adapter.setIServerUpdate((IServerUpdate)result.get(key));
-        }
+        
         
         
         FXMLLoader gameloader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
@@ -113,7 +109,15 @@ public class FXMLLobbyController implements Initializable {
         gamestage.setTitle("Hack Attack");
         gamestage.show();
         adapter.initialize(controller);
-
+        
+        for(String key : result.keySet())
+        {
+            adapter.setSessionKey(key);
+            IServerUpdate update = (IServerUpdate)result.get(key);
+            adapter.setIServerUpdate(update);
+            update.ready(key, account);
+            
+        }
         //GameEngine engine = GameEngine.getInstance();
         //engine.start();
     }

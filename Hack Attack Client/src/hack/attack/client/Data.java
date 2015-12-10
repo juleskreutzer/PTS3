@@ -5,6 +5,7 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.MinionType;
 import hack.attack.rmi.ModuleName;
 import hack.attack.rmi.DefenseType;
 import hack.attack.rmi.DefenseTemplate;

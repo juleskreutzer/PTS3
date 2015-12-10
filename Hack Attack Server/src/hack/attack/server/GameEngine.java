@@ -41,7 +41,7 @@ import java.util.logging.Logger;
  * 
  * @author juleskreutzer, Jasper Rouwhorst
  */
-public class GameEngine extends Thread implements MouseListener {
+public class GameEngine extends Thread {
 
     /**
      * This interface is used to notify every listening object when a tick has occured.
@@ -134,7 +134,7 @@ public class GameEngine extends Thread implements MouseListener {
         waveList.add(w);
         currentWave = w;
         w.startWave();
-        
+        this.start();
     }
     
     @Override
@@ -159,7 +159,6 @@ public class GameEngine extends Thread implements MouseListener {
         {
             IClientUpdate iClientUpdateA = (IClientUpdate)interfacesA.get("update");
             IClientUpdate iClientUpdateB = (IClientUpdate)interfacesB.get("update");
-            
             if(playerA.getHealth() <= 0)
             {
                
@@ -180,19 +179,21 @@ public class GameEngine extends Thread implements MouseListener {
                 lastWaveStart = GameTime.getElapsedTime();
                 waveList.add(w);
                 currentWave = w;
-                w.startWave();
+                
+                // Temporary disabled due some errors.. enable again when starting debugging minion spawning
+                //w.startWave();
 
             }
 
             processUnsubscribers();
             notifyListeners();
-            fillLabels();
+//            fillLabels();
             
-            iClientUpdateA.redrawCurrentMinions(currentWave.minionsAsList(), playerA.getUID());
-            iClientUpdateA.redrawCurrentModules(playerA.getModules(), playerA.getUID());
+            List<Module> allmodules = playerA.getModules();
+            allmodules.addAll(playerB.getModules());
+            iClientUpdateA.redrawCurrentModules(allmodules, playerA.getUID());
             
-            iClientUpdateB.redrawCurrentMinions(currentWave.minionsAsList(), playerB.getUID());
-            iClientUpdateB.redrawCurrentModules(playerB.getModules(), playerB.getUID());
+            iClientUpdateB.redrawCurrentModules(allmodules, playerB.getUID());
         }
     }
     
@@ -280,6 +281,21 @@ public class GameEngine extends Thread implements MouseListener {
         else
         {
             return playerB;
+        }
+    }
+    /**
+     * Returns the opposite player of the given parameter
+     * @param uID
+     * @return 
+     */
+    public Player getOppositePlayer(int uID){
+        if(playerA.getUID() == uID)
+        {
+            return playerB;
+        }
+        else
+        {
+            return playerA;
         }
     }
     
@@ -416,31 +432,4 @@ public class GameEngine extends Thread implements MouseListener {
     public boolean gameRunning(){
         return gameRunning;
     }
-    
-    @Override
-    public void mouseClicked(java.awt.event.MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mousePressed(java.awt.event.MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseReleased(java.awt.event.MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseEntered(java.awt.event.MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseExited(java.awt.event.MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
 }

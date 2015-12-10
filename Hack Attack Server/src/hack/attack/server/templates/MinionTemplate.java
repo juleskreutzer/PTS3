@@ -5,7 +5,7 @@
  */
 package hack.attack.server.templates;
 
-import hack.attack.server.enums.MinionType;
+import hack.attack.rmi.MinionType;
 import hack.attack.server.exceptions.*;
 
 /**

@@ -204,17 +204,16 @@ public class GraphicsEngine{
                     }else{
                         drawEffect(Effect.DIE, m, window);
                     }
+                }
+            }
+            if(n instanceof ObjectImage){
+                ObjectImage image = (ObjectImage)n;
+                if(object == image.getReference()){
                     parent.removeNode(n, window);
                 }
             }
-            if(object instanceof Module)
-            {
-                Module module = (Module)object;
-                Module m = ((ModuleImage)n).getModule();
-                if(module == m)
-                {
-                    parent.removeNode(n, window);
-                }
+            if(n instanceof SpawnTargetImage){
+                parent.removeNode(n, window);
             }
         }
     }

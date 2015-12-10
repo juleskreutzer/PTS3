@@ -15,6 +15,7 @@ import hack.attack.rmi.Module;
 import hack.attack.rmi.IServerConnect;
 import hack.attack.rmi.IServerUpdate;
 import hack.attack.rmi.IClient;
+import hack.attack.rmi.IClientCreate;
 import hack.attack.server.enums.*;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.logger.Log;
@@ -58,6 +59,29 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             Logger.getLogger(ServerAdapter.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    /**
+     * Use this method when client is done with all the loading(including GUI). When both players are fully loaded, the game will be started.
+     * @param sessionkey Session key of the match
+     * @param account The player to set ready
+     * @return Whether this method executed succesfully
+     */
+    @Override
+    public boolean ready(String sessionkey, Account account){
+        for(Session session : sessions){
+            if(session.getSessionKey().equals(sessionkey)){
+                session.setPlayerReady(account);
+                
+                if(session.isPlayerReady(session.getPlayerA()) && session.isPlayerReady(session.getPlayerB())){
+                    session.getEngine().startGame();
+                    return true;
+                }
+                return true;
+            }
+        }
+        HackAttackServer.writeConsole(new Log(LogState.ERROR, "Could not start session.. sessionkey not found"));
+        return false;
     }
 
     @Override
@@ -163,9 +187,6 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     session.joinSession(account, interfaces);
                     HashMap hashMap = new HashMap<>();
                     hashMap.put(session.getSessionKey(), this);
-                    
-                    session.getEngine().startGame();
-                    session.getEngine().start();
                     
                     return hashMap;
                 }
@@ -289,6 +310,15 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     if(module instanceof DefenseTemplate)
                     {
                         Defense defense = new Defense((DefenseTemplate) module, position, width, height);
+                        IClientCreate create;
+                        if(uID == session.getPlayerA().getUID()){
+                            create = (IClientCreate)session.getInterfacesB().get("create");
+                        }else{
+                            create = (IClientCreate)session.getInterfacesA().get("create");
+                        }
+                        List<Module> list = new ArrayList<>();
+                        list.add(defense);
+                        create.drawNewModules(list, uID);
                         return session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
@@ -327,6 +357,8 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
             HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
         } catch (NotEnoughBitcoinsException ex) {
             HackAttackServer.writeConsole(new Log(LogState.WARNING, ex.getMessage()));
+        } catch (RemoteException ex) {
+            Logger.getLogger(ServerAdapter.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return null;

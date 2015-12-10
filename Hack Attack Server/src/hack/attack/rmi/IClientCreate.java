@@ -15,6 +15,22 @@ import java.util.List;
 public interface IClientCreate extends IClient {
     
     /**
+     * This method is called by the server and is used to display new modules on the client.
+     * 
+     * When the client sends a request to the server to build a module, the server will create it and will call this method
+     * to notify the client to draw the new modules.
+     * 
+     * When implementing this method on the client, we don't have to check if the player can build a module, because this has already
+     * been done by the server.
+     * 
+     * The server should only call this method when the module-list isn't null, but for some extra safety we could check
+     * the module list on the server to see if it is null.
+     * @param modules List of modules the client needs to draw
+     * @param uID
+     */
+    public void drawNewModules(List<Module> modules, int uID) throws RemoteException;
+    
+    /**
      * This method is called by the server and is used to display new minions on the client.
      * 
      * When the server generates a new wave of minions, this method will be called to draw the minions on the client.

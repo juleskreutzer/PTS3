@@ -70,37 +70,43 @@ public class Wave {
         //Create the minions for this wave.
         //Bytes
         for(int i=0; i<bamount; i++){
-            Minion minion = new Minion(engine, Data.DEFAULT_BYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(Data.DEFAULT_BYTE, multiplier);
+            minion.setEnemy(enemyplayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //KiloBytes
         for(int i=0; i<kbamount; i++){
-            Minion minion = new Minion(engine, Data.DEFAULT_KILOBYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(Data.DEFAULT_KILOBYTE, multiplier);
+            minion.setEnemy(enemyplayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //MegaBytes
         for(int i=0; i<mbamount; i++){
-           Minion minion = new Minion(engine, Data.DEFAULT_MEGABYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(Data.DEFAULT_MEGABYTE, multiplier);
+            minion.setEnemy(enemyplayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //GigaBytes
         for(int i=0; i<gbamount; i++){
-            Minion minion = new Minion(engine, Data.DEFAULT_GIGABYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(Data.DEFAULT_GIGABYTE, multiplier);
+            minion.setEnemy(enemyplayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //TeraBytes
         for(int i=0; i<tbamount; i++){
-            Minion minion = new Minion(engine, Data.DEFAULT_TERABYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(Data.DEFAULT_TERABYTE, multiplier);
+            minion.setEnemy(enemyplayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
         //PetaBytes
         for(int i=0; i<pbamount; i++){
-            Minion minion = new Minion(engine, Data.DEFAULT_PETABYTE, multiplier, enemyPlayer);
+            Minion minion = new Minion(Data.DEFAULT_PETABYTE, multiplier);
+            minion.setEnemy(enemyplayer);
             minion.setPosition(new Point(base.x, base.y));
             minionList.add(minion);
         }
@@ -121,7 +127,7 @@ public class Wave {
                 if(elapsedtime >= (lastSpawn + 1000)){
                     if(spawnedMinions < minionList.size()){
                         Minion m = minionList.get(spawnedMinions++);
-                        m.activate(new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
+                        m.activate(engine, new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
 
                             @Override //Override this method, remove the passed minion from the current wave with removeMinion.
                             public void onMinionDeath(Minion minion, Boolean reachedBase) {

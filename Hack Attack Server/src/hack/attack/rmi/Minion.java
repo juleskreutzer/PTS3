@@ -4,7 +4,6 @@ import hack.attack.server.GameEngine.OnExecuteTick;
 import hack.attack.server.MinionEffect.OnEffectExpired;
 
 import hack.attack.server.templates.MinionTemplate;
-import hack.attack.server.enums.MinionType;
 import hack.attack.server.exceptions.UnsubscribeNonListenerException;
 import hack.attack.rmi.IMoveable;
 import hack.attack.rmi.ITargetable;
@@ -35,13 +34,13 @@ public class Minion implements IMoveable, ITargetable {
         void onMinionDeath(Minion minion, Boolean reachedBase);
     }
     
-    protected GameEngine engine;
+    protected transient GameEngine engine;
     
     private static final long serialVersionUID = 000002L;
     
     //Fields
     private MinionType minionType; //The MinionType of the minion
-    private Player enemyPlayer; //The player the minions are supposed to attack.
+    private transient Player enemyPlayer; //The player the minions are supposed to attack.
     private double health; //The ammunt of health the minion currently has.
     private double initialHealth; // the health this minion had when created.
     private double speed; //The rate at which the minion moves towards the targetPosition.
@@ -53,9 +52,9 @@ public class Minion implements IMoveable, ITargetable {
     private boolean encrypted; //Is true when the minion is encrypted.
     private double reward; //The ammount of bitcoins the minion is worth, the opposing player gains this upon the minions destruction.
     
-    private OnExecuteTick tickListener;
-    private MinionHeartbeat heartbeat;
-    private MinionEffect activeEffect;
+    private transient OnExecuteTick tickListener;
+    private transient MinionHeartbeat heartbeat;
+    private transient MinionEffect activeEffect;
     
     // Constructor
     /**
@@ -74,9 +73,8 @@ public class Minion implements IMoveable, ITargetable {
      * @param minion, the template of minion that is loaded from the database.
      * @param multiplier, the multiplier that is used to increase certain values.
      */
-    public Minion(GameEngine engine, MinionTemplate minion, double multiplier, Player enemyPlayer)
+    public Minion(MinionTemplate minion, double multiplier)
     {
-        this.engine = engine;
         health = (minion.getHealth() * multiplier);
         initialHealth = health;
         speed = (minion.getSpeed());
@@ -84,15 +82,19 @@ public class Minion implements IMoveable, ITargetable {
         reward = (minion.getReward());
         encrypted = minion.getEncrypted();
         minionType = minion.getMinionType();
-        this.enemyPlayer = enemyPlayer;
     }
     
     public double getHealthInPercentage() {
         return (this.health / this.initialHealth) * 100;
     }
     
+    public void setEnemy(Player player){
+        enemyPlayer = player;
+    }
+    
     // The minion will response to ticks from now on
-    public void activate(MinionHeartbeat callback){
+    public void activate(GameEngine engine, MinionHeartbeat callback){
+        this.engine = engine;
         this.heartbeat = callback;
         tickListener = new OnExecuteTick(){
             @Override

@@ -58,9 +58,9 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
     private ClientAdapter() throws RemoteException
     {
         instance = this;
-        this.clientCreate = (IClientCreate)getInstance();
-        this.clientDelete = (IClientDelete)getInstance();
-        this.clientUpdate = (IClientUpdate)getInstance();
+        this.clientCreate = (IClientCreate)instance;
+        this.clientDelete = (IClientDelete)instance;
+        this.clientUpdate = (IClientUpdate)instance;
         
     }
     
@@ -127,6 +127,29 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
         
         return interfaces;
     }
+    
+    @Override
+    public void drawNewModules(List<Module> modules, int uID){
+        try{
+            // Check if minions isn't empty
+            if(modules == null)
+            {
+                throw new IllegalArgumentException("Nothing to draw because modules are empty");
+            }
+            
+            // Minions isn't empty, draw them
+            for(Module m : modules)
+            {
+                engine.spawn(m, uID);
+            }
+        }
+        catch(IllegalArgumentException ex)
+        {
+            engine.showEndGame(ex.getMessage());
+        } catch (DuplicateSpawnException | InvalidObjectException ex) {
+            System.out.print(ex.getMessage());
+        }
+    }
 
     @Override
     public void drawNewMinions(List<Minion> minions, int uID) {
@@ -179,7 +202,6 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
 
     @Override
     public void redrawCurrentModules(List<Module> modules, int uID) {
-        System.out.println("redrawCurrentModules");
         try{
             // Check if modules isn't empty
             if(modules == null)
@@ -201,7 +223,6 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
 
     @Override
     public void redrawCurrentMinions(List<Minion> minions, int uID) {
-        System.out.println("redrawCurrentMinions");
         try{
             // Check if modules isn't empty
             if(minions == null)
@@ -212,14 +233,12 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             // Modules isn't empty, draw them
             for(Minion m : minions)
             {
-                engine.spawn(m, uID);
+                engine.update(uID);
             }
         }
         catch(IllegalArgumentException ex)
         {
             engine.showEndGame(ex.getMessage());
-        } catch (DuplicateSpawnException | InvalidObjectException ex) {
-            System.out.print(ex.getMessage());
         }
     }
 

@@ -20,6 +20,8 @@ public class Session {
     private String sessionKey;
     private Account playerA;
     private Account playerB;
+    private boolean playerAReady;
+    private boolean playerBReady;
     private final HashMap<String, IClient> interfacesA;
     private HashMap<String, IClient> interfacesB;
     
@@ -48,6 +50,47 @@ public class Session {
     public Account getPlayerB()
     {
         return this.playerB;
+    }
+    
+    public HashMap<String, IClient> getInterfacesA(){
+        return interfacesA;
+    }
+    
+    public HashMap<String, IClient> getInterfacesB(){
+        return interfacesB;
+    }
+    
+    public boolean isPlayerReady(Account player){
+        if(player == playerA){
+            if(playerAReady){
+                return true;
+            }else{
+                return false;
+            }
+        }else if(player == playerB){
+            if(playerBReady){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
+    }
+    
+    public void setPlayerReady(Account player){
+        if(player.getUID() == playerA.getUID()){
+            if(!playerAReady){
+                playerAReady = true;
+            }else{
+                HackAttackServer.writeConsole(new Log(LogState.WARNING,"Player A is already ready"));
+            }
+        }else if(player.getUID() == playerB.getUID()){
+            if(!playerBReady){
+                playerBReady = true;
+            }else{
+                HackAttackServer.writeConsole(new Log(LogState.WARNING,"Player B is already ready"));
+            }
+        }
     }
     
     public void joinSession(Account account, HashMap<String, IClient> interfaces)

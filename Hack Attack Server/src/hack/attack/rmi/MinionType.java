@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.client.enums;
+package hack.attack.rmi;
+
+import java.io.Serializable;
 
 /**
  *
  * @author Igor
  */
-public enum MinionType {
+public enum MinionType implements Serializable{
     b,
     kb,
     mb,
