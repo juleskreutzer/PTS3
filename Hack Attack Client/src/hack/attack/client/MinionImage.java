@@ -34,22 +34,22 @@ public class MinionImage extends ObjectImage {
         File file = null;
         switch(minion.getMinionType()){
             case b:
-                file = new File("src/hackattackfx/resources/Byte.png");
+                file = new File("src/hack/attack/client/resources/Byte.png");
                 break;
             case kb:
-                file = new File("src/hackattackfx/resources/KiloByte.png");
+                file = new File("src/hack/attack/client/resources/KiloByte.png");
                 break;
             case mb:
-                file = new File("src/hackattackfx/resources/MegaByte.png");
+                file = new File("src/hack/attack/client/resources/MegaByte.png");
                 break;
             case gb:
-                file = new File("src/hackattackfx/resources/GigaByte.png");
+                file = new File("src/hack/attack/client/resources/GigaByte.png");
                 break;
             case tb: 
-                file = new File("src/hackattackfx/resources/TeraByte.png");
+                file = new File("src/hack/attack/client/resources/TeraByte.png");
                 break;
             case pb:
-                file = new File("src/hackattackfx/resources/PetaByte.png");
+                file = new File("src/hack/attack/client/resources/PetaByte.png");
                 break;
         }
         

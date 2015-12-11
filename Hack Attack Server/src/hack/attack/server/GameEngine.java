@@ -135,6 +135,19 @@ public class GameEngine extends Thread {
         currentWave = w;
         w.startWave();
         this.start();
+        
+        try{
+            // send the minions to the clients
+            IClientCreate iClientCreateA = (IClientCreate)interfacesA.get("create");
+            IClientCreate iClientCreateB = (IClientCreate)interfacesB.get("create");
+
+            iClientCreateA.drawNewMinions(currentWave.minionsAsList(), playerA.getUID());
+            iClientCreateB.drawNewMinions(currentWave.minionsAsList(), playerB.getUID());
+        }
+        catch(RemoteException ex)
+        {
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
+        }
     }
     
     @Override
@@ -162,7 +175,7 @@ public class GameEngine extends Thread {
             
             // What is the purpose of this code?
             // Why are the order of parameters changed depending on which player died?
-            /*if(playerA.getHealth() <= 0)
+            if(playerA.getHealth() <= 0)
             {
                
                iClientUpdateA.updateLabels(waveNumber, playerA.getName(), playerA.getHealth(), playerA.getBitcoins(), playerB.getName(), playerB.getHealth());
@@ -175,7 +188,7 @@ public class GameEngine extends Thread {
                 
                 iClientUpdateB.updateLabels(waveNumber, playerB.getName(), playerB.getHealth(), playerB.getBitcoins(), playerA.getName(), playerA.getHealth());
                 gameRunning = false;
-            }*/
+            }
 
             if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
                 Wave w = generateNextWave();
@@ -184,7 +197,7 @@ public class GameEngine extends Thread {
                 currentWave = w;
                 
                 // Temporary disabled due some errors.. enable again when starting debugging minion spawning
-                //w.startWave();
+                w.startWave();
 
             }
 
@@ -194,9 +207,12 @@ public class GameEngine extends Thread {
             
             List<Module> allmodules = playerA.getModules();
             allmodules.addAll(playerB.getModules());
-            iClientUpdateA.redrawCurrentModules(allmodules, playerA.getUID());
+            List<Minion> allMinions = currentWave.minionsAsList();
             
+            iClientUpdateA.redrawCurrentModules(allmodules, playerA.getUID());
+            iClientUpdateA.redrawCurrentMinions(allMinions, playerA.getUID());
             iClientUpdateB.redrawCurrentModules(allmodules, playerB.getUID());
+            iClientUpdateB.redrawCurrentMinions(allMinions, playerB.getUID());
         }
     }
     
@@ -268,7 +284,7 @@ public class GameEngine extends Thread {
         }
         HackAttackServer.writeConsole(new Log(LogState.OK, (bytes + " : " + kiloBytes + " : " +megaBytes + " : " +gigaBytes + " : " + teraBytes + " : " + petaBytes))); // for logging purpose
         
-        return new Wave(this, waveNumber,1 + 0.1*waveNumber,playerA,bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);
+        return new Wave(this, waveNumber,1 + 0.1*waveNumber,playerA, playerB, bytes,kiloBytes,megaBytes,gigaBytes,teraBytes,petaBytes);
     }
     
     /**

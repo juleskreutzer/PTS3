@@ -39,7 +39,9 @@ public class ConsoleHandler {
             case ERROR:
                 state = "ERROR";
                 break;
-            
+            case INFO:
+                state = "INFO";
+                break;
         }
         
         try{

@@ -117,6 +117,9 @@ public class GraphicsEngine{
         createEffect(lblPlayerABitcoins);
         createEffect(lblPlayerBName);
         createEffect(lblPlayerBHealth);
+        
+        Map map = Map.getInstance();
+        drawRoad(map.getRoadA(), map.getRoadB());
         return this;
     }
     
@@ -319,11 +322,13 @@ public class GraphicsEngine{
     }
     
     public void drawRoad(Road roadA, Road roadB){
+        System.out.print("Drawing road A...");
         for(Path p : roadA.getPaths()){
             PathImage image = new PathImage(p);
             parent.addNode(image, FXMLDocumentController.Window.DOWN);
         }
         
+        System.out.print("Drawing road B...");
         for(Path p : roadB.getPaths()){
             PathImage image = new PathImage(p);
             parent.addNode(image, FXMLDocumentController.Window.TOP);

@@ -31,8 +31,8 @@ public class Map {
         roadA = new Road();
         roadB = new Road();
         
-        baseLocationA = new Point(180,245); // base that spaws minions on top map
-        baseLocationB = new Point(450,245); // base that spawns minions on botton map
+        baseLocationA = new Point(180,200); // base that spaws minions on bottom map
+        baseLocationB = new Point(180,200); // base that spawns minions on top map
         
         //Create the map's road out of Paths.
         try {

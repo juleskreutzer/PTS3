@@ -28,8 +28,8 @@ public class PathImage extends ObjectImage {
         File fileHorizontal = null; // why are these null here? ~question bij martiener
         File fileVertical = null;
         Image image = null;
-        fileHorizontal = new File("src/hackattackfx/resources/PathHorizontal.png");
-        fileVertical = new File("src/hackattackfx/resources/PathVertical.png");
+        fileHorizontal = new File("src/hack/attack/client/resources/PathHorizontal.png");
+        fileVertical = new File("src/hack/attack/client/resources/PathVertical.png");
 
         switch(path.getDirection()){
             case Up:

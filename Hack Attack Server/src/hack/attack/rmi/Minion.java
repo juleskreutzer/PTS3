@@ -47,6 +47,7 @@ public class Minion implements IMoveable, ITargetable {
     private Point.Double position; //The current position of the minion.
     private double damage; //The damage the minion will deal upon reching enemyPlayer.
     private boolean reachedBase; // whether the minion reached enemy base
+    private int ownerID; // unique user ID indicating the owner of this minion.
     
     private Point targetPosition; // The position this minion is currently moving to. Can change.
     private boolean encrypted; //Is true when the minion is encrypted.
@@ -73,7 +74,7 @@ public class Minion implements IMoveable, ITargetable {
      * @param minion, the template of minion that is loaded from the database.
      * @param multiplier, the multiplier that is used to increase certain values.
      */
-    public Minion(MinionTemplate minion, double multiplier)
+    public Minion(MinionTemplate minion, double multiplier, int ownerID)
     {
         health = (minion.getHealth() * multiplier);
         initialHealth = health;
@@ -82,6 +83,7 @@ public class Minion implements IMoveable, ITargetable {
         reward = (minion.getReward());
         encrypted = minion.getEncrypted();
         minionType = minion.getMinionType();
+        this.ownerID = ownerID;
     }
     
     public double getHealthInPercentage() {
@@ -338,6 +340,11 @@ public class Minion implements IMoveable, ITargetable {
                 break;
         }
         activeEffect = null;
+    }
+    
+    public int getOwnerID()
+    {
+        return this.ownerID;
     }
     
 }
