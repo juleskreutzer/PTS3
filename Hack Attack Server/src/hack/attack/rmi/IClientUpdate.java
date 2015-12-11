@@ -52,5 +52,5 @@ public interface IClientUpdate extends IClient {
      * @param playerB Instance of player class with fields like displayname, health, bitcoins
      * @param waveNumber Number indicating the current wave
      */
-    public void updateLabels(int waveNumber, String playernamea, String healthplayera, String bitcoinsplayera, String playernameb, String healthplayerb) throws RemoteException;
+    public void updateLabels(int waveNumber, String playernamea, double healthplayera, double bitcoinsplayera, String playernameb, double healthplayerb) throws RemoteException;
 }

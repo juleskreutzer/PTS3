@@ -309,8 +309,8 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
     }
 
     @Override
-    public void updateLabels(int waveNumber, String playernamea, String healthplayera, String bitcoinsplayera, String playernameb, String healthplayerb) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void updateLabels(int wavenumber, String playernamea, double healthplayera, double bitcoinsplayera, String playernameb, double healthplayerb) {
+        engine.drawLabels(wavenumber, playernamea, healthplayera, bitcoinsplayera, playernameb, healthplayerb);
     }
     
     /**

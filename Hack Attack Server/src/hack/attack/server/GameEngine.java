@@ -159,10 +159,13 @@ public class GameEngine extends Thread {
         {
             IClientUpdate iClientUpdateA = (IClientUpdate)interfacesA.get("update");
             IClientUpdate iClientUpdateB = (IClientUpdate)interfacesB.get("update");
-            if(playerA.getHealth() <= 0)
+            
+            // What is the purpose of this code?
+            // Why are the order of parameters changed depending on which player died?
+            /*if(playerA.getHealth() <= 0)
             {
                
-               iClientUpdateA.updateLabels(waveNumber, playerA.getName(), String.format("%s", playerA.getHealth()), String.format("%s", playerA.getBitcoins()), playerB.getName(), String.format("%s", playerB.getHealth()));
+               iClientUpdateA.updateLabels(waveNumber, playerA.getName(), playerA.getHealth(), playerA.getBitcoins(), playerB.getName(), playerB.getHealth());
                gameRunning = false;
                
             }
@@ -170,9 +173,9 @@ public class GameEngine extends Thread {
             if(playerB.getHealth() <= 0)
             {
                 
-                iClientUpdateB.updateLabels(waveNumber, playerB.getName(), String.format("%s", playerB.getHealth()), String.format("%s", playerB.getBitcoins()), playerA.getName(), String.format("%s", playerA.getHealth()));
+                iClientUpdateB.updateLabels(waveNumber, playerB.getName(), playerB.getHealth(), playerB.getBitcoins(), playerA.getName(), playerA.getHealth());
                 gameRunning = false;
-            }
+            }*/
 
             if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
                 Wave w = generateNextWave();
@@ -187,7 +190,7 @@ public class GameEngine extends Thread {
 
             processUnsubscribers();
             notifyListeners();
-//            fillLabels();
+            fillLabels();
             
             List<Module> allmodules = playerA.getModules();
             allmodules.addAll(playerB.getModules());
@@ -410,8 +413,8 @@ public class GameEngine extends Thread {
         double health = playerA.getHealth();
         double coins = playerA.getBitcoins();
         int wave = currentWave.getWaveNr();
-        ((IClientUpdate)interfacesA.get("update")).updateLabels(waveNumber, playerA.getName(), String.format("%s", playerA.getHealth()), String.format("%s", playerA.getBitcoins()), playerB.getName(), String.format("%s", playerB.getHealth()));
-        ((IClientUpdate)interfacesB.get("update")).updateLabels(waveNumber, playerB.getName(), String.format("%s", playerB.getHealth()), String.format("%s", playerB.getBitcoins()), playerA.getName(), String.format("%s", playerA.getHealth()));
+        ((IClientUpdate)interfacesA.get("update")).updateLabels(waveNumber, playerA.getName(), playerA.getHealth(), playerA.getBitcoins(), playerB.getName(), playerB.getHealth());
+        ((IClientUpdate)interfacesB.get("update")).updateLabels(waveNumber, playerB.getName(), playerB.getHealth(), playerB.getBitcoins(), playerA.getName(), playerA.getHealth());
         
     }
     

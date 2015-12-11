@@ -18,15 +18,12 @@
           </image>
         </ImageView>
         <Label fx:id="errorLabel" layoutX="47.0" layoutY="26.0" prefHeight="17.0" prefWidth="752.0" text="Error Label" textFill="RED" />
-        <Label fx:id="lblPlayerName" layoutX="663.0" layoutY="27.0" prefHeight="17.0" prefWidth="226.0" text="Player Name" />
-        <Label fx:id="lblPlayerBitcoins" layoutX="1076.0" layoutY="25.0" prefHeight="17.0" prefWidth="136.0" text="Player Bitcoins" />
-        <Label fx:id="lblPlayerHealth" layoutX="889.0" layoutY="25.0" prefHeight="17.0" prefWidth="136.0" text="Player Health" />
-        <Label id="lblCurrentWave" layoutX="547.0" layoutY="27.0" prefHeight="17.0" prefWidth="136.0" text="Wave:" />
-        <ImageView fx:id="btnPause" fitHeight="40.0" fitWidth="40.0" layoutX="1297.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="hack/attack/client/resources/interface/Icons/PauseButton.png" backgroundLoading="false" />
-          </image>
-        </ImageView>
+        <Label fx:id="lblPlayerAName" layoutX="449.0" layoutY="10.0" prefHeight="17.0" prefWidth="226.0" text="Player A Name" />
+        <Label fx:id="lblPlayerABitcoins" layoutX="649.0" layoutY="27.0" prefHeight="17.0" prefWidth="136.0" text="Player A Bitcoins" />
+        <Label fx:id="lblPlayerAHealth" layoutX="449.0" layoutY="43.0" prefHeight="17.0" prefWidth="136.0" text="Player A Health" />
+        <Label id="lblCurrentWave" layoutX="355.0" layoutY="27.0" prefHeight="17.0" prefWidth="136.0" text="Wave:" />
+        <Label fx:id="lblPlayerBName" layoutX="947.0" layoutY="14.0" text="Player B Name" />
+        <Label fx:id="lblPlayerBHealth" layoutX="947.0" layoutY="39.0" text="Player B Health" />
       </children>
     </AnchorPane>
     <AnchorPane id="guiControls" fx:id="windowControls" layoutX="0.0" layoutY="597.0" prefHeight="100.0" prefWidth="1366.0" style="-fx-border-color: #e2e2e2; -fx-border-width: 2 0 0 0; -fx-background-color: #d9d9d9;">
@@ -99,7 +96,7 @@
       <children>
         <Pane fx:id="windowTop" layoutX="0.0" layoutY="0.0" maxHeight="250.0" maxWidth="1366.0" prefHeight="250.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 0 0 2 0;&#10;-fx-background-image: url(&quot;hack/attack/client/resources/Field.png&quot;);">
           <children>
-            <Pane fx:id="windowDown" layoutX="0.0" layoutY="277.0" maxHeight="250.0" maxWidth="1366.0" prefHeight="250.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 2 0 0 0;&#10;-fx-background-color: #000000;&#10;-fx-background-image: url(&quot;hack/attack/client/resources/Field.png&quot;);">
+            <Pane fx:id="windowDown" layoutX="0.0" layoutY="277.0" maxHeight="250.0" maxWidth="1366.0" prefHeight="250.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 2 0 0 0;&#10;-fx-background-image: url(&quot;hack/attack/client/resources/Field.png&quot;);">
               <children>
                 <ImageView fx:id="buildBitcoinMiner" fitHeight="40.0" fitWidth="40.0" layoutX="61.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
                   <image>

@@ -54,13 +54,12 @@ public class GraphicsEngine{
     private Ellipse moduleRange;
     private double updateTime;
     
-    private ImageView pauseButton;
-    private Image pauseImage;
-    private Image playImage;
     private Label lblCurrentWave;
-    private Label lblPlayerName;
-    private Label lblPlayerHealth;
-    private Label lblPlayerBitcoins;
+    private Label lblPlayerAName;
+    private Label lblPlayerAHealth;
+    private Label lblPlayerABitcoins;
+    private Label lblPlayerBName;
+    private Label lblPlayerBHealth;
     private Label errorLabel;
     private Label lblStatsName;
     private Label lblStatsDescription;
@@ -88,15 +87,14 @@ public class GraphicsEngine{
     public GraphicsEngine initialize(FXMLDocumentController controller){
         parent = controller;
         
-        pauseButton = (ImageView)parent.getNode("btnPause", null);
-        File pause = new File("src/hack/attack/client/resources/interface/Icons/PauseButton.png");
-        pauseImage = new Image(pause.toURI().toString());
-        File play = new File("src/hack/attack/client/resources/interface/Icons/PlayButton.png");
-        playImage = new Image(play.toURI().toString());
         lblCurrentWave = (Label)parent.getNode("lblCurrentWave",null);
-        lblPlayerName = (Label)parent.getNode("lblPlayerName",null);
-        lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth",null);
-        lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins",null);
+        lblPlayerAName = (Label)parent.getNode("lblPlayerAName",null);
+        lblPlayerAHealth = (Label)parent.getNode("lblPlayerAHealth",null);
+        lblPlayerABitcoins = (Label)parent.getNode("lblPlayerABitcoins",null);
+        
+        lblPlayerBName = (Label)parent.getNode("lblPlayerBName",null);
+        lblPlayerBHealth = (Label)parent.getNode("lblPlayerBHealth",null);
+        
         lblStatsName = (Label)parent.getNode("lblStatsName",null);
         lblStatsDescription = (Label)parent.getNode("lblStatsDescription",null);
         lblStatsDamage = (Label)parent.getNode("lblStatsDamage",null);
@@ -114,9 +112,11 @@ public class GraphicsEngine{
         errorLabel.setVisible(false);
       
         createEffect(lblCurrentWave);
-        createEffect(lblPlayerName);
-        createEffect(lblPlayerHealth);
-        createEffect(lblPlayerBitcoins);
+        createEffect(lblPlayerAName);
+        createEffect(lblPlayerAHealth);
+        createEffect(lblPlayerABitcoins);
+        createEffect(lblPlayerBName);
+        createEffect(lblPlayerBHealth);
         return this;
     }
     
@@ -443,15 +443,17 @@ public class GraphicsEngine{
         }
     }
     
-    public void drawLabels(int wavenr, String name, double health, double bitcoins){
+    public void drawLabels(int wavenr, String namea, double healtha, double bitcoinsa, String nameb, double healthb){
         Platform.runLater(new Runnable(){
 
             @Override
             public void run() {
                 lblCurrentWave.setText(String.format("Wave: %d", wavenr));
-                lblPlayerName.setText(String.format("Playername: %s", name));
-                lblPlayerHealth.setText(String.format("Health: %s", health));
-                lblPlayerBitcoins.setText(String.format("Bitcoins: %s", bitcoins));
+                lblPlayerAName.setText(String.format("Playername: %s", namea));
+                lblPlayerAHealth.setText(String.format("Health: %s", healtha));
+                lblPlayerABitcoins.setText(String.format("Bitcoins: %s", bitcoinsa));
+                lblPlayerBName.setText(String.format("Enemy name: %s", nameb));
+                lblPlayerBHealth.setText(String.format("Enemy health: %s", healthb));
             }
         });
         
@@ -633,14 +635,6 @@ public class GraphicsEngine{
         });
     }
     
-    public void setPauseButton(boolean running){
-        if(running){
-                pauseButton.setImage(pauseImage);
-            }else{
-                pauseButton.setImage(playImage);
-            }
-    }
-
     /**
      * Display an error message for the user. First show the error image and error label, than, after 5 seconds, make them magicaly disappear
      * @param message Error message to be shown
