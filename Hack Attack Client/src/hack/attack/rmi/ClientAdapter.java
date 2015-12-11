@@ -419,8 +419,8 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                 engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
                     @Override
                     public void handle(javafx.scene.input.MouseEvent event) {
-                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
-                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+                        st.setX(event.getX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getY() - (st.getImage().getHeight()/2));
                     }
                 });
                 // Set a listener for a second click to occur
@@ -430,7 +430,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                         
                         MouseButton m = event.getButton();
                         if (m == MouseButton.PRIMARY){
-                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                            Point position = new Point((int)event.getX(), (int)event.getY());
                                 try {
                                     int x = (int)st.getX();
                                     int y = (int)st.getY();
@@ -493,8 +493,8 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                 engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
                     @Override
                     public void handle(javafx.scene.input.MouseEvent event) {
-                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
-                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+                        st.setX(event.getX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getY() - (st.getImage().getHeight()/2));
                     }
                 });
                 // Set a listener for a second click to occur
@@ -503,7 +503,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                     public void handle(MouseEvent event) {
                         MouseButton m = event.getButton();
                         if (m == MouseButton.PRIMARY){
-                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                            Point position = new Point((int)event.getX(), (int)event.getY());
                             try {
                                 try {
                                     int x = (int)st.getX();
@@ -645,8 +645,8 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                 engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
                     @Override
                     public void handle(javafx.scene.input.MouseEvent event) {
-                        st.setX(event.getSceneX() - (st.getImage().getWidth()/2));
-                        st.setY(event.getSceneY() - (st.getImage().getHeight()/2));
+                        st.setX(event.getX() - (st.getImage().getWidth()/2));
+                        st.setY(event.getY() - (st.getImage().getHeight()/2));
                     }
                 });
                 // Set a listener for a second click to occur
@@ -655,7 +655,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                     public void handle(MouseEvent event) {
                         MouseButton m = event.getButton();
                         if (m == MouseButton.PRIMARY){
-                            Point position = new Point((int)event.getSceneX(), (int)event.getSceneY());
+                            Point position = new Point((int)event.getX(), (int)event.getY());
                             try {
                                 try {
                                     int x = (int)st.getX();
@@ -759,8 +759,8 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                 engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
                     @Override
                     public void handle(MouseEvent event) {
-                        range.setCenterX(event.getSceneX());
-                        range.setCenterY(event.getSceneY());
+                        range.setCenterX(event.getX());
+                        range.setCenterY(event.getY());
                     }
                 
                 });
