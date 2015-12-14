@@ -1,7 +1,7 @@
 package hack.attack.rmi;
 
 import hack.attack.server.GameEngine.OnExecuteTick;
-import hack.attack.server.MinionEffect.OnEffectExpired;
+import hack.attack.server.AppliedEffect.OnEffectExpired;
 
 import hack.attack.server.templates.MinionTemplate;
 import hack.attack.server.exceptions.UnsubscribeNonListenerException;
@@ -9,7 +9,7 @@ import hack.attack.rmi.IMoveable;
 import hack.attack.rmi.ITargetable;
 import hack.attack.server.GameEngine;
 import hack.attack.server.Map;
-import hack.attack.server.MinionEffect;
+import hack.attack.server.AppliedEffect;
 import hack.attack.server.Path;
 import hack.attack.server.Player;
 import java.awt.Point;
@@ -51,13 +51,15 @@ public class Minion implements IMoveable, ITargetable {
     private int ownerID; // unique user ID indicating the owner of this minion.
     private static long nextMinionID; // Unique id of a minion
     
+    private transient boolean canReceiveDamage; //Boolean indicating if the minion can receive damage
+    
     private Point targetPosition; // The position this minion is currently moving to. Can change.
     private boolean encrypted; //Is true when the minion is encrypted.
     private double reward; //The ammount of bitcoins the minion is worth, the opposing player gains this upon the minions destruction.
     
     private transient OnExecuteTick tickListener;
     private transient MinionHeartbeat heartbeat;
-    private transient MinionEffect activeEffect;
+    private transient AppliedEffect activeEffect;
     
     // Constructor
     /**
@@ -87,6 +89,7 @@ public class Minion implements IMoveable, ITargetable {
         minionType = minion.getMinionType();
         this.ownerID = ownerID;
         minionID = nextMinionID++;
+        this.canReceiveDamage = true;
         
     }
     
@@ -154,6 +157,11 @@ public class Minion implements IMoveable, ITargetable {
             if(position.y <= targetPosition.y){
                 position.y = targetPosition.y;
             }
+        }
+        else if(this.activeEffect.getEffectType() == Effect.STOPPED)
+        {
+            position.x = position.x;
+            position.y = position.y;
         }
         else{
             List<Path> paths = Map.getInstance().getRoadB().getPaths();
@@ -290,7 +298,11 @@ public class Minion implements IMoveable, ITargetable {
     }
     
     public void receiveDamage(double damage){
-        health -= damage;
+        double d = damage;
+        
+        if(!this.canReceiveDamage){d = 0.0;}
+        
+        health -= d;
         if(health <= 0){
             if (heartbeat != null) {
                 heartbeat.onMinionDeath(this, false);
@@ -298,16 +310,32 @@ public class Minion implements IMoveable, ITargetable {
         }
     }
     
-    public void applyEffect(MinionEffect effect){
+    /**
+     * This method will apply the effect of a AppliedEffect object. 
+     * 
+     * When a spell is cast, this method has to be always called to apply the effect to the minion.
+     * 
+     * The Effect STOPPED doesn't need to be used in this method. It is better to check if a minion has the STOPPED-effect in the
+     * move method in this class.
+     * @param effect AppliedEffect instance containing the effect we want to give to the minion.
+     */
+    public void applyEffect(AppliedEffect effect){
         activeEffect = effect.getEffectType() != Effect.DIE && effect.getEffectType() != Effect.REACHED_BASE ? effect : null;
         switch(effect.getEffectType()){
             case SLOWED:
                 speed /= 2;
                 break;
-            case POISENED:
-                
+            case BUFFED:
+                damage *= 1.25;
                 break;
             case SPLASH:
+                double d = this.health * 0.25;
+                this.receiveDamage(d);
+                break;
+            case ENCRYPT:
+                this.encrypted = true;
+                break;
+            case POISENED:
                 
                 break;
             case DECRYPTED: 
@@ -327,10 +355,16 @@ public class Minion implements IMoveable, ITargetable {
             case SLOWED:
                 speed *= 2;
                 break;
-            case POISENED:
-                
+            case BUFFED:
+                damage /= 1.25;
                 break;
             case SPLASH:
+                this.canReceiveDamage = true;
+                break;
+            case ENCRYPT:
+                this.encrypted = false;
+                break;
+            case POISENED:
                 
                 break;
             case DECRYPTED: 
