@@ -244,6 +244,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                         if(minion.getMinionID() == m.getMinionID())
                         {
                             minion.setPosition(m.getPosition());
+                            minion.setHealth(m.getHealth());
                         }
                     }
                 }
@@ -299,21 +300,20 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
     }
 
     @Override
-    public void deleteCurrentMinions(List<Minion> minions, int uID) {
+    public void deleteMinion(Minion minion, int uID) {
         try{
-            if(minions == null)
+            if(minion == null)
             {
                 throw new IllegalArgumentException("Nothing to despawn. (minions)");
-            }
-            
-            for(Minion m : minions)
-            {
-                engine.deSpawn(m, uID);
+            }else{
+                engine.deSpawn(minion, uID);
             }
         }
-        catch(IllegalArgumentException | InvalidObjectException ex)
+        catch(IllegalArgumentException ex)
         {
             System.out.print(ex.getMessage());
+        } catch (InvalidObjectException ex) {
+            Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 

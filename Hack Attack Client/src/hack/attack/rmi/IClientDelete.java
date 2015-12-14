@@ -31,7 +31,7 @@ public interface IClientDelete extends IClient {
      * @param minions List of minions that need to be deleted from the client
      * @param uID
      */
-    public void deleteCurrentMinions(List<Minion> minions, int uID) throws RemoteException;
+    public void deleteMinion(Minion minion, int uID) throws RemoteException;
     
     /**
      * The server will call this method to delete spells a client has drawn.

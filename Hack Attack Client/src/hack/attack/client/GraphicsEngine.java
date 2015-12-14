@@ -208,28 +208,31 @@ public class GraphicsEngine{
         int currentID = ClientAdapter.getInstance().getCurrentUserID();
         FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
         
-        ObservableList<Node> nodes = parent.getAllNodes(window);
+        ObservableList<Node> nodes = parent.getAllNodes(Window.TOP);
+        nodes.addAll(parent.getAllNodes(Window.DOWN));
+        
         for(Node n : nodes)
         {
-            if(object instanceof Minion)
+            if(object instanceof Minion && n instanceof MinionImage)
             {
                 FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
                 Minion minion = (Minion)object;
                 Minion m = ((MinionImage)n).getMinion();
-                if(minion == m){
+                if(minion.getMinionID() == m.getMinionID()){
                     if(m.reachedBase()){
                         drawEffect(Effect.REACHED_BASE, m, w);
                     }else{
                         drawEffect(Effect.DIE, m, w);
                     }
+                    parent.removeNode(n, w);
                 }
             }
-            if(n instanceof ObjectImage){
-                ObjectImage image = (ObjectImage)n;
-                if(object == image.getReference()){
-                    parent.removeNode(n, window);
-                }
-            }
+//            if(n instanceof ObjectImage){
+//                ObjectImage image = (ObjectImage)n;
+//                if(object == image.getReference()){
+//                    parent.removeNode(n, window);
+//                }
+//            }
             if(n instanceof SpawnTargetImage){
                 parent.removeNode(n, window);
             }
@@ -266,7 +269,6 @@ public class GraphicsEngine{
                             hb.setX(mi.getX());
                             hb.setY(mi.getY()+mi.getImage().getHeight());
                             hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
-                            
                         }
                         
 

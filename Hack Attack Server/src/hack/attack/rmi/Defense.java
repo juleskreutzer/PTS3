@@ -29,6 +29,8 @@ public class Defense extends Module implements ITargetable, Serializable {
 
     private transient GameEngine engine;
     
+    private int ownerID;
+    
     private double damage;
     private int range;
     // The amount of attacks per second
@@ -56,7 +58,7 @@ public class Defense extends Module implements ITargetable, Serializable {
      * 
      * Because we have to check if the given ModuleName is correct, we create an array of ModuleName with all the possible values and check if the given ModuleName is correct
      */
-    public Defense(DefenseTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    public Defense(DefenseTemplate template, Point position, int width, int height, int ownerid) throws InvalidModuleEnumException
     {
         super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
         ModuleName ModuleNameList[] = new ModuleName[] {ModuleName.BOTTLECAP_ANTIVIRUS, ModuleName.MUSCLE_ANTIVIRUS, ModuleName.SCALE_ANTIVIRUS, ModuleName.SNIPER_ANTIVIRUS};
@@ -69,6 +71,7 @@ public class Defense extends Module implements ITargetable, Serializable {
         this.damage = template.getDamage();
         this.range = template.getRange();
         this.frequency = template.getFrequency();
+        ownerID = ownerid;
         reloading = false;
         
     }
@@ -387,7 +390,7 @@ public class Defense extends Module implements ITargetable, Serializable {
         }
         
         for(Minion m : minions){
-            if(targetInRange(m)){
+            if(targetInRange(m) && m.getOwnerID() != ownerID){
                 inrange.add(m);
             }
         }

@@ -299,7 +299,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case SNIPER_ANTIVIRUS:
                     if(module instanceof DefenseTemplate)
                     {
-                        Defense defense = new Defense((DefenseTemplate) module, position, width, height);
+                        Defense defense = new Defense((DefenseTemplate) module, position, width, height, uID);
                         return session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
@@ -309,7 +309,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case BOTTLECAP_ANTIVIRUS:
                     if(module instanceof DefenseTemplate)
                     {
-                        Defense defense = new Defense((DefenseTemplate) module, position, width, height);
+                        Defense defense = new Defense((DefenseTemplate) module, position, width, height, uID);
                         IClientCreate create;
                         if(uID == session.getPlayerA().getUID()){
                             create = (IClientCreate)session.getInterfacesB().get("create");
@@ -328,7 +328,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case SCALE_ANTIVIRUS:
                     if(module instanceof DefenseTemplate)
                     {
-                        Defense defense = new Defense((DefenseTemplate) module, position, width, height);
+                        Defense defense = new Defense((DefenseTemplate) module, position, width, height, uID);
                         return session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else
@@ -338,7 +338,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 case MUSCLE_ANTIVIRUS:
                     if(module instanceof DefenseTemplate)
                     {
-                        Defense defense = new Defense((DefenseTemplate) module, position, width, height);
+                        Defense defense = new Defense((DefenseTemplate) module, position, width, height, uID);
                         return session.getEngine().getPlayer(uID).buildDefense(defense);
                     }
                     else

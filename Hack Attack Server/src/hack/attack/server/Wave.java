@@ -10,9 +10,8 @@ import hack.attack.server.GameEngine.OnCompleteTick;
 import hack.attack.server.MinionEffect.OnEffectExpired;
 import hack.attack.rmi.Effect;
 import hack.attack.rmi.IClientCreate;
+import hack.attack.rmi.IClientDelete;
 import hack.attack.server.enums.LogState;
-import hack.attack.server.exceptions.DuplicateSpawnException;
-import hack.attack.server.exceptions.InvalidObjectException;
 import hack.attack.server.exceptions.UnsubscribeNonListenerException;
 import hack.attack.server.logger.Log;
 import java.awt.Point;
@@ -155,6 +154,8 @@ public class Wave {
         waveActive = true;
         IClientCreate createA = (IClientCreate)engine.getInterfacesA().get("create");
         IClientCreate createB = (IClientCreate)engine.getInterfacesB().get("create");
+        IClientDelete deleteA = (IClientDelete)engine.getInterfacesA().get("delete");
+        IClientDelete deleteB = (IClientDelete)engine.getInterfacesB().get("delete");
         
         OnCompleteTick listener = new GameEngine.OnCompleteTick(){
             
@@ -200,6 +201,14 @@ public class Wave {
                                     });
                                     m1.applyEffect(effect);
                                 }
+                                
+                                try {
+                                    deleteA.deleteMinion(m1, m1.getOwnerID());
+                                    deleteB.deleteMinion(m1, m1.getOwnerID());
+                                } catch (RemoteException ex) {
+                                    Logger.getLogger(Wave.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                
                             }
 
                         });
@@ -230,6 +239,13 @@ public class Wave {
 
                                     });
                                     m2.applyEffect(effect);
+                                }
+
+                                try {
+                                    deleteA.deleteMinion(m2, m2.getOwnerID());
+                                    deleteB.deleteMinion(m2, m2.getOwnerID());
+                                } catch (RemoteException ex) {
+                                    Logger.getLogger(Wave.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
 
