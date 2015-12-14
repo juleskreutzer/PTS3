@@ -1,1 +1,1 @@
-2015/12/11 21:50:14 - STATUS : OK - 5 : 0 : 0 : 0 : 0 : 0
+2015/12/14 11:46:19 - STATUS : WARNING - You do not have enough Bitcoins to build this module.

@@ -21,6 +21,7 @@ public class Minion implements ITargetable {
     }
     
     private static final long serialVersionUID = 000002L;
+    private long minionID = 0;
     
     //Fields
     private MinionType minionType; //The MinionType of the minion
@@ -31,6 +32,7 @@ public class Minion implements ITargetable {
     private double damage; //The damage the minion will deal upon reching enemyPlayer.
     private boolean reachedBase; // whether the minion reached enemy base
     private int ownerID;
+    private static long nextMinionID; // Unique id of a minion
     
     private Point targetPosition; // The position this minion is currently moving to. Can change.
     private boolean encrypted; //Is true when the minion is encrypted.
@@ -121,5 +123,10 @@ public class Minion implements ITargetable {
     
     public MinionType getMinionType(){
         return minionType;
+    }
+    
+    public long getMinionID()
+    {
+        return this.minionID;
     }
 }

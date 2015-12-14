@@ -11,6 +11,7 @@ import hack.attack.client.Data;
 import hack.attack.client.FXMLDocumentController;
 import hack.attack.client.FXMLDocumentController.Window;
 import hack.attack.client.GraphicsEngine;
+import hack.attack.client.MinionImage;
 import hack.attack.client.SoftwareInjector;
 import hack.attack.client.SpawnTargetImage;
 import hack.attack.client.exceptions.DuplicateSpawnException;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -152,20 +154,19 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
     }
 
     @Override
-    public void drawNewMinions(List<Minion> minions, int uID) {
+    public void drawNewMinions(Minion m, int uID) {
         System.out.println("drawNewMinions");
         try{
             // Check if minions isn't empty
-            if(minions == null)
+            if(m == null)
             {
                 throw new IllegalArgumentException("Nothing to draw because modules are empty");
             }
-            
-            // Minions isn't empty, draw them
-            for(Minion m : minions)
-            {
+            else{
+                // Minions isn't empty, draw them
                 engine.spawn(m, uID);
             }
+            
         }
         catch(IllegalArgumentException ex)
         {
@@ -231,10 +232,23 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             }
             
             // Modules isn't empty, draw them
-            for(Minion m : minions)
+            ArrayList<Node> nodes = engine.getAllNodes();
+            for(Node n : nodes)
             {
-                engine.update(uID);
+                if(n instanceof MinionImage)
+                {
+                    MinionImage mi = (MinionImage)n;
+                    Minion minion = mi.getMinion();
+                    for(Minion m : minions)
+                    {
+                        if(minion.getMinionID() == m.getMinionID())
+                        {
+                            minion.setPosition(m.getPosition());
+                        }
+                    }
+                }
             }
+            engine.update(uID);
         }
         catch(IllegalArgumentException ex)
         {
