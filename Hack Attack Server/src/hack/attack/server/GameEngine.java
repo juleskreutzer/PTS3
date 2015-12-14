@@ -149,8 +149,10 @@ public class GameEngine extends Thread {
             public void run() {
                 try {
                     tick();
-                } catch (RemoteException ex) {
-                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RemoteException | RuntimeException ex) {
+                    HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
+                    System.out.println(ex.toString());
+                    ex.printStackTrace();
                 }
             }
         }, 0, 15);

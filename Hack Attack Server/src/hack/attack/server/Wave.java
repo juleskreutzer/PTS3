@@ -84,7 +84,7 @@ public class Wave {
             minion.setEnemy(playerB);
             minion2.setEnemy(playerA);
             minion.setPosition(new Point(baseA.x, baseA.y));
-            minion.setPosition(new Point(baseB.x, baseB.y));
+            minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
             minionList.add(minion2);
         }
@@ -153,6 +153,9 @@ public class Wave {
     public void startWave(){
         //Set to true so the wave becomes active.
         waveActive = true;
+        IClientCreate createA = (IClientCreate)engine.getInterfacesA().get("create");
+        IClientCreate createB = (IClientCreate)engine.getInterfacesB().get("create");
+        
         OnCompleteTick listener = new GameEngine.OnCompleteTick(){
             
             @Override
@@ -160,9 +163,6 @@ public class Wave {
                 if(elapsedtime >= (lastSpawn + 1000)){
                     if(spawnedMinions < minionList.size()){
                         Minion m = minionList.get(spawnedMinions++);
-                        IClientCreate createA = (IClientCreate)engine.getInterfacesA().get("create");
-                        IClientCreate createB = (IClientCreate)engine.getInterfacesB().get("create");
-                        
                         try {
                             createA.drawNewMinions(m, m.getOwnerID());
                             createB.drawNewMinions(m, m.getOwnerID());

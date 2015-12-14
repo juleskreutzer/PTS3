@@ -40,8 +40,7 @@ public class HackAttackServer extends Application {
         
         console = new TextArea();
         console.setPrefSize(primaryStage.getWidth(), primaryStage.getHeight());
-        console.setDisable(true);
-        
+        console.setStyle("-fx-text-fill: #FF0000");
         
         StackPane root = new StackPane();
         root.getChildren().add(console);
