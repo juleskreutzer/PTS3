@@ -390,7 +390,8 @@ public class Defense extends Module implements ITargetable, Serializable {
      */
     public Minion findTarget(){
         ArrayList<Wave> waves = engine.getActiveWaves();
-        
+        minions.clear();
+        inrange.clear();
         
         for (Wave w : waves) {
             minions.addAll(w.minionsAsList());
@@ -404,9 +405,9 @@ public class Defense extends Module implements ITargetable, Serializable {
         
         if(inrange.size()>0){
             Minion m = inrange.get(random.nextInt(inrange.size()));
+            
             return m;
         }
-        
         return null;
     }
     

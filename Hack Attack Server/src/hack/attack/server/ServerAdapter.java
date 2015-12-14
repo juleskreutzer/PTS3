@@ -318,8 +318,9 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                         }
                         List<Module> list = new ArrayList<>();
                         list.add(defense);
+                        Defense d = session.getEngine().getPlayer(uID).buildDefense(defense);
                         create.drawNewModules(list, uID);
-                        return session.getEngine().getPlayer(uID).buildDefense(defense);
+                        return d;
                     }
                     else
                     {

@@ -51,6 +51,8 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
     private final IClientUpdate clientUpdate;
     private final IClientDelete clientDelete;
     
+    static int temp;
+    
     private Account account;
     
     private static ClientAdapter instance;
@@ -155,7 +157,6 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
 
     @Override
     public void drawNewMinions(Minion m, int uID) {
-        System.out.println("drawNewMinions");
         try{
             // Check if minions isn't empty
             if(m == null)

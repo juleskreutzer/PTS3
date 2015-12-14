@@ -182,7 +182,7 @@ public class GameEngine extends Thread {
                 gameRunning = false;
             }
 
-            if(!currentWave.waveActive() || GameTime.getElapsedTime() >= (lastWaveStart + 30000)){
+            if(!currentWave.waveActive()){
                 Wave w = generateNextWave();
                 lastWaveStart = GameTime.getElapsedTime();
                 waveList.add(w);
@@ -201,9 +201,10 @@ public class GameEngine extends Thread {
             allmodules.addAll(playerB.getModules());
             List<Minion> allMinions = currentWave.minionsAsList();
             
-            iClientUpdateA.redrawCurrentModules(allmodules, playerA.getUID());
+            //iClientUpdateA.redrawCurrentModules(allmodules, playerA.getUID());
             iClientUpdateA.redrawCurrentMinions(allMinions, playerA.getUID());
-            iClientUpdateB.redrawCurrentModules(allmodules, playerB.getUID());
+            
+            //iClientUpdateB.redrawCurrentModules(allmodules, playerB.getUID());
             iClientUpdateB.redrawCurrentMinions(allMinions, playerB.getUID());
         }
     }

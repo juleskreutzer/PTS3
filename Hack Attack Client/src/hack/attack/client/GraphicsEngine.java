@@ -226,6 +226,7 @@ public class GraphicsEngine{
                     }
                     parent.removeNode(hb, w);
                     parent.removeNode(n, w);
+                    break;
                 }
             }
 //            if(n instanceof ObjectImage){
@@ -236,6 +237,7 @@ public class GraphicsEngine{
 //            }
             if(n instanceof SpawnTargetImage){
                 parent.removeNode(n, window);
+                break;
             }
         }
     }
@@ -275,7 +277,7 @@ public class GraphicsEngine{
 
                     }else if(n instanceof ModuleImage){
                         ModuleImage mi = (ModuleImage)n;
-                        
+                      
                         if(mi.hovered()){
                             if(moduleRange == null){
                                 drawModuleRange((Module)mi.getReference());
