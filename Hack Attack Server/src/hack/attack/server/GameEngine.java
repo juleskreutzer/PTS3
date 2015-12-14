@@ -90,11 +90,14 @@ public class GameEngine extends Thread {
     private List<OnExecuteTick> unsubscribedListeners;
     
     private SpawnTargetImage st = null;
+    
+    private Session session;
 
     public GameEngine(Session session, HashMap<String, IClient> interfacesA, HashMap<String, IClient> interfacesB)
     {
         this.interfacesA = interfacesA;
         this.interfacesB = interfacesB;
+        this.session = session;
         initialize(session.getPlayerA().getDisplayName(), session.getPlayerA().getUID(), session.getPlayerB().getDisplayName(), session.getPlayerB().getUID());
     }
     
@@ -135,19 +138,6 @@ public class GameEngine extends Thread {
         currentWave = w;
         w.startWave();
         this.start();
-        
-        try{
-            // send the minions to the clients
-            IClientCreate iClientCreateA = (IClientCreate)interfacesA.get("create");
-            IClientCreate iClientCreateB = (IClientCreate)interfacesB.get("create");
-
-            iClientCreateA.drawNewMinions(currentWave.minionsAsList(), playerA.getUID());
-            iClientCreateB.drawNewMinions(currentWave.minionsAsList(), playerB.getUID());
-        }
-        catch(RemoteException ex)
-        {
-            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
-        }
     }
     
     @Override
@@ -450,5 +440,20 @@ public class GameEngine extends Thread {
     
     public boolean gameRunning(){
         return gameRunning;
+    }
+    
+    public HashMap<String, IClient> getInterfacesA()
+    {
+        return this.interfacesA;
+    }
+    
+    public HashMap<String, IClient> getInterfacesB()
+    {
+        return this.interfacesB;
+    }
+    
+    public Session getSession()
+    {
+        return this.session;
     }
 }

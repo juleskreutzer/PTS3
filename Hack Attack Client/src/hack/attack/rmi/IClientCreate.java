@@ -39,7 +39,7 @@ public interface IClientCreate extends IClient {
      * @param minions List of minions the client needs to draw
      * @param uID
      */
-    public void drawNewMinions(List<Minion> minions, int uID) throws RemoteException;
+    public void drawNewMinions(Minion m, int uID) throws RemoteException;
     
     /**
      * This method is called by the server and is used to display the spells a player has executed on the client.

@@ -37,6 +37,7 @@ public class Minion implements IMoveable, ITargetable {
     protected transient GameEngine engine;
     
     private static final long serialVersionUID = 000002L;
+    private long minionID = 0;
     
     //Fields
     private MinionType minionType; //The MinionType of the minion
@@ -48,6 +49,7 @@ public class Minion implements IMoveable, ITargetable {
     private double damage; //The damage the minion will deal upon reching enemyPlayer.
     private boolean reachedBase; // whether the minion reached enemy base
     private int ownerID; // unique user ID indicating the owner of this minion.
+    private static long nextMinionID; // Unique id of a minion
     
     private Point targetPosition; // The position this minion is currently moving to. Can change.
     private boolean encrypted; //Is true when the minion is encrypted.
@@ -84,6 +86,8 @@ public class Minion implements IMoveable, ITargetable {
         encrypted = minion.getEncrypted();
         minionType = minion.getMinionType();
         this.ownerID = ownerID;
+        minionID = nextMinionID++;
+        
     }
     
     public double getHealthInPercentage() {
@@ -120,7 +124,7 @@ public class Minion implements IMoveable, ITargetable {
     @Override
     public void move(double elapsedtime) {
         if(targetPosition == null){
-            targetPosition = Map.getInstance().getRoad().getBegin();
+            targetPosition = Map.getInstance().getRoadB().getBegin();
         }
         
         if(position.x < targetPosition.x){
@@ -152,7 +156,7 @@ public class Minion implements IMoveable, ITargetable {
             }
         }
         else{
-            List<Path> paths = Map.getInstance().getRoad().getPaths();
+            List<Path> paths = Map.getInstance().getRoadB().getPaths();
             for(Path p : paths){
                 if(targetPosition.x == p.getStart().x && targetPosition.y == p.getStart().y){
                     targetPosition = p.getEnd();
@@ -345,6 +349,11 @@ public class Minion implements IMoveable, ITargetable {
     public int getOwnerID()
     {
         return this.ownerID;
+    }
+    
+    public long getMinionID()
+    {
+        return this.minionID;
     }
     
 }

@@ -18,6 +18,7 @@ import hack.attack.client.exceptions.*;
 import hack.attack.rmi.ITargetable;
 import java.awt.Point;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -146,6 +147,18 @@ public class GraphicsEngine{
         return n;
     }
     
+    public ArrayList<Node> getAllNodes()
+    {
+        ObservableList nodes1 =  parent.getAllNodes(Window.TOP);
+        ObservableList nodes2 =  parent.getAllNodes(Window.DOWN);
+        
+        ArrayList<Node> nodes = new ArrayList<>();
+        nodes.addAll(nodes1);
+        nodes.addAll(nodes2);
+        return nodes;
+        
+    }
+    
     
     /**
      * From the moment an object is spawned, it will be updated every tick.
@@ -173,8 +186,9 @@ public class GraphicsEngine{
         if(object instanceof Minion){
             Minion m = (Minion)object;
             MinionImage mi = new MinionImage(m);
-            parent.addNode(mi, window);
-            parent.addNode(mi.getHealthBar(), window);
+            FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
+            parent.addNode(mi, w);
+            parent.addNode(mi.getHealthBar(), w);
         }else if(object instanceof Module){
             Module m = (Module) object;
             parent.addNode(new ModuleImage((Module)object), window);
@@ -199,13 +213,14 @@ public class GraphicsEngine{
         {
             if(object instanceof Minion)
             {
+                FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
                 Minion minion = (Minion)object;
                 Minion m = ((MinionImage)n).getMinion();
                 if(minion == m){
                     if(m.reachedBase()){
-                        drawEffect(Effect.REACHED_BASE, m, window);
+                        drawEffect(Effect.REACHED_BASE, m, w);
                     }else{
-                        drawEffect(Effect.DIE, m, window);
+                        drawEffect(Effect.DIE, m, w);
                     }
                 }
             }
@@ -224,17 +239,20 @@ public class GraphicsEngine{
     
     
     public double update(int uID){
-        int currentID = ClientAdapter.getInstance().getCurrentUserID();
-        FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
-        draw(window);
+        draw();
         return 0;
     }
     
-    private void draw(FXMLDocumentController.Window window){
+    private void draw(){
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                List<Node> nodes = parent.getAllNodes(window);
+                List<Node> nodes1 = parent.getAllNodes(FXMLDocumentController.Window.DOWN);
+                List<Node> nodes2 = parent.getAllNodes(FXMLDocumentController.Window.TOP);
+                
+                List<Node> nodes = new ArrayList<>();
+                nodes.addAll(nodes1);
+                nodes.addAll(nodes2);
                 
                 for(Node n : nodes){
                     if(n instanceof MinionImage){
@@ -261,7 +279,7 @@ public class GraphicsEngine{
                             }
                         }else{
                             // loops through all nodes, if it is an ModuleRange node, remove it.
-                            Iterator i = parent.getAllNodes(window).iterator();
+                            Iterator i = nodes.iterator();
                             while (i.hasNext())
                             {
                                 Node node = (Node)i.next();
@@ -726,4 +744,5 @@ public class GraphicsEngine{
             }
             return false;
     }
+    
 }

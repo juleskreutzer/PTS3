@@ -9,12 +9,14 @@ import hack.attack.rmi.Minion;
 import hack.attack.server.GameEngine.OnCompleteTick;
 import hack.attack.server.MinionEffect.OnEffectExpired;
 import hack.attack.rmi.Effect;
+import hack.attack.rmi.IClientCreate;
 import hack.attack.server.enums.LogState;
 import hack.attack.server.exceptions.DuplicateSpawnException;
 import hack.attack.server.exceptions.InvalidObjectException;
 import hack.attack.server.exceptions.UnsubscribeNonListenerException;
 import hack.attack.server.logger.Log;
 import java.awt.Point;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -36,10 +38,10 @@ public class Wave {
     private ArrayList<Minion> killedMinions;
     
     /**
-     * Each minion will be created 2 (two) times, the first time the enemy = enemy, second time enemy = owner.
+     * Each minion will be created 2 (two) times, the first time the enemy = enemy, second time enemy = playerA.
      */
-    private Player enemyPlayer; 
-    private Player owner;
+    private Player playerA; 
+    private Player playerB;
     
     // Initial -1000 is the compensation with the spawning interval so the minions will be spawned the first frame of the game
     private long lastSpawn = -1000;
@@ -50,7 +52,7 @@ public class Wave {
      * The constructor of the wave.
      * @param wavenr, the number of the wave, must be above 0.
      * @param multiplier, the multiplier number, must be above 1.
-     * @param enemyplayer, the enemy player, cannot be null.
+     * @param playerB, the enemy player, cannot be null.
      * @param bamount, the amount of byte minions, must be a positive number or zero.
      * @param kbamount, the amount of kilobyte minions, must be a positive number or zero.
      * @param mbamount, the amount of megabyte minions, must be a positive number or zero.
@@ -58,7 +60,7 @@ public class Wave {
      * @param tbamount, the amount of terabyte minions, must be a positive number or zero.
      * @param pbamount , the amount of petabyte minions, must be a positive number or zero.
      */
-    public Wave(GameEngine engine, int wavenr, double multiplier, Player enemyplayer, Player owner, 
+    public Wave(GameEngine engine, int wavenr, double multiplier, Player playerA, Player playerB, 
             int bamount, int kbamount, int mbamount, int gbamount, int tbamount, int pbamount){
         
         //Set fields and initialise.
@@ -68,7 +70,8 @@ public class Wave {
         waveMultiplier = multiplier;
         minionList = new ArrayList<>();
         killedMinions = new ArrayList<>();
-        this.enemyPlayer = enemyplayer;
+        this.playerA = playerA;
+        this.playerB = playerB;
         Map map = Map.getInstance();
         Point baseA = map.getBaseLocationA();
         Point baseB = map.getBaseLocationB();
@@ -76,10 +79,10 @@ public class Wave {
         //Create the minions for this wave.
         //Bytes
         for(int i=0; i<bamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_BYTE, multiplier, owner.getUID());
-            Minion minion2 = new Minion(Data.DEFAULT_BYTE, multiplier, enemyPlayer.getUID());
-            minion.setEnemy(enemyplayer);
-            minion2.setEnemy(owner);
+            Minion minion = new Minion(Data.DEFAULT_BYTE, multiplier, playerA.getUID());
+            Minion minion2 = new Minion(Data.DEFAULT_BYTE, multiplier, playerB.getUID());
+            minion.setEnemy(playerB);
+            minion2.setEnemy(playerA);
             minion.setPosition(new Point(baseA.x, baseA.y));
             minion.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
@@ -87,10 +90,10 @@ public class Wave {
         }
         //KiloBytes
         for(int i=0; i<kbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_KILOBYTE, multiplier, owner.getUID());
-            Minion minion2 = new Minion(Data.DEFAULT_KILOBYTE, multiplier, enemyPlayer.getUID());
-            minion.setEnemy(enemyplayer);
-            minion2.setEnemy(owner);
+            Minion minion = new Minion(Data.DEFAULT_KILOBYTE, multiplier, playerA.getUID());
+            Minion minion2 = new Minion(Data.DEFAULT_KILOBYTE, multiplier, playerB.getUID());
+            minion.setEnemy(playerB);
+            minion2.setEnemy(playerA);
             minion.setPosition(new Point(baseA.x, baseA.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
@@ -98,10 +101,10 @@ public class Wave {
         }
         //MegaBytes
         for(int i=0; i<mbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_MEGABYTE, multiplier, owner.getUID());
-            Minion minion2 = new Minion(Data.DEFAULT_MEGABYTE, multiplier, enemyPlayer.getUID());
-            minion.setEnemy(enemyplayer);
-            minion2.setEnemy(owner);
+            Minion minion = new Minion(Data.DEFAULT_MEGABYTE, multiplier, playerA.getUID());
+            Minion minion2 = new Minion(Data.DEFAULT_MEGABYTE, multiplier, playerB.getUID());
+            minion.setEnemy(playerB);
+            minion2.setEnemy(playerA);
             minion.setPosition(new Point(baseA.x, baseA.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
@@ -109,10 +112,10 @@ public class Wave {
         }
         //GigaBytes
         for(int i=0; i<gbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_GIGABYTE, multiplier, owner.getUID());
-            Minion minion2 = new Minion(Data.DEFAULT_GIGABYTE, multiplier, enemyPlayer.getUID());
-            minion.setEnemy(enemyplayer);
-            minion2.setEnemy(owner);
+            Minion minion = new Minion(Data.DEFAULT_GIGABYTE, multiplier, playerA.getUID());
+            Minion minion2 = new Minion(Data.DEFAULT_GIGABYTE, multiplier, playerB.getUID());
+            minion.setEnemy(playerB);
+            minion2.setEnemy(playerA);
             minion.setPosition(new Point(baseA.x, baseA.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
@@ -120,10 +123,10 @@ public class Wave {
         }
         //TeraBytes
         for(int i=0; i<tbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_TERABYTE, multiplier, owner.getUID());
-            Minion minion2 = new Minion(Data.DEFAULT_TERABYTE, multiplier, enemyPlayer.getUID());
-            minion.setEnemy(enemyplayer);
-            minion2.setEnemy(owner);
+            Minion minion = new Minion(Data.DEFAULT_TERABYTE, multiplier, playerA.getUID());
+            Minion minion2 = new Minion(Data.DEFAULT_TERABYTE, multiplier, playerB.getUID());
+            minion.setEnemy(playerB);
+            minion2.setEnemy(playerA);
             minion.setPosition(new Point(baseA.x, baseA.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
@@ -131,10 +134,10 @@ public class Wave {
         }
         //PetaBytes
         for(int i=0; i<pbamount; i++){
-            Minion minion = new Minion(Data.DEFAULT_PETABYTE, multiplier, owner.getUID());
-            Minion minion2 = new Minion(Data.DEFAULT_PETABYTE, multiplier, enemyPlayer.getUID());
-            minion.setEnemy(enemyplayer);
-            minion2.setEnemy(owner);
+            Minion minion = new Minion(Data.DEFAULT_PETABYTE, multiplier, playerA.getUID());
+            Minion minion2 = new Minion(Data.DEFAULT_PETABYTE, multiplier, playerB.getUID());
+            minion.setEnemy(playerB);
+            minion2.setEnemy(playerA);
             minion.setPosition(new Point(baseA.x, baseA.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
@@ -157,6 +160,15 @@ public class Wave {
                 if(elapsedtime >= (lastSpawn + 1000)){
                     if(spawnedMinions < minionList.size()){
                         Minion m = minionList.get(spawnedMinions++);
+                        IClientCreate createA = (IClientCreate)engine.getInterfacesA().get("create");
+                        IClientCreate createB = (IClientCreate)engine.getInterfacesB().get("create");
+                        
+                        try {
+                            createA.drawNewMinions(m, m.getOwnerID());
+                            createB.drawNewMinions(m, m.getOwnerID());
+                        } catch (RemoteException ex) {
+                            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
+                        }
                         m.activate(engine, new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
 
                             @Override //Override this method, remove the passed minion from the current wave with removeMinion.
@@ -237,27 +249,27 @@ public class Wave {
             spawnedMinions--;
             minion.deactivate();
             if (reachedBase) {
-                if(minion.getOwnerID() == owner.getUID())
+                if(minion.getOwnerID() == playerA.getUID())
                 {
-                    HackAttackServer.writeConsole(new Log(LogState.INFO, "Minion with owner ID " + owner.getUID() + " has reached enemy base (enemy user ID: " + enemyPlayer.getUID() + ")"));
-                    enemyPlayer.receiveDamage(minion.getDamage());
+                    HackAttackServer.writeConsole(new Log(LogState.INFO, "Minion with playerA ID " + playerA.getUID() + " has reached enemy base (enemy user ID: " + playerB.getUID() + ")"));
+                    playerB.receiveDamage(minion.getDamage());
                 }
-                else if(minion.getOwnerID() == enemyPlayer.getUID())
+                else if(minion.getOwnerID() == playerB.getUID())
                 {
-                    owner.receiveDamage(minion.getDamage());
-                    HackAttackServer.writeConsole(new Log(LogState.INFO, "Minion with owner ID " + enemyPlayer.getUID() + " has reached enemy base (enemy user ID: " + owner.getUID() + ")"));
+                    playerA.receiveDamage(minion.getDamage());
+                    HackAttackServer.writeConsole(new Log(LogState.INFO, "Minion with playerA ID " + playerB.getUID() + " has reached enemy base (enemy user ID: " + playerA.getUID() + ")"));
                 }
             }
             else{
-                if(minion.getOwnerID() == owner.getUID())
+                if(minion.getOwnerID() == playerA.getUID())
                 {
-                    enemyPlayer.addBitcoins(minion.getReward());
-                    HackAttackServer.writeConsole(new Log(LogState.INFO, "Minion with owner ID " + owner.getUID() + " has been killed. " + minion.getReward() + " bitcoins have been added to " + enemyPlayer.getUID()));
+                    playerB.addBitcoins(minion.getReward());
+                    HackAttackServer.writeConsole(new Log(LogState.INFO, "Minion with playerA ID " + playerA.getUID() + " has been killed. " + minion.getReward() + " bitcoins have been added to " + playerB.getUID()));
                 }
-                else if(minion.getOwnerID() == enemyPlayer.getUID())
+                else if(minion.getOwnerID() == playerB.getUID())
                 {
-                    owner.addBitcoins(minion.getReward());
-                    HackAttackServer.writeConsole(new Log(LogState.INFO, "Minion with owner ID " + enemyPlayer.getUID() + " has been killed. " + minion.getReward() + " bitcoins have been added to " + owner.getUID()));
+                    playerA.addBitcoins(minion.getReward());
+                    HackAttackServer.writeConsole(new Log(LogState.INFO, "Minion with playerA ID " + playerB.getUID() + " has been killed. " + minion.getReward() + " bitcoins have been added to " + playerA.getUID()));
                 }
             }
             return true;
