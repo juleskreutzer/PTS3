@@ -5,7 +5,9 @@
  */
 package hack.attack.server;
 
-import hack.attack.server.enums.Effect;
+import hack.attack.rmi.Effect;
+import hack.attack.server.enums.LogState;
+import hack.attack.server.logger.Log;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,7 +47,7 @@ public class MinionEffect {
             }, duration);
         }else{
             callback.onExpired();
-            System.out.println("Duration of spell is smaller then 0");
+            HackAttackServer.writeConsole(new Log(LogState.WARNING, "Duration of spell is smaller then 0"));
         }
     }
     

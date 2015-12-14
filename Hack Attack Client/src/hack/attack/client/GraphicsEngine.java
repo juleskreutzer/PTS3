@@ -5,34 +5,34 @@
  */
 package hack.attack.client;
 
-import hack.attack.client.enums.Effect;
-import hack.attack.client.enums.ModuleName;
+import hack.attack.rmi.Defense;
+import hack.attack.client.FXMLDocumentController.Window;
+import hack.attack.rmi.ClientAdapter;
+import hack.attack.rmi.Spell;
+import hack.attack.rmi.Minion;
+import hack.attack.rmi.Module;
+import hack.attack.rmi.Effect;
+import hack.attack.rmi.ModuleName;
 import java.util.List;
 import hack.attack.client.exceptions.*;
-import hack.attack.interfaces.ITargetable;
+import hack.attack.rmi.ITargetable;
 import java.awt.Point;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -55,13 +55,12 @@ public class GraphicsEngine{
     private Ellipse moduleRange;
     private double updateTime;
     
-    private ImageView pauseButton;
-    private Image pauseImage;
-    private Image playImage;
     private Label lblCurrentWave;
-    private Label lblPlayerName;
-    private Label lblPlayerHealth;
-    private Label lblPlayerBitcoins;
+    private Label lblPlayerAName;
+    private Label lblPlayerAHealth;
+    private Label lblPlayerABitcoins;
+    private Label lblPlayerBName;
+    private Label lblPlayerBHealth;
     private Label errorLabel;
     private Label lblStatsName;
     private Label lblStatsDescription;
@@ -80,39 +79,49 @@ public class GraphicsEngine{
     
     private GraphicsEngine(){
         instance = this;
-        parent = FXMLDocumentController.getInstance();
-//        pauseButton = (ImageView)parent.getNode("btnPause", null);
-//        File pause = new File("src/hack/attack/client/resources/interface/Icons/PauseButton.png");
-//        pauseImage = new Image(pause.toURI().toString());
-//        File play = new File("src/hack/attack/client/resources/interface/Icons/PlayButton.png");
-//        playImage = new Image(play.toURI().toString());
-//        lblCurrentWave = (Label)parent.getNode("lblCurrentWave",null);
-//        lblPlayerName = (Label)parent.getNode("lblPlayerName",null);
-//        lblPlayerHealth = (Label)parent.getNode("lblPlayerHealth",null);
-//        lblPlayerBitcoins = (Label)parent.getNode("lblPlayerBitcoins",null);
-//        lblStatsName = (Label)parent.getNode("lblStatsName",null);
-//        lblStatsDescription = (Label)parent.getNode("lblStatsDescription",null);
-//        lblStatsDamage = (Label)parent.getNode("lblStatsDamage",null);
-//        lblStatsLevel = (Label)parent.getNode("lblStatsLevel",null);
-//        lblStatsROF = (Label)parent.getNode("lblStatsROF",null);
-//        lblStatsEffect = (Label)parent.getNode("lblStatsEffect",null);
-//        lblStatsRange = (Label)parent.getNode("lblStatsRange",null);
-//        lblStatsCosts = (Label)parent.getNode("lblStatsCosts",null);
-//        errorLabel = (Label)parent.getNode("errorLabel",null);
-//        errorImage = (ImageView)parent.getNode("errorImage",null);
-//        File file = new File("src/hack/attack/client/resources/error.png");
-//        Image image = new Image(file.toURI().toString());
-//        errorImage.setImage(image);
-//        errorImage.setVisible(false);
-//        errorLabel.setVisible(false);
         
-//        createEffect(lblCurrentWave);
-//        createEffect(lblPlayerName);
-//        createEffect(lblPlayerHealth);
-//        createEffect(lblPlayerBitcoins);
         
         adapter = ClientAdapter.getInstance();
         
+    }
+    
+    public GraphicsEngine initialize(FXMLDocumentController controller){
+        parent = controller;
+        
+        lblCurrentWave = (Label)parent.getNode("lblCurrentWave",null);
+        lblPlayerAName = (Label)parent.getNode("lblPlayerAName",null);
+        lblPlayerAHealth = (Label)parent.getNode("lblPlayerAHealth",null);
+        lblPlayerABitcoins = (Label)parent.getNode("lblPlayerABitcoins",null);
+        
+        lblPlayerBName = (Label)parent.getNode("lblPlayerBName",null);
+        lblPlayerBHealth = (Label)parent.getNode("lblPlayerBHealth",null);
+        
+        lblStatsName = (Label)parent.getNode("lblStatsName",null);
+        lblStatsDescription = (Label)parent.getNode("lblStatsDescription",null);
+        lblStatsDamage = (Label)parent.getNode("lblStatsDamage",null);
+        lblStatsLevel = (Label)parent.getNode("lblStatsLevel",null);
+        lblStatsROF = (Label)parent.getNode("lblStatsROF",null);
+        lblStatsEffect = (Label)parent.getNode("lblStatsEffect",null);
+        lblStatsRange = (Label)parent.getNode("lblStatsRange",null);
+        lblStatsCosts = (Label)parent.getNode("lblStatsCosts",null);
+        errorLabel = (Label)parent.getNode("errorLabel",null);
+        errorImage = (ImageView)parent.getNode("errorImage",null);
+        File file = new File("src/hack/attack/client/resources/error.png");
+        Image image = new Image(file.toURI().toString());
+        errorImage.setImage(image);
+        errorImage.setVisible(false);
+        errorLabel.setVisible(false);
+      
+        createEffect(lblCurrentWave);
+        createEffect(lblPlayerAName);
+        createEffect(lblPlayerAHealth);
+        createEffect(lblPlayerABitcoins);
+        createEffect(lblPlayerBName);
+        createEffect(lblPlayerBHealth);
+        
+        Map map = Map.getInstance();
+        drawRoad(map.getRoadA(), map.getRoadB());
+        return this;
     }
     
     public static GraphicsEngine getInstance(){
@@ -123,8 +132,8 @@ public class GraphicsEngine{
      * The Scene is the main window the whole application runs in
      * @return The main AnchorPane
      */
-    public AnchorPane getScene(){
-        return parent.getScene();
+    public Pane getScene(Window window){
+        return parent.getScene(window);
     }
     
     /**
@@ -137,6 +146,19 @@ public class GraphicsEngine{
         Node n = parent.getNode(id, p);
         return n;
     }
+    
+    public ArrayList<Node> getAllNodes()
+    {
+        ObservableList nodes1 =  parent.getAllNodes(Window.TOP);
+        ObservableList nodes2 =  parent.getAllNodes(Window.DOWN);
+        
+        ArrayList<Node> nodes = new ArrayList<>();
+        nodes.addAll(nodes1);
+        nodes.addAll(nodes2);
+        return nodes;
+        
+    }
+    
     
     /**
      * From the moment an object is spawned, it will be updated every tick.
@@ -164,8 +186,9 @@ public class GraphicsEngine{
         if(object instanceof Minion){
             Minion m = (Minion)object;
             MinionImage mi = new MinionImage(m);
-            parent.addNode(mi, window);
-            parent.addNode(mi.getHealthBar(), window);
+            FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
+            parent.addNode(mi, w);
+            parent.addNode(mi.getHealthBar(), w);
         }else if(object instanceof Module){
             Module m = (Module) object;
             parent.addNode(new ModuleImage((Module)object), window);
@@ -185,30 +208,36 @@ public class GraphicsEngine{
         int currentID = ClientAdapter.getInstance().getCurrentUserID();
         FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
         
-        ObservableList<Node> nodes = parent.getAllNodes(window);
+        ArrayList<Node> nodes = this.getAllNodes();
+        
         for(Node n : nodes)
         {
-            if(object instanceof Minion)
+            if(object instanceof Minion && n instanceof MinionImage)
             {
+                FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
                 Minion minion = (Minion)object;
                 Minion m = ((MinionImage)n).getMinion();
-                if(minion == m){
+                Rectangle hb = ((MinionImage)n).getHealthBar();
+                if(minion.getMinionID() == m.getMinionID()){
                     if(m.reachedBase()){
-                        drawEffect(Effect.REACHED_BASE, m, window);
+                        drawEffect(Effect.REACHED_BASE, m, w);
                     }else{
-                        drawEffect(Effect.DIE, m, window);
+                        drawEffect(Effect.DIE, m, w);
                     }
-                    parent.removeNode(n, window);
+                    parent.removeNode(hb, w);
+                    parent.removeNode(n, w);
+                    break;
                 }
             }
-            if(object instanceof Module)
-            {
-                Module module = (Module)object;
-                Module m = ((ModuleImage)n).getModule();
-                if(module == m)
-                {
-                    parent.removeNode(n, window);
-                }
+//            if(n instanceof ObjectImage){
+//                ObjectImage image = (ObjectImage)n;
+//                if(object == image.getReference()){
+//                    parent.removeNode(n, window);
+//                }
+//            }
+            if(n instanceof SpawnTargetImage){
+                parent.removeNode(n, window);
+                break;
             }
         }
     }
@@ -216,17 +245,20 @@ public class GraphicsEngine{
     
     
     public double update(int uID){
-        int currentID = ClientAdapter.getInstance().getCurrentUserID();
-        FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
-        draw(window);
+        draw();
         return 0;
     }
     
-    private void draw(FXMLDocumentController.Window window){
+    private void draw(){
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                List<Node> nodes = parent.getAllNodes(window);
+                List<Node> nodes1 = parent.getAllNodes(FXMLDocumentController.Window.DOWN);
+                List<Node> nodes2 = parent.getAllNodes(FXMLDocumentController.Window.TOP);
+                
+                List<Node> nodes = new ArrayList<>();
+                nodes.addAll(nodes1);
+                nodes.addAll(nodes2);
                 
                 for(Node n : nodes){
                     if(n instanceof MinionImage){
@@ -240,20 +272,19 @@ public class GraphicsEngine{
                             hb.setX(mi.getX());
                             hb.setY(mi.getY()+mi.getImage().getHeight());
                             hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
-                            
                         }
                         
 
                     }else if(n instanceof ModuleImage){
                         ModuleImage mi = (ModuleImage)n;
-                        
+                      
                         if(mi.hovered()){
                             if(moduleRange == null){
                                 drawModuleRange((Module)mi.getReference());
                             }
                         }else{
                             // loops through all nodes, if it is an ModuleRange node, remove it.
-                            Iterator i = parent.getAllNodes(window).iterator();
+                            Iterator i = nodes.iterator();
                             while (i.hasNext())
                             {
                                 Node node = (Node)i.next();
@@ -314,11 +345,13 @@ public class GraphicsEngine{
     }
     
     public void drawRoad(Road roadA, Road roadB){
+        System.out.print("Drawing road A...");
         for(Path p : roadA.getPaths()){
             PathImage image = new PathImage(p);
             parent.addNode(image, FXMLDocumentController.Window.DOWN);
         }
         
+        System.out.print("Drawing road B...");
         for(Path p : roadB.getPaths()){
             PathImage image = new PathImage(p);
             parent.addNode(image, FXMLDocumentController.Window.TOP);
@@ -438,15 +471,17 @@ public class GraphicsEngine{
         }
     }
     
-    public void drawLabels(int wavenr, String name, double health, double bitcoins){
+    public void drawLabels(int wavenr, String namea, double healtha, double bitcoinsa, String nameb, double healthb){
         Platform.runLater(new Runnable(){
 
             @Override
             public void run() {
                 lblCurrentWave.setText(String.format("Wave: %d", wavenr));
-                lblPlayerName.setText(String.format("Playername: %s", name));
-                lblPlayerHealth.setText(String.format("Health: %s", health));
-                lblPlayerBitcoins.setText(String.format("Bitcoins: %s", bitcoins));
+                lblPlayerAName.setText(String.format("Playername: %s", namea));
+                lblPlayerAHealth.setText(String.format("Health: %s", healtha));
+                lblPlayerABitcoins.setText(String.format("Bitcoins: %s", bitcoinsa));
+                lblPlayerBName.setText(String.format("Enemy name: %s", nameb));
+                lblPlayerBHealth.setText(String.format("Enemy health: %s", healthb));
             }
         });
         
@@ -616,8 +651,8 @@ public class GraphicsEngine{
                 text.setText(String.format("Game over, %s", name));
                 text.setFill(Color.RED);
                 text.setStyle("-fx-font-size: 40");
-                double height = parent.getScene().getHeight();
-                double width = parent.getScene().getWidth();
+                double height = parent.getScene(Window.MAIN).getHeight();
+                double width = parent.getScene(Window.MAIN).getWidth();
                 height -= 40;
                 width -= 280;
                 text.setLayoutX(width/2);
@@ -628,14 +663,6 @@ public class GraphicsEngine{
         });
     }
     
-    public void setPauseButton(boolean running){
-        if(running){
-                pauseButton.setImage(pauseImage);
-            }else{
-                pauseButton.setImage(playImage);
-            }
-    }
-
     /**
      * Display an error message for the user. First show the error image and error label, than, after 5 seconds, make them magicaly disappear
      * @param message Error message to be shown
@@ -722,4 +749,5 @@ public class GraphicsEngine{
             }
             return false;
     }
+    
 }

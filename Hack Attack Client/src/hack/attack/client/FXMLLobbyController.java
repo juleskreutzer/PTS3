@@ -5,18 +5,18 @@
  */
 package hack.attack.client;
 
-import hack.attack.interfaces.IClient;
-import hack.attack.interfaces.IClientCreate;
-import hack.attack.interfaces.IClientDelete;
-import hack.attack.interfaces.IClientUpdate;
-import hack.attack.interfaces.IServerConnect;
-import hack.attack.interfaces.IServerUpdate;
+import hack.attack.rmi.Account;
+import hack.attack.rmi.ClientAdapter;
+import hack.attack.rmi.IServerConnect;
+import hack.attack.rmi.IServerUpdate;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -42,7 +42,9 @@ public class FXMLLobbyController implements Initializable {
     @FXML
     private Button btnAutomatic;
     @FXML
-    private Button btnCustom;
+    private Button btnJoinCustom;
+    @FXML
+    private Button btnHostCustom;
     @FXML
     private TextField txtUsername;
     @FXML
@@ -77,30 +79,26 @@ public class FXMLLobbyController implements Initializable {
             });
         
             //System.setProperty("java.rmi.server.hostname","localhost");
-            connect = (IServerConnect)Naming.lookup("rmi://145.93.57.8:7611/HackAttackServerConnect");
-        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            Registry registry = LocateRegistry.getRegistry("127.0.0.1",7611);
+            //Registry registry = LocateRegistry.getRegistry("10.0.1.41", 7611); 
+            //Registry registry = LocateRegistry.getRegistry("145.93.56.144", 7611);
+            //Registry registry = LocateRegistry.getRegistry("145.93.106.162", 7611);
+            connect = (IServerConnect)registry.lookup("HackAttackServerConnect");
+        } catch (NotBoundException | RemoteException ex) {
             Logger.getLogger(FXMLLobbyController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void customMatch() throws IOException
+    public void hostCustomMatch() throws IOException
     {
        
-    }
-    
-    public void automaticMatch() throws IOException
-    {
         ClientAdapter adapter = ClientAdapter.getInstance();
-        HashMap<String, IServerUpdate> result = connect.findMatch(account, adapter.getInterfaces());
+        adapter.setAccount(account);
+        HashMap<String, IServerUpdate> result = connect.hostCustomGame(account, adapter.getInterfaces());
         
-        for(String key : result.keySet())
-        {
-            adapter.setSessionKey(key);
-            adapter.setIServerUpdate((IServerUpdate)result.get(key));
-        }
-        
-        FXMLLoader gameloader = new FXMLLoader();
-        Parent mainroot = (Parent)gameloader.load(getClass().getResource("FXMLDocument.fxml").openStream());
+        FXMLLoader gameloader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
+        Parent mainroot = (Parent)gameloader.load();
+        FXMLDocumentController controller = gameloader.getController();
         Stage stage  = (Stage)pane.getScene().getWindow();
         stage.close();
         Stage gamestage = new Stage();
@@ -108,7 +106,79 @@ public class FXMLLobbyController implements Initializable {
         gamestage.setScene(scene);
         gamestage.setTitle("Hack Attack");
         gamestage.show();
+        adapter.initialize(controller);
+        
+        for(String key : result.keySet())
+        {
+            adapter.setSessionKey(key);
+            IServerUpdate update = (IServerUpdate)result.get(key);
+            adapter.setIServerUpdate(update);
+            update.ready(key, account);
+            
+        }
+    }
+    
+    public void joinCustomMatch() throws IOException
+    {
+        ClientAdapter adapter = ClientAdapter.getInstance();
+        adapter.setAccount(account);
+        HashMap<String, IServerUpdate> result = connect.joinCustomGame(account, txtUsername.getText(), adapter.getInterfaces());
+        if (result != null) {
+            FXMLLoader gameloader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
+            Parent mainroot = (Parent)gameloader.load();
+            FXMLDocumentController controller = gameloader.getController();
+            Stage stage  = (Stage)pane.getScene().getWindow();
+            stage.close();
+            Stage gamestage = new Stage();
+            Scene scene = new Scene(mainroot);
+            gamestage.setScene(scene);
+            gamestage.setTitle("Hack Attack");
+            gamestage.show();
+            adapter.initialize(controller);
 
+            for(String key : result.keySet())
+            {
+                adapter.setSessionKey(key);
+                IServerUpdate update = (IServerUpdate)result.get(key);
+                adapter.setIServerUpdate(update);
+                update.ready(key, account);
+
+            }
+        }
+        else {
+            System.err.println("No player found with this displayName");
+        }
+    }
+    
+    public void automaticMatch() throws IOException
+    {
+        ClientAdapter adapter = ClientAdapter.getInstance();
+        adapter.setAccount(account);
+        HashMap<String, IServerUpdate> result = connect.findMatch(account, adapter.getInterfaces());
+        
+        
+        
+        
+        FXMLLoader gameloader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
+        Parent mainroot = (Parent)gameloader.load();
+        FXMLDocumentController controller = gameloader.getController();
+        Stage stage  = (Stage)pane.getScene().getWindow();
+        stage.close();
+        Stage gamestage = new Stage();
+        Scene scene = new Scene(mainroot);
+        gamestage.setScene(scene);
+        gamestage.setTitle("Hack Attack");
+        gamestage.show();
+        adapter.initialize(controller);
+        
+        for(String key : result.keySet())
+        {
+            adapter.setSessionKey(key);
+            IServerUpdate update = (IServerUpdate)result.get(key);
+            adapter.setIServerUpdate(update);
+            update.ready(key, account);
+            
+        }
         //GameEngine engine = GameEngine.getInstance();
         //engine.start();
     }

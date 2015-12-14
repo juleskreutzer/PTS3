@@ -5,7 +5,7 @@
  */
 package hack.attack.server;
 
-import hack.attack.server.templates.ModuleTemplate;
+import hack.attack.rmi.ModuleTemplate;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

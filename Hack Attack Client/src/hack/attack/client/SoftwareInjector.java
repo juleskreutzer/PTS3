@@ -5,13 +5,15 @@
  */
 package hack.attack.client;
 
-import hack.attack.client.enums.ModuleName;
+import hack.attack.rmi.Spell;
+import hack.attack.rmi.Module;
+import hack.attack.rmi.ModuleName;
 import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList;
 import hack.attack.client.exceptions.*;
 import hack.attack.client.templates.SoftwareInjectorTemplate;
-import hack.attack.client.templates.SpellTemplate;
+import hack.attack.rmi.SpellTemplate;
 
 /**
  *

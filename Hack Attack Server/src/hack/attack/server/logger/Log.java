@@ -44,4 +44,9 @@ public class Log {
     {
         return this.currentDate;
     }
+    
+    @Override
+    public String toString(){
+        return getDate() + " - STATUS : " + state + " - " + getMessage() + "\n";
+    }
 }

@@ -5,8 +5,9 @@
  */
 package hack.attack.server;
 
+import hack.attack.rmi.Module;
 import hack.attack.server.GameEngine.OnExecuteTick;
-import hack.attack.server.enums.ModuleName;
+import hack.attack.rmi.ModuleName;
 import java.awt.Point;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.templates.*;
@@ -40,9 +41,9 @@ public class BitcoinMiner extends Module {
      * @param height height of the module
      * @throws InvalidModuleEnumException 
      */
-    public BitcoinMiner(GameEngine engine, BitCoinMinerTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
+    public BitcoinMiner(BitCoinMinerTemplate template, Point position, int width, int height) throws InvalidModuleEnumException
     {
-        super(engine, template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
+        super(template.getCost(), position, width, height, template.getModuleName(), template.getLevel(), template.getDescription());
         
         if(template.getModuleName() != ModuleName.BITCOIN_MINER)
         {
@@ -52,7 +53,6 @@ public class BitcoinMiner extends Module {
         this.valuePerSecond = template.getValuePerSecond();
         listeners = new ArrayList<>();
         lastMine = 0;
-        activate();
     }
     
     public double getValuePerSecond(){
@@ -94,7 +94,7 @@ public class BitcoinMiner extends Module {
     /**
      * Activate the bitcoin miner so the player gets their bitcoins
      */
-    public void activate()
+    public void activate(GameEngine engine)
     {
         tick = new OnExecuteTick() {
 

@@ -5,6 +5,8 @@
  */
 package hack.attack.client;
 
+import hack.attack.rmi.Defense;
+import hack.attack.rmi.Module;
 import java.io.File;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
@@ -28,25 +30,25 @@ public class ModuleImage extends ObjectImage {
         File file = null;
         switch(module.getModuleName()){
             case BITCOIN_MINER:
-                file = new File("src/hackattackfx/resources/sniper_av.png");
+                file = new File("src/hack/attack/client/resources/sniper_av.png");
                 break;
             case SOFTWARE_INJECTOR:
-                file = new File("src/hackattackfx/resources/sniper_av.png");
+                file = new File("src/hack/attack/client/resources/sniper_av.png");
                 break;
             case CPU_UPGRADE:
-                file = new File("src/hackattackfx/resources/sniper_av.png");
+                file = new File("src/hack/attack/client/resources/sniper_av.png");
                 break;
             case SNIPER_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/sniper_module.png");
+                file = new File("src/hack/attack/client/resources/interface/module/40x40/sniper_module.png");
                 break;
             case BOTTLECAP_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/bottlecap_module.png");
+                file = new File("src/hack/attack/client/resources/interface/module/40x40/bottlecap_module.png");
                 break;
             case SCALE_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/scale_module.png");
+                file = new File("src/hack/attack/client/resources/interface/module/40x40/scale_module.png");
                 break;
             case MUSCLE_ANTIVIRUS:
-                file = new File("src/hackattackfx/resources/interface/module/40x40/muscle_module.png");
+                file = new File("src/hack/attack/client/resources/interface/module/40x40/muscle_module.png");
                 break;
         }
         

@@ -5,7 +5,8 @@
  */
 package hack.attack.client.templates;
 
-import hack.attack.client.enums.ModuleName;
+import hack.attack.rmi.ModuleTemplate;
+import hack.attack.rmi.ModuleName;
 
 /**
  *

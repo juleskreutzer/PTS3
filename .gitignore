@@ -18,3 +18,10 @@ hs_err_pid*
 /Hack Attack Client/build/
 /Hack Attack Server/dist/
 /Hack Attack Client/dist/
+Hack Attack Server/serverLog.txt
+
+Hack Attack Server/serverLog.txt
+
+*.txt
+
+*.txt

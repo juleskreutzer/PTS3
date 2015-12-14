@@ -32,13 +32,13 @@ public class FXMLDocumentController implements Initializable {
     private AnchorPane windowControls;
     
     @FXML
-    private AnchorPane windowMain;
+    private Pane windowMain;
     
     @FXML
-    private AnchorPane windowTop;
+    private Pane windowTop;
     
     @FXML
-    private AnchorPane windowDown;
+    private Pane windowDown;
     
     @FXML
     private AnchorPane window;
@@ -56,20 +56,17 @@ public class FXMLDocumentController implements Initializable {
     }
     
     private GraphicsEngine gEngine;
-    private static FXMLDocumentController instance;
     
     
     // This constructor is public even this class represents a Singleton class.
     // This is because the Scene Builder creates an instance of this class using the constructor.
     // Besides that, this class should be considered as Singleton.
     public FXMLDocumentController(){
-        instance = this;
+
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        gEngine = GraphicsEngine.getInstance();
-        System.out.print("Initialize method called! ================================================================================================================================================================");
 
     }    
     
@@ -103,24 +100,19 @@ public class FXMLDocumentController implements Initializable {
                switch(type)
                 {
                     case TOP:
-                        windowTop.getChildren().add(node);
+                        windowTop.getChildren().remove(node);
                         break;
                     case DOWN:
-                        windowDown.getChildren().add(node);
+                        windowDown.getChildren().remove(node);
                         break;
                     case MAIN:
-                        windowMain.getChildren().add(node);
+                        windowMain.getChildren().remove(node);
                         break;
                 }
             }
             
         });
     }
-    
-    public static FXMLDocumentController getInstance(){
-        return instance == null ? new FXMLDocumentController() : instance;
-    }
-    
     
     /**
      * This method is used to find a node in the scene. 
@@ -142,6 +134,12 @@ public class FXMLDocumentController implements Initializable {
                 if(node != null){
                     return node;
                 }
+            }else if(n instanceof Pane){
+                Pane p = (Pane)n;
+                Node node = getNode(id, p);
+                if(node != null){
+                    return node;
+                }
             }
             String s = n.getId();
             if (n.getId() != null && s.equals(id)){
@@ -151,8 +149,17 @@ public class FXMLDocumentController implements Initializable {
         return null;
     }
     
-    public AnchorPane getScene(){
-        return windowMain;
+    public Pane getScene(Window window){
+        switch(window){
+            case MAIN:
+                return windowMain;
+            case TOP:
+                return windowTop;
+            case DOWN:
+                return windowDown;
+            default: 
+                return windowMain;
+        }
     }
     
     public ObservableList getAllNodes(Window type){

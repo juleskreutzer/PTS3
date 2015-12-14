@@ -5,9 +5,16 @@
  */
 package hack.attack.server;
 
+import hack.attack.rmi.MinionType;
+import hack.attack.rmi.ModuleName;
+import hack.attack.rmi.DefenseType;
+import hack.attack.rmi.DefenseTemplate;
+import hack.attack.rmi.SpellTemplate;
+import hack.attack.rmi.Effect;
 import hack.attack.server.templates.*;
 import hack.attack.server.enums.*;
 import hack.attack.server.exceptions.*;
+import hack.attack.server.logger.Log;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -163,7 +170,7 @@ public class Data {
         }
         catch(HTTPException ex)
         {
-            System.out.print("HTTP ERROR: " + ex.getStatusCode());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR,"HTTP ERROR: " + ex.getStatusCode()));
             Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch(IOException ex)
@@ -207,7 +214,7 @@ public class Data {
         }
         catch(HTTPException ex)
         {
-            System.out.print("HTTP ERROR: " + ex.getStatusCode());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, "HTTP ERROR: " + ex.getStatusCode()));
             Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch(IOException ex)
@@ -222,7 +229,6 @@ public class Data {
         for(int i = 0; i < minions.length(); i++)
         {
             JSONObject obj = minions.getJSONObject(i);
-            //System.out.print(obj.names());
             
             double damage = obj.getDouble("damage");
             double health = obj.getDouble("hitpoints");

@@ -6,19 +6,24 @@
 package hack.attack.server;
 
 import hack.attack.server.enums.LogState;
-import hack.attack.interfaces.IServerConnect;
-import hack.attack.interfaces.IServerUpdate;
+import hack.attack.rmi.IServerUpdate;
+import hack.attack.server.exceptions.InvalidDefenseTypeException;
+import hack.attack.server.exceptions.InvalidEffectException;
+import hack.attack.server.exceptions.InvalidMinionTypeException;
+import hack.attack.server.exceptions.InvalidSpellNameException;
 import hack.attack.server.logger.Log;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -28,22 +33,19 @@ import javafx.stage.Stage;
  */
 public class HackAttackServer extends Application {
     
+    private static TextArea console;
+    
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
+        
+        console = new TextArea();
+        console.setPrefSize(primaryStage.getWidth(), primaryStage.getHeight());
+        console.setStyle("-fx-text-fill: #FF0000");
         
         StackPane root = new StackPane();
-        root.getChildren().add(btn);
+        root.getChildren().add(console);
         
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene = new Scene(root, 1024, 768);
         
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
@@ -56,18 +58,34 @@ public class HackAttackServer extends Application {
     public static void main(String[] args) {
         
         try{
-            IServerConnect connect = ServerAdapter.getInstance();
+            ServerAdapter connect = ServerAdapter.getInstance();
             IServerUpdate update = ServerAdapter.getInstance();
 
+            //System.setProperty( "java.rmi.server.hostname", "192.168.2.6" ) ;
+            //System.setProperty("java.rmi.server.hostname", "10.0.1.41");
+            //System.setProperty("java.rmi.server.hostname", "145.93.56.144");
+            System.setProperty("java.rmi.server.hostname", "145.93.240.143");
             Registry registry = LocateRegistry.createRegistry(7611);
             registry.rebind("HackAttackServerConnect", connect);
-            registry.rebind("HackAttackServerUpdate", update);
         
+            Data data = new Data(new Data.UpdateProgress() {
+                    
+                    @Override
+                    public void update(double value) {
+                        
+                    }
+                });
         
         } catch(RemoteException ex) {
-            Log log = new Log(LogState.ERROR, ex.getMessage());
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
+        } catch (IOException | InvalidMinionTypeException | InvalidSpellNameException | InvalidDefenseTypeException | InvalidEffectException ex) {
+            Logger.getLogger(HackAttackServer.class.getName()).log(Level.SEVERE, null, ex);
         }
         launch(args);
+    }
+    
+    public static void writeConsole(Log log){
+        console.appendText(log.toString());
     }
     
 }

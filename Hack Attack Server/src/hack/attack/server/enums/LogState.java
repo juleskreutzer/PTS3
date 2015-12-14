@@ -13,6 +13,7 @@ public enum LogState {
     OK,
     SUCCESS,
     WARNING,
-    ERROR
+    ERROR,
+    INFO
     
 }
