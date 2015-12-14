@@ -29,6 +29,10 @@ public class Defense extends Module implements ITargetable, Serializable {
 
     private transient GameEngine engine;
     
+    ArrayList<Minion> inrange;
+    ArrayList<Minion> minions;
+    Random random;
+    
     private int ownerID;
     
     private double damage;
@@ -73,6 +77,10 @@ public class Defense extends Module implements ITargetable, Serializable {
         this.frequency = template.getFrequency();
         ownerID = ownerid;
         reloading = false;
+        
+        inrange  = new ArrayList<>();
+        minions  = new ArrayList<>();
+        random = new Random();
         
     }
     
@@ -381,9 +389,8 @@ public class Defense extends Module implements ITargetable, Serializable {
      * @return The enemy minion that's targeted. If no minion is found, return null
      */
     public Minion findTarget(){
-        ArrayList<Minion> inrange = new ArrayList<Minion>();
         ArrayList<Wave> waves = engine.getActiveWaves();
-        ArrayList<Minion> minions = new ArrayList<Minion>();
+        
         
         for (Wave w : waves) {
             minions.addAll(w.minionsAsList());
@@ -394,11 +401,12 @@ public class Defense extends Module implements ITargetable, Serializable {
                 inrange.add(m);
             }
         }
-        Random random = new Random();
+        
         if(inrange.size()>0){
             Minion m = inrange.get(random.nextInt(inrange.size()));
             return m;
         }
+        
         return null;
     }
     
