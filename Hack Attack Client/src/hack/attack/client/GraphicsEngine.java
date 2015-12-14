@@ -208,8 +208,7 @@ public class GraphicsEngine{
         int currentID = ClientAdapter.getInstance().getCurrentUserID();
         FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
         
-        ObservableList<Node> nodes = parent.getAllNodes(Window.TOP);
-        nodes.addAll(parent.getAllNodes(Window.DOWN));
+        ArrayList<Node> nodes = this.getAllNodes();
         
         for(Node n : nodes)
         {
@@ -218,12 +217,14 @@ public class GraphicsEngine{
                 FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
                 Minion minion = (Minion)object;
                 Minion m = ((MinionImage)n).getMinion();
+                Rectangle hb = ((MinionImage)n).getHealthBar();
                 if(minion.getMinionID() == m.getMinionID()){
                     if(m.reachedBase()){
                         drawEffect(Effect.REACHED_BASE, m, w);
                     }else{
                         drawEffect(Effect.DIE, m, w);
                     }
+                    parent.removeNode(hb, w);
                     parent.removeNode(n, w);
                 }
             }
