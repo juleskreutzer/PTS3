@@ -162,14 +162,17 @@ public class Wave {
             public void tickComplete(long elapsedtime){
                 if(elapsedtime >= (lastSpawn + 1000)){
                     if(spawnedMinions < minionList.size()){
-                        Minion m = minionList.get(spawnedMinions++);
+                        Minion m1 = minionList.get(spawnedMinions++);
+                        Minion m2 = minionList.get(spawnedMinions++);
                         try {
-                            createA.drawNewMinions(m, m.getOwnerID());
-                            createB.drawNewMinions(m, m.getOwnerID());
+                            createA.drawNewMinions(m1, m1.getOwnerID());
+                            createB.drawNewMinions(m1, m1.getOwnerID());
+                            createA.drawNewMinions(m2, m2.getOwnerID());
+                            createB.drawNewMinions(m2, m2.getOwnerID());
                         } catch (RemoteException ex) {
                             HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
                         }
-                        m.activate(engine, new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
+                        m1.activate(engine, new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
 
                             @Override //Override this method, remove the passed minion from the current wave with removeMinion.
                             public void onMinionDeath(Minion minion, Boolean reachedBase) {
@@ -184,7 +187,7 @@ public class Wave {
                                         }
 
                                     });
-                                    m.applyEffect(effect);
+                                    m1.applyEffect(effect);
                                 }
                                 else
                                 {
@@ -195,20 +198,51 @@ public class Wave {
                                         }
 
                                     });
-                                    m.applyEffect(effect);
+                                    m1.applyEffect(effect);
+                                }
+                            }
+
+                        });
+                        m2.activate(engine, new Minion.MinionHeartbeat() { //Call upon the activate method of minion, and pass it the minionHeartbeat Interface.
+
+                            @Override //Override this method, remove the passed minion from the current wave with removeMinion.
+                            public void onMinionDeath(Minion minion, Boolean reachedBase) {
+                                removeMinion(minion, reachedBase);
+
+                                if(reachedBase)
+                                {
+                                    MinionEffect effect = new MinionEffect(Effect.REACHED_BASE, 0, new OnEffectExpired(){
+
+                                        @Override
+                                        public void onExpired() {
+                                        }
+
+                                    });
+                                    m2.applyEffect(effect);
+                                }
+                                else
+                                {
+                                    MinionEffect effect = new MinionEffect(Effect.DIE, 0, new OnEffectExpired(){
+
+                                        @Override
+                                        public void onExpired() {
+                                        }
+
+                                    });
+                                    m2.applyEffect(effect);
                                 }
                             }
 
                         });
                         lastSpawn = elapsedtime;
                          //Exception Handling.
-                    }
-                }else{
+                    }else{
                     try {
                         engine.unsubscribeListener(this);
                     } catch (UnsubscribeNonListenerException e) {
                         HackAttackServer.writeConsole(new Log(LogState.ERROR, e.toString()));
                     }
+                }
                 }
             }
         };
