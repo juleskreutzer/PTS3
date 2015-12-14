@@ -64,7 +64,8 @@ public class HackAttackServer extends Application {
 
             //System.setProperty( "java.rmi.server.hostname", "192.168.2.6" ) ;
             //System.setProperty("java.rmi.server.hostname", "10.0.1.41");
-            System.setProperty("java.rmi.server.hostname", "145.93.56.144");
+            //System.setProperty("java.rmi.server.hostname", "145.93.56.144");
+            System.setProperty("java.rmi.server.hostname", "145.93.106.162");
             Registry registry = LocateRegistry.createRegistry(7611);
             registry.rebind("HackAttackServerConnect", connect);
         

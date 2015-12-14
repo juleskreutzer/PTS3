@@ -42,7 +42,9 @@ public class FXMLLobbyController implements Initializable {
     @FXML
     private Button btnAutomatic;
     @FXML
-    private Button btnCustom;
+    private Button btnJoinCustom;
+    @FXML
+    private Button btnHostCustom;
     @FXML
     private TextField txtUsername;
     @FXML
@@ -79,16 +81,73 @@ public class FXMLLobbyController implements Initializable {
             //System.setProperty("java.rmi.server.hostname","localhost");
             //Registry registry = LocateRegistry.getRegistry("127.0.0.1",7611);
             //Registry registry = LocateRegistry.getRegistry("10.0.1.41", 7611); 
-            Registry registry = LocateRegistry.getRegistry("145.93.56.144", 7611);
+            //Registry registry = LocateRegistry.getRegistry("145.93.56.144", 7611);
+            Registry registry = LocateRegistry.getRegistry("145.93.106.162", 7611);
             connect = (IServerConnect)registry.lookup("HackAttackServerConnect");
         } catch (NotBoundException | RemoteException ex) {
             Logger.getLogger(FXMLLobbyController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void customMatch() throws IOException
+    public void hostCustomMatch() throws IOException
     {
        
+        ClientAdapter adapter = ClientAdapter.getInstance();
+        adapter.setAccount(account);
+        HashMap<String, IServerUpdate> result = connect.hostCustomGame(account, adapter.getInterfaces());
+        
+        FXMLLoader gameloader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
+        Parent mainroot = (Parent)gameloader.load();
+        FXMLDocumentController controller = gameloader.getController();
+        Stage stage  = (Stage)pane.getScene().getWindow();
+        stage.close();
+        Stage gamestage = new Stage();
+        Scene scene = new Scene(mainroot);
+        gamestage.setScene(scene);
+        gamestage.setTitle("Hack Attack");
+        gamestage.show();
+        adapter.initialize(controller);
+        
+        for(String key : result.keySet())
+        {
+            adapter.setSessionKey(key);
+            IServerUpdate update = (IServerUpdate)result.get(key);
+            adapter.setIServerUpdate(update);
+            update.ready(key, account);
+            
+        }
+    }
+    
+    public void joinCustomMatch() throws IOException
+    {
+        ClientAdapter adapter = ClientAdapter.getInstance();
+        adapter.setAccount(account);
+        HashMap<String, IServerUpdate> result = connect.joinCustomGame(account, txtUsername.getText(), adapter.getInterfaces());
+        if (result != null) {
+            FXMLLoader gameloader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
+            Parent mainroot = (Parent)gameloader.load();
+            FXMLDocumentController controller = gameloader.getController();
+            Stage stage  = (Stage)pane.getScene().getWindow();
+            stage.close();
+            Stage gamestage = new Stage();
+            Scene scene = new Scene(mainroot);
+            gamestage.setScene(scene);
+            gamestage.setTitle("Hack Attack");
+            gamestage.show();
+            adapter.initialize(controller);
+
+            for(String key : result.keySet())
+            {
+                adapter.setSessionKey(key);
+                IServerUpdate update = (IServerUpdate)result.get(key);
+                adapter.setIServerUpdate(update);
+                update.ready(key, account);
+
+            }
+        }
+        else {
+            System.err.println("No player found with this displayName");
+        }
     }
     
     public void automaticMatch() throws IOException
