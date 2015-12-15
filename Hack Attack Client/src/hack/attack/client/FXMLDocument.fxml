@@ -94,7 +94,7 @@
     </AnchorPane>
     <Pane fx:id="mainWindow" layoutX="0.0" layoutY="70.0" maxHeight="527.0" maxWidth="1366.0" prefHeight="527.0" prefWidth="1366.0">
       <children>
-        <Pane fx:id="windowTop" layoutX="0.0" layoutY="0.0" maxHeight="250.0" maxWidth="1366.0" prefHeight="250.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 0 0 2 0;&#10;-fx-background-image: url(&quot;hack/attack/client/resources/Field.png&quot;);">
+        <Pane fx:id="windowTop" layoutX="0.0" layoutY="0.0" maxHeight="250.0" maxWidth="1366.0" prefHeight="250.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 0 0 2 0;&#10;-fx-background-image: url(&quot;hack/attack/client/resources/FieldMirrored.png&quot;);">
           <children>
             <Pane fx:id="windowDown" layoutX="0.0" layoutY="277.0" maxHeight="250.0" maxWidth="1366.0" prefHeight="250.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 2 0 0 0;&#10;-fx-background-image: url(&quot;hack/attack/client/resources/Field.png&quot;);">
               <children>

@@ -124,7 +124,7 @@ public class Minion implements IMoveable, ITargetable {
     @Override
     public void move(double elapsedtime) {
         if(targetPosition == null){
-            targetPosition = Map.getInstance().getRoadB().getBegin();
+            targetPosition = Map.getInstance().getRoadA().getBegin();
         }
         
         if(position.x < targetPosition.x){
@@ -156,7 +156,7 @@ public class Minion implements IMoveable, ITargetable {
             }
         }
         else{
-            List<Path> paths = Map.getInstance().getRoadB().getPaths();
+            List<Path> paths = Map.getInstance().getRoadA().getPaths();
             for(Path p : paths){
                 if(targetPosition.x == p.getStart().x && targetPosition.y == p.getStart().y){
                     targetPosition = p.getEnd();

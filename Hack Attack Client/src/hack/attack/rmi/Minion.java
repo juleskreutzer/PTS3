@@ -80,6 +80,11 @@ public class Minion implements ITargetable {
         return this.health;
     }
     
+    public int getOwnerID()
+    {
+        return this.ownerID;
+    }
+    
     /**
      * This method will change the health of the minion to the amount given
      * @param health the amount of health for the minion
