@@ -419,6 +419,8 @@ public class Defense extends Module implements ITargetable {
      * @param minion The enemy minion target.
      */
     public void fire(Minion minion){
+        SoundEngine sEngine = SoundEngine.getInstance();
+        sEngine.playFireSound(this);
         minion.receiveDamage(damage);
         GraphicsEngine.getInstance().drawAttackLine(this, minion);
         if(!targetInRange(minion)||minion.getHealth() <= 0){

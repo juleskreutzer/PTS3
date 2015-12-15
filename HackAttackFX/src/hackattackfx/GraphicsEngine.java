@@ -55,6 +55,7 @@ public class GraphicsEngine{
     // The active modulerange ellipse. This value is null if no module is hovered.
     private Ellipse moduleRange;
     private double updateTime;
+    Timer timer = new Timer();
     
     private ImageView pauseButton;
     private Image pauseImage;
@@ -105,7 +106,7 @@ public class GraphicsEngine{
         Image image = new Image(file.toURI().toString());
         errorImage.setImage(image);
         errorImage.setVisible(false);
-        errorLabel.setVisible(false);
+        errorLabel.setVisible(false);    
         
         createEffect(lblCurrentWave);
         createEffect(lblPlayerName);
@@ -810,19 +811,56 @@ public class GraphicsEngine{
     }
     
     public void drawAttackLine(Defense defense, Minion minion){
-        Line lineGreen = new Line(defense.getPosition().x, defense.getPosition().y, minion.getPosition().x, minion.getPosition().y);
+        Line attackLine = new Line(defense.getPosition().x, defense.getPosition().y, minion.getPosition().x, minion.getPosition().y);
         
-        lineGreen.setStroke(Color.GREEN);
-        lineGreen.setStrokeLineCap(StrokeLineCap.ROUND);
-        lineGreen.setOpacity(0.5);
-        lineGreen.setStrokeWidth(3);
-        parent.addNode(lineGreen);
+        if (defense.moduleName == ModuleName.BOTTLECAP_ANTIVIRUS)
+        {
+            attackLine.setStroke(Color.GREEN);
+            attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+            attackLine.setOpacity(0.75);
+            attackLine.setStrokeWidth(3);
+            parent.addNode(attackLine);
+        }
         
-        Timer timer = new Timer();
+        switch(defense.moduleName)
+        {
+            case BOTTLECAP_ANTIVIRUS:
+                attackLine.setStroke(Color.GREEN);
+                attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+                attackLine.setOpacity(0.75);
+                attackLine.setStrokeWidth(3);
+                parent.addNode(attackLine);
+                break;
+            case MUSCLE_ANTIVIRUS:
+                attackLine.setStroke(Color.BLUE);
+                attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+                attackLine.setOpacity(0.75);
+                attackLine.setStrokeWidth(3);
+                parent.addNode(attackLine);
+                break;
+            case SCALE_ANTIVIRUS:
+                attackLine.setStroke(Color.PURPLE);
+                attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+                attackLine.setOpacity(0.75);
+                attackLine.setStrokeWidth(3);
+                parent.addNode(attackLine);
+                break;
+            case SNIPER_ANTIVIRUS:
+                attackLine.setStroke(Color.RED);
+                attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+                attackLine.setOpacity(0.75);
+                attackLine.setStrokeWidth(3);
+                parent.addNode(attackLine);
+                break;
+        }
+        //Initialize timer outisde of method and add tasks?
+        //Now we create multiple timers.
+        //Timer timer = new Timer();
+        
         timer.schedule(new TimerTask() {
         @Override
         public void run() {
-        parent.removeNode(lineGreen);
+        parent.removeNode(attackLine);
         }
         },200);
     }

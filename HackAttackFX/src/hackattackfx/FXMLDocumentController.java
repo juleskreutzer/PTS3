@@ -33,6 +33,7 @@ public class FXMLDocumentController implements Initializable {
     private ImageView errorImage;
     
     private GraphicsEngine gEngine;
+    private SoundEngine sEngine;
     private static FXMLDocumentController instance;
     
     
@@ -46,7 +47,8 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gEngine = GraphicsEngine.getInstance();
-
+        sEngine = SoundEngine.getInstance();
+        sEngine.playThemeSong();
     }    
     
     public void addNode(Node node){
