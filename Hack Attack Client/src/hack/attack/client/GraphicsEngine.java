@@ -189,9 +189,9 @@ public class GraphicsEngine{
             Minion m = (Minion)object;
             MinionImage mi = new MinionImage(m);
             FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
-//            if(w == Window.TOP){
-//                m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
-//            }
+            if(w == Window.TOP){
+                m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
+            }
             parent.addNode(mi, w);
             parent.addNode(mi.getHealthBar(), w);
         }else if(object instanceof Module){
@@ -270,17 +270,24 @@ public class GraphicsEngine{
                         Rectangle hb = mi.getHealthBar();
                         Minion m = ((MinionImage)n).getMinion();
                         
-                        if(m.getOwnerID() == uID){
+                        if(m.getOwnerID() == uID && m.getHealth() > 0){
                             m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
-                        }
-                        
-                        if (m.getHealth() > 0){
                             mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
                             mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
                             hb.setX(mi.getX());
                             hb.setY(mi.getY()+mi.getImage().getHeight());
                             hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
+                        }else{
+                            if (m.getHealth() > 0){
+                                mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
+                                mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
+                                hb.setX(mi.getX());
+                                hb.setY(mi.getY()+mi.getImage().getHeight());
+                                hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
+                            }
                         }
+                        
+                        
                         
 
                     }else if(n instanceof ModuleImage){
