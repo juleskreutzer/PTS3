@@ -12,6 +12,11 @@
   <children>
     <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="70.0" prefWidth="1366.0" style="-fx-background-color: #d9d9d9; -fx-border-color: #e2e2e2; -fx-border-width: 2 0 0 0;">
       <children>
+            <ImageView fitHeight="70.0" fitWidth="1366.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="hackattackfx/resources/interface/UI/Header.png" />
+               </image>
+            </ImageView>
         <ImageView fx:id="errorImage" fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="hackattackfx/resources/error.png" />
@@ -24,7 +29,7 @@
         <Label id="lblCurrentWave" layoutX="547.0" layoutY="27.0" prefHeight="17.0" prefWidth="136.0" text="Wave:" />
         <ImageView fx:id="btnPause" fitHeight="40.0" fitWidth="40.0" layoutX="1297.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image backgroundLoading="false" url="hackattackfx/resources/interface/Icons/PauseButton.png" />
+            <Image url="hackattackfx/resources/interface/Icons/PauseButton.png" />
           </image>
         </ImageView>
       </children>
