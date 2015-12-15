@@ -189,10 +189,17 @@ public class GraphicsEngine{
             Minion m = (Minion)object;
             MinionImage mi = new MinionImage(m);
             FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
+//            if(w == Window.TOP){
+//                m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
+//            }
             parent.addNode(mi, w);
             parent.addNode(mi.getHealthBar(), w);
         }else if(object instanceof Module){
             Module m = (Module) object;
+            FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
+            if(w == Window.DOWN){
+                m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
+            }
             parent.addNode(new ModuleImage((Module)object), window);
         }else if(object instanceof Spell){
             //parent.addNode(new SpellImage((Spell)object), window);
@@ -242,11 +249,11 @@ public class GraphicsEngine{
     
     
     public double update(int uID){
-        draw();
+        draw(uID);
         return 0;
     }
     
-    private void draw(){
+    private void draw(int uID){
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -262,6 +269,10 @@ public class GraphicsEngine{
                         MinionImage mi = (MinionImage)n;
                         Rectangle hb = mi.getHealthBar();
                         Minion m = ((MinionImage)n).getMinion();
+                        
+                        if(m.getOwnerID() == uID){
+                            m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
+                        }
                         
                         if (m.getHealth() > 0){
                             mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
