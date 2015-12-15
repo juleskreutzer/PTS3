@@ -111,13 +111,15 @@ public class GraphicsEngine{
         errorImage.setImage(image);
         errorImage.setVisible(false);
         errorLabel.setVisible(false);
-      
+        
+        /*
         createEffect(lblCurrentWave);
         createEffect(lblPlayerAName);
         createEffect(lblPlayerAHealth);
         createEffect(lblPlayerABitcoins);
         createEffect(lblPlayerBName);
         createEffect(lblPlayerBHealth);
+        */
         
         Map map = Map.getInstance();
         drawRoad(map.getRoadA(), map.getRoadB());

@@ -8,44 +8,90 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" style="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="hack.attack.client.FXMLDocumentController">
+<AnchorPane fx:id="window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" style="" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hack.attack.client.FXMLDocumentController">
   <children>
-    <AnchorPane fx:id="windowLabel" layoutX="0.0" layoutY="0.0" prefHeight="70.0" prefWidth="1366.0" style="-fx-background-color: #d9d9d9; -fx-border-color: #e2e2e2; -fx-border-width: 2 0 0 0;">
+    <AnchorPane fx:id="windowLabel" prefHeight="70.0" prefWidth="1366.0" style="-fx-background-color: #d9d9d9; -fx-border-color: #e2e2e2; -fx-border-width: 2 0 0 0;">
       <children>
+            <ImageView fitHeight="70.0" fitWidth="1366.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="hack/attack/client/resources/interface/UI/Header.png" />
+               </image>
+            </ImageView>
         <ImageView fx:id="errorImage" fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="hack/attack/client/resources/error.png" />
           </image>
         </ImageView>
         <Label fx:id="errorLabel" layoutX="47.0" layoutY="26.0" prefHeight="17.0" prefWidth="752.0" text="Error Label" textFill="RED" />
-        <Label fx:id="lblPlayerAName" layoutX="449.0" layoutY="10.0" prefHeight="17.0" prefWidth="226.0" text="Player A Name" />
-        <Label fx:id="lblPlayerABitcoins" layoutX="649.0" layoutY="27.0" prefHeight="17.0" prefWidth="136.0" text="Player A Bitcoins" />
-        <Label fx:id="lblPlayerAHealth" layoutX="449.0" layoutY="43.0" prefHeight="17.0" prefWidth="136.0" text="Player A Health" />
-        <Label id="lblCurrentWave" layoutX="355.0" layoutY="27.0" prefHeight="17.0" prefWidth="136.0" text="Wave:" />
-        <Label fx:id="lblPlayerBName" layoutX="947.0" layoutY="14.0" text="Player B Name" />
-        <Label fx:id="lblPlayerBHealth" layoutX="947.0" layoutY="39.0" text="Player B Health" />
+            <AnchorPane layoutX="370.0" layoutY="-2.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+              <Label id="lblCurrentWave" layoutX="269.0" layoutY="22.0" prefHeight="17.0" prefWidth="136.0" text="Wave:">
+                     <font>
+                        <Font name="Yu Gothic UI Light" size="18.0" />
+                     </font>
+                  </Label>
+                  <AnchorPane layoutX="500.0" prefHeight="70.0" prefWidth="200.0">
+                     <children>
+                    <Label fx:id="lblPlayerBHealth" layoutY="30.0" text="Player B Health">
+                           <font>
+                              <Font name="Yu Gothic Medium" size="12.0" />
+                           </font>
+                        </Label>
+                    <Label fx:id="lblPlayerBName" layoutY="5.0" text="Player B Name">
+                           <font>
+                              <Font name="Yu Gothic UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="70.0" prefWidth="200.0">
+                     <children>
+                    <Label fx:id="lblPlayerAName" layoutY="5.0" prefHeight="17.0" prefWidth="226.0" text="Player A Name">
+                           <font>
+                              <Font name="Yu Gothic UI Light" size="18.0" />
+                           </font>
+                        </Label>
+                    <Label fx:id="lblPlayerABitcoins" layoutY="30.0" prefHeight="17.0" prefWidth="136.0" text="Player A Bitcoins">
+                           <font>
+                              <Font name="Yu Gothic Medium" size="12.0" />
+                           </font>
+                        </Label>
+                    <Label fx:id="lblPlayerAHealth" layoutY="45.0" prefHeight="17.0" prefWidth="136.0" text="Player A Health">
+                           <font>
+                              <Font name="Yu Gothic Medium" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
       </children>
     </AnchorPane>
     <AnchorPane id="guiControls" fx:id="windowControls" layoutX="0.0" layoutY="597.0" prefHeight="100.0" prefWidth="1366.0" style="-fx-border-color: #e2e2e2; -fx-border-width: 2 0 0 0; -fx-background-color: #d9d9d9;">
       <children>
-        <ImageView id="buildScaleAV" fitHeight="40.0" fitWidth="40.0" layoutX="60.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+            <ImageView fitHeight="100.0" fitWidth="1366.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="hack/attack/client/resources/interface/UI/Header.png" />
+               </image>
+            </ImageView>
+        <ImageView id="buildScaleAV" fitHeight="40.0" fitWidth="40.0" layoutX="219.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/module/40x40/scale_module.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/module/40x40/scale_module.png" />
           </image>
         </ImageView>
-        <ImageView id="buildBottlecapAV" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildBottlecapAV" fitHeight="40.0" fitWidth="40.0" layoutX="169.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/module/40x40/bottlecap_module.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/module/40x40/bottlecap_module.png" />
           </image>
         </ImageView>
-        <ImageView id="buildMuscleAV" fitHeight="40.0" fitWidth="40.0" layoutX="110.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildMuscleAV" fitHeight="40.0" fitWidth="40.0" layoutX="269.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/module/40x40/muscle_module.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/module/40x40/muscle_module.png" />
           </image>
         </ImageView>
-        <ImageView id="buildSniperAV" fitHeight="40.0" fitWidth="40.0" layoutX="160.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="buildSniperAV" fitHeight="40.0" fitWidth="40.0" layoutX="319.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="hack/attack/client/resources/interface/module/40x40/sniper_module.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/module/40x40/sniper_module.png" />
           </image>
         </ImageView>
         <AnchorPane id="moduleStats" layoutX="966.0" layoutY="0.0" prefHeight="100.0" prefWidth="400.0" style="-fx-border-color: #e2e2e2;&#10;-fx-border-width: 0 0 0 2;">
@@ -60,39 +106,54 @@
             <Label id="lblStatsDamage" layoutX="14.0" layoutY="46.0" text="Damage:" />
           </children>
         </AnchorPane>
-        <ImageView fx:id="spellFirewall" fitHeight="40.0" fitWidth="40.0" layoutX="816.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView fx:id="spellFirewall" fitHeight="40.0" fitWidth="40.0" layoutX="490.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/firewall.png" backgroundLoading="false" />
+            <Image url="hack/attack/client/resources/interface/Spells/40x40/firewall.png" />
           </image>
         </ImageView>
-        <ImageView id="buildMuscleAV" fx:id="spellLockdown" fitHeight="40.0" fitWidth="40.0" layoutX="866.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildMuscleAV" fx:id="spellLockdown" fitHeight="40.0" fitWidth="40.0" layoutX="540.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/lockdown.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/Spells/40x40/lockdown.png" />
           </image>
         </ImageView>
-        <ImageView id="buildSniperAV" fx:id="spellVirusscan" fitHeight="40.0" fitWidth="40.0" layoutX="916.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="buildSniperAV" fx:id="spellVirusscan" fitHeight="40.0" fitWidth="40.0" layoutX="590.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/virusscan.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/Spells/40x40/virusscan.png" />
           </image>
         </ImageView>
-        <ImageView id="buildScaleAV" fx:id="spellCorrupt" fitHeight="40.0" fitWidth="40.0" layoutX="816.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildScaleAV" fx:id="spellCorrupt" fitHeight="40.0" fitWidth="40.0" layoutX="762.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/corrupt.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/Spells/40x40/corrupt.png" />
           </image>
         </ImageView>
-        <ImageView id="buildMuscleAV" fx:id="spellDisrupt" fitHeight="40.0" fitWidth="40.0" layoutX="866.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildMuscleAV" fx:id="spellDisrupt" fitHeight="40.0" fitWidth="40.0" layoutX="812.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/disrupt.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/Spells/40x40/disrupt.png" />
           </image>
         </ImageView>
-        <ImageView id="buildSniperAV" fx:id="spellEncrypt" fitHeight="40.0" fitWidth="40.0" layoutX="916.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="buildSniperAV" fx:id="spellEncrypt" fitHeight="40.0" fitWidth="40.0" layoutX="862.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/encrypt.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/Spells/40x40/encrypt.png" />
           </image>
         </ImageView>
+            <Label fx:id="lblPlayerAName1" layoutX="221.0" layoutY="68.0" prefHeight="27.0" prefWidth="73.0" text="Modules">
+               <font>
+                  <Font name="Yu Gothic UI Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblPlayerAName11" layoutX="495.0" layoutY="68.0" prefHeight="27.0" prefWidth="126.0" text="Defensive Spells">
+               <font>
+                  <Font name="Yu Gothic UI Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblPlayerAName111" layoutX="766.0" layoutY="68.0" prefHeight="27.0" prefWidth="126.0" text="Offensive Spells">
+               <font>
+                  <Font name="Yu Gothic UI Light" size="18.0" />
+               </font>
+            </Label>
       </children>
     </AnchorPane>
-    <Pane fx:id="mainWindow" layoutX="0.0" layoutY="70.0" maxHeight="527.0" maxWidth="1366.0" prefHeight="527.0" prefWidth="1366.0">
+    <Pane fx:id="mainWindow" layoutY="70.0" maxHeight="527.0" maxWidth="1366.0" prefHeight="527.0" prefWidth="1366.0">
       <children>
         <Pane fx:id="windowTop" layoutX="0.0" layoutY="0.0" maxHeight="250.0" maxWidth="1366.0" prefHeight="250.0" prefWidth="1366.0" style="-fx-border-color: #808080;&#10;-fx-border-width: 0 0 2 0;&#10;-fx-background-image: url(&quot;hack/attack/client/resources/Field.png&quot;);">
           <children>
@@ -100,7 +161,7 @@
               <children>
                 <ImageView fx:id="buildBitcoinMiner" fitHeight="40.0" fitWidth="40.0" layoutX="61.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="hack/attack/client/resources/interface/Icons/Base/light/Bitcoin.png" backgroundLoading="false" />
+                    <Image backgroundLoading="false" url="hack/attack/client/resources/interface/Icons/Base/light/Bitcoin.png" />
                   </image>
                 </ImageView>
               </children>
