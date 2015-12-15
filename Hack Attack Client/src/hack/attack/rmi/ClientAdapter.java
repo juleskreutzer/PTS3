@@ -772,20 +772,31 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                 engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
                     @Override
                     public void handle(MouseEvent event) {
-                        range.setCenterX(event.getX());
-                        range.setCenterY(event.getY());
+                        range.setCenterX(event.getSceneX());
+                        range.setCenterY(event.getSceneY());
                     }
                 
                 });
                 range.setOnMouseClicked(new EventHandler<MouseEvent>(){
                     @Override
                     public void handle(MouseEvent event) {
-                        ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
-                        Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
-                        try {
-                            update.executeSpell(sessionKey, account.getUID(), spell, p);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                        MouseButton m = event.getButton();
+                        if (m == MouseButton.PRIMARY){
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                     
@@ -795,21 +806,229 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
         });
         
         ImageView spellLockdown = (ImageView)engine.getNode("spellLockdown",null);
+        spellLockdown.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                SpellTemplate spell = Data.DEFAULT_SPELL_LOCKDOWN;
+                Ellipse range = engine.drawSpellRange(new Spell(spell));
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        range.setCenterX(event.getSceneX());
+                        range.setCenterY(event.getSceneY());
+                    }
+                    
+                });
+                range.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                });
+            }
+            
+        });
         
         
         ImageView spellVirusscan = (ImageView)engine.getNode("spellVirusscan",null);
+        spellVirusscan.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                SpellTemplate spell = Data.DEFAULT_SPELL_VIRUSSCAN;
+                Ellipse range = engine.drawSpellRange(new Spell(spell));
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        range.setCenterX(event.getSceneX());
+                        range.setCenterY(event.getSceneY());
+                    }
+                    
+                });
+                range.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                });
+            }
+            
+        });
         
-        
-        ImageView spellCorrup = (ImageView)engine.getNode("spellCorrupt",null);
-        
+        ImageView spellCorrupt = (ImageView)engine.getNode("spellCorrupt",null);
+        spellCorrupt.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                SpellTemplate spell = Data.DEFAULT_SPELL_CORRUPT;
+                Ellipse range = engine.drawSpellRange(new Spell(spell));
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        range.setCenterX(event.getSceneX());
+                        range.setCenterY(event.getSceneY());
+                    }
+                    
+                });
+                range.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                });
+            }
+            
+        });
         
         ImageView spellDisrupt = (ImageView)engine.getNode("spellDisrupt",null);
-        
+        spellDisrupt.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                SpellTemplate spell = Data.DEFAULT_SPELL_DISRUPT;
+                Ellipse range = engine.drawSpellRange(new Spell(spell));
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        range.setCenterX(event.getSceneX());
+                        range.setCenterY(event.getSceneY());
+                    }
+                    
+                });
+                range.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                });
+            }
+            
+        });
         
         ImageView spellEncrypt = (ImageView)engine.getNode("spellEncrypt",null);
-        
+        spellEncrypt.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                SpellTemplate spell = Data.DEFAULT_SPELL_ENCRYPT;
+                Ellipse range = engine.drawSpellRange(new Spell(spell));
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        range.setCenterX(event.getSceneX());
+                        range.setCenterY(event.getSceneY());
+                    }
+                    
+                });
+                range.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        MouseButton m = event.getButton();
+                        if(m == MouseButton.PRIMARY)
+                        {
+                            ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
+                            Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
+                            try {
+                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        else
+                        {
+                            try {
+                                engine.deSpawn(st, account.getUID());
+                            } catch (InvalidObjectException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                });
+            }
+            
+        });
     }
-    
-    
-    
 }

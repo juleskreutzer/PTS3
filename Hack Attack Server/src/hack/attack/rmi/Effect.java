@@ -17,6 +17,9 @@ public enum Effect implements Serializable {
     SPLASH,
     DECRYPTED,
     DIE,
-    REACHED_BASE
+    REACHED_BASE,
+    BUFFED,
+    STOPPED,
+    ENCRYPT
     
 }
