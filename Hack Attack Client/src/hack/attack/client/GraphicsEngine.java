@@ -822,9 +822,7 @@ public class GraphicsEngine{
       text.setTextFill(Color.web("#386db2"));
       text.setBlendMode(BlendMode.HARD_LIGHT);
       text.setFont(Font.font(java.awt.Font.DIALOG_INPUT, FontWeight.BOLD, 13));
-      final Reflection reflection = new Reflection();
-      reflection.setFraction(1.0);
-      text.setEffect(reflection);
+      
     }
     
     public void moduleClicked(Module module){
