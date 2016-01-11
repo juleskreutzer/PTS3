@@ -158,7 +158,8 @@ public class Minion implements IMoveable, ITargetable {
                 position.y = targetPosition.y;
             }
         }
-        else if(this.activeEffect.getEffectType() == Effect.STOPPED)
+        
+        else if(this.activeEffect != null && this.activeEffect.getEffectType() == Effect.STOPPED)
         {
             position.x = position.x;
             position.y = position.y;
