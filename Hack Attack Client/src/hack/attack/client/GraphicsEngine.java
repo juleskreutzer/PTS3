@@ -238,7 +238,7 @@ public class GraphicsEngine{
                         break;
                     }
                 }
-                if(n instanceof SpawnTargetImage){
+                if(object instanceof SpawnTargetImage && n instanceof SpawnTargetImage){
                     parent.removeNode(n, window);
                     break;
                 }
