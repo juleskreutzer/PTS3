@@ -76,6 +76,8 @@ public class GraphicsEngine{
     private ImageView errorImage;
     
     private ClientAdapter adapter;
+    private ImageView imageViewUpgrade;
+    private ImageView imageViewSell;
     
     private GraphicsEngine(){
         instance = this;
@@ -828,20 +830,194 @@ public class GraphicsEngine{
     public void moduleClicked(Module module){
         //Create a highlight rectangle
         createHighlight(module);
+        try{
+            createUpgradeButtons(module);
+        }
+        catch(InvalidObjectException ex)
+        {
+            
+        }
         //Update the status fields and update upgrade button
     }
     
-    public void createHighlight(Module module){
-        highlight = new Rectangle(module.getPosition().x, module.getPosition().y, module.getHeight(), module.getWidth());
-        highlight.setStroke(Color.BLUE);
-        highlight.setFill(Color.BLUE);
-        highlight.setOpacity(50);
-        highlight.setStrokeWidth(1);
-        highlight.setId("highlight");
-        System.out.print("Can we change this in GraphicsEngine (CreateHighLight)?");
-        parent.addNode(highlight, FXMLDocumentController.Window.DOWN);
+      public void createUpgradeButtons(Module module) throws InvalidObjectException{
+        
+        parent.removeNode(imageViewUpgrade, Window.DOWN);
+        parent.removeNode(imageViewSell, Window.DOWN);
+
+        imageViewUpgrade = new ImageView();
+        imageViewSell = new ImageView();
+
+        if (module.getLevel() < 3) {
+        File file = new File("src/hackattackfx/resources/interface/module/40x40/Upgrade-Module.png");
+        Image image = new Image(file.toURI().toString());
+        imageViewUpgrade.setImage(image);
+        imageViewUpgrade.setId("upgrade");
+        imageViewUpgrade.setX(module.getPosition().x - (module.getWidth()));
+        imageViewUpgrade.setY(module.getPosition().y - (module.getHeight()));
+        parent.addNode(imageViewUpgrade, Window.DOWN);
+        /*RMI
+        GameEngine.getInstance().addUpgradeClickEvent(imageViewUpgrade, module);
+        */
+        }
+
+        File file2 = new File("src/hackattackfx/resources/interface/module/40x40/Sell-Module.png");
+        Image imageSell = new Image(file2.toURI().toString());
+        imageViewSell.setImage(imageSell);
+        imageViewSell.setId("sell");
+        imageViewSell.setX(module.getPosition().x - (module.getWidth()));
+        imageViewSell.setY(module.getPosition().y - (module.getHeight()) + 40);
+        parent.addNode(imageViewSell, Window.DOWN);
+        /*RMI
+        GameEngine.getInstance().addSellClickEvent(imageViewSell, module);
+        */
     }
     
+    public void drawUpgraded(){
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(3000));
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        fadeOut.setCycleCount(1);
+        fadeOut.setAutoReverse(false);
+        Label label = new Label();
+        label.setLayoutX(highlight.getX() - 15);
+        label.setLayoutY(highlight.getY() - 15);
+        label.setTextFill(Color.BLUE);
+        label.setText(String.format("Upgrade complete!"));
+        parent.addNode(label, Window.DOWN);
+        fadeOut.setNode(label);
+        fadeOut.playFromStart();
+        
+        removeSelected();
+        
+        fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+            @Override
+            public void handle(ActionEvent event) {
+                parent.removeNode(label, Window.DOWN);
+            }
+        });
+    }
+    
+     public void drawSold(){
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(3000));
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        fadeOut.setCycleCount(1);
+        fadeOut.setAutoReverse(false);
+        Label label = new Label();
+        label.setLayoutX(highlight.getX() - 15);
+        label.setLayoutY(highlight.getY() - 15);
+        label.setTextFill(Color.BLUE);
+        label.setText(String.format("Module sold!"));
+        parent.addNode(label, Window.DOWN);
+        fadeOut.setNode(label);
+        fadeOut.playFromStart();
+        
+        removeSelected();
+        
+        
+        
+        fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+            @Override
+            public void handle(ActionEvent event) {
+                parent.removeNode(label, Window.DOWN);
+            }
+        });
+    }
+    
+    public void removeSelected(){
+        parent.removeNode(highlight, Window.DOWN);
+        parent.removeNode(imageViewUpgrade, Window.DOWN);
+        parent.removeNode(imageViewSell, Window.DOWN);
+    }
+    
+    public void removeModule(Module mod){
+        ArrayList<Node> nodeListOb = this.getAllNodes();
+        for(Node nod: nodeListOb)
+        {
+            if(nod instanceof ObjectImage)
+            {
+                ObjectImage ob = (ObjectImage) nod;
+                
+                    if(ob.getReference() == mod)
+                    {
+                    try {
+                        this.deSpawn(nod, ClientAdapter.getInstance().getCurrentUserID());
+                    } catch (InvalidObjectException ex) {
+                        //Logger.getLogger(GraphicsEngine.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    }
+            }
+        }
+    }
+    
+    public void drawAttackLine(Defense defense, Minion minion){
+        Line attackLine = new Line(defense.getPosition().x, defense.getPosition().y, minion.getPosition().x, minion.getPosition().y);
+        
+        if (defense.getModuleName() == ModuleName.BOTTLECAP_ANTIVIRUS)
+        {
+            attackLine.setStroke(Color.GREEN);
+            attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+            attackLine.setOpacity(0.75);
+            attackLine.setStrokeWidth(3);
+            parent.addNode(attackLine, Window.DOWN);
+        }
+        
+        switch(defense.getModuleName())
+        {
+            case BOTTLECAP_ANTIVIRUS:
+                attackLine.setStroke(Color.GREEN);
+                attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+                attackLine.setOpacity(0.75);
+                attackLine.setStrokeWidth(3);
+                parent.addNode(attackLine, Window.DOWN);
+                break;
+            case MUSCLE_ANTIVIRUS:
+                attackLine.setStroke(Color.BLUE);
+                attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+                attackLine.setOpacity(0.75);
+                attackLine.setStrokeWidth(3);
+                parent.addNode(attackLine, Window.DOWN);
+                break;
+            case SCALE_ANTIVIRUS:
+                attackLine.setStroke(Color.PURPLE);
+                attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+                attackLine.setOpacity(0.75);
+                attackLine.setStrokeWidth(3);
+                parent.addNode(attackLine, Window.DOWN);
+                break;
+            case SNIPER_ANTIVIRUS:
+                attackLine.setStroke(Color.RED);
+                attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
+                attackLine.setOpacity(0.75);
+                attackLine.setStrokeWidth(3);
+                parent.addNode(attackLine, Window.DOWN);
+                break;
+        }
+        //Initialize timer outisde of method and add tasks?
+        //Now we create multiple timers.
+        //Timer timer = new Timer();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+        parent.removeNode(attackLine, Window.DOWN);
+        }
+        },200);
+    }
+    
+public void createHighlight(Module module){
+        parent.removeNode(highlight, Window.DOWN);
+        highlight = new Rectangle(module.getPosition().x - (module.getWidth()/2), module.getPosition().y - (module.getHeight()/2), module.getHeight(), module.getWidth());
+        highlight.setStroke(Color.BLUE);
+        highlight.setFill(Color.BLUE);
+        highlight.setOpacity(0.50f);
+        highlight.setStrokeWidth(1);
+        highlight.setId("highlight");
+        parent.addNode(highlight, Window.DOWN);
+    }
      /**
      * Calculates if there is an existing node in the given square
      * @param x the x-location of the left upper corner
