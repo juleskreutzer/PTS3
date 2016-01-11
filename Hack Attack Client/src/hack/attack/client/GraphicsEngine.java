@@ -16,6 +16,7 @@ import hack.attack.rmi.ModuleName;
 import java.util.List;
 import hack.attack.client.exceptions.*;
 import hack.attack.rmi.ITargetable;
+import hack.attack.rmi.SpellTemplate;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
@@ -230,10 +231,9 @@ public class GraphicsEngine{
                 }
             }
             
-            if(object instanceof Spell && n instanceof SpellImage)
+            if(object instanceof SpellTemplate && n instanceof Ellipse)
             {
-                FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
-                parent.removeNode(n, w);
+                parent.removeNode(n, FXMLDocumentController.Window.DOWN);
                 
             }
 //            if(n instanceof ObjectImage){

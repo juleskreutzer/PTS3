@@ -56,6 +56,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
     private static ClientAdapter instance;
     
     SpawnTargetImage st = null;
+    SpellTemplate targetSpell = null; // Because st can't be used for a spell to despawn it
     
     private ClientAdapter() throws RemoteException
     {
@@ -793,7 +794,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                         else
                         {
                             try {
-                                engine.deSpawn(st, account.getUID());
+                                engine.deSpawn(spell, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -811,6 +812,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             @Override
             public void handle(MouseEvent event) {
                 SpellTemplate spell = Data.DEFAULT_SPELL_LOCKDOWN;
+                
                 Ellipse range = engine.drawSpellRange(new Spell(spell));
                 engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
 
@@ -839,7 +841,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                         else
                         {
                             try {
-                                engine.deSpawn(st, account.getUID());
+                                engine.deSpawn(spell, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -885,7 +887,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                         else
                         {
                             try {
-                                engine.deSpawn(st, account.getUID());
+                                engine.deSpawn(spell, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -930,7 +932,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                         else
                         {
                             try {
-                                engine.deSpawn(st, account.getUID());
+                                engine.deSpawn(spell, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -975,7 +977,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                         else
                         {
                             try {
-                                engine.deSpawn(st, account.getUID());
+                                engine.deSpawn(spell, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
