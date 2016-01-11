@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,6 +70,9 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
      */
     @Override
     public boolean ready(String sessionkey, Account account){
+        
+        //HackAttackServer.writeConsole(new Log(LogState.OK, "player ready: " + account.getDisplayName()));
+        HackAttackServer.writeConsole(new Log(LogState.OK, sessionkey));
         for(Session session : sessions){
             if(session.getSessionKey().equals(sessionkey)){
                 session.setPlayerReady(account);
@@ -158,18 +162,18 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
 
     @Override
     public HashMap<String, IServerUpdate> findMatch(Account account, HashMap<String, IClient> interfaces) {
-        int modulo = automaticGameUsers.size() % 2;
         
-        if(modulo == 1)
-        {
+        
+        if(automaticGameUsers.size() > 0) {
             // We have enough players to start a automatic game
+            // look if an player is in the same elo range
             int score = account.getUserScore();
             Account a = automaticGameUsers.get(0);
             int aScore = a.getUserScore();
-            int distance = Math.abs(aScore - score);
-            int idx = 0;
-            for(int i = 0; i < automaticGameUsers.size(); i++)
-            {
+            //int distance = Math.abs(aScore - score);
+            int distance = 1000;
+            int idx = -1;
+            for(int i = 0; i < automaticGameUsers.size(); i++) {
                 Account tempAccount = (Account) automaticGameUsers.get(i);
                 int tempScore = tempAccount.getUserScore();
                 int cdistance = Math.abs(tempScore - score);
@@ -178,54 +182,64 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     distance = cdistance;
                 }
             }
-            
-            Account secondPlayer = (Account) automaticGameUsers.get(idx);
-            for(Session session : sessions)
-            {
-                if(session.getPlayerA().getUsername().equals(secondPlayer.getUsername()))
+            if (idx != -1) {
+                // a player is found to start a game with
+                Account secondPlayer = (Account) automaticGameUsers.get(idx);
+                for(Session session : sessions)
                 {
-                    session.joinSession(account, interfaces);
-                    HashMap hashMap = new HashMap<>();
-                    hashMap.put(session.getSessionKey(), this);
-                    
-                    return hashMap;
+                    if(session.getPlayerA().getUsername().equals(secondPlayer.getUsername()))
+                    {
+                        session.joinSession(account, interfaces);
+                        HashMap hashMap = new HashMap<>();
+                        hashMap.put(session.getSessionKey(), this);
+                        automaticGameUsers.remove(account);
+                        automaticGameUsers.remove(session.getPlayerA());
+                        return hashMap;
+                    }
                 }
+            }
+            else {
+                return createNewSession(account, interfaces);
             }
         }
         else
         {
-            // No player(s) are available, create a new session
-            automaticGameUsers.add(account);
-            
-            String key = "";
-            String sessionKey = "";
-            try{
-                Date date = new Date();
-                key = "HackAttackServer" + date.toString();
-
-                sessionKey = Data.encrypt(key);
-            } catch (Exception ex) {
-                HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
-            }
-            
-            if(account == null)
-            {
-                HackAttackServer.writeConsole(new Log(LogState.ERROR, "Account object is null"));
-            }
-        
-            if(interfaces == null || interfaces.size() != 3)
-            {
-                HackAttackServer.writeConsole(new Log(LogState.ERROR, "No or not enough interfaces provided!"));
-            }
-            
-            Session session = new Session(sessionKey, interfaces, account);
-            sessions.add(session);
-            
-            HashMap hashMap = new HashMap<>();
-            hashMap.put(session.getSessionKey(), this);
-            return hashMap;
+            return createNewSession(account, interfaces);
         }
         return null;
+    }
+    
+    private HashMap<String, IServerUpdate> createNewSession(Account account, HashMap<String, IClient> interfaces) {
+        // No player(s) are available, create a new session
+            
+        String key = "";
+        String sessionKey = "";
+        try {
+            key = "HackAttackServer" + UUID.randomUUID();
+            sessionKey = Data.encrypt(key);
+        } catch (Exception ex) {
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
+        }
+            
+        if(account == null)
+        {
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, "Account object is null"));
+            return null;
+        }
+        
+        if(interfaces == null || interfaces.size() != 3)
+        {
+            HackAttackServer.writeConsole(new Log(LogState.ERROR, "No or not enough interfaces provided!"));
+            return null;
+        }
+        
+        automaticGameUsers.add(account);
+        Session session = new Session(sessionKey, interfaces, account);
+        sessions.add(session);
+            
+        HashMap hashMap = new HashMap<>();
+        hashMap.put(session.getSessionKey(), this);
+        return hashMap;
     }
 
     /**
