@@ -1031,15 +1031,4 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             
         });
     }
-    
-    @Override
-    public void showError(String message, int uID)
-    {
-        // Check if this client needs to show the error message
-        if(this.account.getUID() == uID)
-        {
-            // Show the error message
-            this.engine.showError(message);
-        }
-    }
 }

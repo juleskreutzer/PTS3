@@ -53,11 +53,4 @@ public interface IClientUpdate extends IClient {
      * @param waveNumber Number indicating the current wave
      */
     public void updateLabels(int waveNumber, String playernamea, double healthplayera, double bitcoinsplayera, String playernameb, double healthplayerb) throws RemoteException;
-    
-    /**
-     * Show an error message for a client with the provided uID.
-     * @param message Message the client needs to show
-     * @param uID Unique ID for the user, used to determine which client should show the error.
-     */
-    public void showError(String message, int uID);
 }
