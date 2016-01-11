@@ -773,7 +773,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                     @Override
                     public void handle(MouseEvent event) {
                         range.setCenterX(event.getSceneX());
-                        range.setCenterY(event.getSceneY());
+                        range.setCenterY(event.getSceneY() - (250 + spell.getRange()) - (spell.getRange()/2));
                     }
                 
                 });
@@ -817,7 +817,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                     @Override
                     public void handle(MouseEvent event) {
                         range.setCenterX(event.getSceneX());
-                        range.setCenterY(event.getSceneY());
+                        range.setCenterY(event.getSceneY() - (250 + spell.getRange()) - (spell.getRange()/2));
                     }
                     
                 });
@@ -863,7 +863,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                     @Override
                     public void handle(MouseEvent event) {
                         range.setCenterX(event.getSceneX());
-                        range.setCenterY(event.getSceneY());
+                        range.setCenterY(event.getSceneY() - (250 + spell.getRange()) - (spell.getRange()/2));
                     }
                     
                 });
@@ -908,7 +908,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                     @Override
                     public void handle(MouseEvent event) {
                         range.setCenterX(event.getSceneX());
-                        range.setCenterY(event.getSceneY());
+                        range.setCenterY(event.getSceneY() - (250 + spell.getRange()) - (spell.getRange()/2));
                     }
                     
                 });
@@ -953,7 +953,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                     @Override
                     public void handle(MouseEvent event) {
                         range.setCenterX(event.getSceneX());
-                        range.setCenterY(event.getSceneY());
+                        range.setCenterY(event.getSceneY() - (250 + spell.getRange()) - (spell.getRange()/2));
                     }
                     
                 });
@@ -993,14 +993,12 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             public void handle(MouseEvent event) {
                 SpellTemplate spell = Data.DEFAULT_SPELL_ENCRYPT;
                 Ellipse range = engine.drawSpellRange(new Spell(spell));
-                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<MouseEvent>(){
-
+                engine.getScene(Window.DOWN).setOnMouseMoved(new EventHandler<javafx.scene.input.MouseEvent>(){
                     @Override
-                    public void handle(MouseEvent event) {
+                    public void handle(javafx.scene.input.MouseEvent event) {
                         range.setCenterX(event.getSceneX());
-                        range.setCenterY(event.getSceneY());
+                        range.setCenterY(event.getSceneY() - (250 + spell.getRange()) - (spell.getRange()/2));
                     }
-                    
                 });
                 range.setOnMouseClicked(new EventHandler<MouseEvent>(){
 

@@ -173,14 +173,12 @@ public class GraphicsEngine{
         int currentID = ClientAdapter.getInstance().getCurrentUserID();
         FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
         
-        synchronized(this){
-            List<Node> list = parent.getAllNodes(window);
-            for(Node node : list){
-                if(node instanceof ObjectImage){
-                    ObjectImage image = (ObjectImage)node;
-                    if(image.getReference() == object){
-                        throw new DuplicateSpawnException("This object already spawned!");
-                    }
+        List<Node> list = parent.getAllNodes(window);
+        for(Node node : list){
+            if(node instanceof ObjectImage){
+                ObjectImage image = (ObjectImage)node;
+                if(image.getReference() == object){
+                    throw new DuplicateSpawnException("This object already spawned!");
                 }
             }
         }
@@ -189,17 +187,10 @@ public class GraphicsEngine{
             Minion m = (Minion)object;
             MinionImage mi = new MinionImage(m);
             FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
-            if(w == Window.TOP){
-                m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
-            }
             parent.addNode(mi, w);
             parent.addNode(mi.getHealthBar(), w);
         }else if(object instanceof Module){
             Module m = (Module) object;
-            FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
-            if(w == Window.DOWN){
-                m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
-            }
             parent.addNode(new ModuleImage((Module)object), window);
         }else if(object instanceof Spell){
             //parent.addNode(new SpellImage((Spell)object), window);
@@ -218,30 +209,42 @@ public class GraphicsEngine{
         FXMLDocumentController.Window window = uID == currentID ? FXMLDocumentController.Window.DOWN : FXMLDocumentController.Window.TOP;
         
         ArrayList<Node> nodes = this.getAllNodes();
-        synchronized(this){
-            for(Node n : nodes)
+        
+        for(Node n : nodes)
+        {
+            if(object instanceof Minion && n instanceof MinionImage)
             {
-                if(object instanceof Minion && n instanceof MinionImage)
-                {
-                    FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
-                    Minion minion = (Minion)object;
-                    Minion m = ((MinionImage)n).getMinion();
-                    Rectangle hb = ((MinionImage)n).getHealthBar();
-                    if(minion.getMinionID() == m.getMinionID()){
-                        if(m.reachedBase()){
-                            drawEffect(Effect.REACHED_BASE, m, w);
-                        }else{
-                            drawEffect(Effect.DIE, m, w);
-                        }
-                        parent.removeNode(hb, w);
-                        parent.removeNode(n, w);
-                        break;
+                FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
+                Minion minion = (Minion)object;
+                Minion m = ((MinionImage)n).getMinion();
+                Rectangle hb = ((MinionImage)n).getHealthBar();
+                if(minion.getMinionID() == m.getMinionID()){
+                    if(m.reachedBase()){
+                        drawEffect(Effect.REACHED_BASE, m, w);
+                    }else{
+                        drawEffect(Effect.DIE, m, w);
                     }
-                }
-                if(n instanceof SpawnTargetImage){
-                    parent.removeNode(n, window);
+                    parent.removeNode(hb, w);
+                    parent.removeNode(n, w);
                     break;
                 }
+            }
+            
+            if(object instanceof Spell && n instanceof SpellImage)
+            {
+                FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
+                parent.removeNode(n, w);
+                
+            }
+//            if(n instanceof ObjectImage){
+//                ObjectImage image = (ObjectImage)n;
+//                if(object == image.getReference()){
+//                    parent.removeNode(n, window);
+//                }
+//            }
+            if(n instanceof SpawnTargetImage){
+                parent.removeNode(n, window);
+                break;
             }
         }
     }
@@ -249,11 +252,11 @@ public class GraphicsEngine{
     
     
     public double update(int uID){
-        draw(uID);
+        draw();
         return 0;
     }
     
-    private void draw(int uID){
+    private void draw(){
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -270,24 +273,13 @@ public class GraphicsEngine{
                         Rectangle hb = mi.getHealthBar();
                         Minion m = ((MinionImage)n).getMinion();
                         
-                        if(m.getOwnerID() == uID && m.getHealth() > 0){
-                            m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
+                        if (m.getHealth() > 0){
                             mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
                             mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
                             hb.setX(mi.getX());
                             hb.setY(mi.getY()+mi.getImage().getHeight());
                             hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
-                        }else{
-                            if (m.getHealth() > 0){
-                                mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
-                                mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
-                                hb.setX(mi.getX());
-                                hb.setY(mi.getY()+mi.getImage().getHeight());
-                                hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
-                            }
                         }
-                        
-                        
                         
 
                     }else if(n instanceof ModuleImage){
@@ -822,7 +814,9 @@ public class GraphicsEngine{
       text.setTextFill(Color.web("#386db2"));
       text.setBlendMode(BlendMode.HARD_LIGHT);
       text.setFont(Font.font(java.awt.Font.DIALOG_INPUT, FontWeight.BOLD, 13));
-      
+      final Reflection reflection = new Reflection();
+      reflection.setFraction(1.0);
+      text.setEffect(reflection);
     }
     
     public void moduleClicked(Module module){
