@@ -82,7 +82,7 @@ public class Wave {
             Minion minion2 = new Minion(Data.DEFAULT_BYTE, multiplier, playerB.getUID());
             minion.setEnemy(playerB);
             minion2.setEnemy(playerA);
-            minion.setPosition(new Point(baseA.x, baseA.y));
+            minion.setPosition(new Point(baseB.x, baseB.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
             minionList.add(minion2);
@@ -93,7 +93,7 @@ public class Wave {
             Minion minion2 = new Minion(Data.DEFAULT_KILOBYTE, multiplier, playerB.getUID());
             minion.setEnemy(playerB);
             minion2.setEnemy(playerA);
-            minion.setPosition(new Point(baseA.x, baseA.y));
+            minion.setPosition(new Point(baseB.x, baseB.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
             minionList.add(minion2);
@@ -104,7 +104,7 @@ public class Wave {
             Minion minion2 = new Minion(Data.DEFAULT_MEGABYTE, multiplier, playerB.getUID());
             minion.setEnemy(playerB);
             minion2.setEnemy(playerA);
-            minion.setPosition(new Point(baseA.x, baseA.y));
+            minion.setPosition(new Point(baseB.x, baseB.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
             minionList.add(minion2);
@@ -115,7 +115,7 @@ public class Wave {
             Minion minion2 = new Minion(Data.DEFAULT_GIGABYTE, multiplier, playerB.getUID());
             minion.setEnemy(playerB);
             minion2.setEnemy(playerA);
-            minion.setPosition(new Point(baseA.x, baseA.y));
+            minion.setPosition(new Point(baseB.x, baseB.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
             minionList.add(minion2);
@@ -126,7 +126,7 @@ public class Wave {
             Minion minion2 = new Minion(Data.DEFAULT_TERABYTE, multiplier, playerB.getUID());
             minion.setEnemy(playerB);
             minion2.setEnemy(playerA);
-            minion.setPosition(new Point(baseA.x, baseA.y));
+            minion.setPosition(new Point(baseB.x, baseB.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
             minionList.add(minion2);
@@ -137,7 +137,7 @@ public class Wave {
             Minion minion2 = new Minion(Data.DEFAULT_PETABYTE, multiplier, playerB.getUID());
             minion.setEnemy(playerB);
             minion2.setEnemy(playerA);
-            minion.setPosition(new Point(baseA.x, baseA.y));
+            minion.setPosition(new Point(baseB.x, baseB.y));
             minion2.setPosition(new Point(baseB.x, baseB.y));
             minionList.add(minion);
             minionList.add(minion2);

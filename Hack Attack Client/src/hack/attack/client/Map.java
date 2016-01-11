@@ -31,26 +31,28 @@ public class Map {
         roadA = new Road();
         roadB = new Road();
         
-        baseLocationA = new Point(180,200); // base that spaws minions on bottom map
-        baseLocationB = new Point(180,200); // base that spawns minions on top map
+        baseLocationA = new Point(170,90); // base that spaws minions on top map
+        baseLocationB = new Point(1200,90); // base that spawns minions on bottom map
         
         //Create the map's road out of Paths.
         try {
-            roadA.addPath(new Path(new Point(baseLocationA.x, baseLocationA.y),290, Path.Direction.Right));
-            roadA.addPath(new Path(roadA.getEnd(),110, Path.Direction.Up));
-            roadA.addPath(new Path(roadA.getEnd(),280, Path.Direction.Right));
+            // Drawn bottom 
+            roadA.addPath(new Path(new Point(baseLocationB.x, baseLocationB.y),180, Path.Direction.Left));
             roadA.addPath(new Path(roadA.getEnd(),110, Path.Direction.Down));
-            roadA.addPath(new Path(roadA.getEnd(),280, Path.Direction.Right));
+            roadA.addPath(new Path(roadA.getEnd(),280, Path.Direction.Left));
             roadA.addPath(new Path(roadA.getEnd(),110, Path.Direction.Up));
-            roadA.addPath(new Path(roadA.getEnd(),180, Path.Direction.Right));
+            roadA.addPath(new Path(roadA.getEnd(),280, Path.Direction.Left));
+            roadA.addPath(new Path(roadA.getEnd(),110, Path.Direction.Down));
+            roadA.addPath(new Path(roadA.getEnd(),290, Path.Direction.Left));
             
-            roadB.addPath(new Path(new Point(baseLocationB.x, baseLocationB.y), 290, Path.Direction.Right));
-            roadB.addPath(new Path(roadB.getEnd(),110, Path.Direction.Up));
-            roadB.addPath(new Path(roadB.getEnd(),280, Path.Direction.Right));
+            // Drawn top
+            roadB.addPath(new Path(new Point(baseLocationA.x, baseLocationA.y),180, Path.Direction.Right));
             roadB.addPath(new Path(roadB.getEnd(),110, Path.Direction.Down));
             roadB.addPath(new Path(roadB.getEnd(),280, Path.Direction.Right));
             roadB.addPath(new Path(roadB.getEnd(),110, Path.Direction.Up));
-            roadB.addPath(new Path(roadB.getEnd(),180, Path.Direction.Right));
+            roadB.addPath(new Path(roadB.getEnd(),280, Path.Direction.Right));
+            roadB.addPath(new Path(roadB.getEnd(),110, Path.Direction.Down));
+            roadB.addPath(new Path(roadB.getEnd(), 290, Path.Direction.Right));
             
         } catch (FloatingPathException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);

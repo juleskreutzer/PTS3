@@ -1,1 +1,1 @@
-2015/12/14 17:30:47 - STATUS : OK - 5 : 3 : 3 : 4 : 0 : 0
+2015/12/15 10:53:34 - STATUS : WARNING - Duration of spell is smaller then 0

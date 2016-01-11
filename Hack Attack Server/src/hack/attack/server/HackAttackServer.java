@@ -61,10 +61,10 @@ public class HackAttackServer extends Application {
             ServerAdapter connect = ServerAdapter.getInstance();
             IServerUpdate update = ServerAdapter.getInstance();
 
-            //System.setProperty( "java.rmi.server.hostname", "192.168.2.6" ) ;
-            //System.setProperty("java.rmi.server.hostname", "10.0.1.41");
+            //System.setProperty( "java.rmi.server.hostname", "127.0.0.1" ) ;
+            System.setProperty("java.rmi.server.hostname", "10.0.1.41");
             //System.setProperty("java.rmi.server.hostname", "145.93.56.144");
-            System.setProperty("java.rmi.server.hostname", "145.93.240.143");
+//            System.setProperty("java.rmi.server.hostname", "145.93.104.222");
             Registry registry = LocateRegistry.createRegistry(7611);
             registry.rebind("HackAttackServerConnect", connect);
         
@@ -85,7 +85,8 @@ public class HackAttackServer extends Application {
     }
     
     public static void writeConsole(Log log){
-        console.appendText(log.toString());
+        
+        javafx.application.Platform.runLater( () -> console.appendText(log.toString()) );
     }
     
 }
