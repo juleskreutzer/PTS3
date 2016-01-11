@@ -72,7 +72,7 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
     public boolean ready(String sessionkey, Account account){
         
         //HackAttackServer.writeConsole(new Log(LogState.OK, "player ready: " + account.getDisplayName()));
-        HackAttackServer.writeConsole(new Log(LogState.OK, sessionkey));
+        HackAttackServer.writeConsole(new Log(LogState.OK, "Player : " + account.getDisplayName() + "ready in session: " + sessionkey));
         for(Session session : sessions){
             if(session.getSessionKey().equals(sessionkey)){
                 session.setPlayerReady(account);

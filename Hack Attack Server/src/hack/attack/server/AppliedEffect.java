@@ -47,7 +47,7 @@ public class AppliedEffect {
             }, duration);
         }else{
             callback.onExpired();
-            HackAttackServer.writeConsole(new Log(LogState.WARNING, "Duration of effect is smaller then 0"));
+            //HackAttackServer.writeConsole(new Log(LogState.WARNING, "Duration of effect is smaller then 0"));
         }
     }
     
