@@ -762,7 +762,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                 engine.drawModuleStats(null);
             }
         });
-        
+        /*
         ImageView spellFirewall = (ImageView)engine.getNode("spellFirewall",null);
         spellFirewall.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
@@ -1029,6 +1029,6 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                 });
             }
             
-        });
+        }); */
     }
 }
