@@ -41,6 +41,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.geometry.Point2D;
+import javafx.scene.input.MouseEvent;
 /**
  *
  * @author Jasper Rouwhorst
@@ -201,8 +202,11 @@ public class GraphicsEngine{
             FXMLDocumentController.Window w = uID == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
             if(w == Window.DOWN){
                 m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
+                parent.addNode(new ModuleImage((Module)object, false), window);
             }
-            parent.addNode(new ModuleImage((Module)object), window);
+            else{
+                parent.addNode(new ModuleImage((Module)object, true), window);
+            }
         }else if(object instanceof Spell){
             //parent.addNode(new SpellImage((Spell)object), window);
         }else{
@@ -849,7 +853,7 @@ public class GraphicsEngine{
         imageViewSell = new ImageView();
 
         if (module.getLevel() < 3) {
-        File file = new File("src/hackattackfx/resources/interface/module/40x40/Upgrade-Module.png");
+        File file = new File("src/hack/attack/client/resources/interface/module/40x40/Upgrade-Module.png");
         Image image = new Image(file.toURI().toString());
         imageViewUpgrade.setImage(image);
         imageViewUpgrade.setId("upgrade");
@@ -861,7 +865,7 @@ public class GraphicsEngine{
         */
         }
 
-        File file2 = new File("src/hackattackfx/resources/interface/module/40x40/Sell-Module.png");
+        File file2 = new File("src/hack/attack/client/resources/interface/module/40x40/Sell-Module.png");
         Image imageSell = new Image(file2.toURI().toString());
         imageViewSell.setImage(imageSell);
         imageViewSell.setId("sell");
@@ -873,6 +877,52 @@ public class GraphicsEngine{
         */
     }
     
+      /**
+     * This method adds an event that upgrades the given module.
+     * @param imageView
+     * @param module 
+     */
+    public void addUpgradeClickEvent(ImageView imageView, Module module){
+         imageView.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                //Logic to upgrade button
+               Defense def = (Defense) module;
+                try {
+                    def.upgrade();
+                    drawUpgraded();
+                } catch (NoUpgradeAllowedException ex) {
+                    //Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+    
+    public void addSellClickEvent(ImageView imageView, Module module){
+         imageView.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+                //Logic to upgrade button
+               Defense def = (Defense) module;
+               /*
+               //Deactivate module
+               def.deactivate();
+               //Add bitcoins
+               playerA.addBitcoins(module.getCost() * (0.75));
+               //Remove module from players list
+               playerA.removeModule(module);
+               //Remove module from screen
+               graphicsEngine.removeModule(module);
+               //Show that the module is sold
+               graphicsEngine.drawSold();
+               */
+               List<Module> modulelist = new ArrayList();
+               modulelist.add(def);
+               ClientAdapter.getInstance().deleteCurrentModules(modulelist, ClientAdapter.getInstance().getCurrentUserID());
+            }
+        });
+    }
+      
     public void drawUpgraded(){
         FadeTransition fadeOut = new FadeTransition(Duration.millis(3000));
         fadeOut.setFromValue(1.0);

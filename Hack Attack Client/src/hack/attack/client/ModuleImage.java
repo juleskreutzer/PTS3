@@ -22,13 +22,13 @@ public class ModuleImage extends ObjectImage {
 
     private Module module;
     private boolean hovered;
-    
-    public ModuleImage(Module m){
+
+    public ModuleImage(Module m, boolean event) {
         super(m);
         module = m;
-        
+
         File file = null;
-        switch(module.getModuleName()){
+        switch (module.getModuleName()) {
             case BITCOIN_MINER:
                 file = new File("src/hack/attack/client/resources/sniper_av.png");
                 break;
@@ -51,55 +51,56 @@ public class ModuleImage extends ObjectImage {
                 file = new File("src/hack/attack/client/resources/interface/module/40x40/muscle_module.png");
                 break;
         }
-        
+
         Image image = new Image(file.toURI().toString());
-        setX(module.getPosition().x - (image.getHeight()/2));
-        setY(module.getPosition().y - (image.getWidth()/2));
+        setX(module.getPosition().x - (image.getHeight() / 2));
+        setY(module.getPosition().y - (image.getWidth() / 2));
         this.setImage(image);
-        
-        if(module instanceof Defense){
-            Defense defense = (Defense)module;
-            this.setOnMouseEntered(new EventHandler<MouseEvent>(){
+        if (event) {
+            if (module instanceof Defense) {
+                Defense defense = (Defense) module;
+                this.setOnMouseEntered(new EventHandler<MouseEvent>() {
 
-                @Override
-                public void handle(MouseEvent event) {
-                    
-                    hovered = true;
-                    GraphicsEngine.getInstance().drawModuleStats(module);
-                }
-            
-            });
-            this.setOnMouseExited(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event) {
 
-                @Override
-                public void handle(MouseEvent event) {
-                    
-                    hovered = false;
-                    GraphicsEngine.getInstance().drawModuleStats(null);
-                }
-            });
-            this.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                        hovered = true;
+                        GraphicsEngine.getInstance().drawModuleStats(module);
+                    }
 
-                @Override
-                public void handle(MouseEvent event) {
-                    //Highlight selected module
-                    GraphicsEngine.getInstance().moduleClicked((Module)getReference());
-                }
-            });
+                });
+                this.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+
+                        hovered = false;
+                        GraphicsEngine.getInstance().drawModuleStats(null);
+                    }
+                });
+                this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        //Highlight selected module
+                        GraphicsEngine.getInstance().moduleClicked((Module) getReference());
+                    }
+                });
+            }
         }
     }
-    
+
     /**
      * Checks if this module is hovered
+     *
      * @return
      */
-    public boolean hovered(){
-            return hovered;
+    public boolean hovered() {
+        return hovered;
     }
-    
-    public Module getModule()
-    {
+
+    public Module getModule() {
         return module;
     }
-    
+
 }
