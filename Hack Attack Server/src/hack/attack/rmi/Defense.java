@@ -5,6 +5,7 @@
  */
 package hack.attack.rmi;
 
+import hack.attack.server.AppliedEffect;
 import hack.attack.server.GameEngine.OnExecuteTick;
 import hack.attack.server.exceptions.*;
 import hack.attack.server.Data;
@@ -52,6 +53,11 @@ public class Defense extends Module implements ITargetable, Serializable {
     // The tickListener is declared when this module is activated
     private transient OnExecuteTick tickListener;
     
+    // The effect currently applied to this module
+    private transient AppliedEffect activeEffect;
+    
+    private transient boolean canDoDamage;
+    
     /**
      * Constructor for the Defense module based on the DefenseTemplate
      * @param template instance of DefenseTemplate created in the data class
@@ -77,6 +83,7 @@ public class Defense extends Module implements ITargetable, Serializable {
         this.frequency = template.getFrequency();
         ownerID = ownerid;
         reloading = false;
+        this.canDoDamage = true;
         
         inrange  = new ArrayList<>();
         minions  = new ArrayList<>();
@@ -197,6 +204,10 @@ public class Defense extends Module implements ITargetable, Serializable {
     }
     
     public double getDamage(){
+        if(this.canDoDamage == false)
+        {
+            return 0.0;
+        }
         return damage;
     }
     
@@ -435,10 +446,66 @@ public class Defense extends Module implements ITargetable, Serializable {
      * @param minion The enemy minion target.
      */
     public void fire(Minion minion){
-        minion.receiveDamage(damage);
+        if(canDoDamage) { minion.receiveDamage(damage); }
         if(!targetInRange(minion)||minion.getHealth() <= 0){
             target = null;
         }
+    }
+    
+    public void applyEffect(AppliedEffect effect){
+        activeEffect = effect.getEffectType() != Effect.DIE && effect.getEffectType() != Effect.REACHED_BASE ? effect : null;
+        switch(effect.getEffectType()){
+            case SLOWED:
+
+                break;
+            case POISENED:
+                
+                break;
+            case SPLASH:
+                this.canDoDamage = false;
+                break;
+            case DECRYPTED: 
+                
+                break;
+            case DIE:
+                
+                break;
+            case REACHED_BASE:
+                
+                break;
+            case BUFFED:
+                damage *= 2;
+                range *= 0.5;
+                break;
+        }
+    }
+        
+    public void removeEffect(){
+        switch(activeEffect.getEffectType()){
+            case SLOWED:
+
+                break;
+            case POISENED:
+
+                break;
+            case SPLASH:
+                this.canDoDamage = true;
+                break;
+            case DECRYPTED: 
+
+                break;
+            case DIE:
+
+                break;
+            case REACHED_BASE:
+
+                break;
+            case BUFFED:
+                damage /= 2;
+                range /= 0.5;
+                break;
+        }
+        activeEffect = null;
     }
     
 }

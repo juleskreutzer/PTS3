@@ -651,6 +651,111 @@ public class GraphicsEngine{
                     });
 
                     break;
+                case BUFFED:
+                    label = new Label();
+                    label.setText("BUFFED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
+                case STOPPED:
+                    label = new Label();
+                    label.setText("STOPPED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
+                case ENCRYPT:
+                    label = new Label();
+                    label.setText("ENCRYPTED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
+            }
+        }
+        else if(target instanceof Defense)
+        {
+            fadeOut = new FadeTransition(Duration.millis(10000));
+            Defense d = (Defense)target;
+            Point position = d.getPosition();
+            
+            switch(effect)
+            {
+                case BUFFED:
+                    label = new Label();
+                    label.setText("RANGE INCREASED\nDAMAGE INCREASED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
+                case SPLASH:
+                    label = new Label();
+                    label.setText("DISABLED");
+                    label.setTextFill(Color.PURPLE);
+                    label.setLayoutX(position.getX());
+                    label.setLayoutY(position.getY());
+                    parent.addNode(label, window);
+                    fadeOut.setNode(label);
+                    fadeOut.playFromStart();
+
+                    fadeOut.setOnFinished(new EventHandler<ActionEvent>(){
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                        parent.removeNode(label, window);
+                    }
+
+                    });
+                    break;
             }
         }
     }
@@ -717,9 +822,7 @@ public class GraphicsEngine{
       text.setTextFill(Color.web("#386db2"));
       text.setBlendMode(BlendMode.HARD_LIGHT);
       text.setFont(Font.font(java.awt.Font.DIALOG_INPUT, FontWeight.BOLD, 13));
-      final Reflection reflection = new Reflection();
-      reflection.setFraction(1.0);
-      text.setEffect(reflection);
+      
     }
     
     public void moduleClicked(Module module){
