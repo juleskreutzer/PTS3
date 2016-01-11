@@ -763,7 +763,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             }
         });
         
-        ImageView spellFirewall = (ImageView)engine.getNode("spellFirewall",null);
+        ImageView spellFirewall = (ImageView)engine.getNode("buildFirewallV",null);
         spellFirewall.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent event) {
@@ -805,7 +805,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             
         });
         
-        ImageView spellLockdown = (ImageView)engine.getNode("spellLockdown",null);
+        ImageView spellLockdown = (ImageView)engine.getNode("buildLockdownV",null);
         spellLockdown.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
             @Override
@@ -851,7 +851,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
         });
         
         
-        ImageView spellVirusscan = (ImageView)engine.getNode("spellVirusscan",null);
+        ImageView spellVirusscan = (ImageView)engine.getNode("buildVirusV",null);
         spellVirusscan.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
             @Override
@@ -896,7 +896,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             
         });
         
-        ImageView spellCorrupt = (ImageView)engine.getNode("spellCorrupt",null);
+        ImageView spellCorrupt = (ImageView)engine.getNode("buildCorruptV",null);
         spellCorrupt.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
             @Override
@@ -941,7 +941,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             
         });
         
-        ImageView spellDisrupt = (ImageView)engine.getNode("spellDisrupt",null);
+        ImageView spellDisrupt = (ImageView)engine.getNode("buildDisruptV",null);
         spellDisrupt.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
             @Override
@@ -986,7 +986,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             
         });
         
-        ImageView spellEncrypt = (ImageView)engine.getNode("spellEncrypt",null);
+        ImageView spellEncrypt = (ImageView)engine.getNode("buildEncryptV",null);
         spellEncrypt.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
             @Override
