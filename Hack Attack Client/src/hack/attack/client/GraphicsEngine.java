@@ -270,25 +270,12 @@ public class GraphicsEngine{
                         Rectangle hb = mi.getHealthBar();
                         Minion m = ((MinionImage)n).getMinion();
                         
-                        if(m.getOwnerID() == uID && m.getHealth() > 0){
-                            m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
-                            mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
-                            mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
-                            hb.setX(mi.getX());
-                            hb.setY(mi.getY()+mi.getImage().getHeight());
-                            hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
-                        }else{
-                            if (m.getHealth() > 0){
-                                mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
-                                mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
-                                hb.setX(mi.getX());
-                                hb.setY(mi.getY()+mi.getImage().getHeight());
-                                hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
-                            }
-                        }
                         
-                        
-                        
+                        mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
+                        mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
+                        hb.setX(mi.getX());
+                        hb.setY(mi.getY()+mi.getImage().getHeight());
+                        hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
 
                     }else if(n instanceof ModuleImage){
                         ModuleImage mi = (ModuleImage)n;
@@ -766,7 +753,7 @@ public class GraphicsEngine{
 
             @Override
             public void run() {
-
+                System.out.println("showEndGame()");
                 Text text = new Text();
                 text.setText(String.format("Game over, %s", name));
                 text.setFill(Color.RED);

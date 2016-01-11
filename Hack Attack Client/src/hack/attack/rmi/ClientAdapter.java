@@ -242,8 +242,13 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                     {
                         if(minion.getMinionID() == m.getMinionID())
                         {
-                            minion.setPosition(m.getPosition());
-                            minion.setHealth(m.getHealth());
+                            if(minion.getOwnerID() == uID && minion.getHealth() > 0){
+                                minion.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
+                                minion.setHealth(m.getHealth());
+                            }else{
+                                minion.setPosition(m.getPosition());
+                                minion.setHealth(m.getHealth());
+                            }
                         }
                     }
                 }
