@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" style="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="hack.attack.client.FXMLDocumentController">
+<AnchorPane fx:id="window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" style="" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hack.attack.client.FXMLDocumentController">
   <children>
     <AnchorPane fx:id="windowLabel" layoutX="0.0" layoutY="0.0" prefHeight="70.0" prefWidth="1366.0" style="-fx-background-color: #d9d9d9; -fx-border-color: #e2e2e2; -fx-border-width: 2 0 0 0;">
       <children>
@@ -30,22 +30,22 @@
       <children>
         <ImageView id="buildScaleAV" fitHeight="40.0" fitWidth="40.0" layoutX="60.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/module/40x40/scale_module.png" backgroundLoading="false" />
+            <Image url="hack/attack/client/resources/interface/module/40x40/scale_module.png" />
           </image>
         </ImageView>
         <ImageView id="buildBottlecapAV" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/module/40x40/bottlecap_module.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/module/40x40/bottlecap_module.png" />
           </image>
         </ImageView>
         <ImageView id="buildMuscleAV" fitHeight="40.0" fitWidth="40.0" layoutX="110.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/module/40x40/muscle_module.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/module/40x40/muscle_module.png" />
           </image>
         </ImageView>
         <ImageView id="buildSniperAV" fitHeight="40.0" fitWidth="40.0" layoutX="160.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="hack/attack/client/resources/interface/module/40x40/sniper_module.png" backgroundLoading="false" />
+            <Image backgroundLoading="false" url="hack/attack/client/resources/interface/module/40x40/sniper_module.png" />
           </image>
         </ImageView>
         <AnchorPane id="moduleStats" layoutX="966.0" layoutY="0.0" prefHeight="100.0" prefWidth="400.0" style="-fx-border-color: #e2e2e2;&#10;-fx-border-width: 0 0 0 2;">
@@ -60,34 +60,34 @@
             <Label id="lblStatsDamage" layoutX="14.0" layoutY="46.0" text="Damage:" />
           </children>
         </AnchorPane>
-        <ImageView fx:id="spellFirewall" fitHeight="40.0" fitWidth="40.0" layoutX="816.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildFirewallV" fitHeight="40.0" fitWidth="40.0" layoutX="816.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/firewall.png" backgroundLoading="false" />
+            <Image url="hack/attack/client/resources/interface/Spells/40x40/firewall.png" />
           </image>
         </ImageView>
-        <ImageView id="buildMuscleAV" fx:id="spellLockdown" fitHeight="40.0" fitWidth="40.0" layoutX="866.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildLockdownV" fitHeight="40.0" fitWidth="40.0" layoutX="866.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/lockdown.png" backgroundLoading="false" />
+            <Image url="hack/attack/client/resources/interface/Spells/40x40/lockdown.png" />
           </image>
         </ImageView>
-        <ImageView id="buildSniperAV" fx:id="spellVirusscan" fitHeight="40.0" fitWidth="40.0" layoutX="916.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="buildVirusV" fitHeight="40.0" fitWidth="40.0" layoutX="916.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/virusscan.png" backgroundLoading="false" />
+            <Image url="hack/attack/client/resources/interface/Spells/40x40/virusscan.png" />
           </image>
         </ImageView>
-        <ImageView id="buildScaleAV" fx:id="spellCorrupt" fitHeight="40.0" fitWidth="40.0" layoutX="816.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildCorruptV" fitHeight="40.0" fitWidth="40.0" layoutX="816.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/corrupt.png" backgroundLoading="false" />
+            <Image url="hack/attack/client/resources/interface/Spells/40x40/corrupt.png" />
           </image>
         </ImageView>
-        <ImageView id="buildMuscleAV" fx:id="spellDisrupt" fitHeight="40.0" fitWidth="40.0" layoutX="866.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
+        <ImageView id="buildDisruptV" fitHeight="40.0" fitWidth="40.0" layoutX="866.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" style="&#10;">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/disrupt.png" backgroundLoading="false" />
+            <Image url="hack/attack/client/resources/interface/Spells/40x40/disrupt.png" />
           </image>
         </ImageView>
-        <ImageView id="buildSniperAV" fx:id="spellEncrypt" fitHeight="40.0" fitWidth="40.0" layoutX="916.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="buildEncryptV" fitHeight="40.0" fitWidth="40.0" layoutX="916.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="hack/attack/client/resources/interface/Spells/40x40/encrypt.png" backgroundLoading="false" />
+            <Image url="hack/attack/client/resources/interface/Spells/40x40/encrypt.png" />
           </image>
         </ImageView>
       </children>
@@ -100,7 +100,7 @@
               <children>
                 <ImageView fx:id="buildBitcoinMiner" fitHeight="40.0" fitWidth="40.0" layoutX="61.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="hack/attack/client/resources/interface/Icons/Base/light/Bitcoin.png" backgroundLoading="false" />
+                    <Image backgroundLoading="false" url="hack/attack/client/resources/interface/Icons/Base/light/Bitcoin.png" />
                   </image>
                 </ImageView>
               </children>
