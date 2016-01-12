@@ -5,6 +5,8 @@
  */
 package hack.attack.server;
 
+import hack.attack.rmi.SpellType;
+import hack.attack.rmi.SpellName;
 import hack.attack.rmi.MinionType;
 import hack.attack.rmi.ModuleName;
 import hack.attack.rmi.DefenseType;

@@ -1,1 +1,1 @@
-2016/01/11 16:18:12 - STATUS : WARNING - Duration of effect is smaller then 0
+2016/01/12 11:04:58 - STATUS : OK - 5 : 1 : 0 : 0 : 0 : 0

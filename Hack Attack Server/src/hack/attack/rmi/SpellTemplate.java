@@ -5,12 +5,13 @@
  */
 package hack.attack.rmi;
 import hack.attack.server.enums.*;
+import java.io.Serializable;
 
 /**
  *
  * @author juleskreutzer
  */
-public class SpellTemplate {
+public class SpellTemplate implements Serializable {
     
     private static final long serialVersionUID = 000005L;
     

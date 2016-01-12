@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hack.attack.client.enums;
+package hack.attack.rmi;
 
 /**
  *
- * @author Bart van Keersop
+ * @author juleskreutzer
  */
-public enum SpellName {
-    CORRUPT, ENCRYPT, DISRUPT, LOCKDOWN, VIRUSSCAN, FIREWALL
+public enum SpellType {
+    ATTACK, DEFENSE
 }
