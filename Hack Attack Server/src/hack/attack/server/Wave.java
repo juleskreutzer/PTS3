@@ -206,7 +206,7 @@ public class Wave {
                                     deleteA.deleteMinion(m1, m1.getOwnerID());
                                     deleteB.deleteMinion(m1, m1.getOwnerID());
                                 } catch (RemoteException ex) {
-                                    Logger.getLogger(Wave.class.getName()).log(Level.SEVERE, null, ex);
+                                    HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
                                 }
                                 
                             }
@@ -245,7 +245,7 @@ public class Wave {
                                     deleteA.deleteMinion(m2, m2.getOwnerID());
                                     deleteB.deleteMinion(m2, m2.getOwnerID());
                                 } catch (RemoteException ex) {
-                                    Logger.getLogger(Wave.class.getName()).log(Level.SEVERE, null, ex);
+                                    HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
                                 }
                             }
 
@@ -255,8 +255,8 @@ public class Wave {
                     }else{
                     try {
                         engine.unsubscribeListener(this);
-                    } catch (UnsubscribeNonListenerException e) {
-                        HackAttackServer.writeConsole(new Log(LogState.ERROR, e.getMessage()));
+                    } catch (UnsubscribeNonListenerException ex) {
+                        HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
                     }
                 }
                 }
