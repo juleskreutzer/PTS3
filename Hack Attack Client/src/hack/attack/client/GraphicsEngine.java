@@ -219,6 +219,7 @@ public class GraphicsEngine{
                 Minion minion = (Minion)object;
                 Minion m = ((MinionImage)n).getMinion();
                 Rectangle hb = ((MinionImage)n).getHealthBar();
+                
                 if(minion.getMinionID() == m.getMinionID()){
                     if(m.reachedBase()){
                         drawEffect(Effect.REACHED_BASE, m, w);
@@ -242,7 +243,7 @@ public class GraphicsEngine{
 //                    parent.removeNode(n, window);
 //                }
 //            }
-            if(n instanceof SpawnTargetImage){
+            if(object instanceof SpawnTargetImage && n instanceof SpawnTargetImage){
                 parent.removeNode(n, window);
                 break;
             }
@@ -273,14 +274,11 @@ public class GraphicsEngine{
                         Rectangle hb = mi.getHealthBar();
                         Minion m = ((MinionImage)n).getMinion();
                         
-                        if (m.getHealth() > 0){
-                            mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
-                            mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
-                            hb.setX(mi.getX());
-                            hb.setY(mi.getY()+mi.getImage().getHeight());
-                            hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
-                        }
-                        
+                        mi.setX(m.getPosition().x - (mi.getImage().getWidth()/2));
+                        mi.setY(m.getPosition().y - (mi.getImage().getHeight()/2));
+                        hb.setX(mi.getX());
+                        hb.setY(mi.getY()+mi.getImage().getHeight());
+                        hb.setWidth((mi.getImage().getWidth()/100) * m.getHealthInPercentage());
 
                     }else if(n instanceof ModuleImage){
                         ModuleImage mi = (ModuleImage)n;

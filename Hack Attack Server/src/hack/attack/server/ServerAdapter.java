@@ -314,7 +314,17 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     if(module instanceof DefenseTemplate)
                     {
                         Defense defense = new Defense((DefenseTemplate) module, position, width, height, uID);
-                        return session.getEngine().getPlayer(uID).buildDefense(defense);
+                        IClientCreate create;
+                        if(uID == session.getPlayerA().getUID()){
+                            create = (IClientCreate)session.getInterfacesB().get("create");
+                        }else{
+                            create = (IClientCreate)session.getInterfacesA().get("create");
+                        }
+                        List<Module> list = new ArrayList<>();
+                        list.add(defense);
+                        Defense d = session.getEngine().getPlayer(uID).buildDefense(defense);
+                        create.drawNewModules(list, uID);
+                        return d;
                     }
                     else
                     {
@@ -344,7 +354,17 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     if(module instanceof DefenseTemplate)
                     {
                         Defense defense = new Defense((DefenseTemplate) module, position, width, height, uID);
-                        return session.getEngine().getPlayer(uID).buildDefense(defense);
+                        IClientCreate create;
+                        if(uID == session.getPlayerA().getUID()){
+                            create = (IClientCreate)session.getInterfacesB().get("create");
+                        }else{
+                            create = (IClientCreate)session.getInterfacesA().get("create");
+                        }
+                        List<Module> list = new ArrayList<>();
+                        list.add(defense);
+                        Defense d = session.getEngine().getPlayer(uID).buildDefense(defense);
+                        create.drawNewModules(list, uID);
+                        return d;
                     }
                     else
                     {
@@ -354,7 +374,17 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                     if(module instanceof DefenseTemplate)
                     {
                         Defense defense = new Defense((DefenseTemplate) module, position, width, height, uID);
-                        return session.getEngine().getPlayer(uID).buildDefense(defense);
+                        IClientCreate create;
+                        if(uID == session.getPlayerA().getUID()){
+                            create = (IClientCreate)session.getInterfacesB().get("create");
+                        }else{
+                            create = (IClientCreate)session.getInterfacesA().get("create");
+                        }
+                        List<Module> list = new ArrayList<>();
+                        list.add(defense);
+                        Defense d = session.getEngine().getPlayer(uID).buildDefense(defense);
+                        create.drawNewModules(list, uID);
+                        return d;
                     }
                     else
                     {
@@ -363,8 +393,6 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
                 default:
                     // The given module type is not found
                     throw new InvalidModuleEnumException("ModuleName not recognized");
-                    
-                
             }
         }
         catch(InvalidSessionKeyException | InvalidModuleEnumException | InvalidObjectException  ex)
