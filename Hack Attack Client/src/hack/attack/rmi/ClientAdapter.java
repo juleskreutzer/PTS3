@@ -791,7 +791,9 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
                             Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
                             try {
-                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                if(engine.spellAvailable(spell)){
+                                    update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                }
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -838,7 +840,10 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
                             Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
                             try {
-                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                if(engine.spellAvailable(spell))
+                                {
+                                    update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                }
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -884,7 +889,9 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
                             Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
                             try {
-                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                if(engine.spellAvailable(spell)){
+                                    update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                }
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -929,7 +936,9 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
                             Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
                             try {
-                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                if(engine.spellAvailable(spell)){
+                                    update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                }
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -974,7 +983,9 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
                             Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
                             try {
-                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                if(engine.spellAvailable(spell)){
+                                    update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                }
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -1017,7 +1028,9 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             ArrayList<ITargetable> targets = new ArrayList<ITargetable>();
                             Point p = new Point((int)range.getCenterX(), (int)range.getCenterY());
                             try {
-                                update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                if(engine.spellAvailable(spell)){
+                                    update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                }
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }

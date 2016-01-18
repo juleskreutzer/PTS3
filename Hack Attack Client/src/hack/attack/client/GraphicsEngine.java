@@ -54,7 +54,6 @@ public class GraphicsEngine{
     private SpawnTargetImage spawnTarget;
     // The active modulerange ellipse. This value is null if no module is hovered.
     private Ellipse moduleRange;
-    private double updateTime;
     
     private Label lblCurrentWave;
     private Label lblPlayerAName;
@@ -77,6 +76,14 @@ public class GraphicsEngine{
     private ImageView errorImage;
     
     private ClientAdapter adapter;
+    
+    /* Fields for spell cooldown */
+    private long SpellCorrupt = 0;
+    private long SpellEncrypt = 0;
+    private long SpellDisrupt = 0;
+    private long SpellLockdown = 0;
+    private long SpellVirusscan = 0;
+    private long SpellFirewall = 0;
     
     private GraphicsEngine(){
         instance = this;
@@ -858,6 +865,55 @@ public class GraphicsEngine{
                 }
             }
             return false;
+    }
+    
+    /**
+     * Check if a user can cast the given spell.
+     * This method will check if the user can cast the spell given as param. 
+     * 
+     * The method will first check if the spell has been used before, if not, it returns true.
+     * If the spell has been used before, lastSpellTime will be set. The method than checks if lastSpellTime + spell cooldown
+     * is smaller than the current System.nanoTime();
+     * @param spell Spell-object the user wants to cast
+     * @return returns <b>true</b> if the spell can be cast, <b>false</b> if the spell can't be cast.
+     */
+    public boolean spellAvailable(SpellTemplate spell)
+    {
+        long lastSpellTime = 0;
+        
+        switch(spell.getName())
+        {
+            case CORRUPT:
+                if(this.SpellCorrupt == 0) { this.SpellCorrupt = System.nanoTime(); return true; } else { lastSpellTime = this.SpellCorrupt; }
+                break;
+            case ENCRYPT:
+                if(this.SpellEncrypt == 0) { this.SpellEncrypt = System.nanoTime(); return true; } else { lastSpellTime = this.SpellEncrypt; }
+                break;
+            case DISRUPT:
+                if(this.SpellDisrupt == 0) { this.SpellDisrupt = System.nanoTime(); return true; } else { lastSpellTime = this.SpellDisrupt; }
+                break;
+            case LOCKDOWN:
+                if(this.SpellLockdown == 0) { this.SpellLockdown = System.nanoTime(); return true; } else { lastSpellTime = this.SpellLockdown; }
+                break;
+            case VIRUSSCAN:
+                if(this.SpellVirusscan == 0) { this.SpellVirusscan = System.nanoTime(); return true; } else { lastSpellTime = this.SpellVirusscan; }
+                break;
+            case FIREWALL:
+                if(this.SpellFirewall == 0) { this.SpellFirewall = System.nanoTime(); return true; } else { lastSpellTime = this.SpellFirewall; }
+                break;
+        }
+        
+        // We now know if the spell has been used before
+        long cooldown = spell.getCooldown()*1000000000;
+        lastSpellTime = lastSpellTime + cooldown;
+        
+        if(System.nanoTime() <= lastSpellTime)
+        {
+            // Not allowed to cast spell yet
+            this.showError("You are not allowed to cast this spell yet.");
+            return false;
+        }
+        else { return true; }
     }
     
 }
