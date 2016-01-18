@@ -256,7 +256,7 @@ public class Wave {
                     try {
                         engine.unsubscribeListener(this);
                     } catch (UnsubscribeNonListenerException e) {
-                        HackAttackServer.writeConsole(new Log(LogState.ERROR, e.toString()));
+                        HackAttackServer.writeConsole(new Log(LogState.ERROR, e.getMessage()));
                     }
                 }
                 }

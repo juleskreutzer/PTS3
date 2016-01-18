@@ -165,6 +165,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             }
             else{
                 // Minions isn't empty, draw them
+                if(m.getOwnerID() == uID && m.getHealth() > 0){
+                    m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
+                }else{
+                    m.setPosition(m.getPosition());
+                }
                 engine.spawn(m, uID);
             }
             
