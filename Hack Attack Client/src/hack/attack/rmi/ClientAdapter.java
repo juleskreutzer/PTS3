@@ -143,6 +143,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             // Minions isn't empty, draw them
             for(Module m : modules)
             {
+                m.setPosition(new Point(1366 - m.getPosition().x, m.getPosition().y));
                 engine.spawn(m, uID);
             }
         }
