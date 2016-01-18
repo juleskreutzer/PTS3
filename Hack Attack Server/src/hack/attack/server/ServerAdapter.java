@@ -572,4 +572,39 @@ public class ServerAdapter extends UnicastRemoteObject implements IServerConnect
         
         return false;
     }
+
+    @Override
+    public boolean sellModule(String sessionKey, int uID, Module module) throws RemoteException {
+        ((Defense) module).deactivate();
+        //Add bitcoins
+        Session session = getSession(sessionKey);
+        if (session != null) {
+            Player player = session.getEngine().getPlayer(uID);
+            //GameEngine gameEngine = session.getEngine();
+            player.addBitcoins(module.getCost() * (0.75));
+            //Remove module from players list
+            player.getModules().remove(module);
+            /*
+            //Remove module from screen
+            graphicsEngine.removeModule(module);
+            //Show that the module is sold
+            graphicsEngine.drawSold();
+            */
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public Session getSession(String sessionKey) {
+        Session sessionReturn = null;
+        for (Session session : sessions) {
+            if (session.getSessionKey().equals(sessionKey)) {
+                sessionReturn = session;
+            }
+        }
+        return sessionReturn;
+    }
 }
+
