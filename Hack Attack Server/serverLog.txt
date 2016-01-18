@@ -1,1 +1,1 @@
-2016/01/12 11:04:58 - STATUS : OK - 5 : 1 : 0 : 0 : 0 : 0
+2016/01/18 14:16:53 - STATUS : INFO - Minion with playerA ID 15 has reached enemy base (enemy user ID: 7)
