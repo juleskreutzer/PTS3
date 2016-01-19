@@ -38,6 +38,7 @@ public class Player {
     private Point baseLocation;
     private List<Module> modules;
     private int uID;
+    private int receivedBitcoins;
     
     public Player(){}
     /**
@@ -259,6 +260,7 @@ public class Player {
     public void addBitcoins(double amount){
         if(amount < 0) throw new IllegalArgumentException("Amount may not be less than 0");
         bitcoins += amount;
+        receivedBitcoins += amount;
     }
     
     /**
@@ -309,5 +311,15 @@ public class Player {
     public int getUID()
     {
         return this.uID;
+    }
+    
+    /**
+     * Get the amount of bitcoins the player received during the game.
+     * This method should only be used to update the score when a game has finished.
+     * @return The amount of bitcoins the player has received during the game.
+     */
+    public int getReceivedBitcoins()
+    {
+        return this.receivedBitcoins;
     }
 }
