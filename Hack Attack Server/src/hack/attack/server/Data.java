@@ -1075,7 +1075,7 @@ public class Data {
         if(uID == 0) throw new IllegalArgumentException("uID cannot be 0");
         if(score <= 0) throw new IllegalArgumentException("Score must be more than 0");
         
-        String url = String.format("https://api.nujules.nl/updateHighscore/%s/%s", uID, score);
+        String url = String.format("https://api.nujules.nl/updateScore/%s/%s", uID, score);
         
         sendPost(url);
     }
