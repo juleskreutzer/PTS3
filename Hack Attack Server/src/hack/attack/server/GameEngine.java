@@ -17,6 +17,7 @@ import hack.attack.rmi.ITargetable;
 import hack.attack.server.enums.LogState;
 import hack.attack.server.logger.Log;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -171,9 +172,17 @@ public class GameEngine extends Thread {
             if(playerA.getHealth() <= 0)
             {
                
-               iClientUpdateA.updateLabels(waveNumber, playerA.getName(), playerA.getHealth(), playerA.getBitcoins(), playerB.getName(), playerB.getHealth());
-               gameRunning = false;
+                iClientUpdateA.updateLabels(waveNumber, playerA.getName(), playerA.getHealth(), playerA.getBitcoins(), playerB.getName(), playerB.getHealth());
+                gameRunning = false;
                
+                try{
+                    Data.updateScore(playerB.getUID(), playerB.getReceivedBitcoins());
+                }
+                catch(IllegalArgumentException | IOException ex)
+                {
+                    HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
+                } 
+
             }
             
             if(playerB.getHealth() <= 0)
@@ -181,6 +190,14 @@ public class GameEngine extends Thread {
                 
                 iClientUpdateB.updateLabels(waveNumber, playerB.getName(), playerB.getHealth(), playerB.getBitcoins(), playerA.getName(), playerA.getHealth());
                 gameRunning = false;
+                
+                try{
+                    Data.updateScore(playerA.getUID(), playerA.getReceivedBitcoins());
+                }
+                catch(IllegalArgumentException | IOException ex)
+                {
+                    HackAttackServer.writeConsole(new Log(LogState.ERROR, ex.getMessage()));
+                }
             }
 
             if(!currentWave.waveActive()){
@@ -189,7 +206,6 @@ public class GameEngine extends Thread {
                 waveList.add(w);
                 currentWave = w;
                 
-                // Temporary disabled due some errors.. enable again when starting debugging minion spawning
                 w.startWave();
 
             }

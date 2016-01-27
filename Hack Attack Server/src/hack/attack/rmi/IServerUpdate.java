@@ -71,4 +71,16 @@ public interface IServerUpdate extends Remote {
      * @param module Module the client wants to upgrade
      */
     public boolean upgradeModule(String sessionKey, int uID, Module module) throws RemoteException;
+    
+    /**
+     * The client can call this method to sell a module.
+     * 
+     * This method will not have a return type because:
+     *  - When a module can be upgraded, it will be done in the player's module list in the Player class and will be send to the client by another interface
+     *  - When it is not possible to upgrade a module, an exception will be thrown. This will be send to the client by another interface
+     * @param sessionKey a unique key to identify the session on the server, received after the 'hand shake'
+     * @param uID unique ID of the user, received after the login call to the API on the client
+     * @param module Module the client wants to upgrade
+     */
+    public boolean sellModule(String sessionKey, int uID, Module module) throws RemoteException;
 }

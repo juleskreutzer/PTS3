@@ -1061,4 +1061,22 @@ public class Data {
         Key key = new SecretKeySpec(keyValue, algorithm);
         return key;
     }
+    
+    /**
+     * Update the score of the user with the given uID.
+     * When a game ends, the score for the winning user needs to be updated. This method can be called
+     * to update the score of that player.
+     * @param uID unique ID of a user that has been stored in the database
+     * @param score Score that will be added to the current score of the player.
+     * @throws java.io.IOException IO Exception will be thrown when something bad happend while sending a POST-request
+     */
+    public static void updateScore(int uID, int score) throws IllegalArgumentException, IOException {
+        // preform some checks on the given params
+        if(uID == 0) throw new IllegalArgumentException("uID cannot be 0");
+        if(score <= 0) throw new IllegalArgumentException("Score must be more than 0");
+        
+        String url = String.format("https://api.nujules.nl/updateScore/%s/%s", uID, score);
+        
+        sendPost(url);
+    }
 }
