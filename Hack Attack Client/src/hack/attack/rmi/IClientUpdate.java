@@ -53,6 +53,4 @@ public interface IClientUpdate extends IClient {
      * @param waveNumber Number indicating the current wave
      */
     public void updateLabels(int waveNumber, String playernamea, double healthplayera, double bitcoinsplayera, String playernameb, double healthplayerb) throws RemoteException;
-    
-    public void fire(int moduleid, long minionid) throws RemoteException;
 }

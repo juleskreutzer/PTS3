@@ -12,7 +12,6 @@ import hack.attack.client.FXMLDocumentController;
 import hack.attack.client.FXMLDocumentController.Window;
 import hack.attack.client.GraphicsEngine;
 import hack.attack.client.MinionImage;
-import hack.attack.client.ModuleImage;
 import hack.attack.client.SoftwareInjector;
 import hack.attack.client.SpawnTargetImage;
 import hack.attack.client.exceptions.DuplicateSpawnException;
@@ -1075,37 +1074,4 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
             
         });
     }
-
-    @Override
-     public void fire(int moduleid, long minionid){
-         Defense source = null;
-         Minion target = null;
-         
-         ArrayList<Node> nodes = engine.getAllNodes();
-             for(Node n : nodes)
-             {
-                 if(n instanceof ModuleImage)
-                 {
-                     ModuleImage moi = (ModuleImage)n;
-                     Module m = (Module)moi.getReference();
-                     if(m.getModuleID() == moduleid){
-                         source = (Defense)m;
-                     }
-                     
-                 }
-                 if(n instanceof MinionImage){
-                     MinionImage mii = (MinionImage)n;
-                     Minion m = (Minion)mii.getReference();
-                     if(m.getMinionID() == minionid){
-                         target = m;
-                     }
-                 }
-             }
-             if(source != null && target != null){
-                 engine.drawAttackLine(source, target);
-             }
-             
-             
-     }
-     
 }

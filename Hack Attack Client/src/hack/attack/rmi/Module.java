@@ -25,13 +25,9 @@ abstract public class Module implements Serializable {
     protected boolean allowBuild = false;
     protected ModuleName moduleName;
     protected String desc;
-    private static int nextID;
-      		      
-    protected int moduleID;
     
     public Module(double cost, Point position, int width, int height, ModuleName name, int level, String desc)
     {
-        moduleID = nextID++;
         this.width = width;
         this.height = height;
         this.cost = cost;
@@ -40,10 +36,6 @@ abstract public class Module implements Serializable {
         this.level = level;
         
     }
-    
-    public int getModuleID(){
-         return moduleID;
-     }
     
     /**
      * 

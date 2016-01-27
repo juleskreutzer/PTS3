@@ -57,7 +57,6 @@ public class Minion implements ITargetable {
      */
     public Minion(MinionTemplate minion, double multiplier, int ownerID)
     {
-        minionID = nextMinionID++;
         health = (minion.getHealth() * multiplier);
         initialHealth = health;
         speed = (minion.getSpeed());
