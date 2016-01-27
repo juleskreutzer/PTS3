@@ -352,33 +352,36 @@ public class Minion implements IMoveable, ITargetable {
     }
     
     public void removeEffect(){
-        switch(activeEffect.getEffectType()){
-            case SLOWED:
-                speed *= 2;
-                break;
-            case BUFFED:
-                damage /= 1.25;
-                break;
-            case SPLASH:
-                this.canReceiveDamage = true;
-                break;
-            case ENCRYPT:
-                this.encrypted = false;
-                break;
-            case POISENED:
-                
-                break;
-            case DECRYPTED: 
-                
-                break;
-            case DIE:
-                
-                break;
-            case REACHED_BASE:
-                
-                break;
+        if (activeEffect != null) {
+            switch(activeEffect.getEffectType()){
+                case SLOWED:
+                    speed *= 2;
+                    break;
+                case BUFFED:
+                    damage /= 1.25;
+                    break;
+                case SPLASH:
+                    this.canReceiveDamage = true;
+                    break;
+                case ENCRYPT:
+                    this.encrypted = false;
+                    break;
+                case POISENED:
+
+                    break;
+                case DECRYPTED: 
+
+                    break;
+                case DIE:
+
+                    break;
+                case REACHED_BASE:
+
+                    break;
+            }
+            activeEffect = null;
         }
-        activeEffect = null;
+        
     }
     
     public int getOwnerID()
