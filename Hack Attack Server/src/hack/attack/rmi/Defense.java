@@ -13,6 +13,7 @@ import hack.attack.server.GameEngine;
 import hack.attack.server.Wave;
 import java.awt.Point;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -34,8 +35,10 @@ public class Defense extends Module implements ITargetable, Serializable {
     ArrayList<Minion> minions;
     Random random;
     
-    private int ownerID;
+    private IClientUpdate updateA;
+    private IClientUpdate updateB;
     
+    private int ownerID;
     private double damage;
     private int range;
     // The amount of attacks per second
@@ -95,6 +98,8 @@ public class Defense extends Module implements ITargetable, Serializable {
     public void activate(GameEngine engine){
         this.engine = engine;
         target = null;
+        updateA = (IClientUpdate)engine.getInterfacesA().get("update");
+        updateB = (IClientUpdate)engine.getInterfacesB().get("update");
         tickListener = new OnExecuteTick() {
 
             @Override
@@ -446,7 +451,16 @@ public class Defense extends Module implements ITargetable, Serializable {
      * @param minion The enemy minion target.
      */
     public void fire(Minion minion){
-        if(canDoDamage) { minion.receiveDamage(damage); }
+        if(canDoDamage) { 
+            try {
+                minion.receiveDamage(damage);
+                updateA.fire(getModuleID(), minion.getMinionID());
+                updateB.fire(getModuleID(), minion.getMinionID());
+            } catch (RemoteException ex) {
+                Logger.getLogger(Defense.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
         if(!targetInRange(minion)||minion.getHealth() <= 0){
             target = null;
         }

@@ -79,7 +79,7 @@ public class FXMLLobbyController implements Initializable {
             });
         
             //System.setProperty("java.rmi.server.hostname","localhost");
-            Registry registry = LocateRegistry.getRegistry("169.254.46.49",7611);
+            Registry registry = LocateRegistry.getRegistry("127.0.0.1",7611);
             //Registry registry = LocateRegistry.getRegistry("10.0.1.41", 7611); 
             //Registry registry = LocateRegistry.getRegistry("145.93.56.144", 7611);
 //            Registry registry = LocateRegistry.getRegistry("145.93.104.222", 7611);
