@@ -427,7 +427,10 @@ public class GameEngine extends Thread {
         
         for(Minion m : currentWave.minionsAsList()){
             if(targetInRange(position.getX(), position.getY(), spell.getRange(),m)){
-                minionTargets.add(m);
+                if(uID != m.getOwnerID())
+                {
+                    minionTargets.add(m);
+                }
             }
         }
         
