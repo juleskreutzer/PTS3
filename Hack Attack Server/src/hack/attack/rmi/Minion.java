@@ -330,7 +330,7 @@ public class Minion implements IMoveable, ITargetable {
                 damage *= 1.25;
                 break;
             case SPLASH:
-                double d = this.health * 0.25;
+                double d = this.health * 0.25 + 10;
                 this.receiveDamage(d);
                 break;
             case ENCRYPT:

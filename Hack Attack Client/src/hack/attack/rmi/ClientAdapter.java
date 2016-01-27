@@ -799,8 +799,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             try {
                                 if(engine.spellAvailable(spell)){
                                     update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                    engine.deSpawn(spell, account.getUID());
                                 }
                             } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
@@ -849,8 +852,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                                 if(engine.spellAvailable(spell))
                                 {
                                     update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                    engine.deSpawn(spell, account.getUID());
                                 }
                             } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
@@ -897,8 +903,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             try {
                                 if(engine.spellAvailable(spell)){
                                     update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                    engine.deSpawn(spell, account.getUID());
                                 }
                             } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
@@ -944,8 +953,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             try {
                                 if(engine.spellAvailable(spell)){
                                     update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                    engine.deSpawn(spell, account.getUID());
                                 }
                             } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
@@ -964,6 +976,7 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
         });
         
         ImageView spellDisrupt = (ImageView)engine.getNode("buildDisruptV",null);
+        spellDisrupt.setDisable(true);
         spellDisrupt.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
             @Override
@@ -991,8 +1004,11 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             try {
                                 if(engine.spellAvailable(spell)){
                                     update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                    engine.deSpawn(spell, account.getUID());
                                 }
                             } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
@@ -1036,15 +1052,18 @@ public class ClientAdapter extends UnicastRemoteObject implements IClientCreate,
                             try {
                                 if(engine.spellAvailable(spell)){
                                     update.executeSpell(sessionKey, account.getUID(), spell, p);
+                                    engine.deSpawn(spell, account.getUID());
                                 }
                             } catch (RemoteException ex) {
+                                Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                         else
                         {
                             try {
-                                engine.deSpawn(st, account.getUID());
+                                engine.deSpawn(spell, account.getUID());
                             } catch (InvalidObjectException ex) {
                                 Logger.getLogger(ClientAdapter.class.getName()).log(Level.SEVERE, null, ex);
                             }
