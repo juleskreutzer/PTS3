@@ -23,6 +23,7 @@ public class Minion implements ITargetable {
     private static final long serialVersionUID = 000002L;
     private long minionID = 0;
     
+    
     //Fields
     private MinionType minionType; //The MinionType of the minion
     private double health; //The ammunt of health the minion currently has.
@@ -57,6 +58,7 @@ public class Minion implements ITargetable {
      */
     public Minion(MinionTemplate minion, double multiplier, int ownerID)
     {
+        minionID = nextMinionID++;
         health = (minion.getHealth() * multiplier);
         initialHealth = health;
         speed = (minion.getSpeed());

@@ -16,6 +16,10 @@ abstract public class Module implements Serializable {
     
     private static final long serialVersionUID = 000003L;
     
+    private static int nextID;
+     		     
+    protected int moduleID;
+    
     protected Point position;
     protected int width;
     protected int height;
@@ -28,6 +32,7 @@ abstract public class Module implements Serializable {
     
     public Module(double cost, Point position, int width, int height, ModuleName name, int level, String desc)
     {
+         moduleID = nextID++;
         this.width = width;
         this.height = height;
         this.cost = cost;
@@ -174,4 +179,8 @@ abstract public class Module implements Serializable {
         {
             return this.desc;
         }
+
+    int getModuleID() {
+        return moduleID;
+    }
 }

@@ -1096,6 +1096,8 @@ public class GraphicsEngine{
     
     public void drawAttackLine(Defense defense, Minion minion){
         Line attackLine = new Line(defense.getPosition().x, defense.getPosition().y, minion.getPosition().x, minion.getPosition().y);
+        int currentID = ClientAdapter.getInstance().getCurrentUserID();
+        Window window = minion.getOwnerID() == currentID? FXMLDocumentController.Window.TOP : FXMLDocumentController.Window.DOWN;
         
         if (defense.getModuleName() == ModuleName.BOTTLECAP_ANTIVIRUS)
         {
@@ -1103,7 +1105,7 @@ public class GraphicsEngine{
             attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
             attackLine.setOpacity(0.75);
             attackLine.setStrokeWidth(3);
-            parent.addNode(attackLine, Window.DOWN);
+            parent.addNode(attackLine, window);
         }
         
         switch(defense.getModuleName())
@@ -1113,28 +1115,28 @@ public class GraphicsEngine{
                 attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
                 attackLine.setOpacity(0.75);
                 attackLine.setStrokeWidth(3);
-                parent.addNode(attackLine, Window.DOWN);
+                parent.addNode(attackLine, window);
                 break;
             case MUSCLE_ANTIVIRUS:
                 attackLine.setStroke(Color.BLUE);
                 attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
                 attackLine.setOpacity(0.75);
                 attackLine.setStrokeWidth(3);
-                parent.addNode(attackLine, Window.DOWN);
+                parent.addNode(attackLine, window);
                 break;
             case SCALE_ANTIVIRUS:
                 attackLine.setStroke(Color.PURPLE);
                 attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
                 attackLine.setOpacity(0.75);
                 attackLine.setStrokeWidth(3);
-                parent.addNode(attackLine, Window.DOWN);
+                parent.addNode(attackLine, window);
                 break;
             case SNIPER_ANTIVIRUS:
                 attackLine.setStroke(Color.RED);
                 attackLine.setStrokeLineCap(StrokeLineCap.ROUND);
                 attackLine.setOpacity(0.75);
                 attackLine.setStrokeWidth(3);
-                parent.addNode(attackLine, Window.DOWN);
+                parent.addNode(attackLine, window);
                 break;
         }
         //Initialize timer outisde of method and add tasks?
@@ -1144,7 +1146,7 @@ public class GraphicsEngine{
         timer.schedule(new TimerTask() {
         @Override
         public void run() {
-        parent.removeNode(attackLine, Window.DOWN);
+        parent.removeNode(attackLine, window);
         }
         },200);
     }
